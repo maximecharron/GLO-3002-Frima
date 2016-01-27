@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <title>MyApp</title>
+      <meta name="description" content="">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="styles/common.css">
+      <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  </head>
+  <body class="main">
+    <div ng-app="uMovie">
+
+      <div ng-view></div>
+
+        <!-- Compiled files -->
+        <script src="bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="bower_components/angular/angular.js"></script>
+        <script src="bower_components/angular-animate/angular-animate.min.js"></script>
+        <script src="bower_components/angular-resource/angular-resource.min.js"></script>
+        <script src="bower_components/angular-route/angular-route.js"></script>
+
+        <!-- Main application -->
+        <script src="app.js"></script>
+
+        <!-- Login component -->
+        <script src="components/login/scripts/login.js"></script>
+        <script src="components/login/scripts/services/loginResource.js"></script>
+        <script src="components/login/scripts/services/loginService.js"></script>
+        <script src="components/login/scripts/controller/login-controller.js"></script>
+
+        <!-- Route providers -->
+        <script src="components/login/scripts/loginRouteProvider.js"></script>
+    </div>
+  </body>
+</html>
