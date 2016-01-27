@@ -1,8 +1,9 @@
 'use strict';
 
 // Declare app level module which depends on views, and components
-var app = angular.module('uMovie', [
+var app = angular.module('CMS', [
     'ngRoute',
     'ngResource',
-    "uMovie.login"
+    "CMS.login",
+    "CMS.content"
 ]);

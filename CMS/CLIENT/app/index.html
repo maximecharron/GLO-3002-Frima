@@ -3,14 +3,14 @@
   <head>
       <meta charset="utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <title>MyApp</title>
+      <title>CMS</title>
       <meta name="description" content="">
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <link rel="stylesheet" href="styles/common.css">
       <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
   </head>
   <body class="main">
-    <div ng-app="uMovie">
+    <div ng-app="CMS">
 
       <div ng-view></div>
 
@@ -25,6 +25,10 @@
         <!-- Main application -->
         <script src="app.js"></script>
 
+        <!-- Content component -->
+        <script src="components/content/scripts/content.js"></script>
+        <script src="components/content/scripts/controller/content-controller.js"></script>
+
         <!-- Login component -->
         <script src="components/login/scripts/login.js"></script>
         <script src="components/login/scripts/services/loginResource.js"></script>
@@ -33,6 +37,8 @@
 
         <!-- Route providers -->
         <script src="components/login/scripts/loginRouteProvider.js"></script>
+        <script src="components/content/scripts/contentRouteProvider.js"></script>
+
     </div>
   </body>
 </html>

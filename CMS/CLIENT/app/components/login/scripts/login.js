@@ -1,3 +1,3 @@
 'use strict';
 
-var loginApp = angular.module('uMovie.login', ['ngRoute']);
+var loginApp = angular.module('CMS.login', ['ngRoute']);
