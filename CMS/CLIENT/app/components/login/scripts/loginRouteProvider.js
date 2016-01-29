@@ -4,5 +4,5 @@ loginApp.config(['$routeProvider', function ($routeProvider) {
             templateUrl: "components/login/views/login.html",
             controller: "login-controller"
         })
-            .otherwise({redirectTo: '/login'});
+            .otherwise({redirectTo: '/content'});
     }]);

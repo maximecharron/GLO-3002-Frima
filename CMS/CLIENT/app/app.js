@@ -4,6 +4,6 @@
 var app = angular.module('CMS', [
     'ngRoute',
     'ngResource',
-    "CMS.login",
-    "CMS.content"
+    "CMS.content",
+    "CMS.login"
 ]);
