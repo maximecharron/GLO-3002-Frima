@@ -1,6 +1,3 @@
-# GLO-3102 - team01
-UMovie autumn 2015
-
 ## Install Node JS
 1. Install node by executing the specific installation corresponding to your OS
 
