@@ -17,6 +17,7 @@
     "jwt-simple": "^0.4.1",
     "moment": "^2.11.2",
     "mongoose": "^4.4.3",
+    "newrelic": "^1.25.1",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "request": "^2.69.0",
