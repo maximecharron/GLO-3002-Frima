@@ -1,4 +1,5 @@
 var ws = require('ws');
+var bossLife = 10000000000;
 exports.newConnection = function(webSocket)
 {
     console.log("webSocket at address ", webSocket._socket.remoteAddress, " is connected!"); //TODO: For debug purpose
@@ -21,9 +22,10 @@ function close(webSocket)
 
 function newMessage(message, webSocket)
 {
+    bossLife = bossLife - 1;
     console.log("webSocket at address ", webSocket._socket.remoteAddress, " send new message: ", message); //TODO: For debug purpose
     if (webSocket.readyState == ws.OPEN)
     {
-        webSocket.send("U send me that? " + message);
+        webSocket.send("U send me that? " + message + "   The boss life is: " + bossLife);
     }
 }
