@@ -1,9 +1,8 @@
 {
-  "name": "labo10",
+  "name": "server-frima",
   "description": "socket.io app",
   "dependencies": {
     "express": "~4.13.3",
-    "socket.io": "~1.2.0",
     "ws": "^1.0.1"
   },
   "engine": "node 4.0.0"
