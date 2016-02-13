@@ -2,14 +2,27 @@ ContentApp.controller("content-controller", function ($scope, $http) {
 
     <!-- $scope déclare les variables utilisées dans le html -->
 
+    $scope.monsterHealthValue = "Default";
+    $scope.monsterSpeedValue = "Default";
+    $scope.monsterArmorValue = "Default";
+
+    var MAX_ARMOR = 10
+    var MAX_HEALTH = 100
+    var MAX_SPEED = 10
+
+    var SET_ARMOR
+    var SET_HEALTH
+    var SET_SPEED
+
     var cmsUrl = "http://frima-cms-server.herokuapp.com/update"
 
     $scope.updateMonsterHealth = function ()
     {
-        if(!$scope.monsterHealth){
+        if(!validateHealth($scope.monsterHealth)){
             window.alert( "not a valid number" );
         }
         else{
+            SET_HEALTH = $scope.monsterHealth
             makeCorsRequest('POST', cmsUrl, $scope.monsterHealth);
         }
     }
@@ -37,12 +50,38 @@ ContentApp.controller("content-controller", function ($scope, $http) {
 
     }
 
-    function successCallback(){
-        window.alert( "Success Callback" );
+
+    function validateArmor(armor){
+        if(armor <= MAX_ARMOR && validateNaturalNumber(armor)){
+            return true
+        }
+        return false
     }
 
-    function errorCallback(){
-        window.alert( "Success Callback" );
+    function validateHealth(health){
+        if(health <= MAX_HEALTH && validateNaturalNumber(health) && health && isInt(health)){
+            return true
+        }
+        return false
+    }
+
+    function validateSpeed(speed){
+        if(speed <= MAX_SPEED && validateNaturalNumber(speed)){
+            return true
+        }
+        return false
+    }
+
+    function isInt(n){
+        return n % 1 === 0;
+    }
+
+
+    function validateNaturalNumber(number) {
+        if (number > -1 && number != 0) {
+            return true
+        }
+        return false
     }
 
     function createCORSRequest(method, url) {
@@ -74,6 +113,7 @@ ContentApp.controller("content-controller", function ($scope, $http) {
         xhr.onload = function() {
             var text = xhr.responseText;
             alert('Response from CORS request to ' + url + ': '+ text);
+            $scope.monsterHealthValue = SET_HEALTH
         };
 
         xhr.onerror = function() {
