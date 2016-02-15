@@ -26,7 +26,7 @@ function getCurrentBossLife (currentBossLifeCallBack)
         }
         else
         {
-            bossLife = result;
+            bossLife = 1000000000000;
             console.log("currentBossLife: ", bossLife)
             currentBossLifeCallBack(null);
         }
