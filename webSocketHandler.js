@@ -11,7 +11,6 @@ var bossLifeHandler = require('./bossLifeHandler.js');
 
 bossLifeHandler.getLife(function(result)
 {
-    console.log("WSH: ", result);
     bossLife = result
 });
 
@@ -25,6 +24,11 @@ redisSub.on("message", function(channel, message)
     {
         bossLife = message;
         redisValuesHandler.set("currentBossLife", bossLife);
+        broadcast(bossLife);
+    }
+    if(channel == "CMS")
+    {
+        bossLife = message;
         broadcast(bossLife);
     }
 

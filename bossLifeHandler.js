@@ -23,7 +23,7 @@ function getCurrentBossLife (currentBossLifeCallBack)
         {
             console.log("Error getting currentBossLife: ", error);
         }
-        if(result == "" || result == null || result == "NaN")
+        if(!result)
         {
             console.log("currentBossLife is null or empty.");
             currentBossLifeCallBack(null);
@@ -50,7 +50,7 @@ function getConstantBossLife(constantBossLifeCallBack)
             if(!result)
             {
                 console.log("constantBossLife is null or empty.");
-                bossLife = 10000000; //TODO: A modifier car ne devrais pas harcoder de valeur. Devrais aller rechercher en BD Mongo les valeurs de la partie.
+                bossLife = 100000000000; //TODO: A modifier car ne devrais pas harcoder de valeur. Devrais aller rechercher en BD Mongo les valeurs de la partie.
                 constantBossLifeCallBack(null);
             }
             else
