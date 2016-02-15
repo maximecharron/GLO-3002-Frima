@@ -17,7 +17,7 @@ function getCurrentBossLife (currentBossLifeCallBack)
         {
             console.log("Error getting currentBossLife: ", error);
         }
-        if(!result)
+        if(result == "" || result == null)
         {
             console.log("currentBossLife is null or empty.");
             currentBossLifeCallBack(null);
