@@ -27,6 +27,11 @@ exports.newConnection = function(webSocket)
     });
 }
 
+exports.setWebSocketServer = function(webSocketServer)
+{
+    wss = webSocketServer;
+}
+
 function close(webSocket)
 {
     console.log("webSocket at address ", webSocket._socket.remoteAddress, " is disconnected!"); //TODO: For debug purpose
