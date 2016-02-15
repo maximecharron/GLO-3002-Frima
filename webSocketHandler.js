@@ -14,6 +14,7 @@ redisSub.on("message", function(channel, message)
 {
     //console.log("Boss supposed live: ", message);
     bossLife = message;
+    redisValuesHandler.set("currentBossLife", bossLife);
     broadcast(message);
 });
 
