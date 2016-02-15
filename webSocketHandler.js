@@ -1,5 +1,5 @@
 var bossLife;
-
+var async = require('async');
 var ws = require('ws');
 var wss = require('ws').Server;
 var redisPub = require('redis').createClient(process.env.REDIS_URL);
@@ -8,8 +8,12 @@ var redisValuesHandler = require('redis').createClient(process.env.REDIS_URL);
 
 var bossLifeHandler = require('./bossLifeHandler.js');
 
-bossLife = bossLifeHandler.getLife();
-console.log("Inside get life: ", bossLife);
+async.waterfall([function(bossLifeHandlerCallBack)
+{
+    bossLife = bossLifeHandler.getLife();
+    console.log("waterfall webSock: ", bossLife);
+}]);
+
 redisSub.subscribe("boss");
 redisSub.on("message", function(channel, message)
 {
