@@ -1,3 +1,5 @@
+var async = require('async');
+
 exports.getLife = function()
 {
     async.waterfall([

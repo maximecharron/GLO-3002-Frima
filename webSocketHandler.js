@@ -1,6 +1,5 @@
 var bossLife;
 
-var async = require('async');
 var ws = require('ws');
 var wss = require('ws').Server;
 var redisPub = require('redis').createClient(process.env.REDIS_URL);
