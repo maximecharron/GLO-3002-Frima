@@ -1,6 +1,7 @@
 var bossLife = 10000000000;
 
 var ws = require('ws');
+var wss = require('ws').Server;
 var redisPub = require('redis').createClient(process.env.REDIS_URL);
 var redisSub = require('redis').createClient(process.env.REDIS_URL);
 
@@ -44,7 +45,7 @@ function newMessage(message, webSocket)
 
 function broadcast(data)
 {
-  ws.clients.forEach(function each(client)
+  wss.clients.forEach(function each(client)
   {
     client.send(data);
   });
