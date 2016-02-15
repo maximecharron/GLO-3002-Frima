@@ -63,8 +63,8 @@ function broadcast(data)
 function getLife()
 {
     async.waterfall([
-        getCurrentBossLife(currentBossLifeCallBack),
-        getConstantBossLife(constantBossLifeCallBack)
+        function(currentBossLifeCallBack){getCurrentBossLife(currentBossLifeCallBack)},
+        function(constantBossLifeCallBack){getConstantBossLife(constantBossLifeCallBack)}
     ]);
 }
 
