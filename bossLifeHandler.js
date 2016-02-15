@@ -1,4 +1,5 @@
 var async = require('async');
+var redisValuesHandler = require('redis').createClient(process.env.REDIS_URL);
 
 exports.getLife = function()
 {
