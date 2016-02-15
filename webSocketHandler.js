@@ -11,6 +11,7 @@ var bossLifeHandler = require('./bossLifeHandler.js');
 
 bossLifeHandler.getLife(function(result)
 {
+    console.log("WSH: ", result);
     bossLife = result
 });
 
