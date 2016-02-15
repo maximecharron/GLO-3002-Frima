@@ -78,7 +78,7 @@ function getLife()
                 else
                 {
                     bossLife = result;
-                    console.log("bossLife: ", bossLife)
+                    console.log("currentBossLife: ", bossLife)
                     currentBossLifeCallBack(null);
                 }
             });
@@ -102,7 +102,7 @@ function getLife()
                     else
                     {
                         bossLife = result;
-                        console.log("bossLife: ", bossLife)
+                        console.log("constantBossLife: ", bossLife)
                         constantBossLifeCallBack(null);
                     }
                 })
