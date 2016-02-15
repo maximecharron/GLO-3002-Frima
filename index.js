@@ -20,6 +20,8 @@ var corsOptions = {
     credentials: true
 };
 
+var redis = require('redis').createClient('redis://h:p88th5goahehq8c9hta4ugr533t@ec2-54-227-246-40.compute-1.amazonaws.com:21599');
+
 require('./middleware/passport')(passport, app);
 
 app.use(cookieParser());
@@ -41,6 +43,8 @@ app.use(cors(corsOptions));
 
 app.post('/update', function(req, res){
     console.log(req.body);
+    redis.set('currentBossLife', req);
+    redis.publish('CMS', req);
     res.status(200).send(req.body);
 })
 
