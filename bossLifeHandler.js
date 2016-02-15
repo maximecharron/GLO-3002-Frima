@@ -2,7 +2,7 @@ var async = require('async');
 var redisValuesHandler = require('redis').createClient(process.env.REDIS_URL);
 
 var bossLife;
-exports.getLife = function()
+exports.getLife = function(callBack)
 {
     async.waterfall([
         function(currentBossLifeCallBack){getCurrentBossLife(currentBossLifeCallBack)},
@@ -11,6 +11,7 @@ exports.getLife = function()
     {
         console.log("Inside get life: ", bossLife);
         return bossLife;
+        callBack();
     });
 }
 
