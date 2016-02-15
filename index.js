@@ -24,7 +24,9 @@ var theUrl = 'redis://h:p88th5goahehq8c9hta4ugr533t@ec2-54-227-246-40.compute-1.
 //var rtg = require('url').parse(theUrl);
 var redis = require('redis').createClient(theUrl);
 //redis.auth(rtg.auth.split(":")[1]);
-redis.auth('password', function(err){})
+redis.auth('password', function(err){
+    if(err) then throw err;
+})
 require('./middleware/passport')(passport, app);
 
 app.use(cookieParser());
@@ -46,8 +48,8 @@ app.use(cors(corsOptions));
 
 app.post('/update', function(req, res){
     console.log(req.body);
-    redis.set('currentBossLife', req);
-    redis.publish('CMS', req);
+    redis.set('currentBossLife', 10);
+    redis.publish('CMS', 10);
     res.status(200).send(req.body);
 })
 
