@@ -22,13 +22,13 @@ var corsOptions = {
 var theUrl = 'redis://h:p88tk5goahehq8c9hta4ugr533t@ec2-54-227-246-40.compute-1.amazonaws.com:21599';
 
 var rtg = require('url').parse(theUrl);
-var redis = require('redis').createClient(rtg.port, rtg.host);
-redis.auth(rtg.auth.split(":")[1]);
-// redis.auth('password', function(err){
-//     if(err){
-//         console.log(err);
-//     }
-// })
+var redis = require('redis').createClient("21599", "ec2-54-227-246-40.compute-1.amazonaws.com", {no_ready_check: true});
+//redis.auth(rtg.auth.split(":")[1]);
+ redis.auth('ingciv85', function(err){
+     if(err){
+         console.log(err);
+     }
+ })
 require('./middleware/passport')(passport, app);
 
 app.use(cookieParser());
