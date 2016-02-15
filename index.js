@@ -25,7 +25,9 @@ var theUrl = 'redis://h:p88th5goahehq8c9hta4ugr533t@ec2-54-227-246-40.compute-1.
 var redis = require('redis').createClient(theUrl);
 //redis.auth(rtg.auth.split(":")[1]);
 redis.auth('password', function(err){
-    if(err) then throw err;
+    if(err){
+        console.log(err);
+    }
 })
 require('./middleware/passport')(passport, app);
 
