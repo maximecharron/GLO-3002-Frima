@@ -12,6 +12,7 @@ async.waterfall([function(bossLifeHandlerCallBack)
 {
     bossLife = bossLifeHandler.getLife();
     console.log("waterfall webSock: ", bossLife);
+    bossLifeHandlerCallBack();
 }]);
 
 redisSub.subscribe("boss");
