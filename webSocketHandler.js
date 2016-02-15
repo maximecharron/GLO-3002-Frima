@@ -1,14 +1,13 @@
 var bossLife;
 
+var async = require('async');
 var ws = require('ws');
 var wss = require('ws').Server;
 var redisPub = require('redis').createClient(process.env.REDIS_URL);
 var redisSub = require('redis').createClient(process.env.REDIS_URL);
 var redisValuesHandler = require('redis').createClient(process.env.REDIS_URL);
 
-redisValuesHandler.set('currentBossLife', 1000000000000);
 getLife();
-
 
 redisSub.subscribe("boss");
 redisSub.on("message", function(channel, message)
@@ -63,20 +62,55 @@ function broadcast(data)
 
 function getLife()
 {
-    redisValuesHandler.get('currentBossLife',function(error, result)
-    {
-        if(error)
+    async.waterfall([ function (currentBossLifeCallBack)
         {
-            console.log("Error getting currentBossLife: ", error);
-        }
-        if(!result)
+            redisValuesHandler.get('currentBossLife',function(error, result)
+            {
+                if(error)
+                {
+                    console.log("Error getting currentBossLife: ", error);
+                }
+                if(!result)
+                {
+                    console.log("currentBossLife is null or empty.");
+                    currentBossLifeCallBack(null);
+                }
+                else
+                {
+                    bossLife = result;
+                    console.log("bossLife: ", bossLife)
+                    currentBossLifeCallBack(null);
+                }
+            });
+        },
+        function (constantBossLifeCallBack)
         {
-            console.log("currentBossLife is null or empty.");
+            if(!bossLife)
+            {
+                redisValuesHandler.get('constantBossLife',function(error, result)
+                {
+                    if(error)
+                    {
+                        console.log("Error getting constantBossLife: ", error);
+                    }
+                    if(!result)
+                    {
+                        console.log("constantBossLife is null or empty.");
+                        bossLife = 10000000; //TODO: A modifier car ne devrais pas harcoder de valeur. Devrais aller rechercher en BD Mongo les valeurs de la partie.
+                        constantBossLifeCallBack(null);
+                    }
+                    else
+                    {
+                        bossLife = result;
+                        console.log("bossLife: ", bossLife)
+                        constantBossLifeCallBack(null);
+                    }
+                })
+            }
+            else
+            {
+                constantBossLifeCallBack(null);
+            }
         }
-        else
-        {
-            bossLife = result;
-            console.log("bossLife: ", bossLife)
-        }
-    })
+    ]);
 }
