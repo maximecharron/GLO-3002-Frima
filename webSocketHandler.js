@@ -8,7 +8,7 @@ var redisValuesHandler = require('redis').createClient(process.env.REDIS_URL);
 
 var bossLifeHandler = require('./bossLifeHandler.js');
 
-bossLifeHandler.getLife();
+bossLife = bossLifeHandler.getLife();
 
 redisSub.subscribe("boss");
 redisSub.on("message", function(channel, message)

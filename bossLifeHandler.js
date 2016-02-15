@@ -7,7 +7,10 @@ exports.getLife = function()
     async.waterfall([
         function(currentBossLifeCallBack){getCurrentBossLife(currentBossLifeCallBack)},
         function(constantBossLifeCallBack){getConstantBossLife(constantBossLifeCallBack)}
-    ]);
+    ], function(error, result)
+    {
+        return bossLife;
+    });
 }
 
 function getCurrentBossLife (currentBossLifeCallBack)
