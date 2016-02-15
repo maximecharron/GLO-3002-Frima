@@ -1,14 +1,19 @@
-var bossLife = 10000000000;
+var bossLife;
 
 var ws = require('ws');
 var wss = require('ws').Server;
 var redisPub = require('redis').createClient(process.env.REDIS_URL);
 var redisSub = require('redis').createClient(process.env.REDIS_URL);
+var redisValuesHandler = require('redis').createClient(process.env.REDIS_URL);
+
+redisValuesHandler.set('currentBossLife', 1000000000000);
+getLife();
+
 
 redisSub.subscribe("boss");
 redisSub.on("message", function(channel, message)
 {
-    console.log("Boss supposed live: ", message);
+    //console.log("Boss supposed live: ", message);
     bossLife = message;
     broadcast(message);
 });
@@ -55,3 +60,23 @@ function broadcast(data)
     client.send(data);
   });
 };
+
+function getLife()
+{
+    redisValuesHandler.get('currentBossLife',function(error, result)
+    {
+        if(error)
+        {
+            console.log("Error getting currentBossLife: ", error);
+        }
+        if(!result)
+        {
+            console.log("currentBossLife is null or empty.");
+        }
+        else
+        {
+            bossLife = result;
+            console.log("bossLife: ", bossLife)
+        }
+    })
+}

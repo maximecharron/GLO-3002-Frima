@@ -2,6 +2,7 @@
   "name": "server-frima",
   "description": "socket.io app",
   "dependencies": {
+    "async": "^1.5.2",
     "express": "~4.13.3",
     "redis": "^2.4.2",
     "ws": "^1.0.1"

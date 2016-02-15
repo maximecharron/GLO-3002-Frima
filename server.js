@@ -13,8 +13,9 @@ server.listen(port)
 
 console.log("http server listening on %d", port)
 
-var wss = new WebSocketServer({server: server})
-webSocketHandler.setWebSocketServer(wss);
+var webSocketServer = new WebSocketServer({server: server})
+webSocketHandler.setWebSocketServer(webSocketServer); // Set le webSocketServer dans le socketHandler
+
 console.log("websocket server created")
 
-wss.on("connection", webSocketHandler.newConnection)
+webSocketServer.on("connection", webSocketHandler.newConnection)
