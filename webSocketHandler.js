@@ -5,7 +5,7 @@ var redisPub = require('redis').createClient(process.env.REDIS_URL);
 var redisSub = require('redis').createClient(process.env.REDIS_URL);
 
 redisSub.subscribe("boss");
-redisSub.on("message", function("boss", message))
+redisSub.on("message", function(channel, message))
 {
     console.log("Boss supposed live: ", message);
     bossLife = message;
