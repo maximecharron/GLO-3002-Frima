@@ -10,8 +10,7 @@ exports.getLife = function(callBack)
     ], function(error, result)
     {
         console.log("Inside get life: ", bossLife);
-        return bossLife;
-        callBack();
+        callBack(bossLife);
     });
 }
 
