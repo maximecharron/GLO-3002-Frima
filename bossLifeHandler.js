@@ -9,6 +9,7 @@ exports.getLife = function()
         function(constantBossLifeCallBack){getConstantBossLife(constantBossLifeCallBack)}
     ], function(error, result)
     {
+        console.log("Inside get life: ", bossLife);
         return bossLife;
     });
 }
@@ -29,7 +30,7 @@ function getCurrentBossLife (currentBossLifeCallBack)
         }
         else
         {
-            bossLife = 1000000000000;
+            bossLife = result;
             console.log("currentBossLife: ", bossLife)
             currentBossLifeCallBack(null);
         }
