@@ -44,7 +44,7 @@ function newMessage(message, webSocket)
 
 function broadcast(data)
 {
-  wss.clients.forEach(function each(client)
+  ws.clients.forEach(function each(client)
   {
     client.send(data);
   });
