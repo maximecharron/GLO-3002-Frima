@@ -19,8 +19,11 @@ var corsOptions = {
     methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'UPDATE'],
     credentials: true
 };
+var theUrl = 'redis://h:p88th5goahehq8c9hta4ugr533t@ec2-54-227-246-40.compute-1.amazonaws.com:21599';
 
-var redis = require('redis').createClient('redis://h:p88th5goahehq8c9hta4ugr533t@ec2-54-227-246-40.compute-1.amazonaws.com:21599', 'ingciv85');
+var rtg = require('url').parse(theUrl);
+var redis = require('redis').createClient(rtg.port, rtg.hostname);
+redis.auth(rtg.auth.split(":")[1]);
 
 require('./middleware/passport')(passport, app);
 
