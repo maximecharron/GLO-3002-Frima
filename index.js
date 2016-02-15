@@ -21,10 +21,10 @@ var corsOptions = {
 };
 var theUrl = 'redis://h:p88th5goahehq8c9hta4ugr533t@ec2-54-227-246-40.compute-1.amazonaws.com:21599';
 
-var rtg = require('url').parse(theUrl);
-var redis = require('redis').createClient(rtg);
-redis.auth(rtg.auth.split(":")[1]);
-
+//var rtg = require('url').parse(theUrl);
+var redis = require('redis').createClient(theUrl);
+//redis.auth(rtg.auth.split(":")[1]);
+redis.auth('password', function(err){})
 require('./middleware/passport')(passport, app);
 
 app.use(cookieParser());
