@@ -1,5 +1,17 @@
-var ws = require('ws');
 var bossLife = 10000000000;
+
+var ws = require('ws');
+var redisPub = require('redis').createClient(process.env.REDIS_URL);
+var redisSub = require('redis').createClient(process.env.REDIS_URL);
+
+redisSub.subscribe("boss");
+redisSub.on("message", function("boss", message))
+{
+    console.log("Boss supposed live: ", message);
+    bossLife = message;
+    broadcast(message);
+}
+
 exports.newConnection = function(webSocket)
 {
     console.log("webSocket at address ", webSocket._socket.remoteAddress, " is connected!"); //TODO: For debug purpose
@@ -22,10 +34,18 @@ function close(webSocket)
 
 function newMessage(message, webSocket)
 {
-    bossLife = bossLife - 1;
-    console.log("webSocket at address ", webSocket._socket.remoteAddress, " send new message: ", message); //TODO: For debug purpose
-    if (webSocket.readyState == ws.OPEN)
-    {
-        webSocket.send("U send me that? " + message + "   The boss life is: " + bossLife);
-    }
+    redisPub.publish("boss", bossLife - 1);
+    // console.log("webSocket at address ", webSocket._socket.remoteAddress, " send new message: ", message); //TODO: For debug purpose
+    // if (webSocket.readyState == ws.OPEN)
+    // {
+    //     webSocket.send("U send me that? " + message + "   The boss life is: " + bossLife);
+    // }
 }
+
+function broadcast(data)
+{
+  wss.clients.forEach(function each(client)
+  {
+    client.send(data);
+  });
+};
