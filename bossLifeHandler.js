@@ -13,11 +13,12 @@ function getCurrentBossLife (currentBossLifeCallBack)
 {
     redisValuesHandler.get('currentBossLife',function(error, result)
     {
+        console.log("Result: ", result);
         if(error)
         {
             console.log("Error getting currentBossLife: ", error);
         }
-        if(result == "" || result == null)
+        if(result == "" || result == null || result == "NaN")
         {
             console.log("currentBossLife is null or empty.");
             currentBossLifeCallBack(null);
