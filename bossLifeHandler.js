@@ -9,7 +9,6 @@ exports.getLife = function(callBack)
         function(constantBossLifeCallBack){getConstantBossLife(constantBossLifeCallBack)}
     ], function(error, result)
     {
-        console.log("Inside get life: ", bossLife);
         callBack(bossLife);
     });
 }
@@ -18,7 +17,6 @@ function getCurrentBossLife (currentBossLifeCallBack)
 {
     redisValuesHandler.get('currentBossLife',function(error, result)
     {
-        console.log("Result: ", result);
         if(error)
         {
             console.log("Error getting currentBossLife: ", error);

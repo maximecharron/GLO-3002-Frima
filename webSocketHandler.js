@@ -18,8 +18,6 @@ bossLifeHandler.getLife(function(result)
 redisSub.subscribe("boss");
 redisSub.on("message", function(channel, message)
 {
-    console.log(channel);
-    console.log("Boss supposed live: ", message);
     if(channel == "boss")
     {
         bossLife = message;
@@ -62,11 +60,6 @@ function close(webSocket)
 function newMessage(message, webSocket)
 {
     redisPub.publish("boss", bossLife - 1);
-    // console.log("webSocket at address ", webSocket._socket.remoteAddress, " send new message: ", message); //TODO: For debug purpose
-    // if (webSocket.readyState == ws.OPEN)
-    // {
-    //     webSocket.send("U send me that? " + message + "   The boss life is: " + bossLife);
-    // }
 }
 
 function broadcast(data)
