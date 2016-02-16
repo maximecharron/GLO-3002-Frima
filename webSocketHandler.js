@@ -16,6 +16,7 @@ bossLifeHandler.getLife(function(result)
 
 
 redisSub.subscribe("boss");
+redisSub.subscribe("CMS");
 redisSub.on("message", function(channel, message)
 {
     if(channel == "boss")
