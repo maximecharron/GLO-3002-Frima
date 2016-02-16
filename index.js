@@ -51,8 +51,10 @@ app.use(cors(corsOptions));
 
 app.post('/update', function(req, res){
     console.log(req.body);
-    redis.set('currentBossLife', 10);
-    redis.publish('CMS', 10);
+    redis.set('currentBossLife', 10000000000);
+    console.log("After redis set!");
+    redis.publish('CMS', 10000000000);
+    console.log("After redis publish!");
     res.status(200).send(req.body);
 })
 
