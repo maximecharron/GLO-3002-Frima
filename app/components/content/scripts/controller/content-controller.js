@@ -24,6 +24,11 @@ ContentApp.controller("content-controller", function ($scope, contentResource) {
         else{
             SET_HEALTH = $scope.monsterHealth*1000000;
             var newHealth = {"newBossLife": SET_HEALTH};
+            contentResource.post(newHealth, function onSuccess(data){
+
+            }, function onError(data){
+                
+            })
         }
     }
 
