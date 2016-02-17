@@ -19,16 +19,11 @@ ContentApp.controller("content-controller", function ($scope, contentResource) {
     $scope.updateMonsterHealth = function ()
     {
         if(!validateHealth($scope.monsterHealth)){
-            window.alert( "not a valid number" ); //TODO: Erreur dans le html, pas avec window.alert.
+            window.alert( "not a valid number" );
         }
         else{
-            SET_HEALTH = $scope.monsterHealth
-            var newHealth = {"newBossLife": $scope.monsterHealth};
-            contentResource.post(newHealth, function onSuccess(data){
-                //TODO: Show change.
-            }, function onError(data){
-                //TODO: Gestion d'erreur
-            })
+            SET_HEALTH = $scope.monsterHealth*1000000;
+            var newHealth = {"newBossLife": SET_HEALTH};
         }
     }
 
@@ -49,8 +44,8 @@ ContentApp.controller("content-controller", function ($scope, contentResource) {
             window.alert( "not a valid number" );
         }
         else{
-            //TODO: Call
             window.alert( $scope.monsterArmor);
+            //TODO: Call
         }
 
     }
@@ -81,5 +76,12 @@ ContentApp.controller("content-controller", function ($scope, contentResource) {
         return n % 1 === 0;
     }
 
+
+    function validateNaturalNumber(number) {
+        if (number > -1 && number != 0) {
+            return true
+        }
+        return false
+    }
 
 })
