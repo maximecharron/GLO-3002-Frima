@@ -1,4 +1,4 @@
-ContentApp.controller("content-controller", function ($scope, $http) {
+ContentApp.controller("content-controller", function ($scope, contentResource) {
 
     <!-- $scope déclare les variables utilisées dans le html -->
 
@@ -19,11 +19,16 @@ ContentApp.controller("content-controller", function ($scope, $http) {
     $scope.updateMonsterHealth = function ()
     {
         if(!validateHealth($scope.monsterHealth)){
-            window.alert( "not a valid number" );
+            window.alert( "not a valid number" ); //TODO: Erreur dans le html, pas avec window.alert.
         }
         else{
             SET_HEALTH = $scope.monsterHealth
-            makeCorsRequest('POST', cmsUrl, $scope.monsterHealth);
+            var newHealth = {"newBossLife": $scope.monsterHealth};
+            contentResource.post(newHealth, function onSuccess(data){
+                //TODO: Show change.
+            }, function onError(data){
+                //TODO: Gestion d'erreur
+            })
         }
     }
 
@@ -33,7 +38,7 @@ ContentApp.controller("content-controller", function ($scope, $http) {
             window.alert( "not a valid number" );
         }
         else{
-            makeCorsRequest('POST', cmsUrl, $scope.monsterSpeed);
+            //TODO: Call
         }
 
     }
@@ -44,8 +49,8 @@ ContentApp.controller("content-controller", function ($scope, $http) {
             window.alert( "not a valid number" );
         }
         else{
+            //TODO: Call
             window.alert( $scope.monsterArmor);
-            makeCorsRequest('POST', cmsUrl, $scope.monsterSpeed);
         }
 
     }
@@ -77,49 +82,4 @@ ContentApp.controller("content-controller", function ($scope, $http) {
     }
 
 
-    function validateNaturalNumber(number) {
-        if (number > -1 && number != 0) {
-            return true
-        }
-        return false
-    }
-
-    function createCORSRequest(method, url) {
-        var xhr = new XMLHttpRequest();
-        if ("withCredentials" in xhr) {
-            xhr.open(method, url, true);
-
-        } else if (typeof XDomainRequest != "undefined") {
-
-            xhr = new XDomainRequest();
-            xhr.open(method, url);
-
-        } else {
-
-            xhr = null;
-
-        }
-        return xhr;
-    }
-
-    function makeCorsRequest(request, url, body) {
-
-        var xhr = createCORSRequest('POST', url);
-
-        if (!xhr) {
-            alert('CORS not supported');
-            return;
-        }
-        xhr.onload = function() {
-            var text = xhr.responseText;
-            alert('Response from CORS request to ' + url + ': '+ text);
-            $scope.monsterHealthValue = SET_HEALTH
-        };
-
-        xhr.onerror = function() {
-            alert('Woops, there was an error making the request.');
-        };
-
-        xhr.send(body);
-    }
 })
