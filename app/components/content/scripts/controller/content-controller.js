@@ -7,7 +7,7 @@ ContentApp.controller("content-controller", function ($scope, contentResource) {
     $scope.monsterArmorValue = "Default";
 
     var MAX_ARMOR = 10
-    var MAX_HEALTH = 100
+    var MAX_HEALTH = 100000000000
     var MAX_SPEED = 10
 
     var SET_ARMOR
@@ -22,12 +22,12 @@ ContentApp.controller("content-controller", function ($scope, contentResource) {
             window.alert( "not a valid number" );
         }
         else{
-            SET_HEALTH = $scope.monsterHealth*1000000;
+            SET_HEALTH = $scope.monsterHealth;
             var newHealth = {"newBossLife": SET_HEALTH};
             contentResource.post(newHealth, function onSuccess(data){
 
             }, function onError(data){
-                
+
             })
         }
     }
