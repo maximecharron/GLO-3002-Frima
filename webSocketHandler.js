@@ -60,12 +60,12 @@ function close(webSocket)
 
 function newMessage(message, webSocket)
 {
-    if (message == "poke"){
+    if (message == "Poke"){
         redisPub.publish("boss", bossLife);
     } else {
         redisPub.publish("boss", bossLife - 1);
     }
-    
+
 }
 
 function broadcast(data)
