@@ -8,37 +8,49 @@ public class Click : MonoBehaviour {
 
     public Text HPDisplay;
     public long currentHP;
-    public long maxHP = 10000000000;
-    private Slider slider;
-    public WebSocket w;
+    public long maxHP;
+    public WebSocket webSocket;
+    private Slider hpSlider;
+    private Button bossButton;
+    private bool firstHP = true;
+    private string serverAddress = "wss://frima-server-1.herokuapp.com";
 
-    void Start()
-    {
-        currentHP = maxHP;
-        slider = GameObject.Find("HPSlider").GetComponent<Slider>();
-        w = new WebSocket(new Uri("ws://frima-server-1.herokuapp.com"));
-        StartCoroutine(w.Connect());
+    void Start(){
+        bossButton = GameObject.Find("Click").GetComponent<Button>();
+        bossButton.interactable = false;
+        hpSlider = GameObject.Find("HPSlider").GetComponent<Slider>();
+        hpSlider.value = 0;
+        webSocket = new WebSocket(new Uri(serverAddress));
+        StartCoroutine(webSocket.Connect());
+        InvokeRepeating("KeepConnectionAlive", 1f, 30f);
+        InvokeRepeating("UpdateLife", 2f, 0.02f);     
     }
 
-    void Update()
-    {
-        string reply = w.RecvString();
-        if (reply != null)
-        {
-            string hp = Regex.Match(reply, @"\d+").Value;
-            currentHP = Int64.Parse(hp);
+    void UpdateLife(){
+        string reply = webSocket.RecvString();
+        if (reply != null){
+            if (firstHP == true){
+                maxHP = Int64.Parse(reply);
+                currentHP = maxHP;
+                firstHP = false;
+                bossButton.interactable = true;
+            }
+            else{
+                currentHP = Int64.Parse(reply);
+            }
+            HPDisplay.text = currentHP + " HP";
+            hpSlider.value = (currentHP * 100) / maxHP;
         }
-        HPDisplay.text = currentHP + " HP";
-        slider.value = (currentHP * 100) / maxHP;
     }
 
-
-    public void Clicked()
-    {
-        if (currentHP != 0)
-        {
-            w.SendString("Meurt");
+    public void Clicked(){
+        if (currentHP != 0){
+            webSocket.SendString("Attack");
         }
+    }
+
+    void KeepConnectionAlive(){
+        webSocket.SendString("Poke");
     }
 
 }
