@@ -9,6 +9,7 @@ var cors = require('cors');
 var passport = require('passport');
 
 var mongoose = require('mongoose');
+var status = require('./routes/status');
 var mongoUri = process.env.MONGOLAB_URI || 'mongodb://localhost/frima-cms';
 mongoose.connect(mongoUri);
 
@@ -19,9 +20,9 @@ var corsOptions = {
     methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'UPDATE'],
     credentials: true
 };
-var theUrl = 'redis://h:p88tk5goahehq8c9hta4ugr533t@ec2-54-227-252-28.compute-1.amazonaws.com:7069';
+var redisUrl = 'redis://h:p88tk5goahehq8c9hta4ugr533t@ec2-54-227-252-28.compute-1.amazonaws.com:7069';
 
-var redis = require('redis').createClient(theUrl);
+var redis = require('redis').createClient(redisUrl);
 require('./middleware/passport')(passport, app);
 
 app.use(cookieParser());
@@ -39,6 +40,7 @@ app.use(cors(corsOptions));
 
 //app.post('/login', passport.authenticate('local-login'));
 //app.get('/logout', login.logout);
+app.get('/status', status.getStatus);
 
 
 app.post('/update', function(req, res){
