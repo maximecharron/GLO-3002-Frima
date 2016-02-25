@@ -5,10 +5,15 @@ var wss = require('ws').Server;
 var redisPub = require('redis').createClient(process.env.REDIS_URL);
 var redisSub = require('redis').createClient(process.env.REDIS_URL);
 var redisValuesHandler = require('redis').createClient(process.env.REDIS_URL);
-
+var lastLifeBroadcasted = 0;
 var bossLifeHandler = require('./bossLifeHandler.js');
 
-setInterval(broadcast(), 100);
+var STATUS = Object.freeze({ALIVE: "ALIVE", DEAD: "DEAD"})
+
+setInterval(function () {
+        broadcastBossLifeInformation()
+    }, 100
+);
 
 bossLifeHandler.getLife(function (result) {
     bossLife = result
@@ -59,17 +64,28 @@ function newMessage(message, webSocket) {
 }
 
 function broadcastBossLifeInformation() {
-    broadcast(bossLife);
+    if (bossLife != lastLifeSent){
+        sendBossStatusUpdate(STATUS.ALIVE);
+    }
 }
 
 function broadcast(data) {
+    var message = JSON.stringify(data);
     if (wss.clients) {
         wss.clients.forEach(function each(client) {
-            client.send(data);
+            client.send(message);
         });
     }
 };
 
-function sendBossLife(){
-    
+function sendBossStatusUpdate(status) {
+    lastLifeBroadcasted = bossLife;
+    var message = {
+        function: {
+            name: "bossStatusUpdate",
+            newBossLife: bossLife,
+            status: status
+        }
+    };
+    broadcast(message);
 }

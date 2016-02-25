@@ -1,12 +1,16 @@
 var express = require('express');
 var app = express();
 var http = require('http');
+var ws = require('ws');
 var WebSocketServer = require("ws").Server
 var port = process.env.PORT || 3000;
 var server = http.createServer(app)
+var status = require('./routes/status.js');
 
 
 var webSocketHandler = require('./webSocketHandler.js')
+
+app.get('/status', status.getStatus);
 
 server.listen(port)
 
