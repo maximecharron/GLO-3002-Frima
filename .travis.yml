@@ -8,7 +8,9 @@ env:
     - TEST_DIR=GameServer
 script: cd $TEST_DIR && npm install && mocha test
 
-before_deploy: sh before_deploy.sh
+before_deploy:
+  - cd ..
+  - sh before_deploy.sh
 
 deploy:
   - provider: heroku
