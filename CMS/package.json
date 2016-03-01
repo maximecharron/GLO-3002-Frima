@@ -21,6 +21,7 @@
   "scripts": {
     "postinstall": "bower install",
     "prestart": "npm install",
-    "start": "node web-server.js"
+    "start": "node web-server.js",
+    "test": ""
   }
 }

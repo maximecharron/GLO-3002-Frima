@@ -8,7 +8,7 @@ env:
     - TEST_DIR=GameServer
     - TEST_DIR=CMS
     - TEST_DIR=CmsServer
-script: cd $TEST_DIR && npm install && mocha test
+script: cd $TEST_DIR && npm install && npm test
 
 before_deploy:
   - cd ..
