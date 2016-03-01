@@ -1,5 +1,5 @@
 # GLO-3002
-Game Server
+CMS Server
 
 ## Install Node JS
 1. Install node by executing the specific installation corresponding to your OS
@@ -22,14 +22,8 @@ Game Server
 
 # Directives for running the server locally ;)
 
-1. Open a terminal in the GameServer folder of this project
+1. Open a terminal in the CmsServer folder of this project
 
 2. Type <code>npm start</code>
 
 3. Be amazed :P
-
-# How to run test suite
-
-Test are executed with Mocha and Chai. To run the tests, ensure you have all required dependencies by running <code>npm install</code>.
-
-To run the test, execute <code>mocha test</code>

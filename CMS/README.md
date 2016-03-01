@@ -16,15 +16,10 @@
     <code>npm -v</code>
     * If you get v1.3.x, then npm is installed. If you get an error message, your npm install did not install correctly.
 
-
-## Install required Node libraries
-Start installation process with this following command in the project directory:
-npm install
-
 # Directives for running our awesome app ;)
 
-1. Open a terminal in the root folder of this project
+1. Open a terminal in the CMS folder of this project
 
-2. Type <code>npm start"</code>
+2. Type <code>npm start</code>
 
 3. Be amazed :P
