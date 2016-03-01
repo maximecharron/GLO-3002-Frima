@@ -2,5 +2,5 @@
 if [[ "$TRAVIS_BRANCH" == "server_release" ]]; then
   cd GameServer
 else
-    echo "$TRAVIS_BRANCH"
+    echo "else"
 fi

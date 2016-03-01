@@ -10,6 +10,7 @@ script: cd $TEST_DIR && npm install && mocha test
 
 before_deploy:
   - cd ..
+  - ls
   - bash before_deploy.sh
 
 deploy:
