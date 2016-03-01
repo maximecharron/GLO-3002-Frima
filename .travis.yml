@@ -10,12 +10,17 @@ script: cd $TEST_DIR && npm install && mocha test
 
 before_deploy:
   - cd ..
-  - cd GameServer
+  - if [[ "$TRAVIS_BRANCH" == "server_release" ]]; then
+      cd GameServer
+    else
+        echo "else"
+    fi
 
 deploy:
   - provider: heroku
     api_key: b0b132e4-1f7d-4bd4-a5b0-cd74599d12b4
-    app: frima-server-test
+    app:
+      server_release: frima-server-test
     on:
       branch: server_release
 
