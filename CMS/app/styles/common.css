@@ -1,0 +1,28 @@
+
+.main {
+    color: rgba(192, 192, 192, 0.57);
+    background-color: rgba(32, 32, 32, 0.85);
+    font-family: 'Open Sans', sans-serif;
+    font-size: large;
+}
+
+.contentButton {
+    background-color: rgba(92, 147, 88, 0.85);
+    width: 240px;
+    border: 2.0px;
+}
+
+.contentText {
+    background-color: rgba(160, 158, 161, 0.85);
+    border: 2.0px;
+    text-align: right;
+    padding-right: 5px;
+}
+
+.buttonDiv {
+    margin-bottom: 10px;
+}
+
+.gif {
+
+}
