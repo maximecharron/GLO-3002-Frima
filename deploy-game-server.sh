@@ -1,4 +1,5 @@
 #!/bin/bash
+echo "I'm in"
 gem install heroku
 # Add your Heroku git repo:
 git remote add heroku git@heroku.com:frima-server-test.git
@@ -13,4 +14,4 @@ heroku keys:clear
 yes | heroku keys:add
   # Push to Heroku!
 yes | git subtree push --prefix GameServer heroku master || exit 1
-echo "Did 3"
+echo "Did omg"
