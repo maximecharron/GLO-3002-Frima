@@ -31,7 +31,7 @@ describe("Boss", function () {
             var damage = 10;
             boss.receiveDamage(damage);
             var life = boss.getLife();
-            expect(life).to.equal(bossDef.constantBossLife - 100);
+            expect(life).to.equal(bossDef.constantBossLife - 10);
         })
     });
 
