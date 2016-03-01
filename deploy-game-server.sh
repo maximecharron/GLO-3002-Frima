@@ -1,4 +1,5 @@
 #!/bin/bash
+echo "In it"
 set -e
 echo "Did 1"
 git remote add frima-server-test https://git.heroku.com/frima-server-test.git || exit 1
