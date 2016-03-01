@@ -10,7 +10,7 @@ script: cd $TEST_DIR && npm install && mocha test
 
 before_deploy:
   - cd ..
-  - sh before_deploy.sh
+  - sh bash before_deploy.sh
 
 deploy:
   - provider: heroku
