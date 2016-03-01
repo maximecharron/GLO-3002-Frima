@@ -54,6 +54,13 @@ function Boss(name)
 
     Boss.prototype.toString = function()
     {
+        console.log(JSON.stringify(
+            {
+                "bossName" : bossName,
+                "constantBossLife": constantBossLife,
+                "currentBossLife": currentBossLife,
+                "status": status
+            }));
         return JSON.stringify(
             {
                 "bossName" : bossName,
@@ -65,7 +72,10 @@ function Boss(name)
 
     Boss.prototype.receiveDamage = function(amountDamage)
     {
-        currentBossLife = currentBossLife - amountDamage;
+        if (currentBossLife >0)
+        {
+            currentBossLife = currentBossLife - amountDamage;
+        }
         if(currentBossLife <= 0)
         {
             status = STATUS.DEAD;
