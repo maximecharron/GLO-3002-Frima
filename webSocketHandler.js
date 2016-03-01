@@ -1,91 +1,108 @@
-var bossLife;
-var async = require('async');
 var ws = require('ws');
 var wss = require('ws').Server;
-var redisPub = require('redis').createClient(process.env.REDIS_URL);
-var redisSub = require('redis').createClient(process.env.REDIS_URL);
-var redisValuesHandler = require('redis').createClient(process.env.REDIS_URL);
-var lastLifeBroadcasted = 0;
-var bossLifeHandler = require('./bossLifeHandler.js');
+var redis = require('redis').createClient(process.env.REDIS_URL);
 
-var STATUS = Object.freeze({ALIVE: "ALIVE", DEAD: "DEAD"})
+var Boss = require('./boss.js').Boss;
+
+var STATUS = Object.freeze({ALIVE: "ALIVE", DEAD: "DEAD"});
+var allBoss = {};
+var theBoss;
 
 setInterval(function () {
-        broadcastBossLifeInformation()
+        broadcastBossInformation()
     }, 100
 );
 
-bossLifeHandler.getLife(function (result) {
-    bossLife = result
-});
+exports.setWebSocketServer = function (webSocketServer)
+{
+    wss = webSocketServer;
+}
 
+exports.newConnection = function (webSocket)
+{
+    console.log("WebSocket connected from address: ", webSocket._socket.remoteAddress);
 
-redisSub.subscribe("boss");
-redisSub.subscribe("CMS");
-redisSub.on("message", function (channel, message) {
-    if (channel == "boss") {
-        bossLife = message;
-        redisValuesHandler.set("currentBossLife", bossLife);
-    }
-    if (channel == "CMS") {
-        bossLife = message;
-        broadcast(bossLife);
-    }
-
-});
-
-exports.newConnection = function (webSocket) {
-
-    webSocket.on("message", function (message) {
+    webSocket.on("message", function (message)
+    {
         newMessage(message, webSocket);
     });
 
-    webSocket.on("close", function () {
+    webSocket.on("close", function ()
+    {
         close(webSocket);
     });
 }
 
-exports.setWebSocketServer = function (webSocketServer) {
-    wss = webSocketServer;
+function newMessage(message, webSocket)
+{
+    var request = JSON.parse(message);
+
+    if(request.function.name == "newBoss")
+    {
+        createNewBoss(request);
+    }
+    if(request.function.name == "attack")
+    {
+        if(theBoss == undefined)
+        {
+            theBoss = new Boss(request.function.bossName);
+            theBoss.initialize();
+        }
+        theBoss.receiveDamage(request.function.number);
+    }
 }
 
-function close(webSocket) {
+function createNewBoss(request)
+{
+    redis.hmset(request.boss.bossName, request.boss);
+    theBoss = new Boss(request.boss.bossName);
+    theBoss.initialize(function(err, data)
+    {
+        if(!err)
+        {
+            allBoss[request.boss.bossName] = theBoss.toJson();
+            console.log("Boss parse :", allBoss["Rambo"]);
+        }
+    });
+}
+
+function close(webSocket)
+{
     console.log("webSocket at address ", webSocket._socket.remoteAddress, " is disconnected!"); //TODO: For debug purpose
     webSocket.close();
 }
 
-function newMessage(message, webSocket) {
-    if (message == "Poke") {
-        redisPub.publish("boss", bossLife);
-    } else {
-        redisPub.publish("boss", bossLife - 1);
-    }
-
-}
-
-function broadcastBossLifeInformation() {
-    if (bossLife != lastLifeSent){
-        sendBossStatusUpdate(STATUS.ALIVE);
-    }
-}
-
-function broadcast(data) {
+function broadcast(data)
+{
     var message = JSON.stringify(data);
-    if (wss.clients) {
-        wss.clients.forEach(function each(client) {
+    if (wss.clients)
+    {
+        wss.clients.forEach(function each(client)
+        {
             client.send(message);
         });
     }
 };
 
-function sendBossStatusUpdate(status) {
-    lastLifeBroadcasted = bossLife;
-    var message = {
-        function: {
-            name: "bossStatusUpdate",
-            newBossLife: bossLife,
-            status: status
+function broadcastBossInformation()
+{
+    if(theBoss != undefined)
+    {
+        if (wss.clients)
+        {
+            wss.clients.forEach(function each(client)
+            {
+                client.send(theBoss.toString());
+            });
         }
-    };
-    broadcast(message);
-}
+    }
+};
+
+/*
+message from client:
+attack:
+    {"function":{"name": "attack","bossName": "Rambo", "number": "10"}}
+
+new boss:
+    {"function":{"name": "newBoss"},"boss":{"bossName": "Rambo","constantBossLife": "100","currentBossLife": "100","status": "ALIVE"}}
+*/

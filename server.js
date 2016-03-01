@@ -21,4 +21,4 @@ webSocketHandler.setWebSocketServer(webSocketServer); // Set le webSocketServer 
 
 console.log("websocket server created")
 
-webSocketServer.on("connection", webSocketHandler.newConnection)
+webSocketServer.on("connection", webSocketHandler.newConnection);
