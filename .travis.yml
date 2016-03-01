@@ -1,0 +1,34 @@
+language: node_js
+node_js:
+  - "5.6.0"
+services:
+  - mongodb
+  - redis
+env:
+    - TEST_DIR=GameServer
+script: cd $TEST_DIR && npm install && mocha test
+
+before_deploy:
+  - cd ..
+  - if [ "$TRAVIS_BRANCH" = "server_release" ]; then cd GameServer; elif [ "$TRAVIS_BRANCH" = "CMS" ]; then cd CMS; elif [ "$TRAVIS_BRANCH" = "cms_server_release" ]; then cd GameServer else  echo "Branch is $TRAVIS_BRANCH"; fi
+
+deploy:
+  - provider: heroku
+    api_key: b0b132e4-1f7d-4bd4-a5b0-cd74599d12b4 #TODO: Secure key
+    app:
+      server_release: frima-server-test
+    on:
+      branch: server_release
+
+  - provider: heroku
+    api_key: b0b132e4-1f7d-4bd4-a5b0-cd74599d12b4 #TODO: Secure key
+    app:
+      cms_server_release: frima-cms-server
+    on:
+      branch: cms_server_release
+  - provider: heroku
+    api_key: b0b132e4-1f7d-4bd4-a5b0-cd74599d12b4 #TODO: Secure key
+    app:
+      CMS: frima-cms-client
+    on:
+      branch: CMS
