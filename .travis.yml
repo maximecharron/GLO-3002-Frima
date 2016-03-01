@@ -8,3 +8,9 @@ env:
   - TEST_DIR=GameServer
 
 script: cd $TEST_DIR && npm install && mocha test
+
+deploy:
+  provider: script
+  script: deploy-game-server.sh
+  on:
+    branch: server_release
