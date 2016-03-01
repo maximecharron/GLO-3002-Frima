@@ -12,6 +12,6 @@ echo "   UserKnownHostsFile=/dev/null" >> ~/.ssh/config
 heroku keys:clear
   # Add a new SSH key to Heroku
 yes | heroku keys:add
-  # Push to Heroku!
+  # Push to Heroku!    
 yes | git subtree push --prefix GameServer heroku master || exit 1
 echo "Did omg"
