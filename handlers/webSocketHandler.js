@@ -2,7 +2,7 @@ var ws = require('ws');
 var wss = require('ws').Server;
 var redis = require('redis').createClient(process.env.REDIS_URL);
 
-var Boss = require('./boss.js').Boss;
+var Boss = require('./../domain/boss.js').Boss;
 
 var STATUS = Object.freeze({ALIVE: "ALIVE", DEAD: "DEAD"});
 var allBoss = {};

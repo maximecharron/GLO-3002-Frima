@@ -8,7 +8,7 @@ var server = http.createServer(app)
 var status = require('./routes/status.js');
 
 
-var webSocketHandler = require('./webSocketHandler.js')
+var webSocketHandler = require('./handlers/webSocketHandler.js')
 
 app.get('/status', status.getStatus);
 

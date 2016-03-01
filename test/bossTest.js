@@ -1,6 +1,6 @@
 var expect = require("chai").expect;
 var redis = require('redis').createClient(process.env.REDIS_URL);
-var Boss = require("../boss.js").Boss;
+var Boss = require("../domain/boss.js").Boss;
 
 var bossDef = {bossName: "Rambo", constantBossLife: "100", currentBossLife: "100", status: "ALIVE"};
 var boss;
