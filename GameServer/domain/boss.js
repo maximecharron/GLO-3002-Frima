@@ -54,13 +54,6 @@ function Boss(name)
 
     Boss.prototype.toString = function()
     {
-        console.log(JSON.stringify(
-            {
-                "bossName" : bossName,
-                "constantBossLife": constantBossLife,
-                "currentBossLife": currentBossLife,
-                "status": status
-            }));
         return JSON.stringify(
             {
                 "bossName" : bossName,
