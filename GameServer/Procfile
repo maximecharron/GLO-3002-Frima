@@ -1,1 +1,1 @@
-web: node server.js
+web: MONGOLAB_URI=mongodb://cms:cms@ds061395.mlab.com:61395/heroku_p5td8svk node server.js
