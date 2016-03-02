@@ -19,9 +19,11 @@ namespace Assets.Scripts {
 
         // Update is called once per frame
         void Update() {
-            if (eventSystem.currentSelectedGameObject == loginButton)
-            {
+            if (eventSystem.currentSelectedGameObject == loginButton){
                 SceneManager.LoadScene(LOGIN_SCENE_NAME);
+            }
+            if (eventSystem.currentSelectedGameObject == registerButton) {
+                SceneManager.LoadScene(REGISTER_SCENE_NAME);
             }
         }
     }
