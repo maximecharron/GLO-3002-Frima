@@ -3,6 +3,7 @@ var wss = require('ws').Server;
 var redis = require('redis').createClient(process.env.REDIS_URL);
 
 var Boss = require('./../domain/boss.js').Boss;
+var DbBoss = require('./../models/boss.js');
 
 var STATUS = Object.freeze({ALIVE: "ALIVE", DEAD: "DEAD"});
 var allBoss = {};
@@ -20,6 +21,14 @@ exports.setWebSocketServer = function (webSocketServer) {
 }
 
 exports.newConnection = function (webSocket) {
+
+    if (!theBoss) {
+        createConstantBoss(function (boss) {
+            theBoss = boss;
+        })
+    } else {
+        webSocket.send(createBossStatusUpdate());
+    }
 
     webSocket.on("message", function (message) {
         newMessage(message, webSocket);
@@ -54,9 +63,62 @@ function createNewBoss(request) {
     theBoss.initialize(function (err, data) {
         if (!err) {
             allBoss[request.boss.bossName] = theBoss.toJson();
-            console.log("Boss parse :", allBoss["Rambo"]);
+            console.log("Boss parse :", allBoss[request.boss.bossName]);
         }
     });
+}
+
+function createConstantBoss(request) {
+    getRedisConstantBoss(function (constantLife) {
+        if (!constantLife) {
+            getMongoConstantBoss(function (constantLife) {
+
+            })
+        } else {
+            var request = {
+                "function": {"name": "newBoss"},
+                "boss": {
+                    "bossName": "DefaultBoss",
+                    "constantBossLife": constantLife,
+                    "currentBossLife": constantLife,
+                    "status": "ALIVE"
+                }
+            }
+            createNewBoss(request);
+        }
+    })
+}
+
+function getRedisConstantBoss(callback) {
+    redis.get('constantBossLife', function (error, result) {
+        if (error) {
+            console.log("Error getting constantBossLife: ", error);
+            callback(null);
+        }
+        if (!result) {
+            console.log("constantBossLife from redis is null or empty.");
+            callback(null);
+        }
+        else {
+            var bossLife = result;
+            console.log("constantBossLife from redis: ", bossLife)
+            callback(bossLife);
+        }
+    });
+}
+
+function getMongoConstantBoss(callback) {
+    DbBoss.findConstantBoss(function(constantLife){
+        if (!constantLife) {
+            console.log("currentBossLife is null or empty.");
+            callback(null);
+        }
+        else {
+            var bossLife = constantLife;
+            console.log("currentBossLife from Mongo: ", bossLife)
+            callback(bossLife);
+        }
+    })
 }
 
 function close(webSocket) {

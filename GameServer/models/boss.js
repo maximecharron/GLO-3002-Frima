@@ -30,6 +30,16 @@ var Boss = mongoose.model('Boss', bossSchema);
 exports.schema = bossSchema;
 exports.model = Boss;
 
+exports.findConstantBoss = function(callback){
+    Boss.findOne({"bossName": "CONSTANT"}, function(err, result){
+        if (result){
+            callback(result.constantBossLife)
+        } else {
+            callback(null);
+        }
+    })
+}
+
 exports.backupBoss = function(boss){
   Boss.findOne({"bossName": boss.bossName || boss.getName()}, function(err, result){
         if (result){
