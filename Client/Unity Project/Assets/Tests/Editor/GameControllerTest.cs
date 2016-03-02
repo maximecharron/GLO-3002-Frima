@@ -12,9 +12,11 @@ namespace Assets.Scripts
         [Test]
         public void basicTest()
         {
-            gameController = new GameController();
+            
             //Arrange
             var gameObject = new GameObject();
+            gameObject.AddComponent<GameController>();
+            gameController = gameObject.GetComponent<GameController>();
 
             //Act
             //Try to rename the GameObject
