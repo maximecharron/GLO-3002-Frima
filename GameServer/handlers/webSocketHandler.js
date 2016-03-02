@@ -6,14 +6,14 @@ var Boss = require('./../domain/boss.js').Boss;
 var DbBoss = require('./../models/boss.js');
 
 var STATUS = Object.freeze({ALIVE: "ALIVE", DEAD: "DEAD"});
-var allBoss = {};
 var theBoss;
 var lastLifeBroadcasted = 0;
+var lastBossName = "";
 
 
 setInterval(function () {
         broadcastBossInformation()
-    }, 100
+    }, 500
 );
 
 exports.setWebSocketServer = function (webSocketServer) {
@@ -22,13 +22,7 @@ exports.setWebSocketServer = function (webSocketServer) {
 
 exports.newConnection = function (webSocket) {
 
-    if (!theBoss) {
-        createConstantBoss(function (boss) {
-            theBoss = boss;
-        })
-    } else {
-        webSocket.send(createBossStatusUpdate());
-    }
+    webSocket.send(createBossStatusUpdate());
 
     webSocket.on("message", function (message) {
         newMessage(message, webSocket);
@@ -42,14 +36,7 @@ exports.newConnection = function (webSocket) {
 function newMessage(message, webSocket) {
     var request = JSON.parse(message);
 
-    if (request.function.name == "newBoss") {
-        createNewBoss(request);
-    }
     if (request.function.name == "attack") {
-        if (theBoss == undefined) {
-            theBoss = new Boss(request.function.bossName);
-            theBoss.initialize();
-        }
         theBoss.receiveDamage(request.function.number);
     }
     if (request.function.name == "keepAlive") {
@@ -57,36 +44,10 @@ function newMessage(message, webSocket) {
     }
 }
 
-function createNewBoss(request) {
-    redis.hmset(request.boss.bossName, request.boss);
-    theBoss = new Boss(request.boss.bossName);
-    theBoss.initialize(function (err, data) {
-        if (!err) {
-            allBoss[request.boss.bossName] = theBoss.toJson();
-            console.log("Boss parse :", allBoss[request.boss.bossName]);
-        }
-    });
-}
-
-function createConstantBoss(request) {
-    getRedisConstantBoss(function (constantLife) {
-        if (!constantLife) {
-            getMongoConstantBoss(function (constantLife) {
-
-            })
-        } else {
-            var request = {
-                "function": {"name": "newBoss"},
-                "boss": {
-                    "bossName": "DefaultBoss",
-                    "constantBossLife": constantLife,
-                    "currentBossLife": constantLife,
-                    "status": "ALIVE"
-                }
-            }
-            createNewBoss(request);
-        }
-    })
+function createNewBoss(boss, callback) {
+    redis.hmset(boss.bossName, boss);
+    theBoss = new Boss(boss.bossName);
+    theBoss.initialize(callback);
 }
 
 function getRedisConstantBoss(callback) {
@@ -107,16 +68,13 @@ function getRedisConstantBoss(callback) {
     });
 }
 
-function getMongoConstantBoss(callback) {
-    DbBoss.findConstantBoss(function(constantLife){
-        if (!constantLife) {
-            console.log("currentBossLife is null or empty.");
+function getConstantBoss(callback) {
+    DbBoss.findConstantBoss(function (boss) {
+        if (!boss) {
             callback(null);
         }
         else {
-            var bossLife = constantLife;
-            console.log("currentBossLife from Mongo: ", bossLife)
-            callback(bossLife);
+            callback(boss);
         }
     })
 }
@@ -150,15 +108,25 @@ function createBossStatusUpdate() {
 
 
 function broadcastBossInformation() {
-    if (theBoss != undefined) {
+    if (theBoss) {
         if (lastLifeBroadcasted != theBoss.getLife() && wss.clients) {
             lastLifeBroadcasted = theBoss.getLife();
+            lastBossName = theBoss.getName();
+            var bossUpdate = createBossStatusUpdate();
             wss.clients.forEach(function each(client) {
-                client.send(createBossStatusUpdate());
+                client.send(bossUpdate);
             });
         }
     }
 };
+
+exports.initializeBoss = function (callback) {
+    getConstantBoss(function (boss) {
+        if (boss){
+            createNewBoss(boss, callback);
+        }
+    })
+}
 
 /*
  message from client:

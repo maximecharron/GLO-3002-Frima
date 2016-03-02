@@ -1,13 +1,14 @@
 var expect = require("chai").expect;
 var redis = require('redis').createClient(process.env.REDIS_URL);
 var Boss = require("../domain/boss.js").Boss;
+var hostname = require('os').hostname();
 
-var bossDef = {bossName: "Rambo", constantBossLife: "100", currentBossLife: "100", status: "ALIVE"};
+var bossDef = {bossName: hostname, constantBossLife: "100", currentBossLife: "100", status: "ALIVE"};
 var boss;
 describe("Boss", function () {
 
     describe("Boss initialize", function () {
-        it("does damages to the boss", function () {
+        it("initializes the boss", function () {
             redis.hmset(bossDef.bossName, bossDef);
             boss = new Boss(bossDef.bossName);
             boss.initialize(function () {
@@ -32,10 +33,8 @@ describe("Boss", function () {
             boss.receiveDamage(damage);
             var life = boss.getLife();
             expect(life).to.equal(bossDef.constantBossLife -10 );
-        })
-    });
+        });
 
-    describe("Boss receive damage until 0", function () {
         it("if boss life lower than 0, no more damage", function () {
             var damage = 100;
             boss.receiveDamage(damage);
@@ -48,7 +47,7 @@ describe("Boss", function () {
     describe("Boss stringify", function () {
         it("return expected string", function () {
             var bossString = boss.toString();
-            expect(bossString).to.equal('{"bossName":"Rambo","constantBossLife":"100","currentBossLife":"100","status":"ALIVE"}');
+            expect(bossString).to.equal(JSON.stringify(bossDef));
         });
     })
 });

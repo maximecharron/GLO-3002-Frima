@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var modelHelpers = require('./modelHelpers.js');
-
+var hostname = require('os').hostname();
 var bossSchema = new mongoose.Schema();
 bossSchema.add({
     bossName : String,
@@ -31,9 +31,9 @@ exports.schema = bossSchema;
 exports.model = Boss;
 
 exports.findConstantBoss = function(callback){
-    Boss.findOne({"bossName": "CONSTANT"}, function(err, result){
+    Boss.findOne({"bossName": hostname}, function(err, result){
         if (result){
-            callback(result.constantBossLife)
+            callback(result)
         } else {
             callback(null);
         }
@@ -50,7 +50,7 @@ exports.backupBoss = function(boss){
         } else {
             var bossToSave = new Boss({
                 bossName: boss.bossName || boss.getName(),
-                constantBossLife: boss.constantBossLife || boss.getConstantBossLife(),
+                constantBossLife: boss.constantBossLife || boss.getConstantLife(),
                 currentBossLife:  boss.currentBossLife || boss.getLife(),
                 status: boss.status || boss.getStatus()
             });

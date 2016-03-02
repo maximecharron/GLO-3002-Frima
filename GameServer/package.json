@@ -12,6 +12,7 @@
     "express": "~4.13.3",
     "express-session": "~1.11.3",
     "jwt-simple": "~0.3.0",
+    "mock-socket": "^2.0.0",
     "moment": "^2.11.2",
     "mongoose": "^4.4.5",
     "newrelic": "^1.25.3",
