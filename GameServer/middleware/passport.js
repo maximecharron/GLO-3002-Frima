@@ -107,7 +107,7 @@ module.exports = function (passport, app) {
 
         }));
 
-    passport.use(new FacebookStrategy({
+    passport.use('facebook-login', new FacebookStrategy({
 
         clientID        : configAuth.facebookAuth.clientID,
         clientSecret    : configAuth.facebookAuth.clientSecret
