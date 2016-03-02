@@ -9,6 +9,10 @@ var status = require('./routes/status.js');
 var login = require('./routes/login');
 var passport = require('passport');
 var mongoose = require('mongoose');
+var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
+var flash = require('connect-flash');
 
 
 
@@ -24,9 +28,21 @@ var webSocketHandler = require('./handlers/webSocketHandler.js');
 app.set('jwtTokenSecret', tokenSecret);
 
 require('./middleware/passport')(passport, app);
+app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(session({
+    secret: 'ubeat_session_secret',
+    resave: true,
+    saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
 app.get('/status', status.getStatus);
 
 app.post('/login', passport.authenticate('local-login'), login.getToken);
+app.post('/signup', passport.authenticate('local-signup'), login.getToken);
 app.get('/logout', login.logout);
 //app.post('/facebook', passport.authenticate('facebook-login'), login.getToken);
 
