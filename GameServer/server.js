@@ -17,7 +17,8 @@ var flash = require('connect-flash');
 
 
 var mongoose = require('mongoose');
-var mongoUri = process.env.MONGOLAB_URI || 'mongodb://cms:cms@ds061395.mlab.com:61395/heroku_p5td8svk';
+var mongoUri = process.env.MONGOLAB_URI || 'mongodb://localhost/frimaGameServer';
+console.log(mongoUri)
 mongoose.connect(mongoUri);
 
 var tokenSecret = 'FRIMA_TOKEN_SECRET' || process.env.TOKEN_SECRET;
