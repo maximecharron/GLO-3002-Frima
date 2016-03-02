@@ -33,7 +33,7 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(session({
-    secret: 'ubeat_session_secret',
+    secret: 'frima_session_secret',
     resave: true,
     saveUninitialized: true
 }));

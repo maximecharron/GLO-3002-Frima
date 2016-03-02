@@ -1,6 +1,6 @@
-var redisPub = require('redis').createClient(process.env.REDIS_URL);
-var redisSub = require('redis').createClient(process.env.REDIS_URL);
-var redisSet = require('redis').createClient(process.env.REDIS_URL);
+var redisPub = require('./../services/redisService.js').redisPub;
+var redisSub = require('./../services/redisService.js').redisSub;
+var redisSet = require('./../services/redisService.js').redisSet;
 var STATUS = Object.freeze({ALIVE: "ALIVE", DEAD: "DEAD"});
 
 //Constructor
@@ -20,8 +20,8 @@ redisSub.on('message', function(channel, message){
         var bossMessage = JSON.parse(message);
 
         this.currentBossLife = bossMessage.currentBossLife;
-        constantBossLife = bossMessage.constantBossLife;
-        status = bossMessage.status;
+        this.constantBossLife = bossMessage.constantBossLife;
+        this.status = bossMessage.status;
     }
 })
 

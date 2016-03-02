@@ -8,7 +8,6 @@ var BossRepository = require('./../repository/bossRepository.js');
 var STATUS = Object.freeze({ALIVE: "ALIVE", DEAD: "DEAD"});
 
 var lastLifeBroadcasted = 0;
-var lastBossName = "";
 
 var theBoss;
 var bossRepository = new BossRepository();
@@ -74,7 +73,6 @@ function broadcastBossInformation() {
     if (theBoss) {
         if (lastLifeBroadcasted != theBoss.getLife() && wss.clients) {
             lastLifeBroadcasted = theBoss.getLife();
-            lastBossName = theBoss.getName();
             var bossUpdate = bossCommunicationService.createBossStatusUpdate(theBoss);
             wss.clients.forEach(function each(client) {
                 client.send(bossUpdate);
