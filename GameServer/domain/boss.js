@@ -1,5 +1,6 @@
 var redis = require('redis').createClient(process.env.REDIS_URL);
-var STATUS = Object.freeze({ALIVE: "ALIVE", DEAD: "DEAD"})
+var STATUS = Object.freeze({ALIVE: "ALIVE", DEAD: "DEAD"});
+var BossBackup = require('./../models/boss.js');
 
 //Constructor
 function Boss(name)
@@ -21,7 +22,8 @@ function Boss(name)
                 //console.log("Stuff from redis: ", object);
                 currentBossLife = object.currentBossLife;
                 constantBossLife = object.constantBossLife;
-                status = object.status;
+                status = object.status
+                backupBoss(object);
                 //console.log("The boss :",bossName, currentBossLife, constantBossLife, status);
                 callBack();
             }
@@ -73,14 +75,21 @@ function Boss(name)
         {
             status = STATUS.DEAD;
             redis.publish(bossName, this.toString());
+            backupBoss(this);
         }
         redis.hmset(bossName, {'currentBossLife': currentBossLife});
         redis.publish(bossName, this.toString());
+        backupBoss(this);
     }
 
     Boss.prototype.getLife = function()
     {
         return currentBossLife;
+    }
+
+    Boss.prototype.getConstantLife = function()
+    {
+        return constantBossLife;
     }
 
     Boss.prototype.getStatus = function()
@@ -92,6 +101,11 @@ function Boss(name)
     {
         return bossName;
     }
+
+}
+
+function backupBoss(boss){
+    BossBackup.backupBoss(boss);
 
 }
 
