@@ -12,9 +12,9 @@ var mongoose = require('mongoose');
 
 
 
-//var mongoose = require('mongoose');
-//var mongoUri = process.env.MONGOLAB_URI || 'mongodb://localhost/ubeat';
-//mongoose.connect(mongoUri);
+var mongoose = require('mongoose');
+var mongoUri = process.env.MONGOLAB_URI || 'mongodb://localhost/frimaGameServer';
+mongoose.connect(mongoUri);
 
 var tokenSecret = 'FRIMA_TOKEN_SECRET' || process.env.TOKEN_SECRET;
 

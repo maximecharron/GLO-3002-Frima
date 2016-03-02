@@ -7,6 +7,8 @@ var Boss = require('./../domain/boss.js').Boss;
 var STATUS = Object.freeze({ALIVE: "ALIVE", DEAD: "DEAD"});
 var allBoss = {};
 var theBoss;
+var lastLifeBroadcasted = 0;
+
 
 setInterval(function () {
         broadcastBossInformation()
@@ -88,8 +90,9 @@ function broadcastBossInformation()
 {
     if(theBoss != undefined)
     {
-        if (wss.clients)
+        if (lastLifeBroadcasted != theBoss.getLife() && wss.clients)
         {
+            lastLifeBroadcasted = theBoss.getLife();
             wss.clients.forEach(function each(client)
             {
                 client.send(theBoss.toString());
