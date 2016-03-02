@@ -5,12 +5,13 @@ using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts
 {
-    public class RegisterSceneController : SceneController
+    public class MenuSceneController : SceneController
     {
 
         // Configurable script parameters
         public EventSystem eventSystem;
-        public GameObject registerButton;
+        public GameObject newGameButton;
+        public GameObject joinGameButton;
 
         // Use this for initialization
         void Start() {
@@ -19,8 +20,11 @@ namespace Assets.Scripts
 
         // Update is called once per frame
         void Update() {
-            if (eventSystem.currentSelectedGameObject == registerButton) {
-                SceneManager.LoadScene(TITLE_SCENE_NAME);
+            if (eventSystem.currentSelectedGameObject == newGameButton) {
+                // TODO
+            }
+            if (eventSystem.currentSelectedGameObject == joinGameButton) {
+                // TODO
             }
         }
     }
