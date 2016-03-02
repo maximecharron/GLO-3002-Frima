@@ -54,7 +54,5 @@ var webSocketServer = new WebSocketServer({server: server});
 webSocketHandler.setWebSocketServer(webSocketServer); // Set le webSocketServer dans le socketHandler
 
 console.log("websocket server created");
-webSocketHandler.initializeBoss(function(){
-    console.log("Initialized boss");
-});
+webSocketHandler.initializeBoss();
 webSocketServer.on("connection", webSocketHandler.newConnection);

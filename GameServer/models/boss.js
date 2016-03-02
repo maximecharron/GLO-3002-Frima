@@ -40,6 +40,16 @@ exports.findConstantBoss = function(callback){
     })
 }
 
+exports.findBoss = function(serverName, callback){
+    Boss.findOne({"bossName": serverName}, function(err, result){
+        if (result){
+            callback(result)
+        } else {
+            callback(null);
+        }
+    })
+}
+
 exports.backupBoss = function(boss){
   Boss.findOne({"bossName": boss.bossName || boss.getName()}, function(err, result){
         if (result){
