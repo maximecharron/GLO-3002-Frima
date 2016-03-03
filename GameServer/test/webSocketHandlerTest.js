@@ -1,3 +1,6 @@
+/*
+
+TODO: REFACTOR ALL THESE TESTS
 var expect = require("chai").expect;
 var redis = require('redis').createClient(process.env.REDIS_URL);
 var Boss = require("../domain/boss.js").Boss;
@@ -24,6 +27,11 @@ var mongoUri = process.env.MONGOLAB_URI || 'mongodb://localhost/frimaGameServer'
 mongoose.connect(mongoUri);
 
 before(function (done) {
+    mongoose.connection.collections['bosses'].drop( function(err) {
+        console.log('collection dropped');
+    });
+    redis.del(hostname);
+    redis.del(hostname+"Constant");
     server.listen(port);
     webSocketServer = new WebSocketServer({server: server});
     webSocketHandler.setWebSocketServer(webSocketServer); // Set le webSocketServer dans le socketHandler
@@ -35,9 +43,8 @@ before(function (done) {
         status: "ALIVE"
     });
     defaultBoss.save(function (err){
-        webSocketHandler.initializeBoss(function(){
-            done();
-        });
+        webSocketHandler.initializeBoss();
+        done();
     })
 })
 describe("WebSocketHandler tests", function () {
@@ -80,3 +87,4 @@ describe("WebSocketHandler tests", function () {
 })
 ;
 
+*/
