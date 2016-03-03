@@ -43,10 +43,10 @@ exports.newConnection = function(webSocket) {
 function newMessage(message, webSocket) {
     var request = JSON.parse(message);
 
-    if (request.function.name == "attack") {
-        theBoss.receiveDamage(request.function.number);
+    if (request.command.name == "attack") {
+        theBoss.receiveDamage(request.command.number);
     }
-    if (request.function.name == "keepAlive") {
+    if (request.command.name == "keepAlive") {
         keepAlive(webSocket);
     }
 }
@@ -94,5 +94,5 @@ exports.initializeBoss = function()
 /*
  message from client:
  attack:
- {"function":{"name": "attack", "number": "10"}}
+ {"command":{"name": "attack", "number": "10"}}
  */
