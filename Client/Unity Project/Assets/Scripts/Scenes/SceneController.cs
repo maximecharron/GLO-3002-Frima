@@ -11,5 +11,6 @@ namespace Assets.Scripts {
         protected const string MENU_SCENE_NAME = "MenuScene";
         protected const string LOGIN_SCENE_NAME = "LoginScene";
         protected const string REGISTER_SCENE_NAME = "RegisterScene";
+        protected const string GAME_SCENE_NAME = "GameScene";
     }
 }

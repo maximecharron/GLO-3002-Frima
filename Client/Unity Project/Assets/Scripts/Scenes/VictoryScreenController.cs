@@ -14,22 +14,16 @@ namespace Assets.Scripts
         public GameObject MenuButton;
 
         // Use this for initialization
-        void Start()
-        {
+        void Start(){
 
         }
 
         // Update is called once per frame
-        void Update()
-        {
-            /*
-            if (eventSystem.currentSelectedGameObject == PlayAgainButton)
-            {
+        void Update(){
+            if (eventSystem.currentSelectedGameObject == PlayAgainButton){
                 SceneManager.LoadScene(GAME_SCENE_NAME);
-            }*/
-
-            if (eventSystem.currentSelectedGameObject == MenuButton)
-            {
+            }
+            if (eventSystem.currentSelectedGameObject == MenuButton) {
                 SceneManager.LoadScene(MENU_SCENE_NAME);
             }
         }

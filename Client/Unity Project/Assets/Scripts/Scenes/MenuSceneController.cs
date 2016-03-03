@@ -21,10 +21,10 @@ namespace Assets.Scripts
         // Update is called once per frame
         void Update() {
             if (eventSystem.currentSelectedGameObject == newGameButton) {
-                // TODO
+                SceneManager.LoadScene(GAME_SCENE_NAME);
             }
             if (eventSystem.currentSelectedGameObject == joinGameButton) {
-                // TODO
+                SceneManager.LoadScene(GAME_SCENE_NAME);
             }
         }
     }
