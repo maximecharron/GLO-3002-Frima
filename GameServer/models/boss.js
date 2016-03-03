@@ -3,6 +3,7 @@ var modelHelpers = require('./modelHelpers.js');
 var hostname = require('os').hostname();
 var bossSchema = new mongoose.Schema();
 bossSchema.add({
+    serverName : String,
     bossName : String,
     constantBossLife: String,
     currentBossLife: String,
@@ -14,6 +15,7 @@ bossSchema.methods.toDTO = function (following, withToken) {
 
     var dto = {
         id: obj._id,
+        serverName: obj.serverName,
         bossName : obj.bossName,
         constantBossLife: obj.constantBossLife,
         currentBossLife: obj.currentBossLife,
@@ -30,18 +32,8 @@ var Boss = mongoose.model('Boss', bossSchema);
 exports.schema = bossSchema;
 exports.model = Boss;
 
-exports.findConstantBoss = function(callback){
-    Boss.findOne({"bossName": hostname}, function(err, result){
-        if (result){
-            callback(result)
-        } else {
-            callback(null);
-        }
-    })
-}
-
 exports.findBoss = function(serverName, callback){
-    Boss.findOne({"bossName": serverName}, function(err, result){
+    Boss.findOne({"serverName": serverName}, function(err, result){
         if (result){
             callback(result)
         } else {
@@ -51,7 +43,7 @@ exports.findBoss = function(serverName, callback){
 }
 
 exports.backupBoss = function(boss){
-  Boss.findOne({"bossName": boss.bossName || boss.getName()}, function(err, result){
+  Boss.findOne({"serverName": hostname}, function(err, result){
         if (result){
             result.constantBossLife = boss.constantBossLife || boss.getConstantLife();
             result.currentBossLife = boss.currentBossLife || boss.getLife();
@@ -59,6 +51,7 @@ exports.backupBoss = function(boss){
             result.save();
         } else {
             var bossToSave = new Boss({
+                serverName: hostname,
                 bossName: boss.bossName || boss.getName(),
                 constantBossLife: boss.constantBossLife || boss.getConstantLife(),
                 currentBossLife:  boss.currentBossLife || boss.getLife(),
