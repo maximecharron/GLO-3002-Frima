@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
-using System.Collections;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts
@@ -12,7 +12,7 @@ namespace Assets.Scripts
         // Configurable script parameters
         public EventSystem eventSystem;
         public GameObject exitButton;
-
+        public Text healthPointValue;
 
         // Use this for initialization
         void Start() {
@@ -23,6 +23,10 @@ namespace Assets.Scripts
         void Update() {
             if (eventSystem.currentSelectedGameObject == exitButton) {
                 SceneManager.LoadScene(MENU_SCENE_NAME);
+            }
+            if (healthPointValue.text == "0")
+            {
+                SceneManager.LoadScene(VICTORY_SCENE_NAME);
             }
         }
     }
