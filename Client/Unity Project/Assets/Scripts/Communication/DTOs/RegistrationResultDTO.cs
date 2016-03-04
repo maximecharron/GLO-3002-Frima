@@ -5,9 +5,10 @@ using System.Text;
 
 namespace Assets.Scripts.Communication.DTOs
 {
-    class RegisterResultDTO
+    class RegistrationResultDTO
     {
         public String email = "";
         public String name = "";
+        public String token = "";
     }
 }

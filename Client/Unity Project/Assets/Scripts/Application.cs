@@ -9,32 +9,29 @@ namespace Assets.Scripts
     [RequireComponent(typeof(AudioSource))]
     public class Application: MonoBehaviour
     {
-        private CommunicationService communicationService;
-
-        private static Application instance;
+        // Configurable script parameters
+        public CommunicationService communicationService;
 
         void Awake()
         {
-            if (instance == null)
-            {
-                instance = this;
-            } else
-            {
-                Destroy(this.gameObject);
-            }
             DontDestroyOnLoad(this.gameObject);
         }
 
         // Use this for initialization
         void Start()
         {
-            communicationService = new CommunicationService();
+            
         }
 
         // Update is called once per frame
         void Update()
         {
 
+        }
+
+        public void SetUserSession(string token, string username)
+        {
+            communicationService.token = token;
         }
     }
 }

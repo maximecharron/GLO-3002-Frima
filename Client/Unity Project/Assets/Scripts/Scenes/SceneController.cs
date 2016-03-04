@@ -1,8 +1,10 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Communication;
+using UnityEngine;
 
 namespace Assets.Scripts {
 
-    public class SceneController : MonoBehaviour {
+    public class SceneController : MonoBehaviour
+    {
 
         protected const string TITLE_SCENE_NAME = "TitleScene";
         protected const string MENU_SCENE_NAME = "MenuScene";

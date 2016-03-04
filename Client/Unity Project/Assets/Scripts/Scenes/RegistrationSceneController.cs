@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Assets.Scripts.Communication;
 using System.Net;
+using Assets.Scripts.Communication.DTOs;
 
 namespace Assets.Scripts
 {
@@ -26,11 +27,13 @@ namespace Assets.Scripts
         public Button registerButton;
 
         //Private attributes
+        private Application application;
         private CommunicationService communicationService;
 
         // Use this for initialization
         void Start()
         {
+            application = (Application)FindObjectOfType(typeof(Application));
             communicationService = (CommunicationService)FindObjectOfType(typeof(CommunicationService));
             resetErrorLabels();
         }
@@ -46,9 +49,12 @@ namespace Assets.Scripts
 
         // Update is called once per frame
         void Update() {
-            if (eventSystem.currentSelectedGameObject == registerButton.gameObject) {
-                Register();
-            }
+
+        }
+
+        public void OnRegisterButtonPointerClick()
+        {
+            Register();
         }
 
         private void Register()
@@ -89,6 +95,8 @@ namespace Assets.Scripts
                 registrationErrorLabel.transform.gameObject.SetActive(true);
                 return;
             }
+            RegistrationResultDTO resultDTO = JsonUtility.FromJson<RegistrationResultDTO>(request.text);
+            application.SetUserSession(resultDTO.token, resultDTO.name);
             SceneManager.LoadScene(TITLE_SCENE_NAME);
         }
     }

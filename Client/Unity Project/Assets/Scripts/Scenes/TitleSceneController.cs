@@ -8,8 +8,6 @@ namespace Assets.Scripts {
 
         // Configurable script parameters
         public EventSystem eventSystem;
-        public GameObject loginButton;
-        public GameObject registerButton;
 
         // Use this for initialization
         void Start() {
@@ -18,12 +16,19 @@ namespace Assets.Scripts {
 
         // Update is called once per frame
         void Update() {
-            if (eventSystem.currentSelectedGameObject == loginButton){
-                SceneManager.LoadScene(LOGIN_SCENE_NAME);
-            }
-            if (eventSystem.currentSelectedGameObject == registerButton) {
-                SceneManager.LoadScene(REGISTRATION_SCENE_NAME);
-            }
+
         }
+
+        public void OnLoginButtonPointerClick()
+        {
+            SceneManager.LoadScene(LOGIN_SCENE_NAME);
+        }
+
+        public void OnRegisterButtonPointerClick()
+        {
+            SceneManager.LoadScene(REGISTRATION_SCENE_NAME);
+        }
+
+
     }
 }
