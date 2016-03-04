@@ -1,7 +1,7 @@
 ContentApp.controller("content-controller", function ($scope, contentResource) {
 
 
-    $scope.updateType= [
+    $scope.updateTypes= [
         {
             type: "constant",
             commonName: "Base Reference of Bosses"
@@ -15,15 +15,26 @@ ContentApp.controller("content-controller", function ($scope, contentResource) {
     $scope.bosses;
     $scope.selectedUpdateType;
 
-    function init(){
+    $scope.bossChanged = function(newBoss){
+        $scope.selectedBoss = JSON.parse(newBoss);
+    };
 
-    }
-
+    $scope.typeChanged = function(newType){
+        newType = JSON.parse(newType);
+        if (newType.type=="constant"){
+            contentResource.getConstantBoss(function(result){
+                $scope.bosses = result;
+            });
+        } else {
+            contentResource.getCurrentBoss(function(result){
+                $scope.bosses = result;
+            });
+        }
+    };
 
     $scope.updateBoss = function ()
     {
 
-    }
+    };
 
-    init();
 });

@@ -4,19 +4,20 @@
 
         <h5>Please select type of update</h5>
         <div>
-            <select name="updateSelect" id="updateSelect" ng-model="selectedUpdateType">
-                <option ng-repeat="updateType in updateTypes" value="{{updateType.type}}">{{updateType.commonName}}
+            <select name="updateSelect" id="updateSelect" ng-model="selectedUpdateType" ng-change="typeChanged(selectedUpdateType)">
+                <option ng-repeat="updateType in updateTypes" value="{{updateType}}">{{updateType.commonName}}
                 </option>
             </select>
         </div>
-        <h5>Please select a monster</h5>
-        <div ng-if="updateType">
-            <select name="bossSelect" id="bossSelect" ng-model="selectedBoss">
-                <option ng-repeat="boss in bosses" value="{{boss.serverName}}">{{boss.bossName}} - {{boss.serverName}}
+        <div ng-if="selectedUpdateType">
+            <h5>Please select a monster</h5>
+            <select name="bossSelect" id="bossSelect" ng-model="selectedBoss" ng-change="bossChanged(selectedBoss)">
+                <option ng-repeat="boss in bosses" value="{{boss}}">{{boss.bossName}} - {{boss.serverName}}
                 </option>
             </select>
         </div>
         <div ng-if="selectedBoss">
+            Boss
             <form role="form" class="form-horizontal">
                 <div class="form-group">
                     <label class="control-label col-sm-2" for="bossName">Boss Name: </label>
