@@ -18,7 +18,6 @@ userSchema.methods.toDTO = function (following, withToken) {
     var obj = this.toObject();
 
     var dto = {
-        id: obj._id,
         username : obj.username,
         email: obj.email,
         picture: obj.picture,
