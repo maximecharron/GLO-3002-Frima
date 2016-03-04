@@ -1,7 +1,8 @@
 ﻿using Assets.Scripts.Communication;
 using UnityEngine;
 
-namespace Assets.Scripts {
+namespace Assets.Scripts.Scenes
+{
 
     public class SceneController : MonoBehaviour
     {

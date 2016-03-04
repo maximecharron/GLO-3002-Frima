@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 
 using System;
-namespace Assets.Scripts
+namespace Assets.Scripts.Scenes.Game
 {
     public class BossController : MonoBehaviour {
 

@@ -6,8 +6,10 @@ using UnityEngine.UI;
 using Assets.Scripts.Communication;
 using System.Net;
 using Assets.Scripts.Communication.DTOs;
+using Assets.Scripts.Utils;
+using System;
 
-namespace Assets.Scripts
+namespace Assets.Scripts.Scenes.Registration
 {
     public class RegistrationSceneController : SceneController
     {
@@ -19,11 +21,8 @@ namespace Assets.Scripts
         public InputField passwordInputField;
         public InputField passwordConfirmInputField;
         public InputField emailInputField;
-        public Text usernameErrorLabel;
-        public Text passwordErrorLabel;
-        public Text passwordConfirmErrorLabel;
-        public Text emailErrorLabel;
         public Text registrationErrorLabel;
+        public RegistrationFormValidationController registrationFormValidationController;
         public Button registerButton;
 
         //Private attributes
@@ -35,15 +34,7 @@ namespace Assets.Scripts
         {
             application = (Application)FindObjectOfType(typeof(Application));
             communicationService = (CommunicationService)FindObjectOfType(typeof(CommunicationService));
-            resetErrorLabels();
-        }
 
-        private void resetErrorLabels()
-        {
-            usernameErrorLabel.transform.gameObject.SetActive(false);
-            passwordErrorLabel.transform.gameObject.SetActive(false);
-            passwordConfirmErrorLabel.transform.gameObject.SetActive(false);
-            emailErrorLabel.transform.gameObject.SetActive(false);
             registrationErrorLabel.transform.gameObject.SetActive(false);
         }
 
@@ -59,7 +50,7 @@ namespace Assets.Scripts
 
         private void Register()
         {
-            if (ValidateForm())
+            if (registrationFormValidationController.Validate(usernameInputField, passwordInputField, passwordConfirmInputField, emailInputField))
             {
                 WWWForm form = new WWWForm();
                 form.AddField("username", usernameInputField.text);
@@ -71,27 +62,12 @@ namespace Assets.Scripts
             }
         }
 
-        private bool ValidateForm()
-        {
-            resetErrorLabels();
-            if (passwordInputField.text != passwordConfirmInputField.text)
-            {
-                passwordConfirmErrorLabel.transform.gameObject.SetActive(true);
-                return false;
-            }
-            else if (passwordInputField.text.Length <= 3)
-            {
-                passwordErrorLabel.transform.gameObject.SetActive(true);
-                return false;
-            }
-            return true;
-        }
-
         private void RegisterCallback(WWW request)
         {
             registerButton.interactable = true;
             if (request.GetStatusCode() != HttpStatusCode.OK)
             {
+                registrationErrorLabel.text = String.Format("Error: {0}", (int)request.GetStatusCode());
                 registrationErrorLabel.transform.gameObject.SetActive(true);
                 return;
             }

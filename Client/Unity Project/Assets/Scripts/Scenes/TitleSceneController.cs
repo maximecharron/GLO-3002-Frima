@@ -2,7 +2,8 @@
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
-namespace Assets.Scripts {
+namespace Assets.Scripts.Scenes
+{
 
     public class TitleSceneController : SceneController {
 
