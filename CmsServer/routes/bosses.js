@@ -1,5 +1,6 @@
 var DbBoss =  require('./../models/boss.js')
-
+var redisUrl = 'redis://h:p88tk5goahehq8c9hta4ugr533t@ec2-54-227-252-28.compute-1.amazonaws.com:7069';
+var redis = require('redis').createClient(redisUrl);
 
 exports.getConstantBossList = function(req, res){
     DbBoss.findConstantBossList(function(list){
@@ -22,6 +23,7 @@ exports.updateBoss = function(req, res) {
         status: req.body.status
     }
     DbBoss.updateBoss(boss, function () {
+        redis.hmset(boss.serverName, boss);
         res.send(200);
     })
 };
