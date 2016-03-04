@@ -16,7 +16,7 @@ BossRepository.prototype.getBoss = function(callBack, constant)
     {
         serverName += "Constant";
     }
-
+    //TODO: Investigate data corruption
     redis.hgetall(serverName, function(err, object)
     {
         if(object)
