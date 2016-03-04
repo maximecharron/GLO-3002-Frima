@@ -4,6 +4,8 @@
   "private": true,
   "main": "index.js",
   "scripts": {
+    "prestart": "npm install",
+    "start": "node index.js",
     "test": ""
   },
   "dependencies": {

@@ -1,7 +1,6 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
 var modelHelpers = require('./modelHelpers.js');
-var _ = require('underscore');
 
 var userSchema = new mongoose.Schema();
 userSchema.add({

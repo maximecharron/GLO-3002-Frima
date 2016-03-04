@@ -4,13 +4,14 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var flash = require('connect-flash');
+var boss = require('./routes/bosses.js')
 
 var cors = require('cors');
 var passport = require('passport');
 
 var mongoose = require('mongoose');
 var status = require('./routes/status');
-var mongoUri = process.env.MONGOLAB_URI || 'mongodb://localhost/frima-cms';
+var mongoUri = process.env.MONGOLAB_URI || 'mongodb://localhost/frimaGameServer';
 mongoose.connect(mongoUri);
 
 var authentication = require('./middleware/authentication');
@@ -42,13 +43,9 @@ app.use(cors(corsOptions));
 //app.get('/logout', login.logout);
 app.get('/status', status.getStatus);
 
-
-app.post('/update', function(req, res){
-    redis.set('currentBossLife', req.body.newBossLife);
-    redis.set('constantBossLife', req.body.newBossLife)
-    redis.publish('CMS', req.body.newBossLife);
-    res.status(200).send(req.body);
-})
+app.get('/bossesConstant', boss.getConstantBossList);
+app.get('/bosses', boss.getBossList);
+app.post('/update', boss.updateBoss);
 
 var port = process.env.PORT || 3000;
 app.listen(port);
