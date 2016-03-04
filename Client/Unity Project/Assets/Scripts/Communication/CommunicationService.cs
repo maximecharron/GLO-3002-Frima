@@ -31,15 +31,15 @@ namespace Assets.Scripts
 
         private void ReceiveCommands()
         {
-            string jsonData = webSocket.RecvString();
+            String jsonData = webSocket.RecvString();
             if (jsonData != null)
             {
-                CommandDTO commandDefinitionDTO = JsonUtility.FromJson<CommandDTO>(jsonData);
+                CommandDefinitionDTO commandDefinitionDTO = JsonUtility.FromJson<CommandDefinitionDTO>(jsonData);
                 DispatchCommand(commandDefinitionDTO, jsonData);
             }
         }
 
-        private void DispatchCommand(CommandDTO commandDefinitionDTO, string jsonData)
+        private void DispatchCommand(CommandDefinitionDTO commandDefinitionDTO, String jsonData)
         {
             CommandRegistration commandRegistration = registeredCommands[commandDefinitionDTO.command.name];
             CommandDTO commandDTO = (CommandDTO)JsonUtility.FromJson(jsonData, commandRegistration.type);
@@ -53,7 +53,7 @@ namespace Assets.Scripts
 
         public void SendCommand(CommandDTO commandDTO)
         {
-            jsonData = JsonUtility.ToJson(commandDTO, true);
+            String jsonData = JsonUtility.ToJson(commandDTO, true);
             webSocket.SendString(jsonData);
         }
 

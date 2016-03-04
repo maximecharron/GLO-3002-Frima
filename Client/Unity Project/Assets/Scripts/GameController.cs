@@ -8,9 +8,6 @@ namespace Assets.Scripts
         //Configurable script parameters
         public CommunicationService communicationService;
 
-        //Privates
-        private AudioSource audioSource;
-
         void Awake()
         {
             // Make this object persist through scenes
