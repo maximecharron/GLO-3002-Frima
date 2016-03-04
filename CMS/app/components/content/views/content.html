@@ -1,31 +1,49 @@
 <div class="col-md-6 col-md-offset-3 panel-body">
     <div>
-        <h2>Content management system</h2>
+        <h2>Game management system</h2>
 
-        <p>Monster</p>
-
-        <div class="buttonDiv">
-            <button class="contentButton" ng-click="updateMonsterHealth()"> Update Monster Health </button>
-            <input class="contentText" placeholder="1-100 ( Millions )" type="text" ng-model="monsterHealth"/>
-            <label ng-model="monsterHealthValue">{{monsterHealthValue}}</label>
+        <h5>Please select type of update</h5>
+        <div>
+            <select name="updateSelect" id="updateSelect" ng-model="selectedUpdateType">
+                <option ng-repeat="updateType in updateTypes" value="{{updateType.type}}">{{updateType.commonName}}
+                </option>
+            </select>
         </div>
-
-        <div class="buttonDiv">
-            <button class="contentButton" ng-click="updateMonsterSpeed()"> Update Monster speed </button>
-            <input class="contentText" placeholder="1-10" type="text" ng-model="monsterSpeed"/>
+        <h5>Please select a monster</h5>
+        <div ng-if="updateType">
+            <select name="bossSelect" id="bossSelect" ng-model="selectedBoss">
+                <option ng-repeat="boss in bosses" value="{{boss.serverName}}">{{boss.bossName}} - {{boss.serverName}}
+                </option>
+            </select>
         </div>
-
-        <div class="buttonDiv">
-            <button class="contentButton" ng-click="updateMonsterArmor()"> Update Monster Armor </button>
-            <input class="contentText" placeholder="1-5" type="text" ng-model="monsterArmor"/>
-        </div>
-
-        <div class="gif">
-            <a href="default.asp">
-                <img src="components/images/cookie-monster-o.gif">
-            </a>
+        <div ng-if="selectedBoss">
+            <form role="form" class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="bossName">Boss Name: </label>
+                    <div class="col-sm-10">
+                        <input class="form-control" id="bossName" placeholder="{{selectedBoss.currentBossLife}}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="currentLife">Current Boss Life:</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" id="currentLife" type="number" min="0" max="1000000000000" placeholder="{{selectedBoss.currentBossLife}}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="constantLife">Constant Boss Life:</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" id="constantLife" type="number" min="0" max="1000000000000" placeholder="{{selectedBoss.constantBossLife}}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="serverName">Constant Boss Life:</label>
+                    <div class="col-sm-10">
+                        <p id="serverName">{{selectedBoss.serverName}}</p>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-default" ng-click="updateBoss()">Update Boss</button>
+            </form>
         </div>
     </div>
 </div>
-
-<!-- a garder -->
