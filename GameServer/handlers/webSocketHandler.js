@@ -2,7 +2,7 @@ var ws = require('ws');
 var wss = require('ws').Server;
 
 var Boss = require('./../domain/boss.js');
-var BossCommunicationService = require('./../services/BossCommunicationService.js');
+var BossCommunicationService = require('./../services/bossCommunicationService.js');
 var BossRepository = require('./../repository/bossRepository.js');
 
 var STATUS = Object.freeze({ALIVE: "ALIVE", DEAD: "DEAD"});
