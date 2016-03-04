@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Assets.Scripts
+namespace Assets.Scripts.Communication.CommandDTOs
 {
     [Serializable]
     public class BossAttackCommandDTO : CommandDTO
@@ -25,8 +25,6 @@ namespace Assets.Scripts
             public class BossAttackParameters
             {
                 public Int64 number = 10;
-
-
             }
         }
 

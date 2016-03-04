@@ -6,14 +6,14 @@ using System.Text;
 namespace Assets.Scripts.Communication.CommandDTOs
 {
     [Serializable]
-    public class CommandDefinitionDTO
+    public class KeepAliveCommandDTO : CommandDTO
     {
-        public Command command = new Command();
+        public KeepAliveCommand command = new KeepAliveCommand();
 
         [Serializable]
-        public class Command
+        public class KeepAliveCommand
         {
-            public String name;
+            public String name = "keepAlive";
         }
     }
 }

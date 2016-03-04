@@ -22,7 +22,7 @@ namespace Assets.Scripts {
                 SceneManager.LoadScene(LOGIN_SCENE_NAME);
             }
             if (eventSystem.currentSelectedGameObject == registerButton) {
-                SceneManager.LoadScene(REGISTER_SCENE_NAME);
+                SceneManager.LoadScene(REGISTRATION_SCENE_NAME);
             }
         }
     }
