@@ -18,6 +18,7 @@ ContentApp.controller("content-controller", function ($scope, contentResource) {
 
     $scope.bossChanged = function (newBoss) {
         $scope.selectedBoss = JSON.parse(newBoss);
+
     };
 
     $scope.typeChanged = function (newType) {
