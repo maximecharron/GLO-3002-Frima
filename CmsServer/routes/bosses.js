@@ -21,7 +21,7 @@ exports.updateBoss = function(req, res) {
         serverName: req.body.serverName,
         status: req.body.status
     }
-    DbBoss.updateBoss(boss, function () {
-        res.send(200);
+    DbBoss.updateBoss(boss, function (updatedBoss) {
+        res.status(200).send(updatedBoss);
     })
 };

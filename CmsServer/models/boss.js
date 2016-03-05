@@ -68,8 +68,8 @@ exports.updateBoss = function(bossToUpdate, callback){
         boss.constantBossLife = bossToUpdate.constantBossLife;
         boss.status = bossToUpdate.status;
         boss.bossName = bossToUpdate.bossName;
-        boss.save(function(){
-            callback();
+        boss.save(function(err, boss){
+            callback(boss);
         });
     })
 }
