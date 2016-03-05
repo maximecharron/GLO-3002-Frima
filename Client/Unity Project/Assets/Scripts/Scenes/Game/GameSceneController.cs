@@ -11,7 +11,6 @@ namespace Assets.Scripts.Scenes.Game
 
         // Configurable script parameters
         public EventSystem eventSystem;
-        public GameObject exitButton;
         public Text healthPointValue;
 
         // Use this for initialization
@@ -21,13 +20,15 @@ namespace Assets.Scripts.Scenes.Game
 
         // Update is called once per frame
         void Update() {
-            if (eventSystem.currentSelectedGameObject == exitButton) {
-                SceneManager.LoadScene(MENU_SCENE_NAME);
-            }
             if (healthPointValue.text == "0")
             {
                 SceneManager.LoadScene(VICTORY_SCENE_NAME);
             }
+        }
+
+        public void OnExitButtonPointerClick()
+        {
+            SceneManager.LoadScene(TITLE_SCENE_NAME);
         }
     }
 }

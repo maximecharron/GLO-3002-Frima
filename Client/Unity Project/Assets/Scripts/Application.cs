@@ -12,8 +12,19 @@ namespace Assets.Scripts
         // Configurable script parameters
         public CommunicationService communicationService;
 
+        // private attributes
+        private static Application instance;
+
         void Awake()
         {
+            if (instance == null)
+            {
+                instance = this;
+            }
+            else
+            {
+                Destroy(this.gameObject);
+            }
             DontDestroyOnLoad(this.gameObject);
         }
 
@@ -32,6 +43,11 @@ namespace Assets.Scripts
         public void SetUserSession(string token, string username)
         {
             communicationService.token = token;
+        }
+
+        public void ClearUserSession()
+        {
+            communicationService.token = null;
         }
     }
 }

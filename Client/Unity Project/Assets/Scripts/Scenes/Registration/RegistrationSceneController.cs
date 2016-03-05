@@ -21,11 +21,12 @@ namespace Assets.Scripts.Scenes.Registration
         public InputField passwordInputField;
         public InputField passwordConfirmInputField;
         public InputField emailInputField;
+        public Text usernameErrorLabel;
         public Text registrationErrorLabel;
         public RegistrationFormValidationController registrationFormValidationController;
         public Button registerButton;
 
-        //Private attributes
+        // Private attributes
         private Application application;
         private CommunicationService communicationService;
 
@@ -55,7 +56,7 @@ namespace Assets.Scripts.Scenes.Registration
 
         private void Register()
         {
-            if (registrationFormValidationController.Validate(usernameInputField, passwordInputField, passwordConfirmInputField, emailInputField))
+            if (registrationFormValidationController.Validate())
             {
                 WWWForm form = new WWWForm();
                 form.AddField("username", usernameInputField.text);
@@ -72,10 +73,28 @@ namespace Assets.Scripts.Scenes.Registration
             registerButton.interactable = true;
             if (request.GetStatusCode() != HttpStatusCode.OK)
             {
-                registrationErrorLabel.text = request.error;
-                registrationErrorLabel.transform.gameObject.SetActive(true);
+                ProcessFailedRegistration(request);
                 return;
             }
+            ProcessSuccessfulRegistration(request);
+        }
+
+        private void ProcessFailedRegistration(WWW request)
+        {
+            if (request.GetStatusCode() == HttpStatusCode.Unauthorized)
+            {
+                usernameErrorLabel.text = "Username already exists.";
+                usernameErrorLabel.transform.gameObject.SetActive(true);
+            }
+            else
+            {
+                registrationErrorLabel.text = request.error;
+                registrationErrorLabel.transform.gameObject.SetActive(true);
+            }
+        }
+
+        private void ProcessSuccessfulRegistration(WWW request)
+        {
             RegistrationResultDTO resultDTO = JsonUtility.FromJson<RegistrationResultDTO>(request.text);
             application.SetUserSession(resultDTO.token, resultDTO.username);
             SceneManager.LoadScene(MENU_SCENE_NAME);

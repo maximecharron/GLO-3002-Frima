@@ -9,24 +9,21 @@ namespace Assets.Scripts.Scenes.Registration
     {
 
         // Configurable script parameters
+        public InputField usernameInputField;
+        public InputField passwordInputField;
+        public InputField passwordConfirmInputField;
+        public InputField emailInputField;
         public Text usernameErrorLabel;
         public Text passwordErrorLabel;
         public Text passwordConfirmErrorLabel;
         public Text emailErrorLabel;
 
-        // Use this for initialization
         void Start()
         {
             ResetErrorLabels();
         }
 
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
-
-        public bool Validate(InputField usernameInputField, InputField passwordInputField, InputField passwordConfirmInputField, InputField emailInputField)
+        public bool Validate()
         {
             ResetErrorLabels();
             if (usernameInputField.text.Length <= 3)

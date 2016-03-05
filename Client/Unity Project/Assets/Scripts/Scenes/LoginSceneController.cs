@@ -21,7 +21,7 @@ namespace Assets.Scripts.Scenes
         public Text loginErrorLabel;
         public Button loginButton;
 
-        //Private attributes
+        // Private attributes
         private Application application;
         private CommunicationService communicationService;
 
@@ -64,10 +64,27 @@ namespace Assets.Scripts.Scenes
             loginButton.interactable = true;
             if (request.GetStatusCode() != HttpStatusCode.OK)
             {
-                loginErrorLabel.text = request.error;
-                loginErrorLabel.transform.gameObject.SetActive(true);
+                ProcessFailedLogin(request);
                 return;
             }
+            ProcessSuccessfulLogin(request);
+        }
+
+        private void ProcessFailedLogin(WWW request)
+        {
+            if (request.GetStatusCode() == HttpStatusCode.Unauthorized)
+            {
+                loginErrorLabel.text = "Invalid username or password.";
+            }
+            else
+            {
+                loginErrorLabel.text = request.error;
+            }
+            loginErrorLabel.transform.gameObject.SetActive(true);
+        }
+
+        private void ProcessSuccessfulLogin(WWW request)
+        {
             LoginResultDTO resultDTO = JsonUtility.FromJson<LoginResultDTO>(request.text);
             application.SetUserSession(resultDTO.token, resultDTO.username);
             SceneManager.LoadScene(MENU_SCENE_NAME);
