@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var modelHelpers = require('./modelHelpers.js');
-var hostname = require('os').hostname();
+var hostname = process.env.SERVER_NAME || require('os').hostname();
 var bossSchema = new mongoose.Schema();
 bossSchema.add({
     serverName : String,

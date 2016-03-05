@@ -1,6 +1,6 @@
 var DbBoss = require('./../models/boss.js');
 var redis = require('./../services/redisService.js').redisSet;
-var hostname = require('os').hostname();
+var hostname = process.env.SERVER_NAME || require('os').hostname();
 
 var Boss = require('./../domain/boss.js');
 var bossConfig = require('./../config/bossConfig.js');
