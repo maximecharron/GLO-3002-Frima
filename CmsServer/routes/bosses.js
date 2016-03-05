@@ -24,6 +24,7 @@ exports.updateBoss = function(req, res) {
     }
     DbBoss.updateBoss(boss, function (updatedBoss) {
         redis.hmset(boss.serverName, boss);
+        redis.publish(boss.serverName, boss);
         res.status(200).send(updatedBoss);
     })
 };
