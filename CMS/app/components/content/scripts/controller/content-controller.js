@@ -34,11 +34,11 @@ ContentApp.controller("content-controller", function ($scope, contentResource) {
         }
     };
 
-    $scope.updateBoss = function () {
+    $scope.updateBoss = function (selectedBoss) {
         $scope.updateError = false;
         $scope.updateSucces = false;
-        console.log($scope.selectedBoss);
-        contentResource.updateBoss($scope.selectedBoss, function onSuccess(data) {
+        console.log(selectedBoss);
+        contentResource.updateBoss(selectedBoss, function onSuccess(data) {
             $scope.selectedBoss = data;
             $scope.updateSucces = true;
         }, function onError(data) {
