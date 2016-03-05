@@ -69,6 +69,9 @@ exports.updateBoss = function(bossToUpdate, callback){
         boss.status = bossToUpdate.status;
         boss.bossName = bossToUpdate.bossName;
         boss.save(function(err, boss){
+            if (err){
+                console.log(err);
+            }
             callback(boss);
         });
     })
