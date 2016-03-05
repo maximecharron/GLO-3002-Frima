@@ -1,31 +1,68 @@
-<div class="col-md-6 col-md-offset-3 panel-body">
-    <div>
-        <h2>Content management system</h2>
+<div class="page-header">
+    </div>
+<div>
+    <div class="row">
+        </br>
+    </div>
+    <div class="row">
+        <div class="col-md-offset-3 col-md-6">
 
-        <p>Monster</p>
+            <h5>Please select type of update</h5>
 
-        <div class="buttonDiv">
-            <button class="contentButton" ng-click="updateMonsterHealth()"> Update Monster Health </button>
-            <input class="contentText" placeholder="1-100 ( Millions )" type="text" ng-model="monsterHealth"/>
-            <label ng-model="monsterHealthValue">{{monsterHealthValue}}</label>
-        </div>
+            <div>
+                <select class="form-control" name="updateSelect" id="updateSelect" ng-model="selectedUpdateType"
+                        ng-change="typeChanged(selectedUpdateType)">
+                    <option ng-repeat="updateType in updateTypes" value="{{updateType}}">{{updateType.commonName}}
+                    </option>
+                </select>
+            </div>
+            <div ng-if="selectedUpdateType">
+                <h5>Please select a monster</h5>
+                <select class="form-control" name="bossSelect" id="bossSelect" ng-model="selectedBoss"
+                        ng-change="bossChanged(selectedBoss)">
+                    <option ng-repeat="boss in bosses" value="{{boss}}">{{boss.bossName}} - {{boss.serverName}}
+                    </option>
+                </select>
+            </div>
+            <div ng-if="selectedBoss">
+                <h5>Boss</h5>
 
-        <div class="buttonDiv">
-            <button class="contentButton" ng-click="updateMonsterSpeed()"> Update Monster speed </button>
-            <input class="contentText" placeholder="1-10" type="text" ng-model="monsterSpeed"/>
-        </div>
+                <div ng-if="updateSuccess">Boss successfully updated!</div>
+                <div ng-if="updateError">Sorry, an error occured while updating the boss. Please try again.</div>
+                <form role="form" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="bossName">Boss Name: </label>
 
-        <div class="buttonDiv">
-            <button class="contentButton" ng-click="updateMonsterArmor()"> Update Monster Armor </button>
-            <input class="contentText" placeholder="1-5" type="text" ng-model="monsterArmor"/>
-        </div>
+                        <div class="col-sm-10">
+                            <input class="form-control" id="bossName" placeholder="{{selectedBoss.bossName}}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="currentLife">Current Boss Life:</label>
 
-        <div class="gif">
-            <a href="default.asp">
-                <img src="components/images/cookie-monster-o.gif">
-            </a>
+                        <div class="col-sm-10">
+                            <input class="form-control" id="currentLife" type="number" min="0" max="1000000000000"
+                                   placeholder="{{selectedBoss.currentBossLife}}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="constantLife">Constant Boss Life:</label>
+
+                        <div class="col-sm-10">
+                            <input class="form-control" id="constantLife" type="number" min="0" max="1000000000000"
+                                   placeholder="{{selectedBoss.constantBossLife}}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="serverName">Server name:</label>
+
+                        <div class="col-sm-10">
+                            <input class="form-control" id="serverName" placeholder="{{selectedBoss.serverName}}" readonly>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-default pull-right" ng-click="updateBoss()">Update Boss</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
-
-<!-- a garder -->
