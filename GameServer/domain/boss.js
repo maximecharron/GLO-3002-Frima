@@ -86,4 +86,9 @@ Boss.prototype.getName = function()
     return this.bossName;
 }
 
+Boss.prototype.revive = function(){
+    this.currentBossLife = this.constantBossLife;
+    this.status = STATUS.ALIVE;
+};
+
 module.exports = Boss;

@@ -20,8 +20,17 @@ setInterval(function () {
 
 setInterval(function () {
         bossRepository.saveBossBd(theBoss);
-    }, 10000
+    }, 9000
 );
+
+setInterval ( function (){
+   if (theBoss.status == "DEAD"){
+       theBoss.revive(function(boss){
+           theBoss = boss;
+           bossRepository.saveBossBd(theBoss);
+       })
+   }
+}, 12000)
 
 exports.setWebSocketServer = function(webSocketServer) {
     wss = webSocketServer;
@@ -86,6 +95,10 @@ function broadcastBossInformation() {
         }
     }
 };
+
+function closeAllSockets(callback){
+    
+}
 
 exports.initializeBoss = function()
 {
