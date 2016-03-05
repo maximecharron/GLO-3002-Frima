@@ -15,7 +15,6 @@ namespace Assets.Scripts.Scenes.Registration
     {
         private const string REGISTRATION_URL = "/signup";
 
-        // Configurable script parameters
         public EventSystem eventSystem;
         public InputField usernameInputField;
         public InputField passwordInputField;
@@ -26,11 +25,9 @@ namespace Assets.Scripts.Scenes.Registration
         public RegistrationFormValidationController registrationFormValidationController;
         public Button registerButton;
 
-        // Private attributes
         private Application application;
         private CommunicationService communicationService;
 
-        // Use this for initialization
         void Start()
         {
             application = (Application)FindObjectOfType(typeof(Application));
@@ -39,7 +36,6 @@ namespace Assets.Scripts.Scenes.Registration
             registrationErrorLabel.transform.gameObject.SetActive(false);
         }
 
-        // Update is called once per frame
         void Update() {
 
         }

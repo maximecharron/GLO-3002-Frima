@@ -18,7 +18,6 @@ namespace Assets.Scripts.Communication
         private WebSocket webSocket;
         private Dictionary<String, CommandRegistration> registeredCommands = new Dictionary<string, CommandRegistration>();
 
-        // Use this for initialization
         void Start()
         {
             webSocket = new WebSocket(new Uri(WEB_SOCKET_SERVER_URI));
@@ -26,7 +25,6 @@ namespace Assets.Scripts.Communication
             InvokeRepeating("KeepConnectionAlive", 1f, 30f);
         }
 
-        // Update is called once per frame
         void Update()
         {
             ReceiveCommands();
@@ -56,7 +54,12 @@ namespace Assets.Scripts.Communication
 
         public void RegisterCommand(String commandName, Action<CommandDTO> callbackMethod, Type dtoType)
         {
-            registeredCommands.Add(commandName, new CommandRegistration(callbackMethod, dtoType));
+            registeredCommands.AddOrReplace(commandName, new CommandRegistration(callbackMethod, dtoType));
+        }
+
+        public void UnregisterCommand(String commandName)
+        {
+            registeredCommands.Remove(commandName);
         }
 
         public void SendCommand(CommandDTO commandDTO)

@@ -14,18 +14,15 @@ namespace Assets.Scripts.Scenes
 
         private const string LOGIN_URL = "/login";
 
-        // Configurable script parameters
         public EventSystem eventSystem;
         public InputField usernameInputField;
         public InputField passwordInputField;
         public Text loginErrorLabel;
         public Button loginButton;
 
-        // Private attributes
         private Application application;
         private CommunicationService communicationService;
 
-        // Use this for initialization
         void Start() {
             application = (Application)FindObjectOfType(typeof(Application));
             communicationService = (CommunicationService)FindObjectOfType(typeof(CommunicationService));
@@ -34,7 +31,6 @@ namespace Assets.Scripts.Scenes
         }
 
 
-        // Update is called once per frame
         void Update() {
 
         }

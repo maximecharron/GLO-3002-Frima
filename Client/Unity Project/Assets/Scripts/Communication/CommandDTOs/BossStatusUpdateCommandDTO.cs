@@ -25,10 +25,5 @@ namespace Assets.Scripts.Communication.CommandDTOs
                 public String status = "ALIVE";
             }
         }
-
-        public override object GetParameters()
-        {
-            return command.parameters;
-        }
     }
 }

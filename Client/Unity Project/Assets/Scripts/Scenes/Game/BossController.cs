@@ -3,32 +3,51 @@ using UnityEngine.UI;
 using System.Collections;
 
 using System;
+using Assets.Scripts.Communication;
+using Assets.Scripts.Communication.CommandDTOs;
+
 namespace Assets.Scripts.Scenes.Game
 {
     public class BossController : MonoBehaviour {
 
         public Text healthPointValue;
-        public Slider hpSlider;
-        private int maxHP = 100;
-        private int currentHP;
+        public Slider healthPointSlider;
 
-        // Use this for initialization
+        public delegate void BossDeadEventHandler();
+        public event BossDeadEventHandler OnBossDead;
+
+        private CommunicationService communicationService;
+
         void Start() {
-            healthPointValue.text = maxHP.ToString();
-            hpSlider.value = 100;
-            currentHP = maxHP;
+            communicationService = (CommunicationService)FindObjectOfType(typeof(CommunicationService));
+            communicationService.RegisterCommand("bossStatusUpdate", BossStatusUpdateCallback, typeof(BossStatusUpdateCommandDTO));
         }
 
-        // Update is called once per frame
+        void OnDestroy()
+        {
+            communicationService.UnregisterCommand("bossStatusUpdate");
+        }
+
         void Update() {
-            hpSlider.value = (currentHP * 100) / maxHP;
+            
         }
 
         void OnMouseDown()
         {
-            if(currentHP != 0) {
-                currentHP -= 1;
-                healthPointValue.text = currentHP.ToString();
+            communicationService.SendCommand(new BossAttackCommandDTO(10));
+        }
+
+        private void BossStatusUpdateCallback(CommandDTO commandDTO)
+        {
+            var bossStatusUpateParams = ((BossStatusUpdateCommandDTO)commandDTO).command.parameters;
+            if (bossStatusUpateParams.currentBossLife == 0)
+            {
+                OnBossDead();
+            }
+            else
+            {
+                healthPointSlider.maxValue = bossStatusUpateParams.constantBossLife;
+                healthPointSlider.value = bossStatusUpateParams.currentBossLife / bossStatusUpateParams.constantBossLife * 100;
             }
         }
     }

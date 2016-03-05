@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Net;
 
-static class WWWExtensions
+public static class WWWExtensions
 {
 
     public static HttpStatusCode GetStatusCode(this WWW request)

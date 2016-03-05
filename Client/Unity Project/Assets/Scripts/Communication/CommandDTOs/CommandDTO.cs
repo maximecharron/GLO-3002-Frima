@@ -9,9 +9,5 @@ namespace Assets.Scripts.Communication.CommandDTOs
     public abstract class CommandDTO
     {
         public String token { get; set; }
-        public virtual object GetParameters()
-        {
-            throw new NotImplementedException("This command has no parameters defined.");
-        }
     }
 }

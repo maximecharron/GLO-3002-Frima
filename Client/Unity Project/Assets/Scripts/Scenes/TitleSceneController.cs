@@ -7,15 +7,12 @@ namespace Assets.Scripts.Scenes
 
     public class TitleSceneController : SceneController {
 
-        // Configurable script parameters
         public EventSystem eventSystem;
 
-        // Use this for initialization
         void Start() {
 
         }
 
-        // Update is called once per frame
         void Update() {
 
         }

@@ -27,10 +27,5 @@ namespace Assets.Scripts.Communication.CommandDTOs
                 public Int64 number = 10;
             }
         }
-
-        public override object GetParameters()
-        {
-            return command.parameters;
-        }
     }
 }
