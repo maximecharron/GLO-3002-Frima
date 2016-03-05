@@ -76,7 +76,7 @@ module.exports = function (passport, app) {
                             var errorMessage = "The user with email " + email + " already exists and could not be created."
                             return done(null, false, {message: errorMessage});
                         } else {
-                            User.findOne({'username': username}, function (err, user) {
+                            User.findOne({'username': req.body.username}, function (err, user) {
                                 var newUser = new User();
 
                                 newUser.email = email;
