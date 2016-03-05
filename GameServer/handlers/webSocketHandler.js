@@ -41,7 +41,13 @@ exports.newConnection = function(webSocket) {
 }
 
 function newMessage(message, webSocket) {
-    var request = JSON.parse(message);
+
+    var request = {};
+    try {
+        var request = JSON.parse(message); //JSON.parse() is synchrone!
+    } catch (e) {
+        return console.error(e);
+    }
 
     if (request.command.name == "attack") {
         theBoss.receiveDamage(request.command.number);
