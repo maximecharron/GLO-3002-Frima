@@ -7,9 +7,7 @@ namespace Assets.Scripts.Communication.DTOs
 {
     class LoginResultDTO
     {
-        public String email = "";
-        public String name = "";
         public String token = "";
-        public String id = "";
+        public String username = "";
     }
 }

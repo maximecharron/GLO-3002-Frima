@@ -43,6 +43,11 @@ namespace Assets.Scripts.Scenes.Registration
 
         }
 
+        public void OnExitButtonPointerClick()
+        {
+            SceneManager.LoadScene(TITLE_SCENE_NAME);
+        }
+
         public void OnRegisterButtonPointerClick()
         {
             Register();
@@ -67,13 +72,13 @@ namespace Assets.Scripts.Scenes.Registration
             registerButton.interactable = true;
             if (request.GetStatusCode() != HttpStatusCode.OK)
             {
-                registrationErrorLabel.text = String.Format("Error: {0}", (int)request.GetStatusCode());
+                registrationErrorLabel.text = request.error;
                 registrationErrorLabel.transform.gameObject.SetActive(true);
                 return;
             }
             RegistrationResultDTO resultDTO = JsonUtility.FromJson<RegistrationResultDTO>(request.text);
-            application.SetUserSession(resultDTO.token, resultDTO.name);
-            SceneManager.LoadScene(TITLE_SCENE_NAME);
+            application.SetUserSession(resultDTO.token, resultDTO.username);
+            SceneManager.LoadScene(MENU_SCENE_NAME);
         }
     }
 }
