@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var http = require('http');
 var ws = require('ws');
+var cors = require('cors');
 var WebSocketServer = require("ws").Server;
 var port = process.env.PORT || 3000;
 var server = http.createServer(app);
@@ -29,6 +30,7 @@ var webSocketHandler = require('./handlers/webSocketHandler.js');
 app.set('jwtTokenSecret', tokenSecret);
 
 require('./middleware/passport')(passport, app);
+app.use(cors());
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
