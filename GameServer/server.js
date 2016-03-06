@@ -25,8 +25,9 @@ mongoose.connect(mongoUri);
 var tokenSecret = 'FRIMA_TOKEN_SECRET' || process.env.TOKEN_SECRET;
 
 var webSocketHandler = require('./handlers/webSocketHandler.js');
+var allowOrigin = ["https://frima-client-1.herokuapp.com", "http://frima-client-1.herokuapp.com", "localhost:8080"];
 var corsOptions = {
-    origin: '*',
+    origin: allowOrigin,
     methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'UPDATE'],
     credentials: true
 }
