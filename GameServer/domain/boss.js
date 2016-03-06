@@ -1,9 +1,9 @@
 var redisPub = require('./../services/redisService.js').redisPub;
 var redisSub = require('./../services/redisService.js').redisSub;
 var redisSet = require('./../services/redisService.js').redisSet;
-var STATUS = Object.freeze({ALIVE: "ALIVE", DEAD: "DEAD"});
+var STATUS = Object.freeze({ALIVE: "0", DEAD: "1"});
 
-var channelToListen;
+var channelListen;
 
 //Constructor
 function Boss(hostname, bossName, currentBossLife, constantBossLife, status)
@@ -19,7 +19,7 @@ function Boss(hostname, bossName, currentBossLife, constantBossLife, status)
     {throw "ConstantBossLife is null"}
     if(!status)
     {throw "Status is null"}
-    channelToListen = hostname;
+    channelListen = hostname;
     this.serverName = hostname;
     this.bossName = bossName;
     this.currentBossLife = currentBossLife;
@@ -30,8 +30,7 @@ function Boss(hostname, bossName, currentBossLife, constantBossLife, status)
 }
 
 redisSub.on('message', function(channel, message){
-
-    if(channel == channelToListen)
+    if(channel == channelListen)
     {
         try {
             var bossMessage = JSON.parse(message); //JSON.parse() is synchrone!
@@ -42,6 +41,7 @@ redisSub.on('message', function(channel, message){
         this.constantBossLife = bossMessage.constantBossLife;
         this.status = bossMessage.status;
     }
+
 })
 
 //Public method
@@ -78,9 +78,9 @@ Boss.prototype.receiveDamage = function(amountDamage)
     }
     if(this.currentBossLife <= 0)
     {
-        status = STATUS.DEAD;
+        this.status = STATUS.DEAD;
         this.currentBossLife = 0;
-        redisPub.publish(this.serverName, self.toString());
+        redisPub.publish("bossDead", self.toString());
     }
     redisSet.hmset(this.serverName, {'currentBossLife': this.currentBossLife});
     redisPub.publish(this.serverName, self.toString());
@@ -109,6 +109,7 @@ Boss.prototype.getName = function()
 Boss.prototype.revive = function(){
     this.currentBossLife = this.constantBossLife;
     this.status = STATUS.ALIVE;
+    redisSet.hmset(this.serverName, {'currentBossLife': this.currentBossLife});
 };
 
 module.exports = Boss;

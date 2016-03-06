@@ -1,11 +1,14 @@
 var ws = require('ws');
 var wss = require('ws').Server;
 
+var redisSub = require('./../services/redisService.js').redisSub;
+redisSub.subscribe("bossDead");
+
 var Boss = require('./../domain/boss.js');
 var BossCommunicationService = require('./../services/bossCommunicationService.js');
 var BossRepository = require('./../repository/bossRepository.js');
 
-var STATUS = Object.freeze({ALIVE: "ALIVE", DEAD: "DEAD"});
+var STATUS = Object.freeze({ALIVE: "0", DEAD: "1"});
 
 var lastLifeBroadcasted = 0;
 
@@ -24,13 +27,21 @@ setInterval(function () {
 );
 
 setInterval ( function (){
-   if (theBoss.status == "DEAD"){
+   if (theBoss.status == STATUS.DEAD){
        theBoss.revive(function(boss){
            theBoss = boss;
            bossRepository.saveBossBd(theBoss);
        })
    }
 }, 12000)
+
+redisSub.on('message', function(channel, message){
+    if(channel == "bossDead")
+    {
+        console.log("BroadCast bossDead: ", channel);
+        broadcastBossDead();
+    }
+})
 
 exports.setWebSocketServer = function(webSocketServer) {
     wss = webSocketServer;
@@ -86,17 +97,26 @@ function keepAlive(websocket) {
 
 function broadcastBossInformation() {
     if (theBoss) {
-        if (lastLifeBroadcasted != theBoss.getLife() && wss.clients) {
+        if (lastLifeBroadcasted != theBoss.getLife() && wss.clients)
+        {
+            console.log("inside broadcast BossLife :", theBoss.getLife())
             lastLifeBroadcasted = theBoss.getLife();
             var bossUpdate = bossCommunicationService.createBossStatusUpdate(theBoss);
-            wss.clients.forEach(function each(client) {
+            wss.clients.forEach(function each(client)
+            {
                 client.send(bossUpdate);
             });
         }
     }
 };
 
-function closeAllSockets(callback){
+function broadcastBossDead(){
+    var bossUpdate = bossCommunicationService.createBossStatusUpdate(theBoss);
+    wss.clients.forEach(function each(client) {
+        client.send(bossUpdate);
+        client.close();
+    });
+
 
 }
 
