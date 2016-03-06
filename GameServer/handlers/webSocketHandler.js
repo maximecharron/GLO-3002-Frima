@@ -1,7 +1,6 @@
 var ws = require('ws');
 var wss = require('ws').Server;
 
-var hostname = process.env.SERVER_NAME || require('os').hostname();
 var Boss = require('./../domain/boss.js');
 var BossCommunicationService = require('./../services/bossCommunicationService.js');
 var BossRepository = require('./../repository/bossRepository.js');
@@ -15,8 +14,7 @@ var bossRepository = new BossRepository();
 var bossCommunicationService = new BossCommunicationService();
 
 setInterval(function () {
-        //broadcastBossInformation()
-        broadcastBossInformationAllTime()
+        broadcastBossInformation()
     }, 500
 );
 
@@ -61,7 +59,7 @@ function newMessage(message, webSocket) {
     }
 
     if (request.command.name == "attack") {
-        theBoss.receiveDamage(hostname, request.command.parameters.number);
+        theBoss.receiveDamage(request.command.parameters.number);
     }
     if (request.command.name == "keepAlive") {
         keepAlive(webSocket);
@@ -86,17 +84,6 @@ function keepAlive(websocket) {
     websocket.send(response);
 }
 
-function broadcastBossInformationAllTime()
-{
-    if(theBoss)
-    {
-        var bossUpdate = bossCommunicationService.createBossStatusUpdate(theBoss);
-        wss.clients.forEach(function each(client) {
-            client.send(bossUpdate);
-        });
-    }
-}
-
 function broadcastBossInformation() {
     if (theBoss) {
         if (lastLifeBroadcasted != theBoss.getLife() && wss.clients) {
@@ -118,6 +105,7 @@ exports.initializeBoss = function()
     bossRepository.getBoss(function(boss)
     {
         theBoss = boss;
+        console.log("theBoss: {0}", theBoss);
         bossRepository.saveBoth(theBoss);
     });
 

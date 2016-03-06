@@ -3,10 +3,14 @@ var redisSub = require('./../services/redisService.js').redisSub;
 var redisSet = require('./../services/redisService.js').redisSet;
 var STATUS = Object.freeze({ALIVE: "ALIVE", DEAD: "DEAD"});
 
+var channelToListen;
+
 //Constructor
-function Boss(bossName, currentBossLife, constantBossLife, status)
+function Boss(hostname, bossName, currentBossLife, constantBossLife, status)
 {
     //Private
+    if(!hostname)
+    {throw "Hostname is null"}
     if(!bossName)
     {throw "BossName is null"};
     if(!currentBossLife)
@@ -15,19 +19,25 @@ function Boss(bossName, currentBossLife, constantBossLife, status)
     {throw "ConstantBossLife is null"}
     if(!status)
     {throw "Status is null"}
-
+    channelToListen = hostname;
+    this.serverName = hostname;
     this.bossName = bossName;
     this.currentBossLife = currentBossLife;
     this.constantBossLife = constantBossLife;
     this.status = status;
-    redisSub.subscribe(bossName);
+
+    redisSub.subscribe(this.serverName);
 }
 
 redisSub.on('message', function(channel, message){
-    if(channel == this.bossName)
-    {
-        var bossMessage = JSON.parse(message);
 
+    if(channel == channelToListen)
+    {
+        try {
+            var bossMessage = JSON.parse(message); //JSON.parse() is synchrone!
+        } catch (e) {
+            return console.error(e);
+        }
         this.currentBossLife = bossMessage.currentBossLife;
         this.constantBossLife = bossMessage.constantBossLife;
         this.status = bossMessage.status;
@@ -59,7 +69,7 @@ Boss.prototype.toString = function()
         });
 }
 
-Boss.prototype.receiveDamage = function(hostname, amountDamage)
+Boss.prototype.receiveDamage = function(amountDamage)
 {
     var self = this;
     if (this.currentBossLife > 0)
@@ -69,10 +79,11 @@ Boss.prototype.receiveDamage = function(hostname, amountDamage)
     if(this.currentBossLife <= 0)
     {
         status = STATUS.DEAD;
-        redisPub.publish(hostname, self.toString());
+        this.currentBossLife = 0;
+        redisPub.publish(this.serverName, self.toString());
     }
-    redisSet.hmset(hostname, {'currentBossLife': this.currentBossLife});
-    redisPub.publish(hostname, self.toString());
+    redisSet.hmset(this.serverName, {'currentBossLife': this.currentBossLife});
+    redisPub.publish(this.serverName, self.toString());
 }
 
 Boss.prototype.getLife = function()
