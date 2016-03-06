@@ -10,7 +10,7 @@ bossSchema.add({
     status: String
 });
 
-bossSchema.methods.toDTO = function (following, withToken) {
+bossSchema.methods.toDTO = function () {
     var obj = this.toObject();
 
     var dto = {
@@ -18,10 +18,9 @@ bossSchema.methods.toDTO = function (following, withToken) {
         bossName : obj.bossName,
         constantBossLife: obj.constantBossLife,
         currentBossLife: obj.currentBossLife,
-        displayName: obj.displayName,
+        serverName: obj.serverName,
         status: obj.status
     };
-
     return dto;
 };
 
