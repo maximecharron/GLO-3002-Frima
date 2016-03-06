@@ -15,7 +15,8 @@ var bossRepository = new BossRepository();
 var bossCommunicationService = new BossCommunicationService();
 
 setInterval(function () {
-        broadcastBossInformation()
+        //broadcastBossInformation()
+        broadcastBossInformationAllTime()
     }, 500
 );
 
@@ -83,6 +84,17 @@ function broadcast(data) {
 function keepAlive(websocket) {
     var response = bossCommunicationService.createBossStatusUpdate(theBoss);
     websocket.send(response);
+}
+
+function broadcastBossInformationAllTime()
+{
+    if(theBoss)
+    {
+        var bossUpdate = bossCommunicationService.createBossStatusUpdate(theBoss);
+        wss.clients.forEach(function each(client) {
+            client.send(bossUpdate);
+        });
+    }
 }
 
 function broadcastBossInformation() {
