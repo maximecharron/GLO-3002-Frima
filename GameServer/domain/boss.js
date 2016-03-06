@@ -32,13 +32,10 @@ function Boss(hostname, bossName, currentBossLife, constantBossLife, status)
 redisSub.on('message', function(channel, message){
     if(channel == channelListen)
     {
-        try {
-            var bossMessage = JSON.parse(message); //JSON.parse() is synchrone!
-        } catch (e) {
-            return console.error(e);
-        }
-        this.currentBossLife = bossMessage.currentBossLife;
-        this.constantBossLife = bossMessage.constantBossLife;
+        console.log("Message is: ", message);
+        this.currentBossLife = message.currentBossLife;
+        console.log("BOss life:", this.currentBossLife);
+        this.constantBossLife = message.constantBossLife;
     }
 
 })
