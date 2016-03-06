@@ -22,6 +22,7 @@ exports.updateBoss = function(req, res) {
         serverName: req.body.serverName,
         status: req.body.status
     }
+    console.log(req.body);
     BossRepository.updateBoss(boss, function (updatedBoss) {
         redis.hmset(boss.serverName, boss);
         redis.publish(boss.serverName, boss);
