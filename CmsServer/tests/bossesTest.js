@@ -1,11 +1,11 @@
 var proxyquire = require('proxyquire');
-var test = require('Unit.js');
+var test = require('unit.js');
 var sinon = require('sinon');
 var mocha = require('mocha');
 var bossRepositoryStub = {};
 var redisStub = {};
 var bosses = proxyquire('./../routes/bosses.js', {
-    './../repository/bossRepository.js': bossRepositoryStub,
+    './../repository/BossRepository.js': bossRepositoryStub,
     'redis': redisStub
 });
 var res = {
