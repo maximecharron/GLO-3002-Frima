@@ -1,6 +1,6 @@
 ContentApp.controller("content-controller", function ($scope, contentResource) {
 
-    $scope.updateSucces = false;
+    $scope.updateSuccess = false;
     $scope.updateError = false;
     $scope.updateTypes = [
         {
@@ -40,7 +40,7 @@ ContentApp.controller("content-controller", function ($scope, contentResource) {
         console.log(selectedBoss);
         contentResource.updateBoss(selectedBoss, function onSuccess(data) {
             $scope.selectedBoss = data;
-            $scope.updateSucces = true;
+            $scope.updateSuccess = true;
         }, function onError(data) {
             $scope.updateError = true;
         });
