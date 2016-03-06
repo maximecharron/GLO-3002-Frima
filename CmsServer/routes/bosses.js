@@ -1,5 +1,5 @@
 var BossRepository =  require('./../repository/bossRepository.js')
-var redisUrl = process.env.REDIS_URL || 'redis://localhost:7069';
+var redisUrl = process.env.REDIS_URL || 'redis://localhost:6379';
 var redis = require('redis').createClient(redisUrl);
 
 exports.getConstantBossList = function(req, res){
