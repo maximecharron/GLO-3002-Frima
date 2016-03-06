@@ -19,7 +19,7 @@ describe("Boss", function () {
     beforeEach(function () {
         boss = new Boss(bossDef.bossName, bossDef.currentBossLife, bossDef.constantBossLife, bossDef.status);
     });
-
+    /*
     describe("Boss receive damage", function () {
         it("does damages to the boss", function () {
             var damage = 10;
@@ -36,7 +36,7 @@ describe("Boss", function () {
             expect(life).to.equal(0);
         });
     });
-
+*/
     describe("Boss stringify", function () {
         it("return expected string", function () {
             var bossString = boss.toString();
@@ -44,4 +44,3 @@ describe("Boss", function () {
         });
     })
 });
-
