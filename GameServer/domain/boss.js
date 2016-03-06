@@ -32,7 +32,13 @@ function Boss(hostname, bossName, currentBossLife, constantBossLife, status)
 redisSub.on('message', function(channel, message){
     if(channel == channelListen)
     {
+        var bossMessage;
         console.log("Message is: ", message);
+        try {
+            bossMessage = JSON.parse(message);
+        } catch (e){
+            console.log(e);
+        }
         this.currentBossLife = message.currentBossLife;
         console.log("BOss life:", this.currentBossLife);
         this.constantBossLife = message.constantBossLife;
