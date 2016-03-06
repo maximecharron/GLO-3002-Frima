@@ -10,7 +10,7 @@ namespace Assets.Scripts.Communication.CommandDTOs
     {
         public BossAttackCommand command = new BossAttackCommand();
 
-        public BossAttackCommandDTO(Int64 number)
+        public BossAttackCommandDTO(Int32 number)
         {
             this.command.parameters.number = number;
         }
@@ -24,7 +24,7 @@ namespace Assets.Scripts.Communication.CommandDTOs
             [Serializable]
             public class BossAttackParameters
             {
-                public Int64 number = 10;
+                public Int32 number = 10;
             }
         }
     }

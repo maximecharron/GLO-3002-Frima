@@ -45,7 +45,7 @@ namespace Assets.Scripts.Scenes.Game
         private void BossStatusUpdateCallback(CommandDTO commandDTO)
         {
             var bossStatusUpateParams = ((BossStatusUpdateCommandDTO)commandDTO).command.parameters;
-            if (bossStatusUpateParams.currentBossLife <= 0)
+            if (bossStatusUpateParams.currentBossLife <= 0 || (BossStatus)bossStatusUpateParams.status == BossStatus.DEAD)
             {
                 OnBossDead();
             }

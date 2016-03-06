@@ -22,7 +22,7 @@ namespace Assets.Scripts.Communication.CommandDTOs
                 public String bossName = "";
                 public Int32 currentBossLife = 10000;
                 public Int32 constantBossLife = 10000;
-                public String status = "ALIVE";
+                public Int32 status = 0;
             }
         }
     }
