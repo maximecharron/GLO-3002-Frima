@@ -10,7 +10,7 @@ namespace Assets.Scripts.Scenes.Game
 {
     public class BossController : MonoBehaviour {
 
-        private const int DEFAULT_ATTACK_VALUE = 1000;
+        private const int DEFAULT_ATTACK_VALUE = 10;
         
         public Text healthPointValue;
         public Slider healthPointSlider;
