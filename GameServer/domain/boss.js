@@ -39,9 +39,9 @@ redisSub.on('message', function(channel, message){
         } catch (e){
             console.log(e);
         }
-        this.currentBossLife = message.currentBossLife;
+        this.currentBossLife = bossMessage.currentBossLife;
         console.log("BOss life:", this.currentBossLife);
-        this.constantBossLife = message.constantBossLife;
+        this.constantBossLife = bossMessage.constantBossLife;
     }
 
 })
