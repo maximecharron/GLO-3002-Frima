@@ -22,7 +22,7 @@ namespace Assets.Scripts.Scenes.Game
 
         public void OnExitButtonPointerClick()
         {
-            SceneManager.LoadScene(TITLE_SCENE_NAME);
+            SceneManager.LoadScene(MENU_SCENE_NAME);
         }
 
         private void OnBossDead()
