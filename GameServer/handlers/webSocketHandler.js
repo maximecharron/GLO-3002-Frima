@@ -40,6 +40,14 @@ redisSub.on('message', function(channel, message){
     {
         console.log("BroadCast bossDead: ", channel);
         broadcastBossDead();
+    } else if (channel == theBoss.serverName){
+        try {
+            var bossMessage = JSON.parse(message); //JSON.parse() is synchrone!
+        } catch (e) {
+            return console.error(e);
+        }
+        theBoss.currentBossLife = bossMessage.currentBossLife;
+        theBoss.constantBossLife = bossMessage.constantBossLife;
     }
 })
 
