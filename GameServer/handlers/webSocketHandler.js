@@ -36,13 +36,16 @@ setInterval ( function (){
 }, 12000)
 
 redisSub.on('message', function(channel, message){
+        console.log("Redis message");
     if(channel == "bossDead")
     {
         console.log("BroadCast bossDead: ", channel);
         broadcastBossDead();
     } else if (channel == theBoss.serverName){
+        console.log("Inchannel");
         try {
             var bossMessage = JSON.parse(message); //JSON.parse() is synchrone!
+            console.log("Boss message is: ", bossMessage)
         } catch (e) {
             return console.error(e);
         }
