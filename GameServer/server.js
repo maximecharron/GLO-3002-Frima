@@ -25,12 +25,16 @@ mongoose.connect(mongoUri);
 var tokenSecret = 'FRIMA_TOKEN_SECRET' || process.env.TOKEN_SECRET;
 
 var webSocketHandler = require('./handlers/webSocketHandler.js');
-
+var corsOptions = {
+    origin: '*',
+    methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'UPDATE'],
+    credentials: true
+}
 
 app.set('jwtTokenSecret', tokenSecret);
 
 require('./middleware/passport')(passport, app);
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
