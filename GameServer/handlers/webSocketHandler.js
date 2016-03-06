@@ -1,6 +1,7 @@
 var ws = require('ws');
 var wss = require('ws').Server;
 
+var hostname = process.env.SERVER_NAME || require('os').hostname();
 var Boss = require('./../domain/boss.js');
 var BossCommunicationService = require('./../services/bossCommunicationService.js');
 var BossRepository = require('./../repository/bossRepository.js');
@@ -59,7 +60,7 @@ function newMessage(message, webSocket) {
     }
 
     if (request.command.name == "attack") {
-        theBoss.receiveDamage(request.command.number);
+        theBoss.receiveDamage(hostname, request.command.parameters.number);
     }
     if (request.command.name == "keepAlive") {
         keepAlive(webSocket);
@@ -97,7 +98,7 @@ function broadcastBossInformation() {
 };
 
 function closeAllSockets(callback){
-    
+
 }
 
 exports.initializeBoss = function()
@@ -109,9 +110,3 @@ exports.initializeBoss = function()
     });
 
 }
-
-/*
- message from client:
- attack:
- {"command":{"name": "attack", "number": "10"}}
- */

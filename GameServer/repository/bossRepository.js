@@ -26,10 +26,11 @@ BossRepository.prototype.getBoss = function(callBack, constant)
         }
         else
         {
-            DbBoss.findBoss(serverName, function(boss)
+            DbBoss.findBoss(serverName, function(bossModel)
             {
-                if(boss)
+                if(bossModel)
                 {
+                    var boss = new Boss(bossModel.bossName, bossModel.currentBossLife, bossModel.constantBossLife, bossModel.status);
                     callBack(boss);
                 }
                 else

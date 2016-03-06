@@ -7,6 +7,15 @@ var STATUS = Object.freeze({ALIVE: "ALIVE", DEAD: "DEAD"});
 function Boss(bossName, currentBossLife, constantBossLife, status)
 {
     //Private
+    if(!bossName)
+    {throw "BossName is null"};
+    if(!currentBossLife)
+    {throw "CurrentBossLife is null"};
+    if(!constantBossLife)
+    {throw "ConstantBossLife is null"}
+    if(!status)
+    {throw "Status is null"}
+
     this.bossName = bossName;
     this.currentBossLife = currentBossLife;
     this.constantBossLife = constantBossLife;
@@ -50,7 +59,7 @@ Boss.prototype.toString = function()
         });
 }
 
-Boss.prototype.receiveDamage = function(amountDamage)
+Boss.prototype.receiveDamage = function(hostname, amountDamage)
 {
     var self = this;
     if (this.currentBossLife > 0)
@@ -60,10 +69,10 @@ Boss.prototype.receiveDamage = function(amountDamage)
     if(this.currentBossLife <= 0)
     {
         status = STATUS.DEAD;
-        redisPub.publish(this.bossName, self.toString());
+        redisPub.publish(hostname, self.toString());
     }
-    redisSet.hmset(this.bossName, {'currentBossLife': this.currentBossLife});
-    redisPub.publish(this.bossName, self.toString());
+    redisSet.hmset(hostname, {'currentBossLife': this.currentBossLife});
+    redisPub.publish(hostname, self.toString());
 }
 
 Boss.prototype.getLife = function()
