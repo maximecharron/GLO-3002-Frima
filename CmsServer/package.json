@@ -6,7 +6,7 @@
   "scripts": {
     "prestart": "npm install",
     "start": "node index.js",
-    "test": ""
+    "test": "mocha tests"
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
@@ -35,7 +35,9 @@
     "gulp-symlink": "^2.1.4",
     "gulp-util": "^3.0.7",
     "mocha": "^2.4.5",
+    "proxyquire": "^1.7.4",
     "run-sequence": "^1.1.5",
+    "sinon": "^1.17.3",
     "unit.js": "^2.0.0"
   }
 }

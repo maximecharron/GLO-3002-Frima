@@ -1,3 +1,1 @@
-/**
- * Created by maxime on 2016-03-06.
- */
+//TODO: Add test when login will be functionnal

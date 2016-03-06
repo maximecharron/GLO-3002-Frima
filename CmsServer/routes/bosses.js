@@ -1,15 +1,15 @@
-var DbBoss =  require('./../models/boss.js')
-var redisUrl = 'redis://h:p88tk5goahehq8c9hta4ugr533t@ec2-54-227-252-28.compute-1.amazonaws.com:7069';
+var BossRepository =  require('./../repository/bossRepository.js')
+var redisUrl = process.env. REDIS_URL || 'redis://localhost:7069';
 var redis = require('redis').createClient(redisUrl);
 
 exports.getConstantBossList = function(req, res){
-    DbBoss.findConstantBossList(function(list){
+    BossRepository.findConstantBossList(function(list){
         res.status(200).send(list);
     })
 };
 
 exports.getBossList = function(req, res){
-    DbBoss.findBossList(function(list){
+    BossRepository.findBossList(function(list){
         res.status(200).send(list);
     })
 };
@@ -22,7 +22,7 @@ exports.updateBoss = function(req, res) {
         serverName: req.body.serverName,
         status: req.body.status
     }
-    DbBoss.updateBoss(boss, function (updatedBoss) {
+    BossRepository.updateBoss(boss, function (updatedBoss) {
         redis.hmset(boss.serverName, boss);
         redis.publish(boss.serverName, boss);
         res.status(200).send(updatedBoss);

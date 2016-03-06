@@ -36,7 +36,7 @@ app.use(passport.session());
 app.use(flash());
 app.use(cors(corsOptions));
 
-//app.post('/login', passport.authenticate('local-login'));
+//app.post('/login', passport.authenticate('local-login')); //TODO Add login
 //app.get('/logout', login.logout);
 app.get('/status', status.getStatus);
 
