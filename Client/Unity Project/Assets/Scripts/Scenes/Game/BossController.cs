@@ -10,22 +10,26 @@ namespace Assets.Scripts.Scenes.Game
 {
     public class BossController : MonoBehaviour {
 
+        private const int DEFAULT_ATTACK_VALUE = 1000;
+        
         public Text healthPointValue;
         public Slider healthPointSlider;
 
         public delegate void BossDeadEventHandler();
         public event BossDeadEventHandler OnBossDead;
 
-        private CommunicationService communicationService;
+        private WebSocketService webSocketService;
+        private int currentBossLife = 0;
+        
 
         void Start() {
-            communicationService = (CommunicationService)FindObjectOfType(typeof(CommunicationService));
-            communicationService.RegisterCommand("bossStatusUpdate", BossStatusUpdateCallback, typeof(BossStatusUpdateCommandDTO));
+            webSocketService = FindObjectOfType<WebSocketService>();
+            webSocketService.RegisterCommand("bossStatusUpdate", BossStatusUpdateCallback, typeof(BossStatusUpdateCommandDTO));
         }
 
         void OnDestroy()
         {
-            communicationService.UnregisterCommand("bossStatusUpdate");
+            webSocketService.UnregisterCommand("bossStatusUpdate");
         }
 
         void Update() {
@@ -34,21 +38,28 @@ namespace Assets.Scripts.Scenes.Game
 
         void OnMouseDown()
         {
-            communicationService.SendCommand(new BossAttackCommandDTO(10));
+            UpdateBossLife(currentBossLife - DEFAULT_ATTACK_VALUE);
+            webSocketService.SendCommand(new BossAttackCommandDTO(DEFAULT_ATTACK_VALUE));
         }
 
         private void BossStatusUpdateCallback(CommandDTO commandDTO)
         {
             var bossStatusUpateParams = ((BossStatusUpdateCommandDTO)commandDTO).command.parameters;
-            if (bossStatusUpateParams.currentBossLife == 0)
+            if (bossStatusUpateParams.currentBossLife <= 0)
             {
                 OnBossDead();
             }
             else
             {
                 healthPointSlider.maxValue = bossStatusUpateParams.constantBossLife;
-                healthPointSlider.value = bossStatusUpateParams.currentBossLife / bossStatusUpateParams.constantBossLife * 100;
+                UpdateBossLife(bossStatusUpateParams.currentBossLife);
             }
+        }
+
+        private void UpdateBossLife(int value)
+        {
+            healthPointSlider.value = value;
+            healthPointValue.text = value.ToString();
         }
     }
 }

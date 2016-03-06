@@ -26,12 +26,12 @@ namespace Assets.Scripts.Scenes.Registration
         public Button registerButton;
 
         private Application application;
-        private CommunicationService communicationService;
+        private HttpService httpService;
 
         void Start()
         {
             application = (Application)FindObjectOfType(typeof(Application));
-            communicationService = (CommunicationService)FindObjectOfType(typeof(CommunicationService));
+            httpService = (HttpService)FindObjectOfType(typeof(HttpService));
 
             registrationErrorLabel.transform.gameObject.SetActive(false);
         }
@@ -59,7 +59,7 @@ namespace Assets.Scripts.Scenes.Registration
                 form.AddField("password", passwordInputField.text);
                 form.AddField("email", emailInputField.text);
 
-                communicationService.HttpPost(REGISTRATION_URL, form, RegisterCallback);
+                httpService.HttpPost(REGISTRATION_URL, form, RegisterCallback);
                 registerButton.interactable = false;
             }
         }

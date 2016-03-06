@@ -9,10 +9,10 @@ namespace Assets.Scripts
     [RequireComponent(typeof(AudioSource))]
     public class Application: MonoBehaviour
     {
-        // Configurable script parameters
-        public CommunicationService communicationService;
+        public HttpService httpService;
 
-        // private attributes
+        public string sessionToken { get; set; }
+
         private static Application instance;
 
         void Awake()
@@ -40,12 +40,14 @@ namespace Assets.Scripts
 
         public void SetUserSession(string token, string username)
         {
-            communicationService.token = token;
+            this.sessionToken = token;
+            httpService.sessionToken = token;
         }
 
         public void ClearUserSession()
         {
-            communicationService.token = null;
+            this.sessionToken = null;
+            httpService.sessionToken = null;
         }
     }
 }

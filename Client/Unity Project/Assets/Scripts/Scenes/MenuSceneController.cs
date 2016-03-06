@@ -14,11 +14,11 @@ namespace Assets.Scripts.Scenes
         public Button logOutButton;
 
         private Application application;
-        private CommunicationService communicationService;
+        private HttpService httpService;
 
         void Start() {
             application = (Application)FindObjectOfType(typeof(Application));
-            communicationService = (CommunicationService)FindObjectOfType(typeof(CommunicationService));
+            httpService = (HttpService)FindObjectOfType(typeof(HttpService));
         }
 
         void Update() {
@@ -32,7 +32,7 @@ namespace Assets.Scripts.Scenes
 
         public void OnLogOutButtonPointerClick()
         {
-            communicationService.HttpGet(LOGOUT_URL, LogOutCallback);
+            httpService.HttpGet(LOGOUT_URL, LogOutCallback);
             logOutButton.interactable = false;
         }
 

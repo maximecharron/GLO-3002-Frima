@@ -21,11 +21,11 @@ namespace Assets.Scripts.Scenes
         public Button loginButton;
 
         private Application application;
-        private CommunicationService communicationService;
+        private HttpService httpService;
 
         void Start() {
             application = (Application)FindObjectOfType(typeof(Application));
-            communicationService = (CommunicationService)FindObjectOfType(typeof(CommunicationService));
+            httpService = (HttpService)FindObjectOfType(typeof(HttpService));
 
             loginErrorLabel.transform.gameObject.SetActive(false);
         }
@@ -51,7 +51,7 @@ namespace Assets.Scripts.Scenes
             form.AddField("username", usernameInputField.text);
             form.AddField("password", passwordInputField.text);
 
-            communicationService.HttpPost(LOGIN_URL, form, LoginCallback);
+            httpService.HttpPost(LOGIN_URL, form, LoginCallback);
             loginButton.interactable = false;
         }
 

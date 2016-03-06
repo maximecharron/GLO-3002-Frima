@@ -10,10 +10,15 @@ namespace Assets.Scripts.Scenes.Game
 
     public class GameSceneController : SceneController
     {
+        public WebSocketService webSocketService;
         public BossController bossController;
 
         void Start() {
+            Application application = FindObjectOfType<Application>();
+            webSocketService.sessionToken = application.sessionToken;
             bossController.OnBossDead += OnBossDead;
+
+            webSocketService.Init();
         }
 
         void Update() {
