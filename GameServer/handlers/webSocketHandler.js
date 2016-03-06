@@ -42,7 +42,7 @@ redisSub.on('message', function(channel, message){
         console.log("BroadCast bossDead: ", channel);
         broadcastBossDead();
     } else if (channel == theBoss.serverName){
-        console.log("Inchannel");
+        console.log("Inchannel. Message is: ", message);
         try {
             var bossMessage = JSON.parse(message); //JSON.parse() is synchrone!
             console.log("Boss message is: ", bossMessage)
