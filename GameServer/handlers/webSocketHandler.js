@@ -163,8 +163,7 @@ exports.initializeBoss = function () {
         theBoss = boss;
         console.log("theBoss: {0}", theBoss);
         bossRepository.saveBoth(theBoss);
+        redisSub.subscribe(theBoss.getServerName()+'CMS');
     });
 
-}
-
-redisSub.subscribe(theBoss.getServerName()+'CMS');
+};
