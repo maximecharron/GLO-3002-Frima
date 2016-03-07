@@ -57,12 +57,13 @@ namespace Assets.Scripts.Scenes
         private void LoginCallback(WWW request)
         {
             loginButton.interactable = true;
-            if (request.GetStatusCode() != HttpStatusCode.OK)
+            if (request.GetStatusCode() == HttpStatusCode.OK || request.GetStatusCode() == 0)
             {
-                ProcessFailedLogin(request);
-                return;
+                ProcessSuccessfulLogin(request);
             }
-            ProcessSuccessfulLogin(request);
+            else {
+                ProcessFailedLogin(request);
+            }
         }
 
         private void ProcessFailedLogin(WWW request)
