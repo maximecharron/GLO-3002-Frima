@@ -42,6 +42,7 @@ namespace Assets.Scripts.Scenes.Game
             UpdateBossLife(currentBossLife - DEFAULT_ATTACK_VALUE);
             webSocketService.SendCommand(new BossAttackCommandDTO(DEFAULT_ATTACK_VALUE));
             PlayParticlesOnHit();
+            PlaySoundOnHit();
         }
 
         private void BossStatusUpdateCallback(CommandDTO commandDTO)
@@ -79,6 +80,13 @@ namespace Assets.Scripts.Scenes.Game
             Vector3 mousePosition = new Vector3(mousePosX, mousePosY, -5);
             particlesSystem.transform.localPosition = mousePosition;
             particlesSystem.Play();
+        }
+
+        private void PlaySoundOnHit()
+        {
+            AudioSource[] audio = GetComponents<AudioSource>();
+            int randomIndex = Convert.ToInt32(UnityEngine.Random.Range(0, audio.Length));
+            audio[randomIndex].Play();
         }
     }
 }
