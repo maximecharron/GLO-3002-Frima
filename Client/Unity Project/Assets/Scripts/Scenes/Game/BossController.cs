@@ -14,6 +14,7 @@ namespace Assets.Scripts.Scenes.Game
         
         public Text healthPointValue;
         public Slider healthPointSlider;
+        public ParticleSystem particlesSystem;
 
         public delegate void BossDeadEventHandler();
         public event BossDeadEventHandler OnBossDead;
@@ -40,6 +41,7 @@ namespace Assets.Scripts.Scenes.Game
         {
             UpdateBossLife(currentBossLife - DEFAULT_ATTACK_VALUE);
             webSocketService.SendCommand(new BossAttackCommandDTO(DEFAULT_ATTACK_VALUE));
+            playParticlesOnHit();
         }
 
         private void BossStatusUpdateCallback(CommandDTO commandDTO)
@@ -68,6 +70,16 @@ namespace Assets.Scripts.Scenes.Game
             currentBossLife = value;
             healthPointSlider.value = value;
             healthPointValue.text = value.ToString();
+        }
+
+        private void playParticlesOnHit()
+        {
+ 
+            float mousePosX = Input.mousePosition.x - Screen.width / 2;
+            float mousePosY = Input.mousePosition.y - Screen.height / 2;
+            Vector3 mousePosition = new Vector3(mousePosX, mousePosY, -5);
+            particlesSystem.transform.position = mousePosition;
+            particlesSystem.Play();
         }
     }
 }

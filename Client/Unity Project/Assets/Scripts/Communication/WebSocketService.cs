@@ -27,6 +27,11 @@ namespace Assets.Scripts.Communication
             ReceiveCommands();
         }
 
+        public void OnDestroy()
+        {
+            webSocket.Close();
+        }
+
         public void Init()
         {
             webSocket = new WebSocket(new Uri(WEB_SOCKET_SERVER_URI));
@@ -78,5 +83,7 @@ namespace Assets.Scripts.Communication
         {
             SendCommand(new KeepAliveCommandDTO());
         }
+
+        
     }
 }
