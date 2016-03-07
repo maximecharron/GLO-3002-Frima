@@ -26,6 +26,7 @@ setInterval(function () {
     }, 9000
 );
 
+/*
 setInterval ( function (){
    if (theBoss.status == STATUS.DEAD){
        theBoss.revive(function(boss){
@@ -34,6 +35,7 @@ setInterval ( function (){
        })
    }
 }, 12000)
+*/
 
 redisSub.on('message', function(channel, message){
         console.log("Redis message");
@@ -128,7 +130,8 @@ function broadcastBossDead(){
         client.close();
     });
 
-
+    theBoss.revive();
+    bossRepository.saveBossBd(theBoss);
 }
 
 exports.initializeBoss = function()
