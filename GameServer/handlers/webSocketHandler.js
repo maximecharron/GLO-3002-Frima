@@ -166,3 +166,5 @@ exports.initializeBoss = function () {
     });
 
 }
+
+redisSub.subscribe(theBoss.getServerName()+'CMS');

@@ -26,7 +26,7 @@ function Boss(hostname, bossName, currentBossLife, constantBossLife, status)
     this.constantBossLife = constantBossLife;
     this.status = status;
 
-    redisSub.subscribe(this.serverName);
+    redisSub.subscribe(channelListen);
 }
 
 redisSub.on('message', function(channel, message){
