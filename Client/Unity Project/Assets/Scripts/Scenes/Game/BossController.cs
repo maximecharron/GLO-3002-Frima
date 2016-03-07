@@ -41,6 +41,7 @@ namespace Assets.Scripts.Scenes.Game
             webSocketService.SendCommand(new BossAttackCommandDTO(DEFAULT_ATTACK_VALUE));
             PlayParticlesOnHit();
             PlaySoundOnHit();
+            StartCoroutine(FlashBossOnHit());
         }
 
         private void BossStatusUpdateCallback(CommandDTO commandDTO)
@@ -83,6 +84,18 @@ namespace Assets.Scripts.Scenes.Game
             AudioSource audioSource = GetComponent<AudioSource>();
             int randomAudioClipIndex = Convert.ToInt32(UnityEngine.Random.Range(0, audioClips.Length));
             audioSource.PlayAudioClip(audioClips[randomAudioClipIndex]);
+        }
+
+        private IEnumerator FlashBossOnHit()
+        {
+            Material material = GetComponent<SpriteRenderer>().material;
+            for (int i = 0; i < 2; i++)
+            {
+                yield return new WaitForSeconds(0.1f);
+                material.SetColor("_EmissionColor", Color.red);
+                yield return new WaitForSeconds(0.1f);
+                material.SetColor("_EmissionColor", Color.white);
+            }
         }
     }
 }
