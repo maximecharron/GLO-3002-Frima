@@ -1,21 +1,11 @@
 {
-  "name": "glo-3002-frima",
+  "name": "glo-3002-frima-client-1",
   "version": "1.0.0",
   "description": "client app",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 0"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/maximecharron/GLO-3002-Frima.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/maximecharron/GLO-3002-Frima/issues"
-  },
-  "homepage": "https://github.com/maximecharron/GLO-3002-Frima#readme",
   "dependencies": {
     "node-static": "^0.7.7"
   }
