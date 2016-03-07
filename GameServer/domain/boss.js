@@ -38,7 +38,7 @@ redisSub.on('message', function(channel, message){
         try {
             bossMessage = JSON.parse(message);
             this.currentBossLife = bossMessage.currentBossLife;
-            console.log("BOss life:", this.currentBossLife);
+            console.log("Boss life (boss):", this.currentBossLife);
             this.constantBossLife = bossMessage.constantBossLife;
             redisPub.publish(this.serverName, self.toString());
         } catch (e){

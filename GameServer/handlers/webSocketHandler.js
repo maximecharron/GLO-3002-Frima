@@ -47,9 +47,9 @@ redisSub.on('message', function (channel, message) {
         console.log("Message is: ", message);
         try {
             bossMessage = JSON.parse(message);
-            theBoss.setCurrentBossLife = bossMessage.currentBossLife;
-            console.log("BOss life:", theBoss.getLife());
-            theBoss.setConstantBossLife = bossMessage.constantBossLife;
+            theBoss.setCurrentLife(bossMessage.currentBossLife);
+            console.log("Boss life (CMS):", theBoss.getLife());
+            theBoss.setConstantLife(bossMessage.constantBossLife);
         } catch (e){
             console.log(e);
         }
