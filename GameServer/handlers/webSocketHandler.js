@@ -79,7 +79,7 @@ function newMessage(message, webSocket) {
 
     var request = {};
     try {
-        var request = JSON.parse(message); //JSON.parse() is synchrone!
+        var request = JSON.parse(message);
     } catch (e) {
         return console.error(e);
     }
