@@ -10,19 +10,9 @@ namespace Assets.Scripts.Communication
 
     public class HttpService : MonoBehaviour
     {
-        private const string HTTP_SERVER_URI = "http://frima-server-1.herokuapp.com";
+        private const string HTTP_SERVER_URI = "https://frima-server-1.herokuapp.com";
 
         public String sessionToken { get; set; }
-
-        void Start()
-        {
-            
-        }
-
-        void Update()
-        {
-
-        }
 
         public void HttpGet(String location, Action<WWW> callback)
         {
