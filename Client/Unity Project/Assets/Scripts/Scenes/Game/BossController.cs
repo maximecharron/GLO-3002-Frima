@@ -41,7 +41,7 @@ namespace Assets.Scripts.Scenes.Game
         {
             UpdateBossLife(currentBossLife - DEFAULT_ATTACK_VALUE);
             webSocketService.SendCommand(new BossAttackCommandDTO(DEFAULT_ATTACK_VALUE));
-            playParticlesOnHit();
+            PlayParticlesOnHit();
         }
 
         private void BossStatusUpdateCallback(CommandDTO commandDTO)
@@ -72,13 +72,12 @@ namespace Assets.Scripts.Scenes.Game
             healthPointValue.text = value.ToString();
         }
 
-        private void playParticlesOnHit()
+        private void PlayParticlesOnHit()
         {
- 
             float mousePosX = Input.mousePosition.x - Screen.width / 2;
             float mousePosY = Input.mousePosition.y - Screen.height / 2;
             Vector3 mousePosition = new Vector3(mousePosX, mousePosY, -5);
-            particlesSystem.transform.position = mousePosition;
+            particlesSystem.transform.localPosition = mousePosition;
             particlesSystem.Play();
         }
     }
