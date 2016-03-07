@@ -1,0 +1,9 @@
+#serverName{
+    background-color: white;
+}
+.has-success{
+    color: #00A000;
+}
+.has-error{
+    color: #d4081a;
+}
