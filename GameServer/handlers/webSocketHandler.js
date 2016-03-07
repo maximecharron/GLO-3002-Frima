@@ -38,7 +38,7 @@ setInterval(function () {
  */
 
 redisSub.on('message', function (channel, message) {
-    console.log("Redis message");
+    console.log("Redis message: ", channel);
     if (channel == "bossDead") {
         console.log("BroadCast bossDead: ", channel);
         broadcastBossDead();
