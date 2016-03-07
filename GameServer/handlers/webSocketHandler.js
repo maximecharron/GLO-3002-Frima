@@ -50,6 +50,7 @@ redisSub.on('message', function (channel, message) {
             theBoss.setCurrentLife(bossMessage.currentBossLife);
             console.log("Boss life (CMS):", theBoss.getLife());
             theBoss.setConstantLife(bossMessage.constantBossLife);
+            bossRepository.saveBoth(theBoss);
         } catch (e){
             console.log(e);
         }
@@ -137,7 +138,6 @@ function broadcastBossInformation() {
                 } catch (e) {
                     console.log(e);
                 }
-
             });
         }
     }
