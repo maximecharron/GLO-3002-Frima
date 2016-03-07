@@ -1,4 +1,4 @@
-exports.toJSON = function(){
+exports.toJSON = function() {
     var obj = this.toObject();
 
     obj.id = obj._id;
@@ -7,4 +7,4 @@ exports.toJSON = function(){
     delete obj.password;
 
     return obj;
-}
+};
