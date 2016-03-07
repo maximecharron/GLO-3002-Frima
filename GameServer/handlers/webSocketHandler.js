@@ -27,43 +27,34 @@ setInterval(function () {
 );
 
 /*
-setInterval ( function (){
-   if (theBoss.status == STATUS.DEAD){
-       theBoss.revive(function(boss){
-           theBoss = boss;
-           bossRepository.saveBossBd(theBoss);
-       })
-   }
-}, 12000)
-*/
+ setInterval ( function (){
+ if (theBoss.status == STATUS.DEAD){
+ theBoss.revive(function(boss){
+ theBoss = boss;
+ bossRepository.saveBossBd(theBoss);
+ })
+ }
+ }, 12000)
+ */
 
-redisSub.on('message', function(channel, message){
-        console.log("Redis message");
-    if(channel == "bossDead")
-    {
+redisSub.on('message', function (channel, message) {
+    console.log("Redis message");
+    if (channel == "bossDead") {
         console.log("BroadCast bossDead: ", channel);
         broadcastBossDead();
-    } else if (channel == theBoss.serverName){
-        //console.log("Inchannel. Message is: ", message);
-        //try {
-        //    var bossMessage = JSON.parse(message); //JSON.parse() is synchrone!
-        //    console.log("Boss message is: ", bossMessage)
-        //} catch (e) {
-        //    return console.error(e);
-        //}
-        //theBoss.currentBossLife = message.currentBossLife;
-        //theBoss.constantBossLife = message.constantBossLife;
     }
 })
 
-exports.setWebSocketServer = function(webSocketServer) {
+exports.setWebSocketServer = function (webSocketServer) {
     wss = webSocketServer;
 }
 
-exports.newConnection = function(webSocket) {
-
-    webSocket.send(bossCommunicationService.createBossStatusUpdate(theBoss));
-
+exports.newConnection = function (webSocket) {
+    try {
+        webSocket.send(bossCommunicationService.createBossStatusUpdate(theBoss));
+    } catch (e) {
+        console.log(e);
+    }
     webSocket.on("message", function (message) {
         newMessage(message, webSocket);
     });
@@ -91,53 +82,73 @@ function newMessage(message, webSocket) {
 }
 
 function close(webSocket) {
-    webSocket.close();
+    try {
+        webSocket.close();
+    } catch (e) {
+        console.log(e);
+    }
+
 }
 
 function broadcast(data) {
     var message = JSON.stringify(data);
     if (wss.clients) {
         wss.clients.forEach(function each(client) {
-            client.send(message);
+            try {
+                client.send(message);
+            } catch (e) {
+                console.log(e);
+            }
+
         });
     }
 };
 
 function keepAlive(websocket) {
     var response = bossCommunicationService.createBossStatusUpdate(theBoss);
-    websocket.send(response);
+    try {
+        websocket.send(response);
+    } catch (e) {
+        console.log(e);
+    }
+
 }
 
 function broadcastBossInformation() {
     if (theBoss) {
-        if (lastLifeBroadcasted != theBoss.getLife() && wss.clients)
-        {
+        if (lastLifeBroadcasted != theBoss.getLife() && wss.clients) {
             console.log("inside broadcast BossLife :", theBoss.getLife())
             lastLifeBroadcasted = theBoss.getLife();
             var bossUpdate = bossCommunicationService.createBossStatusUpdate(theBoss);
-            wss.clients.forEach(function each(client)
-            {
-                client.send(bossUpdate);
+            wss.clients.forEach(function each(client) {
+                try {
+                    client.send(bossUpdate);
+                } catch (e) {
+                    console.log(e);
+                }
+
             });
         }
     }
 };
 
-function broadcastBossDead(){
+function broadcastBossDead() {
     var bossUpdate = bossCommunicationService.createBossStatusUpdate(theBoss);
     wss.clients.forEach(function each(client) {
-        client.send(bossUpdate);
-        client.close();
+        try {
+            client.send(bossUpdate);
+            client.close();
+        } catch (e) {
+            console.log(e);
+        }
     });
 
     theBoss.revive();
     bossRepository.saveBossBd(theBoss);
 }
 
-exports.initializeBoss = function()
-{
-    bossRepository.getBoss(function(boss)
-    {
+exports.initializeBoss = function () {
+    bossRepository.getBoss(function (boss) {
         theBoss = boss;
         console.log("theBoss: {0}", theBoss);
         bossRepository.saveBoth(theBoss);
