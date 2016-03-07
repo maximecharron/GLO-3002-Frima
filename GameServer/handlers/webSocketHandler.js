@@ -18,7 +18,7 @@ var bossCommunicationService = new BossCommunicationService();
 
 setInterval(function () {
         broadcastBossInformation()
-    }, 500
+    }, 100
 );
 
 setInterval(function () {
