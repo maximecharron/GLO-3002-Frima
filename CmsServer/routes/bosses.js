@@ -24,7 +24,9 @@ exports.updateBoss = function(req, res) {
     }
     BossRepository.updateBoss(boss, function (updatedBoss) {
         redis.hmset(boss.serverName, boss);
-        redis.publish(boss.serverName+'CMS', JSON.stringify(boss));
+        var channel = boss.serverName+'CMS';
+        console.log("Channel:", channel);
+        redis.publish(channel, JSON.stringify(boss));
         res.status(200).send(updatedBoss);
     })
 };
