@@ -16,4 +16,9 @@ public static class DictionaryExtensions
             dictionary.Add(key, value);
         }
     }
+
+    public static string ToFormattatedString<T1, T2>(this Dictionary<T1, T2> dictionary)
+    {
+        return string.Join(";", dictionary.Select(x => x.Key + "=" + x.Value).ToArray());
+    }
 }
