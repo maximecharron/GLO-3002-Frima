@@ -10,7 +10,7 @@ namespace Assets.Scripts.Scenes.Game
 {
     public class BossController : MonoBehaviour {
 
-        private const int DEFAULT_ATTACK_VALUE = 1000;
+        private const int DEFAULT_ATTACK_VALUE = 100000000;
         
         public Text healthPointValue;
         public Slider healthPointSlider;
@@ -58,6 +58,14 @@ namespace Assets.Scripts.Scenes.Game
 
         private void UpdateBossLife(int value)
         {
+            if (value > currentBossLife && value - currentBossLife <= DEFAULT_ATTACK_VALUE)
+            {
+                return;
+            } else if (value < 0)
+            {
+                value = 0;
+            }
+            currentBossLife = value;
             healthPointSlider.value = value;
             healthPointValue.text = value.ToString();
         }

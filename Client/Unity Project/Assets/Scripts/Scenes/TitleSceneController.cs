@@ -27,6 +27,10 @@ namespace Assets.Scripts.Scenes
             SceneManager.LoadScene(REGISTRATION_SCENE_NAME);
         }
 
+        public void OnExitButtonPointerClick()
+        {
+            UnityEngine.Application.Quit();
+        }
 
     }
 }
