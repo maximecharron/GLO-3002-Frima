@@ -27,30 +27,30 @@
             <div ng-if="selectedBoss">
                 <h5>Boss</h5>
 
-                <div ng-if="updateSuccess">Boss successfully updated!</div>
-                <div ng-if="updateError">Sorry, an error occured while updating the boss. Please try again.</div>
-                <form role="form" class="form-horizontal">
+                <div ng-show="updateSuccess" class="has-success">Boss successfully updated!</div>
+                <div ng-show="updateError"class="has-error">Sorry, an error occured while updating the boss. Please try again.</div>
+                <form role="form" class="form-horizontal" ng-submit="updateBoss(selectedBoss)">
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="bossName">Boss Name: </label>
 
                         <div class="col-sm-10">
-                            <input class="form-control" id="bossName" placeholder="{{selectedBoss.bossName}}">
+                            <input class="form-control" id="bossName" placeholder="{{selectedBoss.bossName}}" ng-model="selectedBoss.bossName">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="currentLife">Current Boss Life:</label>
 
                         <div class="col-sm-10">
-                            <input class="form-control" id="currentLife" type="number" min="0" max="1000000000000"
-                                   placeholder="{{selectedBoss.currentBossLife}}">
+                            <input class="form-control" id="currentLife"
+                                   placeholder="{{selectedBoss.currentBossLife}}" ng-model="selectedBoss.currentBossLife">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="constantLife">Constant Boss Life:</label>
 
                         <div class="col-sm-10">
-                            <input class="form-control" id="constantLife" type="number" min="0" max="1000000000000"
-                                   placeholder="{{selectedBoss.constantBossLife}}">
+                            <input class="form-control" id="constantLife" 
+                                   placeholder="{{selectedBoss.constantBossLife}}" ng-model="selectedBoss.constantBossLife">
                         </div>
                     </div>
                     <div class="form-group">
@@ -60,7 +60,7 @@
                             <input class="form-control" id="serverName" placeholder="{{selectedBoss.serverName}}" readonly>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-default pull-right" ng-click="updateBoss()">Update Boss</button>
+                    <button type="submit" class="btn btn-default pull-right">Update Boss</button>
                 </form>
             </div>
         </div>
