@@ -110,6 +110,18 @@ Boss.prototype.getName = function()
     return this.bossName;
 }
 
+Boss.prototype.getServerName = function(){
+    return this.serverName;
+};
+
+Boss.prototype.setConstantLife = function(constantLife){
+    this.constantBossLife = constantLife;
+}
+
+Boss.prototype.setCurrentLife = function(currentLife){
+    this.currentBossLife = currentLife;
+}
+
 Boss.prototype.revive = function(){
     this.currentBossLife = this.constantBossLife;
     this.status = STATUS.ALIVE;

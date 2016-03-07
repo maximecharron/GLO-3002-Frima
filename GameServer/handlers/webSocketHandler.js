@@ -42,6 +42,17 @@ redisSub.on('message', function (channel, message) {
     if (channel == "bossDead") {
         console.log("BroadCast bossDead: ", channel);
         broadcastBossDead();
+    } else if (channel == theBoss.getServerName()){
+        var bossMessage;
+        console.log("Message is: ", message);
+        try {
+            bossMessage = JSON.parse(message);
+            theBoss.setCurrentBossLife = bossMessage.currentBossLife;
+            console.log("BOss life:", theBoss.getLife());
+            theBoss.setConstantBossLife = bossMessage.constantBossLife;
+        } catch (e){
+            console.log(e);
+        }
     }
 })
 
