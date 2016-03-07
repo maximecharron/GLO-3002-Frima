@@ -86,7 +86,12 @@ function newMessage(message, webSocket) {
     }
 
     if (request.command.name == "attack") {
-        theBoss.receiveDamage(request.command.parameters.number);
+        try
+        {
+            theBoss.receiveDamage(request.command.parameters.number);
+        }catch (e) {
+            console.log("Problem with receiveDamage: ", e, request);
+        }
     }
     if (request.command.name == "keepAlive") {
         keepAlive(webSocket);
