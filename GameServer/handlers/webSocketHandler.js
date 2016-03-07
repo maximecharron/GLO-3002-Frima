@@ -42,7 +42,7 @@ redisSub.on('message', function (channel, message) {
     if (channel == "bossDead") {
         console.log("BroadCast bossDead: ", channel);
         broadcastBossDead();
-    } else if (channel == theBoss.getServerName()){
+    } else if (channel == theBoss.getServerName()+'CMS'){
         var bossMessage;
         console.log("Message is: ", message);
         try {

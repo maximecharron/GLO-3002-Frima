@@ -19,7 +19,7 @@ function Boss(hostname, bossName, currentBossLife, constantBossLife, status)
     {throw "ConstantBossLife is null"}
     if(!status)
     {throw "Status is null"}
-    channelListen = hostname;
+    channelListen = hostname+'CMS';
     this.serverName = hostname;
     this.bossName = bossName;
     this.currentBossLife = currentBossLife;
@@ -123,6 +123,7 @@ Boss.prototype.setCurrentLife = function(currentLife){
 }
 
 Boss.prototype.revive = function(){
+    console.log("Boss is being revived");
     this.currentBossLife = this.constantBossLife;
     this.status = STATUS.ALIVE;
     redisSet.hmset(this.serverName, {'currentBossLife': this.currentBossLife});
