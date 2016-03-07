@@ -88,7 +88,6 @@ Boss.prototype.receiveDamage = function(amountDamage)
         redisPub.publish("bossDead", self.toString());
     }
     redisSet.hmset(this.serverName, {'currentBossLife': this.currentBossLife});
-    redisPub.publish(this.serverName, self.toString());
 }
 
 Boss.prototype.getLife = function()
