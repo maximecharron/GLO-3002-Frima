@@ -4,7 +4,12 @@ node_js:
 
 notifications:
   slack: glo-3002-frima:ZJ8XIia7RmUgdioopRwOxWU5
-  
+
+services:
+  - mongodb
+  - redis
+
+script: npm install && npm test
 
 deploy:
   - provider: heroku
