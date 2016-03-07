@@ -8,12 +8,13 @@ namespace Assets.Scripts.Communication.CommandDTOs
     [Serializable]
     public class BossStatusUpdateCommandDTO : CommandDTO
     {
+        public const string COMMAND_NAME = "bossStatusUpdate";
         public BossStatusUpdateCommand command = new BossStatusUpdateCommand();
 
         [Serializable]
         public class BossStatusUpdateCommand
         {
-            public String name = "bossStatusUpdate";
+            public String name = COMMAND_NAME;
             public BossStatusUpdateParameters parameters = new BossStatusUpdateParameters();
 
             [Serializable]

@@ -8,33 +8,31 @@ using Assets.Scripts.Communication.CommandDTOs;
 
 namespace Assets.Scripts.Scenes.Game
 {
+    [RequireComponent(typeof(AudioSource))]
     public class BossController : MonoBehaviour {
 
-        private const int DEFAULT_ATTACK_VALUE = 100000000;
+        private const int DEFAULT_ATTACK_VALUE = 1000;
         
         public Text healthPointValue;
         public Slider healthPointSlider;
-        public ParticleSystem particlesSystem;
+        public ParticleSystem hitParticleSystem;
+        public AudioClip[] audioClips;
 
         public delegate void BossDeadEventHandler();
         public event BossDeadEventHandler OnBossDead;
 
         private WebSocketService webSocketService;
         private int currentBossLife = 0;
-        
 
         void Start() {
             webSocketService = FindObjectOfType<WebSocketService>();
-            webSocketService.RegisterCommand("bossStatusUpdate", BossStatusUpdateCallback, typeof(BossStatusUpdateCommandDTO));
+            webSocketService.RegisterCommand(BossStatusUpdateCommandDTO.COMMAND_NAME, BossStatusUpdateCallback, typeof(BossStatusUpdateCommandDTO));
+            healthPointValue.gameObject.SetActive(false);
         }
 
         void OnDestroy()
         {
-            webSocketService.UnregisterCommand("bossStatusUpdate");
-        }
-
-        void Update() {
-            
+            webSocketService.UnregisterCommand(BossStatusUpdateCommandDTO.COMMAND_NAME);
         }
 
         void OnMouseDown()
@@ -71,22 +69,20 @@ namespace Assets.Scripts.Scenes.Game
             currentBossLife = value;
             healthPointSlider.value = value;
             healthPointValue.text = value.ToString();
+            healthPointValue.gameObject.SetActive(true);
         }
 
         private void PlayParticlesOnHit()
         {
-            float mousePosX = Input.mousePosition.x - Screen.width / 2;
-            float mousePosY = Input.mousePosition.y - Screen.height / 2;
-            Vector3 mousePosition = new Vector3(mousePosX, mousePosY, -5);
-            particlesSystem.transform.localPosition = mousePosition;
-            particlesSystem.Play();
+            hitParticleSystem.transform.position = Camera.main.GetMousePosition().ToVector3(hitParticleSystem.transform.position.z);
+            hitParticleSystem.PlayEnable();
         }
 
         private void PlaySoundOnHit()
         {
-            AudioSource[] audio = GetComponents<AudioSource>();
-            int randomIndex = Convert.ToInt32(UnityEngine.Random.Range(0, audio.Length));
-            audio[randomIndex].Play();
+            AudioSource audioSource = GetComponent<AudioSource>();
+            int randomAudioClipIndex = Convert.ToInt32(UnityEngine.Random.Range(0, audioClips.Length));
+            audioSource.PlayAudioClip(audioClips[randomAudioClipIndex]);
         }
     }
 }
