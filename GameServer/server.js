@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var http = require('http');
 var ws = require('ws');
+var cors = require('cors');
 var WebSocketServer = require("ws").Server;
 var port = process.env.PORT || 3000;
 var server = http.createServer(app);
@@ -24,11 +25,17 @@ mongoose.connect(mongoUri);
 var tokenSecret = 'FRIMA_TOKEN_SECRET' || process.env.TOKEN_SECRET;
 
 var webSocketHandler = require('./handlers/webSocketHandler.js');
-
+var allowOrigin = ["https://frima-client-1.herokuapp.com", "http://frima-client-1.herokuapp.com", "localhost:8080"];
+var corsOptions = {
+    origin: allowOrigin,
+    methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'UPDATE'],
+    credentials: true
+}
 
 app.set('jwtTokenSecret', tokenSecret);
 
 require('./middleware/passport')(passport, app);
+app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
