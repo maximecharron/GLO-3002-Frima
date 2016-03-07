@@ -28,7 +28,7 @@ function Boss(hostname, bossName, currentBossLife, constantBossLife, status)
 
     redisSub.subscribe(channelListen);
 }
-
+/*
 redisSub.on('message', function(channel, message){
     console.log("channel: ", channel);
     if(channel == channelListen)
@@ -48,7 +48,7 @@ redisSub.on('message', function(channel, message){
     }
 
 })
-
+*/
 //Public method
 Boss.prototype.toJson = function()
 {

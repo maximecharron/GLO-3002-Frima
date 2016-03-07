@@ -80,13 +80,18 @@ function newMessage(message, webSocket) {
 
     var request = {};
     try {
-        var request = JSON.parse(message); //JSON.parse() is synchrone!
+        var request = JSON.parse(message);
     } catch (e) {
         return console.error(e);
     }
 
     if (request.command.name == "attack") {
-        theBoss.receiveDamage(request.command.parameters.number);
+        try
+        {
+            theBoss.receiveDamage(request.command.parameters.number);
+        }catch (e) {
+            console.log("Problem with receiveDamage: ", e, request);
+        }
     }
     if (request.command.name == "keepAlive") {
         keepAlive(webSocket);
