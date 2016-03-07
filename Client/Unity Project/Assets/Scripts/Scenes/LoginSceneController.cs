@@ -20,11 +20,11 @@ namespace Assets.Scripts.Scenes
         public Text loginErrorLabel;
         public Button loginButton;
 
-        private Application application;
+        private GameController gameController;
         private HttpService httpService;
 
         void Start() {
-            application = (Application)FindObjectOfType(typeof(Application));
+            gameController = (GameController)FindObjectOfType(typeof(GameController));
             httpService = (HttpService)FindObjectOfType(typeof(HttpService));
 
             loginErrorLabel.transform.gameObject.SetActive(false);
@@ -82,7 +82,7 @@ namespace Assets.Scripts.Scenes
         private void ProcessSuccessfulLogin(WWW request)
         {
             LoginResultDTO resultDTO = JsonUtility.FromJson<LoginResultDTO>(request.text);
-            application.SetUserSession(resultDTO.token, resultDTO.username);
+            gameController.SetUserSession(resultDTO.token, resultDTO.username);
             SceneManager.LoadScene(MENU_SCENE_NAME);
         }
     }

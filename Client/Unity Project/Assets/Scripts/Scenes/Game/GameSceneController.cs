@@ -14,8 +14,8 @@ namespace Assets.Scripts.Scenes.Game
         public BossController bossController;
 
         void Start() {
-            Application application = FindObjectOfType<Application>();
-            webSocketService.sessionToken = application.sessionToken;
+            GameController gameController = FindObjectOfType<GameController>();
+            webSocketService.sessionToken = gameController.sessionToken;
             bossController.OnBossDead += OnBossDead;
 
             webSocketService.Init();

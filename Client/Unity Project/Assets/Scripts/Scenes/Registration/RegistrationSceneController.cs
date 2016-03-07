@@ -25,12 +25,12 @@ namespace Assets.Scripts.Scenes.Registration
         public RegistrationFormValidationController registrationFormValidationController;
         public Button registerButton;
 
-        private Application application;
+        private GameController gameController;
         private HttpService httpService;
 
         void Start()
         {
-            application = (Application)FindObjectOfType(typeof(Application));
+            gameController = (GameController)FindObjectOfType(typeof(GameController));
             httpService = (HttpService)FindObjectOfType(typeof(HttpService));
 
             registrationErrorLabel.transform.gameObject.SetActive(false);
@@ -92,7 +92,7 @@ namespace Assets.Scripts.Scenes.Registration
         private void ProcessSuccessfulRegistration(WWW request)
         {
             RegistrationResultDTO resultDTO = JsonUtility.FromJson<RegistrationResultDTO>(request.text);
-            application.SetUserSession(resultDTO.token, resultDTO.username);
+            gameController.SetUserSession(resultDTO.token, resultDTO.username);
             SceneManager.LoadScene(MENU_SCENE_NAME);
         }
     }

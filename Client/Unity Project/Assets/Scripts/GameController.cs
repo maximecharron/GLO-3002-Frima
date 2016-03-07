@@ -7,13 +7,13 @@ namespace Assets.Scripts
 #pragma warning disable CS0618
 
     [RequireComponent(typeof(AudioSource))]
-    public class Application: MonoBehaviour
+    public class GameController : MonoBehaviour
     {
         public HttpService httpService;
 
         public string sessionToken { get; set; }
 
-        private static Application instance;
+        private static GameController instance;
 
         void Awake()
         {
@@ -26,16 +26,6 @@ namespace Assets.Scripts
                 Destroy(this.gameObject);
             }
             DontDestroyOnLoad(this.gameObject);
-        }
-
-        void Start()
-        {
-            
-        }
-
-        void Update()
-        {
-
         }
 
         public void SetUserSession(string token, string username)

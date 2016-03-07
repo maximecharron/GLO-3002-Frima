@@ -13,11 +13,11 @@ namespace Assets.Scripts.Scenes
         public EventSystem eventSystem;
         public Button logOutButton;
 
-        private Application application;
+        private GameController gameController;
         private HttpService httpService;
 
         void Start() {
-            application = (Application)FindObjectOfType(typeof(Application));
+            gameController = (GameController)FindObjectOfType(typeof(GameController));
             httpService = (HttpService)FindObjectOfType(typeof(HttpService));
         }
 
@@ -39,7 +39,7 @@ namespace Assets.Scripts.Scenes
         private void LogOutCallback(WWW request)
         {
             logOutButton.interactable = true;
-            application.ClearUserSession();
+            gameController.ClearUserSession();
             SceneManager.LoadScene(TITLE_SCENE_NAME);
         }
     }
