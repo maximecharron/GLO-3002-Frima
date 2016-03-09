@@ -14,17 +14,10 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var flash = require('connect-flash');
-
-
-
 var mongoose = require('mongoose');
 var mongoUri = process.env.MONGOLAB_URI || 'mongodb://localhost/frimaGameServer';
-console.log(mongoUri)
 mongoose.connect(mongoUri);
-
-var tokenSecret = 'FRIMA_TOKEN_SECRET' || process.env.TOKEN_SECRET;
-
-var webSocketAPI = require('./api/webSocketAPI.js');
+var tokenSecret = process.env.TOKEN_SECRET || 'FRIMA_TOKEN_SECRET';
 var allowOrigin = ["https://frima-client-1.herokuapp.com", "http://frima-client-1.herokuapp.com", "localhost:8080"];
 var corsOptions = {
     origin: allowOrigin,
@@ -57,8 +50,29 @@ server.listen(port);
 
 console.log("http server listening on %d", port);
 
+//Initialize main components
 var webSocketServer = new WebSocketServer({server: server});
-webSocketAPI.setWebSocketServer(webSocketServer); // Set le webSocketServer dans le socketHandler
+
+var BossCommunicationService = require('./services/bossCommunicationService.js');
+var bossCommunicationService = new BossCommunicationService(webSocketServer);
+
+var RedisCommunicationService = require('./services/redisCommunicationService.js');
+var redisCommunicationService = new RedisCommunicationService();
+
+var BossRepository = require('./repository/bossRepository.js');
+var bossRepository = new BossRepository(redisCommunicationService);
+
+var BossService = require('./services/bossService.js');
+var bossService = new BossService(bossCommunicationService, bossRepository);
+
+var RedisListenerService = require('./services/redisListenerService.js');
+var redisListenerService = new RedisListenerService(bossService, bossCommunicationService);
+
+var UpdateService = require('./services/updateService.js');
+var updateService = new UpdateService(bossRepository, bossCommunicationService, bossService);
+
+var WebSocketAPI = require('./api/webSocketAPI.js');
+var webSocketAPI = new WebSocketAPI(bossService, bossCommunicationService, redisCommunicationService, webSocketServer);
 
 console.log("websocket server created");
 webSocketAPI.initializeBoss();

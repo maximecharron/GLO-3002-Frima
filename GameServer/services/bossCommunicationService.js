@@ -1,10 +1,9 @@
 var ws = require('ws');
-var wss = require('ws').Server;
-var BossService = require('./../services/BossService.js').BossService;
 
-function BossCommunicationService()
+function BossCommunicationService(webSocketServer)
 {
     this.lastLifeBroadcasted = 0;
+    this.wss = webSocketServer;
 }
 
 BossCommunicationService.prototype.createBossStatusUpdate = function(theBoss)
@@ -19,10 +18,10 @@ BossCommunicationService.prototype.createBossStatusUpdate = function(theBoss)
     });
 }
 
-BossCommunicationService.prototype.broadcastBossDead = function()
+BossCommunicationService.prototype.broadcastBossDead = function(bossService)
 {
-    var bossUpdate = this.createBossStatusUpdate(theBoss);
-    wss.clients.forEach(function each(client)
+    var bossUpdate = this.createBossStatusUpdate(bossService.getCurrentBoss());
+    this.wss.clients.forEach(function each(client)
     {
         try
         {
@@ -33,20 +32,19 @@ BossCommunicationService.prototype.broadcastBossDead = function()
             console.log(e);
         }
     });
-    BossService.reviveBoss();
+    bossService.reviveBoss();
 }
 
-BossCommunicationService.prototype.broadcastBossInformation = function()
+BossCommunicationService.prototype.broadcastBossInformation = function(theBoss)
 {
-    var theBoss = BossService.getCurrentBoss();
     if (theBoss)
     {
-        if (this.lastLifeBroadcasted != theBoss.getLife() && wss.clients)
+        if (this.lastLifeBroadcasted != theBoss.getLife() && this.wss.clients)
         {
-            console.log("inside broadcast BossLife :", theBoss.getLife())
+            console.log("inside broadcast BossLife :", theBoss.getLife());
             this.lastLifeBroadcasted = theBoss.getLife();
             var bossUpdate = this.createBossStatusUpdate(theBoss);
-            wss.clients.forEach(function each(client)
+            this.wss.clients.forEach(function each(client)
             {
                 try
                 {
@@ -62,19 +60,15 @@ BossCommunicationService.prototype.broadcastBossInformation = function()
 
 BossCommunicationService.prototype.keepAlive = function(webSocket)
 {
-    var response = this.createBossStatusUpdate(BossService.getCurrentBoss());
+    var self = this;
+    var response = self.createBossStatusUpdate(this.bossService.getCurrentBoss());
     try
     {
-        websocket.send(response);
+        webSocket.send(response);
     } catch (e)
     {
         console.log("Problem with keepAlive :", e);
     }
-}
-
-BossCommunicationService.prototype.setWebSocketServer = function(webSocketServer)
-{
-    wss = webSocketServer;
-}
+};
 
 module.exports = BossCommunicationService;

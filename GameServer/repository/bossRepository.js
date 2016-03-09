@@ -1,13 +1,12 @@
 var DbBoss = require('./../models/boss.js');
-var redis = require('./../services/redisService.js').redisSet;
 var hostname = process.env.SERVER_NAME || require('os').hostname();
-
 var Boss = require('./../domain/boss.js');
 var bossConfig = require('./../config/bossConfig.js');
-var RedisCommunicationService = require('./../services/redisCommunicationService.js').RedisCommunicationService;
 
-function BossRepository()
-{}
+function BossRepository(redisCommunicationService)
+{
+    this.redisCommunicationService = redisCommunicationService
+}
 
 BossRepository.prototype.getBoss = function(callBack, constant)
 {
@@ -18,12 +17,12 @@ BossRepository.prototype.getBoss = function(callBack, constant)
         serverName += "Constant";
     }
 
-    redis.hgetall(serverName, function(err, object)
+    this.redisCommunicationService.findBoss(serverName, function(err, object)
     {
-        console.log("redis: {0}", serverName);
+        console.log("redis: ", serverName);
         if(object)
         {
-            console.log("inside redis: {0}", serverName);
+            console.log("inside redis: ", serverName);
             var boss = new Boss(serverName, object.bossName, object.currentBossLife, object.constantBossLife, object.status)
             callBack(boss);
         }
@@ -31,10 +30,10 @@ BossRepository.prototype.getBoss = function(callBack, constant)
         {
             DbBoss.findBoss(serverName, function(bossModel)
             {
-                console.log("DbBoss: {0}", serverName);
+                console.log("DbBoss: ", serverName);
                 if(bossModel)
                 {
-                    console.log("inside dbBoss: {0}", serverName);
+                    console.log("inside dbBoss: ", serverName);
                     var boss = new Boss(serverName, bossModel.bossName, bossModel.currentBossLife, bossModel.constantBossLife, bossModel.status);
                     callBack(boss);
                 }
@@ -55,9 +54,7 @@ BossRepository.prototype.getBoss = function(callBack, constant)
             });
         }
     })
-}
-
-BossRepository.prototype.getNewBoss = function(){}
+};
 
 function getConfigBoss(callBack)
 {
@@ -68,19 +65,18 @@ function getConfigBoss(callBack)
 BossRepository.prototype.saveBoth = function(boss)
 {
     var self = this;
-    saveBossRedis(boss);
+    self.saveBossRedis(boss);
     self.saveBossBd(boss);
-}
+};
 
-function saveBossRedis(boss)
+BossRepository.prototype.saveBossRedis = function(boss)
 {
-    console.log("saveBossRedis: {0}", hostname);
-    RedisCommunicationService.setBoss(hostname, boss);
+    this.redisCommunicationService.setBoss(boss);
 }
 
 BossRepository.prototype.saveBossBd = function (boss)
 {
     DbBoss.backupBoss(boss);
-}
+};
 
 module.exports = BossRepository;

@@ -1,23 +1,17 @@
-var ws = require('ws');
-var wss = require('ws').Server;
-
-var BossService = require('./../services/bossService.js');
-var BossCommunicationService = require('./../services/bossCommunicationService.js');
-
-var bossCommunicationService = new BossCommunicationService();
-var bossService = new BossService();
-
-exports.setWebSocketServer = function (webSocketServer)
+function WebSocketAPI(bossService, bossCommunicationService, redisCommunicationService, webSocketServer)
 {
-    wss = webSocketServer;
-    bossCommunicationService.setWebSocketServer(webSocketServer);
+    this.bossService = bossService;
+    this.wss = webSocketServer;
+    this.bossCommunicationService = bossCommunicationService;
+    this.redisCommunicationService = redisCommunicationService;
 }
 
-exports.newConnection = function (webSocket)
+WebSocketAPI.prototype.newConnection = function (webSocket)
 {
+    var theBoss = this.bossService.getCurrentBoss();
     try
     {
-        webSocket.send(bossCommunicationService.createBossStatusUpdate(theBoss));
+        webSocket.send(this.bossCommunicationService.createBossStatusUpdate());
     } catch (e)
     {
         console.log(e);
@@ -31,7 +25,7 @@ exports.newConnection = function (webSocket)
     {
         close(webSocket);
     });
-}
+};
 
 function newMessage(message, webSocket)
 {
@@ -42,9 +36,18 @@ function newMessage(message, webSocket)
         var request = JSON.parse(message);
         if (request.command.name == "attack")
         {
-            if(request.command.parameters.number)
+            if (request.command.parameters.number)
             {
-                BossService.makeDamage(request.command.parameters.number);
+                this.bossService.makeDamage(request.command.parameters.number, function (boss)
+                {
+                    if (boss.getLife > 0)
+                    {
+                        this.redisCommunicationService.setBossCurrentLife(boss.getLife());
+                    } else
+                    {
+                        this.redisCommunicationService.publishBossDead();
+                    }
+                });
             }
             else
             {
@@ -54,7 +57,7 @@ function newMessage(message, webSocket)
 
         if (request.command.name == "keepAlive")
         {
-            BossCommunicationService.keepAlive(websocket);
+            this.bossCommunicationService.keepAlive(webSocket);
         }
     } catch (e)
     {
@@ -76,7 +79,9 @@ function close(webSocket)
 
 }
 
-exports.initializeBoss = function ()
+WebSocketAPI.prototype.initializeBoss = function ()
 {
-    bossService.initializeBoss();
+    this.bossService.initializeBoss();
 };
+
+module.exports = WebSocketAPI;
