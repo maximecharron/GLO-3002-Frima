@@ -1,17 +1,21 @@
+var self;
 function WebSocketAPI(bossService, bossCommunicationService, redisCommunicationService, webSocketServer)
 {
     this.bossService = bossService;
     this.wss = webSocketServer;
     this.bossCommunicationService = bossCommunicationService;
     this.redisCommunicationService = redisCommunicationService;
+    self = this;
 }
+
+WebSocketAPI.prototype.constructor = WebSocketAPI;
 
 WebSocketAPI.prototype.newConnection = function (webSocket)
 {
-    var theBoss = this.bossService.getCurrentBoss();
+    var theBoss = self.bossService.getCurrentBoss();
     try
     {
-        webSocket.send(this.bossCommunicationService.createBossStatusUpdate());
+        webSocket.send(self.bossCommunicationService.createBossStatusUpdate(theBoss));
     } catch (e)
     {
         console.log(e);
@@ -38,14 +42,15 @@ function newMessage(message, webSocket)
         {
             if (request.command.parameters.number)
             {
-                this.bossService.makeDamage(request.command.parameters.number, function (boss)
+                self.bossService.makeDamage(request.command.parameters.number, function (boss)
                 {
-                    if (boss.getLife > 0)
+                    if (boss.getLife() > 0)
                     {
-                        this.redisCommunicationService.setBossCurrentLife(boss.getLife());
+                        self.redisCommunicationService.setBossCurrentLife(boss.getLife());
                     } else
                     {
-                        this.redisCommunicationService.publishBossDead();
+                        console.log("Boss dead omg");
+                        self.redisCommunicationService.publishBossDead(boss.toString());
                     }
                 });
             }
@@ -57,7 +62,7 @@ function newMessage(message, webSocket)
 
         if (request.command.name == "keepAlive")
         {
-            this.bossCommunicationService.keepAlive(webSocket);
+            self.bossCommunicationService.keepAlive(webSocket);
         }
     } catch (e)
     {
@@ -81,7 +86,7 @@ function close(webSocket)
 
 WebSocketAPI.prototype.initializeBoss = function ()
 {
-    this.bossService.initializeBoss();
+    self.bossService.initializeBoss();
 };
 
 module.exports = WebSocketAPI;

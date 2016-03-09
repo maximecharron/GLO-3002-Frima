@@ -8,6 +8,7 @@ function BossCommunicationService(webSocketServer)
 
 BossCommunicationService.prototype.createBossStatusUpdate = function(theBoss)
 {
+    console.log("StatusUpdateBoss: ", theBoss);
     return JSON.stringify(
     {
         command:
@@ -32,8 +33,7 @@ BossCommunicationService.prototype.broadcastBossDead = function(bossService)
             console.log(e);
         }
     });
-    bossService.reviveBoss();
-}
+};
 
 BossCommunicationService.prototype.broadcastBossInformation = function(theBoss)
 {
