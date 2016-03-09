@@ -4,6 +4,7 @@ var hostname = process.env.SERVER_NAME || require('os').hostname();
 
 var Boss = require('./../domain/boss.js');
 var bossConfig = require('./../config/bossConfig.js');
+var RedisCommunicationService = require('./../services/redisCommunicationService.js').RedisCommunicationService;
 
 function BossRepository()
 {}
@@ -74,7 +75,7 @@ BossRepository.prototype.saveBoth = function(boss)
 function saveBossRedis(boss)
 {
     console.log("saveBossRedis: {0}", hostname);
-    redis.hmset(hostname, boss.toJson());
+    RedisCommunicationService.setBoss(hostname, boss);
 }
 
 BossRepository.prototype.saveBossBd = function (boss)

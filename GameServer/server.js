@@ -24,7 +24,7 @@ mongoose.connect(mongoUri);
 
 var tokenSecret = 'FRIMA_TOKEN_SECRET' || process.env.TOKEN_SECRET;
 
-var webSocketHandler = require('./handlers/webSocketHandler.js');
+var webSocketAPI = require('./api/webSocketAPI.js');
 var allowOrigin = ["https://frima-client-1.herokuapp.com", "http://frima-client-1.herokuapp.com", "localhost:8080"];
 var corsOptions = {
     origin: allowOrigin,
@@ -52,15 +52,14 @@ app.get('/status', status.getStatus);
 app.post('/login', passport.authenticate('local-login'), login.getToken);
 app.post('/signup', passport.authenticate('local-signup'), login.getToken);
 app.get('/logout', login.logout);
-//app.post('/facebook', passport.authenticate('facebook-login'), login.getToken);
 
 server.listen(port);
 
 console.log("http server listening on %d", port);
 
 var webSocketServer = new WebSocketServer({server: server});
-webSocketHandler.setWebSocketServer(webSocketServer); // Set le webSocketServer dans le socketHandler
+webSocketAPI.setWebSocketServer(webSocketServer); // Set le webSocketServer dans le socketHandler
 
 console.log("websocket server created");
-webSocketHandler.initializeBoss();
-webSocketServer.on("connection", webSocketHandler.newConnection);
+webSocketAPI.initializeBoss();
+webSocketServer.on("connection", webSocketAPI.newConnection);
