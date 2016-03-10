@@ -42,5 +42,5 @@ exports.updateBoss = function (bossToUpdate, callback) {
             }
             callback(boss);
         });
-    })
+    });
 };

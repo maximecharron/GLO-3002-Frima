@@ -29,6 +29,7 @@ var statusSpy;
 var bossRepoSpy;
 var redisHmsetSpy;
 var redisPublishSpy;
+//Stubs
 bossRepositoryStub.updateBoss = function (boss, callback) {
     callback(boss);
 };
@@ -47,7 +48,7 @@ redisStub.publish = function (channel, message) {
 
 redisStub.hmset = function (key, values) {
 };
-
+//Before all tests
 before(function (done) {
     sendSpy = sinon.spy(res, "send");
     statusSpy = sinon.spy(res, "status");
