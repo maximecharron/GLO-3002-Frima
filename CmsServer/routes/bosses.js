@@ -1,4 +1,4 @@
-var BossRepository =  require('./../repository/BossRepository.js')
+var BossRepository =  require('./../repository/bossRepository.js')
 var redisUrl = 'redis://h:p88tk5goahehq8c9hta4ugr533t@ec2-54-227-252-28.compute-1.amazonaws.com:7069' || 'redis://localhost:6379';
 var redis = require('redis').createClient(redisUrl);
 
