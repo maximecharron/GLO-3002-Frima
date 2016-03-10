@@ -2,14 +2,16 @@ var redisPub = require('./redisConnectionService.js').redisPub
 var redisSet = require('./redisConnectionService.js').redisSet;
 var hostname = process.env.SERVER_NAME || require('os').hostname();
 
+//Constructor
 function RedisCommunicationService()
 {
-    this.serverNameSubscribeCMS =hostname+"CMS";
+    this.serverNameSubscribeCMS = hostname + "CMS";
 }
 
+//Public method
 RedisCommunicationService.prototype.setBoss = function (boss)
 {
-    console.log(boss);
+    //console.log(boss);
     redisSet.hmset(hostname, boss.toJson());
 };
 

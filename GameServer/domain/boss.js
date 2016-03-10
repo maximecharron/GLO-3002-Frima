@@ -1,17 +1,8 @@
+
 //Constructor
 function Boss(hostname, bossName, currentBossLife, constantBossLife, status)
 {
     //Private
-    if(!hostname)
-    {throw "Hostname is null"}
-    if(!bossName)
-    {throw "BossName is null"};
-    if(!currentBossLife)
-    {throw "CurrentBossLife is null"};
-    if(!constantBossLife)
-    {throw "ConstantBossLife is null"}
-    if(!status)
-    {throw "Status is null"}
     this.serverName = hostname;
     this.bossName = bossName;
     this.currentBossLife = currentBossLife;
@@ -38,15 +29,14 @@ Boss.prototype.toString = function()
     return JSON.stringify(
         {
             "bossName" : this.bossName,
-            "constantBossLife": this.constantBossLife,
             "currentBossLife": this.currentBossLife,
+            "constantBossLife": this.constantBossLife,
             "status": this.status
         });
 }
 
 Boss.prototype.receiveDamage = function(amountDamage)
 {
-    var self = this;
     if (this.currentBossLife > 0)
     {
         this.currentBossLife = this.currentBossLife - amountDamage;
@@ -73,16 +63,6 @@ Boss.prototype.getStatus = function()
     return this.status;
 }
 
-Boss.prototype.getName = function()
-{
-    return this.bossName;
-}
-
-Boss.prototype.getServerName = function()
-{
-    return this.serverName;
-};
-
 Boss.prototype.setConstantLife = function(constantLife)
 {
     this.constantBossLife = constantLife;
@@ -95,7 +75,7 @@ Boss.prototype.setCurrentLife = function(currentLife)
 
 Boss.prototype.revive = function()
 {
-    console.log("Boss is being revived");
+    //console.log("Boss is being revived");
     this.currentBossLife = this.constantBossLife;
     this.status = STATUS.ALIVE;
 };

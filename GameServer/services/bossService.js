@@ -1,5 +1,6 @@
 var Boss = require('./../domain/boss.js');
 
+//Constructor
 function BossService(bossCommunicationService, bossRepository)
 {
     this.theBoss;
@@ -7,13 +8,14 @@ function BossService(bossCommunicationService, bossRepository)
     this.bossRepository = bossRepository;
 }
 
+//Public method
 BossService.prototype.initializeBoss = function()
 {
     var self = this;
     this.bossRepository.getBoss(function (boss)
     {
         self.theBoss = boss;
-        console.log("theBoss: ", self.theBoss);
+        //console.log("theBoss: ", self.theBoss);
         self.bossRepository.saveBoth(self.theBoss);
     });
 };
@@ -39,7 +41,6 @@ BossService.prototype.updateBoss = function(currentLife, constantLife)
 {
     this.theBoss.setCurrentLife(currentLife);
     this.theBoss.setConstantLife(constantLife);
-    //this.bossRepository.saveBoth(this.theBoss); //Voir si utilisé ailleurs
 };
 
 module.exports = BossService;

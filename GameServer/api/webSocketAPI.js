@@ -1,4 +1,5 @@
 var self;
+//Constructor
 function WebSocketAPI(bossService, bossCommunicationService, redisCommunicationService, webSocketServer)
 {
     this.bossService = bossService;
@@ -8,8 +9,7 @@ function WebSocketAPI(bossService, bossCommunicationService, redisCommunicationS
     self = this;
 }
 
-WebSocketAPI.prototype.constructor = WebSocketAPI;
-
+//Public method
 WebSocketAPI.prototype.newConnection = function (webSocket)
 {
     var theBoss = self.bossService.getCurrentBoss();
@@ -31,6 +31,12 @@ WebSocketAPI.prototype.newConnection = function (webSocket)
     });
 };
 
+WebSocketAPI.prototype.initializeBoss = function ()
+{
+    self.bossService.initializeBoss();
+};
+
+//Private method
 function newMessage(message, webSocket)
 {
 
@@ -49,7 +55,7 @@ function newMessage(message, webSocket)
                         self.redisCommunicationService.setBossCurrentLife(boss.getLife());
                     } else
                     {
-                        console.log("Boss dead omg");
+                        //console.log("Boss dead omg");
                         self.redisCommunicationService.publishBossDead(boss.toString());
                     }
                 });
@@ -83,10 +89,5 @@ function close(webSocket)
     }
 
 }
-
-WebSocketAPI.prototype.initializeBoss = function ()
-{
-    self.bossService.initializeBoss();
-};
 
 module.exports = WebSocketAPI;

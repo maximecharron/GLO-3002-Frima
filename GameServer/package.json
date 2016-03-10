@@ -23,6 +23,7 @@
     "passport-local": "~1.0.0",
     "redis": "^2.4.2",
     "request": "^2.69.0",
+    "sinon": "^1.17.3",
     "underscore": "~1.8.3",
     "ws": "^1.0.1"
   },

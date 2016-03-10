@@ -51,6 +51,8 @@ server.listen(port);
 console.log("http server listening on %d", port);
 
 //Initialize main components
+
+require("./constants/bossConstants.js");
 var webSocketServer = new WebSocketServer({server: server});
 
 var BossCommunicationService = require('./services/bossCommunicationService.js');

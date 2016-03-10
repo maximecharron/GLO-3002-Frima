@@ -1,6 +1,9 @@
 var redisSub = require('./redisConnectionService.js').redisSub;
 var hostname = process.env.SERVER_NAME || require('os').hostname();
 
+var self;
+
+//Constructor
 function RedisListenerService(bossService, bossCommunicationService)
 {
     this.serverNameSubscribeCMS =hostname+"CMS";
@@ -8,24 +11,33 @@ function RedisListenerService(bossService, bossCommunicationService)
     this.bossCommunicationService = bossCommunicationService;
     this.subscribeServerCmsName(this.serverNameSubscribeCMS);
     redisSub.subscribe("bossDead");
+    self = this;
 }
 
+//Public method
+RedisListenerService.prototype.subscribeServerCmsName = function (serverName)
+{
+    this.serverNameSubscribeCMS = serverName;
+    redisSub.subscribe(serverName);
+};
+
+//Private method
 redisSub.on('message', function (channel, message)
 {
-    console.log("Redis message: ", channel);
+    //console.log("Redis message: ", channel);
     if (channel == "bossDead")
     {
-        console.log("BroadCast bossDead: ", channel);
-        this.bossCommunicationService.broadcastBossDead();
-        this.bossService.reviveBoss();
-    } else if (channel == this.serverNameSubscribeCMS)
+        //console.log("BroadCast bossDead: ", channel);
+        self.bossCommunicationService.broadcastBossDead(self.bossService);
+        self.bossService.reviveBoss();
+    } else if (channel == self.serverNameSubscribeCMS)
     {
         var bossMessage;
-        console.log("Message is: ", message);
+        //console.log("Message is: ", message);
         try
         {
             bossMessage = JSON.parse(message);
-            this.bossService.updateBoss(bossMessage.currentBossLife, bossMessage.constantBossLife);
+            self.bossService.updateBoss(bossMessage.currentBossLife, bossMessage.constantBossLife);
         } catch (e)
         {
             console.log(e);
@@ -33,12 +45,4 @@ redisSub.on('message', function (channel, message)
     }
 });
 
-RedisListenerService.prototype.subscribeServerCmsName = function (serverName)
-{
-    this.serverNameSubscribeCMS = serverName;
-    redisSub.subscribe(serverName);
-};
-
 module.exports = RedisListenerService;
-
-
