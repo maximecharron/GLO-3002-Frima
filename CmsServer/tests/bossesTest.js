@@ -5,7 +5,7 @@ var mocha = require('mocha');
 var bossRepositoryStub = {};
 var redisStub = {};
 var bosses = proxyquire('./../routes/bosses.js', {
-    './../repository/BossRepository.js': bossRepositoryStub,
+    './../repository/bossRepository.js': bossRepositoryStub,
     'redis': redisStub
 });
 var res = {
