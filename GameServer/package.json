@@ -31,7 +31,7 @@
   "scripts": {
     "prestart": "npm install",
     "start": "node server.js",
-    "test": "mocha test/bossTest.js && mocha test/webSocketHandlerTest.js"
+    "test": "mocha test/"
   },
   "devDependencies": {
     "chai": "^3.5.0",

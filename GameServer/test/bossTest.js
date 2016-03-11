@@ -1,5 +1,4 @@
 var expect = require("chai").expect;
-var redis = require('redis').createClient(process.env.REDIS_URL);
 var Boss = require("../domain/boss.js");
 require("./../constants/bossConstants.js");
 var hostname = require('os').hostname();
