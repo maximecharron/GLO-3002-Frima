@@ -27,8 +27,8 @@ describe("Boss", function ()
 
             //Assert
             expect(expected).to.equal(result);
-        })
-    })
+        });
+    });
 
     describe("toString", function ()
     {
@@ -43,7 +43,7 @@ describe("Boss", function ()
             //Assert
             expect(expected).to.equal(result);
         });
-    })
+    });
 
     describe("receiveDamage with bossLife > 0", function()
     {
@@ -60,8 +60,8 @@ describe("Boss", function ()
             //Assert
             expect(expectedBossLife).to.equal(resultLife);
             expect(expectedStatus).to.equal(resultStatus);
-        })
-    })
+        });
+    });
 
     describe("receiveDamage with bossLife < 0", function()
     {
@@ -78,8 +78,8 @@ describe("Boss", function ()
             //Assert
             expect(expectedBossLife).to.equal(resultLife);
             expect(expectedStatus).to.equal(resultStatus);
-        })
-    })
+        });
+    });
 
     describe("receiveDamage with bossLife = 0", function()
     {
@@ -96,8 +96,8 @@ describe("Boss", function ()
             //Assert
             expect(expectedBossLife).to.equal(resultLife);
             expect(expectedStatus).to.equal(resultStatus);
-        })
-    })
+        });
+    });
 
     describe("revive", function()
     {
@@ -115,7 +115,7 @@ describe("Boss", function ()
             //Assert
             expect(expectedBossLife).to.equal(resultLife);
             expect(expectedStatus).to.equal(resultStatus);
-        })
-    })
+        });
+    });
 
 });

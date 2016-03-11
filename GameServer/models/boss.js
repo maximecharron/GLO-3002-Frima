@@ -35,12 +35,12 @@ exports.model = Boss;
 exports.findBoss = function(serverName, callback){
     Boss.findOne({"serverName": serverName}, function(err, result){
         if (result){
-            callback(result)
+            callback(result);
         } else {
             callback(null);
         }
-    })
-}
+    });
+};
 
 exports.backupBoss = function(boss){
   Boss.findOne({"serverName": hostname}, function(err, result){
@@ -59,5 +59,5 @@ exports.backupBoss = function(boss){
             });
             bossToSave.save();
         }
-  })
+  });
 };

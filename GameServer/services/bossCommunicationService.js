@@ -19,7 +19,7 @@ BossCommunicationService.prototype.createBossStatusUpdate = function(theBoss)
             parameters: theBoss.toJson()
         }
     });
-}
+};
 
 BossCommunicationService.prototype.broadcastBossDead = function(bossService)
 {
@@ -58,7 +58,7 @@ BossCommunicationService.prototype.broadcastBossInformation = function(theBoss)
             });
         }
     }
-}
+};
 
 BossCommunicationService.prototype.keepAlive = function(webSocket)
 {

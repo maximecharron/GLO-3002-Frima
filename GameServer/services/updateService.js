@@ -7,7 +7,7 @@ function UpdateService(bossRepository, bossCommunicationService, bossService)
     this.bossService = bossService;
     self = this;
 
-};
+}
 
 //Private method
 setInterval(function ()

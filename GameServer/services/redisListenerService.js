@@ -7,7 +7,7 @@ var self;
 function RedisListenerService(bossService, bossCommunicationService)
 {
     this.serverNameSubscribeCMS =hostname+"CMS";
-    this.bossService = bossService
+    this.bossService = bossService;
     this.bossCommunicationService = bossCommunicationService;
     this.subscribeServerCmsName(this.serverNameSubscribeCMS);
     redisSub.subscribe("bossDead");

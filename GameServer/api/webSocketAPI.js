@@ -44,7 +44,7 @@ function newMessage(message, webSocket)
     var request = {};
     try
     {
-        var request = JSON.parse(message);
+        request = JSON.parse(message);
         if (request.command.name == "attack")
         {
             if (request.command.parameters.number)

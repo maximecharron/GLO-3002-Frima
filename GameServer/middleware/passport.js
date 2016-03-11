@@ -87,7 +87,7 @@ module.exports = function (passport, app)
 
                         if (user)
                         {
-                            var errorMessage = "The user with email " + email + " already exists and could not be created."
+                            var errorMessage = "The user with email " + email + " already exists and could not be created.";
                             return done(null, false, {message: errorMessage});
                         } else
                         {
@@ -107,7 +107,7 @@ module.exports = function (passport, app)
                                     }
                                     return done(null, newUser.toDTO(true));
                                 });
-                            })
+                            });
                         }
 
                     });

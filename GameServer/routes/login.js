@@ -50,5 +50,5 @@ function createJWT(user) {
         tokenSecret
     );
     return user.token;
-};
+}
 

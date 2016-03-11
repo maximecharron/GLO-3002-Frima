@@ -1,4 +1,4 @@
-var redisPub = require('./redisConnectionService.js').redisPub
+var redisPub = require('./redisConnectionService.js').redisPub;
 var redisSet = require('./redisConnectionService.js').redisSet;
 var hostname = process.env.SERVER_NAME || require('os').hostname();
 

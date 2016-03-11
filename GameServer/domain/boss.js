@@ -20,9 +20,9 @@ Boss.prototype.toJson = function()
         currentBossLife: this.currentBossLife,
         constantBossLife: this.constantBossLife,
         status: this.status
-    }
+    };
     return bossJson;
-}
+};
 
 Boss.prototype.toString = function()
 {
@@ -33,7 +33,7 @@ Boss.prototype.toString = function()
             "constantBossLife": this.constantBossLife,
             "status": this.status
         });
-}
+};
 
 Boss.prototype.receiveDamage = function(amountDamage)
 {
@@ -46,32 +46,32 @@ Boss.prototype.receiveDamage = function(amountDamage)
         this.status = STATUS.DEAD;
         this.currentBossLife = 0;
     }
-}
+};
 
 Boss.prototype.getLife = function()
 {
     return this.currentBossLife;
-}
+};
 
 Boss.prototype.getConstantLife = function()
 {
     return this.constantBossLife;
-}
+};
 
 Boss.prototype.getStatus = function()
 {
     return this.status;
-}
+};
 
 Boss.prototype.setConstantLife = function(constantLife)
 {
     this.constantBossLife = constantLife;
-}
+};
 
 Boss.prototype.setCurrentLife = function(currentLife)
 {
     this.currentBossLife = currentLife;
-}
+};
 
 Boss.prototype.revive = function()
 {

@@ -6,7 +6,7 @@ var bossConfig = require('./../config/bossConfig.js');
 //Constructor
 function BossRepository(redisCommunicationService)
 {
-    this.redisCommunicationService = redisCommunicationService
+    this.redisCommunicationService = redisCommunicationService;
 }
 
 //Public method
@@ -25,7 +25,7 @@ BossRepository.prototype.getBoss = function(callBack, constant)
         if(object)
         {
             //console.log("inside redis: ", serverName);
-            var boss = new Boss(serverName, object.bossName, object.currentBossLife, object.constantBossLife, object.status)
+            var boss = new Boss(serverName, object.bossName, object.currentBossLife, object.constantBossLife, object.status);
             callBack(boss);
         }
         else
@@ -55,7 +55,7 @@ BossRepository.prototype.getBoss = function(callBack, constant)
                 }
             });
         }
-    })
+    });
 };
 
 BossRepository.prototype.saveBoth = function(boss)
@@ -68,7 +68,7 @@ BossRepository.prototype.saveBoth = function(boss)
 BossRepository.prototype.saveBossRedis = function(boss)
 {
     this.redisCommunicationService.setBoss(boss);
-}
+};
 
 BossRepository.prototype.saveBossBd = function (boss)
 {

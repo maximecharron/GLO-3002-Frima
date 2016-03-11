@@ -23,7 +23,7 @@ var corsOptions = {
     origin: allowOrigin,
     methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'UPDATE'],
     credentials: true
-}
+};
 
 app.set('jwtTokenSecret', tokenSecret);
 

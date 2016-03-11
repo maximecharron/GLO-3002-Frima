@@ -3,7 +3,7 @@ var Boss = require('./../domain/boss.js');
 //Constructor
 function BossService(bossCommunicationService, bossRepository)
 {
-    this.theBoss;
+    this.theBoss = {};
     this.bossCommunicationService = bossCommunicationService;
     this.bossRepository = bossRepository;
 }
