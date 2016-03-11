@@ -7,4 +7,4 @@ exports.toJSON = function(){
     delete obj.password;
 
     return obj;
-}
+};

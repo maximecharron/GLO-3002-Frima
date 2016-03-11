@@ -21,9 +21,8 @@ describe('Boss Schema can', function () {
                 assert.isUndefined(dtoBoss.currentBossLife, "CurrentBossLife is undefined");
                 assert.isUndefined(dtoBoss.serverName, "ServerName is undefined");
                 assert.isUndefined(dtoBoss.status, "Status is undefined");
-            })
-
-    })
+            });
+    });
 
     it('Create correct DTO from object', function () {
         var boss;
@@ -49,9 +48,8 @@ describe('Boss Schema can', function () {
                 assert.equal(dtoBoss.currentBossLife, boss.currentBossLife, "CurrentBossLife are equals");
                 assert.equal(dtoBoss.serverName, boss.serverName, "ServerName are equals");
                 assert.equal(dtoBoss.status, boss.status, "Status are equals");
-            })
-
-    })
+            });
+    });
 
     it('Replace _id and delete __v', function () {
         var boss;
@@ -74,9 +72,8 @@ describe('Boss Schema can', function () {
                 assert.isObject(jsonBoss.id, "Id is object");
                 assert.isUndefined(jsonBoss._id, "_id is undefined");
                 assert.isUndefined(jsonBoss.__v, "__v is undefined");
-            })
-
-    })
+            });
+    });
 
     it('Create correct JSON from object', function () {
         var boss;
@@ -102,7 +99,6 @@ describe('Boss Schema can', function () {
                 assert.equal(jsonBoss.currentBossLife, boss.currentBossLife, "CurrentBossLife are equals");
                 assert.equal(jsonBoss.serverName, boss.serverName, "ServerName are equals");
                 assert.equal(jsonBoss.status, boss.status, "Status are equals");
-            })
-
-    })
+            });
+    });
 });

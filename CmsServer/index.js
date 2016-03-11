@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var flash = require('connect-flash');
-var boss = require('./routes/bosses.js')
+var boss = require('./routes/bosses.js');
 
 var cors = require('cors');
 var passport = require('passport');
@@ -25,7 +25,7 @@ require('./middleware/passport')(passport, app);
 
 app.use(cookieParser());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(session({
     secret: 'frima_session_secret',
     resave: true,
