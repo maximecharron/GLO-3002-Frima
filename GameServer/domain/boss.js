@@ -9,7 +9,7 @@ function Boss(bossName, currentBossLife, constantBossLife, status)
     //Private
     this.bossName = bossName;
     this.currentBossLife = currentBossLife;
-    this.constantBossLife = constantBossLife;
+    this.maximumBossLife = constantBossLife;
     this.status = status;
     redisSub.subscribe(bossName);
 }
@@ -20,7 +20,7 @@ redisSub.on('message', function(channel, message){
         var bossMessage = JSON.parse(message);
 
         this.currentBossLife = bossMessage.currentBossLife;
-        this.constantBossLife = bossMessage.constantBossLife;
+        this.maximumBossLife = bossMessage.maximumBossLife;
         this.status = bossMessage.status;
     }
 })
@@ -32,7 +32,7 @@ Boss.prototype.toJson = function()
     {
         bossName: this.bossName,
         currentBossLife: this.currentBossLife,
-        constantBossLife: this.constantBossLife,
+        maximumBossLife: this.maximumBossLife,
         status: this.status
     }
 
@@ -44,7 +44,7 @@ Boss.prototype.toString = function()
     return JSON.stringify(
         {
             "bossName" : this.bossName,
-            "constantBossLife": this.constantBossLife,
+            "maximumBossLife": this.maximumBossLife,
             "currentBossLife": this.currentBossLife,
             "status": this.status
         });
@@ -73,7 +73,7 @@ Boss.prototype.getLife = function()
 
 Boss.prototype.getConstantLife = function()
 {
-    return this.constantBossLife;
+    return this.maximumBossLife;
 }
 
 Boss.prototype.getStatus = function()

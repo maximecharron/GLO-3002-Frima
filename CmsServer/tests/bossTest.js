@@ -17,7 +17,7 @@ describe('Boss Schema can', function () {
                 assert.isDefined(dtoBoss.id, "Id is defined");
                 assert.isObject(dtoBoss.id, "Id is object");
                 assert.isUndefined(dtoBoss.bossName, "Bossname is undefined");
-                assert.isUndefined(dtoBoss.constantBossLife, "ConstantBossLife is undefined");
+                assert.isUndefined(dtoBoss.maximumBossLife, "ConstantBossLife is undefined");
                 assert.isUndefined(dtoBoss.currentBossLife, "CurrentBossLife is undefined");
                 assert.isUndefined(dtoBoss.serverName, "ServerName is undefined");
                 assert.isUndefined(dtoBoss.status, "Status is undefined");
@@ -30,7 +30,7 @@ describe('Boss Schema can', function () {
         test.given(function () {
             boss = new Boss({
                 bossName: "Test",
-                constantBossLife: "1000",
+                maximumBossLife: "1000",
                 currentBossLife: "1000",
                 serverName: "Test",
                 status: "ALIVE"
@@ -44,7 +44,7 @@ describe('Boss Schema can', function () {
                 assert.isDefined(dtoBoss.id, "Id is defined");
                 assert.isObject(dtoBoss.id, "Id is object");
                 assert.equal(dtoBoss.bossName, boss.bossName, "Bossname are equals");
-                assert.equal(dtoBoss.constantBossLife, boss.constantBossLife, "ConstantBossLife are equals");
+                assert.equal(dtoBoss.maximumBossLife, boss.maximumBossLife, "ConstantBossLife are equals");
                 assert.equal(dtoBoss.currentBossLife, boss.currentBossLife, "CurrentBossLife are equals");
                 assert.equal(dtoBoss.serverName, boss.serverName, "ServerName are equals");
                 assert.equal(dtoBoss.status, boss.status, "Status are equals");
@@ -57,7 +57,7 @@ describe('Boss Schema can', function () {
         test.given(function () {
             boss = new Boss({
                 bossName: "Test",
-                constantBossLife: "1000",
+                maximumBossLife: "1000",
                 currentBossLife: "1000",
                 serverName: "Test",
                 status: "ALIVE"
@@ -81,7 +81,7 @@ describe('Boss Schema can', function () {
         test.given(function () {
             boss = new Boss({
                 bossName: "Test",
-                constantBossLife: "1000",
+                maximumBossLife: "1000",
                 currentBossLife: "1000",
                 serverName: "Test",
                 status: "ALIVE"
@@ -95,7 +95,7 @@ describe('Boss Schema can', function () {
                 assert.isDefined(jsonBoss.id, "Id is defined");
                 assert.isObject(jsonBoss.id, "Id is object");
                 assert.equal(jsonBoss.bossName, boss.bossName, "Bossname are equals");
-                assert.equal(jsonBoss.constantBossLife, boss.constantBossLife, "ConstantBossLife are equals");
+                assert.equal(jsonBoss.maximumBossLife, boss.maximumBossLife, "ConstantBossLife are equals");
                 assert.equal(jsonBoss.currentBossLife, boss.currentBossLife, "CurrentBossLife are equals");
                 assert.equal(jsonBoss.serverName, boss.serverName, "ServerName are equals");
                 assert.equal(jsonBoss.status, boss.status, "Status are equals");

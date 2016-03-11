@@ -18,7 +18,7 @@ exports.updateBoss = function(req, res) {
     var boss = {
         bossName: req.body.bossName,
         currentBossLife: req.body.currentBossLife,
-        constantBossLife: req.body.constantBossLife,
+        maximumBossLife: req.body.maximumBossLife,
         serverName: req.body.serverName,
         status: req.body.status
     };

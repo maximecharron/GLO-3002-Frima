@@ -4,7 +4,7 @@ var hostname = require('os').hostname();
 var bossSchema = new mongoose.Schema();
 bossSchema.add({
     bossName : String,
-    constantBossLife: String,
+    maximumBossLife: String,
     currentBossLife: String,
     serverName: String,
     status: String
@@ -16,7 +16,7 @@ bossSchema.methods.toDTO = function () {
     var dto = {
         id: obj._id,
         bossName : obj.bossName,
-        constantBossLife: obj.constantBossLife,
+        maximumBossLife: obj.maximumBossLife,
         currentBossLife: obj.currentBossLife,
         serverName: obj.serverName,
         status: obj.status

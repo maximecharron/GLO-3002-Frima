@@ -21,7 +21,7 @@ BossRepository.prototype.getBoss = function(callBack, constant)
     {
         if(object)
         {
-            var boss = new Boss(object.bossName, object.currentBossLife, object.constantBossLife, object.status)
+            var boss = new Boss(object.bossName, object.currentBossLife, object.maximumBossLife, object.status)
             callBack(boss);
         }
         else

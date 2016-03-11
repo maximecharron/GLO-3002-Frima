@@ -4,7 +4,7 @@ var hostname = require('os').hostname();
 var bossSchema = new mongoose.Schema();
 bossSchema.add({
     bossName : String,
-    constantBossLife: String,
+    maximumBossLife: String,
     currentBossLife: String,
     status: String
 });
@@ -15,7 +15,7 @@ bossSchema.methods.toDTO = function (following, withToken) {
     var dto = {
         id: obj._id,
         bossName : obj.bossName,
-        constantBossLife: obj.constantBossLife,
+        maximumBossLife: obj.maximumBossLife,
         currentBossLife: obj.currentBossLife,
         status: obj.status
     };
@@ -53,14 +53,14 @@ exports.findBoss = function(serverName, callback){
 exports.backupBoss = function(boss){
   Boss.findOne({"bossName": boss.bossName || boss.getName()}, function(err, result){
         if (result){
-            result.constantBossLife = boss.constantBossLife || boss.getConstantLife();
+            result.maximumBossLife = boss.maximumBossLife || boss.getConstantLife();
             result.currentBossLife = boss.currentBossLife || boss.getLife();
             result.status = boss.status || boss.getStatus();
             result.save();
         } else {
             var bossToSave = new Boss({
                 bossName: boss.bossName || boss.getName(),
-                constantBossLife: boss.constantBossLife || boss.getConstantLife(),
+                maximumBossLife: boss.maximumBossLife || boss.getConstantLife(),
                 currentBossLife:  boss.currentBossLife || boss.getLife(),
                 status: boss.status || boss.getStatus()
             });

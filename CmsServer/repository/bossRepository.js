@@ -33,7 +33,7 @@ exports.findBossList = function (callback) {
 exports.updateBoss = function (bossToUpdate, callback) {
     this.findBoss(bossToUpdate.serverName, function (boss) {
         boss.currentBossLife = bossToUpdate.currentBossLife;
-        boss.constantBossLife = bossToUpdate.constantBossLife;
+        boss.maximumBossLife = bossToUpdate.maximumBossLife;
         boss.status = bossToUpdate.status;
         boss.bossName = bossToUpdate.bossName;
         boss.save(function (err, boss) {

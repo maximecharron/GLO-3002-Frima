@@ -3,13 +3,13 @@ var redis = require('redis').createClient(process.env.REDIS_URL);
 var Boss = require("../domain/boss.js");
 var hostname = require('os').hostname();
 
-var bossDef = {bossName: hostname, constantBossLife: "100", currentBossLife: "100", status: "ALIVE"};
+var bossDef = {bossName: hostname, maximumBossLife: "100", currentBossLife: "100", status: "ALIVE"};
 var boss;
 describe("Boss", function () {
 
     describe("Boss initialize", function () {
         it("initializes the boss", function () {
-            boss = new Boss(bossDef.bossName, bossDef.currentBossLife, bossDef.constantBossLife, bossDef.status);
+            boss = new Boss(bossDef.bossName, bossDef.currentBossLife, bossDef.maximumBossLife, bossDef.status);
             expect(boss.getLife()).to.equal(bossDef.currentBossLife);
             expect(boss.getName()).to.equal(bossDef.bossName);
             expect(boss.getStatus()).to.equal(bossDef.status);
@@ -17,7 +17,7 @@ describe("Boss", function () {
     });
 
     beforeEach(function () {
-        boss = new Boss(bossDef.bossName, bossDef.currentBossLife, bossDef.constantBossLife, bossDef.status);
+        boss = new Boss(bossDef.bossName, bossDef.currentBossLife, bossDef.maximumBossLife, bossDef.status);
     });
 
     describe("Boss receive damage", function () {
@@ -25,7 +25,7 @@ describe("Boss", function () {
             var damage = 10;
             boss.receiveDamage(damage);
             var life = boss.getLife();
-            expect(life).to.equal(bossDef.constantBossLife - 10);
+            expect(life).to.equal(bossDef.maximumBossLife - 10);
         });
 
         it("if boss life lower than 0, no more damage", function () {

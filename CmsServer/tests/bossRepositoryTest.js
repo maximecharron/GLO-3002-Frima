@@ -7,7 +7,7 @@ var assert = require('chai').assert;
 
 var currentBoss = new Boss({
   bossName: 'boss',
-  constantBossLife: '10000',
+  maximumBossLife: '10000',
   currentBossLife: '10000',
   serverName: 'abc',
   status: '0'
@@ -15,7 +15,7 @@ var currentBoss = new Boss({
 
 var constantBoss = new Boss({
   bossName: 'boss',
-  constantBossLife: '10000',
+  maximumBossLife: '10000',
   currentBossLife: '10000',
   serverName: 'abcConstant',
   status: '0'
@@ -64,10 +64,10 @@ describe('Boss repository does', function ()
   it('updates the boss', function (done)
   {
     var bossToUpdate = constantBoss;
-    bossToUpdate.constantBossLife = '1';
+    bossToUpdate.maximumBossLife = '1';
     bossRepository.updateBoss(bossToUpdate, function (updatedBoss)
     {
-      assert.equal(updatedBoss.constantBossLife, bossToUpdate.constantBossLife, 'BossLife not updated');
+      assert.equal(updatedBoss.maximumBossLife, bossToUpdate.maximumBossLife, 'BossLife not updated');
       done();
     });
   });

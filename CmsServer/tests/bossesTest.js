@@ -21,7 +21,7 @@ var request = {
   body: {
     "bossName": "test",
     "currentBossLife": "1000",
-    "constantBossLife": "1000",
+    "maximumBossLife": "1000",
     "serverName": "test",
     "status": "ALIVE"
   }
@@ -97,7 +97,7 @@ describe('Bosses route does', function ()
     var boss = {
       bossName: request.body.bossName,
       currentBossLife: request.body.currentBossLife,
-      constantBossLife: request.body.constantBossLife,
+      maximumBossLife: request.body.maximumBossLife,
       serverName: request.body.serverName,
       status: request.body.status
     };
