@@ -31,13 +31,15 @@
   "scripts": {
     "prestart": "npm install",
     "start": "node server.js",
-    "test": "mocha test"
+    "test": "mocha test",
+    "cover": "node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec -t 5000"
   },
   "devDependencies": {
     "chai": "^3.5.0",
     "gulp": "^3.9.1",
     "gulp-jshint": "^2.0.0",
     "gulp-nodemon": "^2.0.6",
+    "istanbul": "^0.4.2",
     "jshint": "^2.9.1",
     "jshint-stylish": "^2.1.0",
     "mocha": "^2.4.5"
