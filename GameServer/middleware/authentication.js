@@ -20,7 +20,7 @@ exports.isAuthenticated = function (req, res, next) {
                 if (!err) {
                     if (user) {
                         req.user = user;
-                        return next()
+                        return next();
                     } else {
                         return res.status(401).send({
                             errorCode: 'ACCESS_DENIED',
@@ -49,5 +49,5 @@ exports.retrieveToken = function (req) {
 
     return (req.body && req.body.access_token) ||
         parsed_url.query.access_token ||
-        req.headers['authorization'];
+        req.headers.authorization;
 };
