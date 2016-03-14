@@ -1,3 +1,4 @@
+requre('newrelic');
 var express = require('express');
 var app = express();
 var http = require('http');
@@ -19,7 +20,6 @@ var flash = require('connect-flash');
 
 var mongoose = require('mongoose');
 var mongoUri = process.env.MONGOLAB_URI || 'mongodb://localhost/frimaGameServer';
-console.log(mongoUri)
 mongoose.connect(mongoUri);
 
 var tokenSecret = 'FRIMA_TOKEN_SECRET' || process.env.TOKEN_SECRET;
