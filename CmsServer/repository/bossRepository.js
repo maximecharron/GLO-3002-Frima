@@ -2,17 +2,7 @@ var Boss = require('./../models/boss.js').model;
 
 exports.findConstantBossList = function (callback) {
     Boss.find({"serverName": new RegExp('Constant$', "i")}, function (err, result) {
-        if (result) {
-            callback(result);
-        } else {
-            callback(null);
-        }
-    });
-};
-
-exports.findBoss = function (serverName, callback) {
-    Boss.findOne({"serverName": serverName}, function (err, result) {
-        if (result) {
+        if (result && result.length > 0) {
             callback(result);
         } else {
             callback(null);
@@ -22,6 +12,16 @@ exports.findBoss = function (serverName, callback) {
 
 exports.findBossList = function (callback) {
     Boss.find({"serverName": {$not: new RegExp('Constant$', "i")}}, function (err, result) {
+        if (result && result.length > 0) {
+            callback(result);
+        } else {
+            callback(null);
+        }
+    });
+};
+
+exports.findBoss = function (serverName, callback) {
+    Boss.findOne({"serverName": serverName}, function (err, result) {
         if (result) {
             callback(result);
         } else {
