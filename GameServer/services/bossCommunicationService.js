@@ -10,7 +10,6 @@ function BossCommunicationService(webSocketServer)
 //Public method
 BossCommunicationService.prototype.createBossStatusUpdate = function(theBoss)
 {
-    //console.log("StatusUpdateBoss: ", theBoss);
     return JSON.stringify(
     {
         command:
@@ -41,9 +40,8 @@ BossCommunicationService.prototype.broadcastBossInformation = function(theBoss)
 {
     if (theBoss)
     {
-        if (this.lastLifeBroadcasted != theBoss.getLife() && this.wss.clients && theBoss.getLife() != 0)
+        if (this.lastLifeBroadcasted != theBoss.getLife() && this.wss.clients && theBoss.getLife() !== 0)
         {
-            //console.log("inside broadcast BossLife :", theBoss.getLife());
             this.lastLifeBroadcasted = theBoss.getLife();
             var bossUpdate = this.createBossStatusUpdate(theBoss);
             this.wss.clients.forEach(function each(client)

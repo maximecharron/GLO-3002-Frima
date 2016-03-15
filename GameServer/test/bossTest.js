@@ -3,8 +3,8 @@ var Boss = require("../domain/boss.js");
 require("./../constants/bossConstants.js");
 var hostname = require('os').hostname();
 
-var bossDef = { serverName:hostname, bossName: "Tyson", currentBossLife: "100", constantBossLife: "100", status: "0" };
-var bossExpected = { bossName: "Tyson", currentBossLife: "100", constantBossLife: "100", status: "0" };
+var bossDef = { serverName:hostname, bossName: "Tyson", currentBossLife: "100", maximumBossLife: "100", status: "0" };
+var bossExpected = { bossName: "Tyson", currentBossLife: "100", maximumBossLife: "100", status: "0" };
 var boss;
 
 describe("Boss", function ()
@@ -12,7 +12,7 @@ describe("Boss", function ()
 
     beforeEach(function ()
     {
-        boss = new Boss(bossDef.serverName, bossDef.bossName, bossDef.currentBossLife, bossDef.constantBossLife, bossDef.status);
+        boss = new Boss(bossDef.serverName, bossDef.bossName, bossDef.currentBossLife, bossDef.maximumBossLife, bossDef.status);
     });
 
     describe("toJson", function()
@@ -101,10 +101,10 @@ describe("Boss", function ()
 
     describe("revive", function()
     {
-        it("should return boss with currentBossLife == constantBossLife and status alive", function()
+        it("should return boss with currentBossLife == maximumBossLife and status alive", function()
         {
             //Arrange
-            var expectedBossLife = boss.getConstantLife();
+            var expectedBossLife = boss.getMaximumLife();
             var expectedStatus = STATUS.ALIVE;
             //Act
             boss.receiveDamage(100);

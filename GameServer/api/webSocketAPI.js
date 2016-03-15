@@ -33,7 +33,6 @@ WebSocketAPI.prototype.newConnection = function (webSocket)
 
 WebSocketAPI.prototype.initializeBoss = function ()
 {
-    console.log("euh");
     self.bossService.initializeBoss();
 };
 

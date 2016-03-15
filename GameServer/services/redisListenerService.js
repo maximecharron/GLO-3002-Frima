@@ -6,7 +6,7 @@ var self;
 //Constructor
 function RedisListenerService(bossService, bossCommunicationService)
 {
-    this.serverNameSubscribeCMS =hostname+"CMS";
+    this.serverNameSubscribeCMS = hostname;
     this.bossService = bossService;
     this.bossCommunicationService = bossCommunicationService;
     this.subscribeServerCmsName(this.serverNameSubscribeCMS);
@@ -24,7 +24,6 @@ RedisListenerService.prototype.subscribeServerCmsName = function (serverName)
 //Private method
 redisSub.on('message', function (channel, message)
 {
-    //console.log("Redis message: ", channel);
     if (channel == "bossDead")
     {
         //console.log("BroadCast bossDead: ", channel);
@@ -33,11 +32,10 @@ redisSub.on('message', function (channel, message)
     } else if (channel == self.serverNameSubscribeCMS)
     {
         var bossMessage;
-        //console.log("Message is: ", message);
         try
         {
             bossMessage = JSON.parse(message);
-            self.bossService.updateBoss(bossMessage.currentBossLife, bossMessage.constantBossLife);
+            self.bossService.updateBoss(bossMessage.currentBossLife, bossMessage.maximumBossLife);
         } catch (e)
         {
             console.log(e);

@@ -21,22 +21,18 @@ BossRepository.prototype.getBoss = function(callBack, constant)
 
     this.redisCommunicationService.findBoss(serverName, function(err, object)
     {
-        //console.log("redis: ", serverName);
         if(object)
         {
-            //console.log("inside redis: ", serverName);
-            var boss = new Boss(serverName, object.bossName, object.currentBossLife, object.constantBossLife, object.status);
+            var boss = new Boss(serverName, object.bossName, object.currentBossLife, object.maximumBossLife, object.status);
             callBack(boss);
         }
         else
         {
             DbBoss.findBoss(serverName, function(bossModel)
             {
-                //console.log("DbBoss: ", serverName);
                 if(bossModel)
                 {
-                    //console.log("inside dbBoss: ", serverName);
-                    var boss = new Boss(serverName, bossModel.bossName, bossModel.currentBossLife, bossModel.constantBossLife, bossModel.status);
+                    var boss = new Boss(serverName, bossModel.bossName, bossModel.currentBossLife, bossModel.maximumBossLife, bossModel.status);
                     callBack(boss);
                 }
                 else
@@ -78,7 +74,7 @@ BossRepository.prototype.saveBossBd = function (boss)
 //Private method
 function getConfigBoss(callBack)
 {
-    var boss = new Boss(hostname, bossConfig.bossName, bossConfig.currentLife, bossConfig.constantLife, bossConfig.status );
+    var boss = new Boss(hostname, bossConfig.bossName, bossConfig.currentLife, bossConfig.maximumBossLife, bossConfig.status );
     callBack(boss);
 }
 

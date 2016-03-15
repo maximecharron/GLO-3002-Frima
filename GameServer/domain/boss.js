@@ -1,12 +1,12 @@
 
 //Constructor
-function Boss(hostname, bossName, currentBossLife, constantBossLife, status)
+function Boss(hostname, bossName, currentBossLife, maximumBossLife, status)
 {
     //Private
     this.serverName = hostname;
     this.bossName = bossName;
     this.currentBossLife = currentBossLife;
-    this.constantBossLife = constantBossLife;
+    this.maximumBossLife = maximumBossLife;
     this.status = status;
 
 }
@@ -18,7 +18,7 @@ Boss.prototype.toJson = function()
     {
         bossName: this.bossName,
         currentBossLife: this.currentBossLife,
-        constantBossLife: this.constantBossLife,
+        maximumBossLife: this.maximumBossLife,
         status: this.status
     };
     return bossJson;
@@ -30,7 +30,7 @@ Boss.prototype.toString = function()
         {
             "bossName" : this.bossName,
             "currentBossLife": this.currentBossLife,
-            "constantBossLife": this.constantBossLife,
+            "maximumBossLife": this.maximumBossLife,
             "status": this.status
         });
 };
@@ -53,9 +53,9 @@ Boss.prototype.getLife = function()
     return this.currentBossLife;
 };
 
-Boss.prototype.getConstantLife = function()
+Boss.prototype.getMaximumLife = function()
 {
-    return this.constantBossLife;
+    return this.maximumBossLife;
 };
 
 Boss.prototype.getStatus = function()
@@ -63,9 +63,9 @@ Boss.prototype.getStatus = function()
     return this.status;
 };
 
-Boss.prototype.setConstantLife = function(constantLife)
+Boss.prototype.setMaximumLife = function(maximumBossLife)
 {
-    this.constantBossLife = constantLife;
+    this.maximumBossLife = maximumBossLife;
 };
 
 Boss.prototype.setCurrentLife = function(currentLife)
@@ -75,8 +75,7 @@ Boss.prototype.setCurrentLife = function(currentLife)
 
 Boss.prototype.revive = function()
 {
-    //console.log("Boss is being revived");
-    this.currentBossLife = this.constantBossLife;
+    this.currentBossLife = this.maximumBossLife;
     this.status = STATUS.ALIVE;
 };
 
