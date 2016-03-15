@@ -3,9 +3,9 @@ function BossCommunicationService()
 
 BossCommunicationService.prototype.createBossStatusUpdate = function (theBoss) {
     return JSON.stringify({
-        function: {
+        command: {
             name: "bossStatusUpdate",
-            boss: theBoss.toJson()
+            parameters: theBoss.toJson()
         }
     });
 }

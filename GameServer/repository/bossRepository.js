@@ -1,6 +1,6 @@
 var DbBoss = require('./../models/boss.js');
 var redis = require('./../services/redisService.js').redisSet;
-var hostname = require('os').hostname();
+var hostname = process.env.SERVER_NAME || require('os').hostname();
 
 var Boss = require('./../domain/boss.js');
 var bossConfig = require('./../config/bossConfig.js');
@@ -19,17 +19,22 @@ BossRepository.prototype.getBoss = function(callBack, constant)
 
     redis.hgetall(serverName, function(err, object)
     {
+        console.log("redis: {0}", serverName);
         if(object)
         {
-            var boss = new Boss(object.bossName, object.currentBossLife, object.maximumBossLife, object.status)
+            console.log("inside redis: {0}", serverName);
+            var boss = new Boss(serverName, object.bossName, object.currentBossLife, object.constantBossLife, object.status)
             callBack(boss);
         }
         else
         {
-            DbBoss.findBoss(serverName, function(boss)
+            DbBoss.findBoss(serverName, function(bossModel)
             {
-                if(boss)
+                console.log("DbBoss: {0}", serverName);
+                if(bossModel)
                 {
+                    console.log("inside dbBoss: {0}", serverName);
+                    var boss = new Boss(serverName, bossModel.bossName, bossModel.currentBossLife, bossModel.constantBossLife, bossModel.status);
                     callBack(boss);
                 }
                 else
@@ -55,7 +60,7 @@ BossRepository.prototype.getNewBoss = function(){}
 
 function getConfigBoss(callBack)
 {
-    var boss = new Boss(bossConfig.bossName, bossConfig.currentLife, bossConfig.constantLife, bossConfig.status );
+    var boss = new Boss(hostname, bossConfig.bossName, bossConfig.currentLife, bossConfig.constantLife, bossConfig.status );
     callBack(boss);
 }
 
@@ -68,6 +73,7 @@ BossRepository.prototype.saveBoth = function(boss)
 
 function saveBossRedis(boss)
 {
+    console.log("saveBossRedis: {0}", hostname);
     redis.hmset(hostname, boss.toJson());
 }
 

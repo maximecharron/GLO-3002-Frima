@@ -1,11 +1,14 @@
 var ws = require('ws');
 var wss = require('ws').Server;
 
+var redisSub = require('./../services/redisService.js').redisSub;
+redisSub.subscribe("bossDead");
+
 var Boss = require('./../domain/boss.js');
-var BossCommunicationService = require('./../services/BossCommunicationService.js');
+var BossCommunicationService = require('./../services/bossCommunicationService.js');
 var BossRepository = require('./../repository/bossRepository.js');
 
-var STATUS = Object.freeze({ALIVE: "ALIVE", DEAD: "DEAD"});
+var STATUS = Object.freeze({ALIVE: "0", DEAD: "1"});
 
 var lastLifeBroadcasted = 0;
 
@@ -15,22 +18,55 @@ var bossCommunicationService = new BossCommunicationService();
 
 setInterval(function () {
         broadcastBossInformation()
-    }, 500
+    }, 100
 );
 
 setInterval(function () {
         bossRepository.saveBossBd(theBoss);
-    }, 10000
+    }, 9000
 );
 
-exports.setWebSocketServer = function(webSocketServer) {
+/*
+ setInterval ( function (){
+ if (theBoss.status == STATUS.DEAD){
+ theBoss.revive(function(boss){
+ theBoss = boss;
+ bossRepository.saveBossBd(theBoss);
+ })
+ }
+ }, 12000)
+ */
+
+redisSub.on('message', function (channel, message) {
+    console.log("Redis message: ", channel);
+    if (channel == "bossDead") {
+        console.log("BroadCast bossDead: ", channel);
+        broadcastBossDead();
+    } else if (channel == theBoss.getServerName()+'CMS'){
+        var bossMessage;
+        console.log("Message is: ", message);
+        try {
+            bossMessage = JSON.parse(message);
+            theBoss.setCurrentLife(bossMessage.currentBossLife);
+            console.log("Boss life (CMS):", theBoss.getLife());
+            theBoss.setConstantLife(bossMessage.constantBossLife);
+            bossRepository.saveBoth(theBoss);
+        } catch (e){
+            console.log(e);
+        }
+    }
+})
+
+exports.setWebSocketServer = function (webSocketServer) {
     wss = webSocketServer;
 }
 
-exports.newConnection = function(webSocket) {
-
-    webSocket.send(bossCommunicationService.createBossStatusUpdate(theBoss));
-
+exports.newConnection = function (webSocket) {
+    try {
+        webSocket.send(bossCommunicationService.createBossStatusUpdate(theBoss));
+    } catch (e) {
+        console.log(e);
+    }
     webSocket.on("message", function (message) {
         newMessage(message, webSocket);
     });
@@ -41,58 +77,98 @@ exports.newConnection = function(webSocket) {
 }
 
 function newMessage(message, webSocket) {
-    var request = JSON.parse(message);
 
-    if (request.function.name == "attack") {
-        theBoss.receiveDamage(request.function.number);
+    var request = {};
+    try {
+        var request = JSON.parse(message);
+    } catch (e) {
+        return console.error(e);
     }
-    if (request.function.name == "keepAlive") {
+
+    if (request.command.name == "attack") {
+        try
+        {
+            theBoss.receiveDamage(request.command.parameters.number);
+        }catch (e) {
+            console.log("Problem with receiveDamage: ", e, request);
+        }
+    }
+    if (request.command.name == "keepAlive") {
         keepAlive(webSocket);
     }
 }
 
 function close(webSocket) {
-    webSocket.close();
+    try {
+        webSocket.close();
+    } catch (e) {
+        console.log(e);
+    }
+
 }
 
 function broadcast(data) {
     var message = JSON.stringify(data);
     if (wss.clients) {
         wss.clients.forEach(function each(client) {
-            client.send(message);
+            try {
+                client.send(message);
+            } catch (e) {
+                console.log(e);
+            }
+
         });
     }
 };
 
 function keepAlive(websocket) {
     var response = bossCommunicationService.createBossStatusUpdate(theBoss);
-    websocket.send(response);
+    try {
+        websocket.send(response);
+    } catch (e) {
+        console.log(e);
+    }
+
 }
 
 function broadcastBossInformation() {
     if (theBoss) {
         if (lastLifeBroadcasted != theBoss.getLife() && wss.clients) {
+            console.log("inside broadcast BossLife :", theBoss.getLife())
             lastLifeBroadcasted = theBoss.getLife();
             var bossUpdate = bossCommunicationService.createBossStatusUpdate(theBoss);
             wss.clients.forEach(function each(client) {
-                client.send(bossUpdate);
+                try {
+                    client.send(bossUpdate);
+                } catch (e) {
+                    console.log(e);
+                }
             });
         }
     }
 };
 
-exports.initializeBoss = function()
-{
-    bossRepository.getBoss(function(boss)
-    {
-        theBoss = boss;
-        bossRepository.saveBoth(theBoss);
+function broadcastBossDead() {
+    var bossUpdate = bossCommunicationService.createBossStatusUpdate(theBoss);
+    wss.clients.forEach(function each(client) {
+        try {
+            client.send(bossUpdate);
+            client.close();
+        } catch (e) {
+            console.log(e);
+        }
     });
 
+    theBoss.revive();
+    bossRepository.saveBossBd(theBoss);
 }
 
-/*
- message from client:
- attack:
- {"function":{"name": "attack", "number": "10"}}
- */
+exports.initializeBoss = function () {
+    bossRepository.getBoss(function (boss) {
+        theBoss = boss;
+        console.log("theBoss: {0}", theBoss);
+        bossRepository.saveBoth(theBoss);
+        redisSub.subscribe(theBoss.getServerName()+'CMS');
+    });
+
+};

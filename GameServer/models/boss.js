@@ -1,10 +1,11 @@
 var mongoose = require('mongoose');
 var modelHelpers = require('./modelHelpers.js');
-var hostname = require('os').hostname();
+var hostname = process.env.SERVER_NAME || require('os').hostname();
 var bossSchema = new mongoose.Schema();
 bossSchema.add({
+    serverName : String,
     bossName : String,
-    maximumBossLife: String,
+    constantBossLife: String,
     currentBossLife: String,
     status: String
 });
@@ -14,8 +15,9 @@ bossSchema.methods.toDTO = function (following, withToken) {
 
     var dto = {
         id: obj._id,
+        serverName: obj.serverName,
         bossName : obj.bossName,
-        maximumBossLife: obj.maximumBossLife,
+        constantBossLife: obj.constantBossLife,
         currentBossLife: obj.currentBossLife,
         status: obj.status
     };
@@ -30,18 +32,8 @@ var Boss = mongoose.model('Boss', bossSchema);
 exports.schema = bossSchema;
 exports.model = Boss;
 
-exports.findConstantBoss = function(callback){
-    Boss.findOne({"bossName": hostname}, function(err, result){
-        if (result){
-            callback(result)
-        } else {
-            callback(null);
-        }
-    })
-}
-
 exports.findBoss = function(serverName, callback){
-    Boss.findOne({"bossName": serverName}, function(err, result){
+    Boss.findOne({"serverName": serverName}, function(err, result){
         if (result){
             callback(result)
         } else {
@@ -51,16 +43,17 @@ exports.findBoss = function(serverName, callback){
 }
 
 exports.backupBoss = function(boss){
-  Boss.findOne({"bossName": boss.bossName || boss.getName()}, function(err, result){
+  Boss.findOne({"serverName": hostname}, function(err, result){
         if (result){
-            result.maximumBossLife = boss.maximumBossLife || boss.getConstantLife();
+            result.constantBossLife = boss.constantBossLife || boss.getConstantLife();
             result.currentBossLife = boss.currentBossLife || boss.getLife();
             result.status = boss.status || boss.getStatus();
             result.save();
         } else {
             var bossToSave = new Boss({
+                serverName: hostname,
                 bossName: boss.bossName || boss.getName(),
-                maximumBossLife: boss.maximumBossLife || boss.getConstantLife(),
+                constantBossLife: boss.constantBossLife || boss.getConstantLife(),
                 currentBossLife:  boss.currentBossLife || boss.getLife(),
                 status: boss.status || boss.getStatus()
             });
