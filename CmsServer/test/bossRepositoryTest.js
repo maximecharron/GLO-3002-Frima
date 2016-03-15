@@ -1,6 +1,3 @@
-//We need this because of proxyquire along with require cache that always returns the stubbed version. We don't always want that version.
-delete require.cache[require.resolve('./../repository/bossRepository.js')];
-delete require.cache[require.resolve('redis')];
 var Boss = require('./../models/boss.js').model;
 var bossRepository = require('./../repository/bossRepository.js');
 var mongoose = require('mongoose');
