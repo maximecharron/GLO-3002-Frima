@@ -72,7 +72,7 @@ describe('Boss repository does', function ()
             done();
         });
     });
-    describe('When failing, boss repository', function(){
+    describe('falls back gracefully', function(){
         before(function (done)
         {
             Boss.findOneAndRemove({serverName: 'abcConstant'}, {}, function ()
@@ -83,7 +83,7 @@ describe('Boss repository does', function ()
                 });
             });
         });
-        it('falls back gracefully if no constant boss', function (done)
+        it('if no constant boss', function (done)
         {
             bossRepository.findConstantBossList(function (bosses)
             {
@@ -91,7 +91,7 @@ describe('Boss repository does', function ()
                 done();
             });
         });
-        it('falls back gracefully if no current boss', function (done)
+        it('if no current boss', function (done)
         {
             bossRepository.findBossList(function (bosses)
             {
@@ -99,7 +99,7 @@ describe('Boss repository does', function ()
                 done();
             });
         });
-        it('falls back gracefully if no single Boss found', function (done)
+        it('if no single Boss found', function (done)
         {
             bossRepository.findBoss(currentBoss.serverName, function (boss)
             {
