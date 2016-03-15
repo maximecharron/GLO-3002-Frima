@@ -1,12 +1,9 @@
 var proxyquire = require('proxyquire');
-proxyquire.noPreserveCache();
+var test = require('unit.js');
 var sinon = require('sinon');
-var expect = require('chai').expect;
-var bossRepository = require('./../repository/bossRepository.js');
-var redisUrl = process.env.REDIS_URL || 'redis://localhost:6379';
-var redis = require('redis').createClient(redisUrl);
-var bossRepositoryStub = sinon.stub(bossRepository);
-var redisStub = sinon.stub(redis);
+var mocha = require('mocha');
+var bossRepositoryStub = {};
+var redisStub = {};
 var bosses = proxyquire('./../routes/bosses.js', {
     './../repository/bossRepository.js': bossRepositoryStub,
     'redis': redisStub
@@ -31,17 +28,45 @@ var request = {
 };
 var sendSpy;
 var statusSpy;
+var bossRepoSpy;
+var redisHmsetSpy;
+var redisPublishSpy;
+//Stubs
+bossRepositoryStub.updateBoss = function (boss, callback)
+{
+    callback(boss);
+};
 
+bossRepositoryStub.findConstantBossList = function (callback)
+{
+    var list = [];
+    callback(list);
+};
+
+bossRepositoryStub.findBossList = function (callback)
+{
+    var list = [];
+    callback(list);
+};
+redisStub.publish = function (channel, message)
+{
+};
+
+redisStub.hmset = function (key, values)
+{
+};
+//Before all tests
 before(function (done)
 {
     sendSpy = sinon.spy(res, "send");
     statusSpy = sinon.spy(res, "status");
+    redisHmsetSpy = sinon.spy(redisStub, "hmset");
+    redisPublishSpy = sinon.spy(redisStub, "publish");
     done();
 });
 
 describe('Bosses route does', function ()
 {
-
     beforeEach(function ()
     {
         sendSpy.reset();
@@ -49,10 +74,9 @@ describe('Bosses route does', function ()
     });
     it('get constant boss list by calling bossRepository', function ()
     {
-        bossRepositoryStub.findConstantBossList.callsArg(0);
+        bossRepoSpy = sinon.spy(bossRepositoryStub, "findConstantBossList");
         bosses.getConstantBossList(request, res);
-        expect(bossRepositoryStub.findConstantBossList).to.have.been.calledOnce;
-        expect(sendSpy).to.have.been.calledOnce;
+        sinon.assert.calledOnce(bossRepoSpy);
         sinon.assert.calledOnce(sendSpy);
         sinon.assert.calledOnce(statusSpy);
         sinon.assert.calledWith(statusSpy, 200);
@@ -60,9 +84,9 @@ describe('Bosses route does', function ()
     });
     it('get boss list by calling bossRepository', function ()
     {
-        bossRepositoryStub.findBossList.callsArg(0);
+        bossRepoSpy = sinon.spy(bossRepositoryStub, "findBossList");
         bosses.getBossList(request, res);
-        expect(bossRepositoryStub.findBossList).to.have.been.calledOnce;
+        sinon.assert.calledOnce(bossRepoSpy);
         sinon.assert.calledOnce(sendSpy);
         sinon.assert.calledWith(statusSpy, 200);
         sinon.assert.calledOnce(statusSpy);
@@ -77,12 +101,13 @@ describe('Bosses route does', function ()
             serverName: request.body.serverName,
             status: request.body.status
         };
-        bossRepositoryStub.updateBoss.callsArgWith(1, request.body);
+        bossRepoSpy = sinon.spy(bossRepositoryStub, "updateBoss");
         bosses.updateBoss(request, res);
-        expect(bossRepositoryStub.updateBoss).to.have.been.calledOnce;
+        sinon.assert.calledOnce(bossRepoSpy);
         sinon.assert.calledOnce(sendSpy);
         sinon.assert.calledOnce(statusSpy);
         sinon.assert.calledWith(statusSpy, 200);
         sinon.assert.calledWith(sendSpy, boss);
     });
+
 });
