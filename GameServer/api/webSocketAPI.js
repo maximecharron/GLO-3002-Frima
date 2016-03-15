@@ -68,7 +68,8 @@ function newMessage(message, webSocket)
 
         if (request.command.name == "keepAlive")
         {
-            self.bossCommunicationService.keepAlive(webSocket);
+            var theBoss = self.bossService.getCurrentBoss();
+            self.bossCommunicationService.keepAlive(theBoss, webSocket);
         }
     } catch (e)
     {

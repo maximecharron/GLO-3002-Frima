@@ -18,9 +18,10 @@ BossRepository.prototype.getBoss = function(callBack, constant)
     {
         serverName += "Constant";
     }
-
+    console.log("beforeRedis: ");
     this.redisCommunicationService.findBoss(serverName, function(err, object)
     {
+        console.log("insideRedis: ", object);
         if(object)
         {
             var boss = new Boss(serverName, object.bossName, object.currentBossLife, object.maximumBossLife, object.status);
@@ -28,8 +29,10 @@ BossRepository.prototype.getBoss = function(callBack, constant)
         }
         else
         {
+            console.log("beforeDbBoss: ");
             DbBoss.findBoss(serverName, function(bossModel)
             {
+                console.log("insideDbBoss: ", bossModel);
                 if(bossModel)
                 {
                     var boss = new Boss(serverName, bossModel.bossName, bossModel.currentBossLife, bossModel.maximumBossLife, bossModel.status);
@@ -37,6 +40,7 @@ BossRepository.prototype.getBoss = function(callBack, constant)
                 }
                 else
                 {
+                    console.log("insideDbBoss else: ");
                     if(constant)
                     {
                         getConfigBoss(function(boss)
@@ -46,6 +50,7 @@ BossRepository.prototype.getBoss = function(callBack, constant)
                     }
                     else
                     {
+                        console.log("insideDbBoss else else: ");
                         self.getBoss(callBack, true);
                     }
                 }

@@ -20,9 +20,9 @@ BossCommunicationService.prototype.createBossStatusUpdate = function(theBoss)
     });
 };
 
-BossCommunicationService.prototype.broadcastBossDead = function(bossService)
+BossCommunicationService.prototype.broadcastBossDead = function(theBoss)
 {
-    var bossUpdate = this.createBossStatusUpdate(bossService.getCurrentBoss());
+    var bossUpdate = this.createBossStatusUpdate(theBoss);
     this.wss.clients.forEach(function each(client)
     {
         try
@@ -58,10 +58,10 @@ BossCommunicationService.prototype.broadcastBossInformation = function(theBoss)
     }
 };
 
-BossCommunicationService.prototype.keepAlive = function(webSocket)
+BossCommunicationService.prototype.keepAlive = function(theBoss, webSocket)
 {
     var self = this;
-    var response = self.createBossStatusUpdate(this.bossService.getCurrentBoss());
+    var response = self.createBossStatusUpdate(theBoss);
     try
     {
         webSocket.send(response);
