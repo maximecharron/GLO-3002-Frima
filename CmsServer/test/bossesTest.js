@@ -85,7 +85,4 @@ describe('Bosses route does', function ()
         sinon.assert.calledWith(statusSpy, 200);
         sinon.assert.calledWith(sendSpy, boss);
     });
-   //We need this because of proxyquire along with require cache that always returns the stubbed version. We don't always want that version.
-    delete require.cache[require.resolve('./../repository/bossRepository.js')];
-    delete require.cache[require.resolve('redis')];
 });
