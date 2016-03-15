@@ -108,10 +108,11 @@ describe('Boss repository does', function ()
             });
         });
     });
+    after(function(){
+        Boss.remove({});
+    });
 });
-after(function(){
-   Boss.remove({});
-});
+
 
 
 
