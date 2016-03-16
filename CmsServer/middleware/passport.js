@@ -33,9 +33,9 @@ module.exports = function (passport, app) {
                     }
 
                     var expires = moment().add(1, 'days').valueOf();
-                    user.token = jwt.encode(
+                        user.token = jwt.encode(
                         {
-                            iss: user.id,
+                            iss: user._id,
                             exp: expires
                         },
                         app.get('jwtTokenSecret')
@@ -46,7 +46,7 @@ module.exports = function (passport, app) {
                             return done(err);
                         }
 
-                        return done(null, user.toDTO(true, true));
+                        return done(null, user.toDTO(true));
                     });
                 });
             });

@@ -1,5 +1,5 @@
 loginApp.factory('loginResource', ["$resource", function($resource){
-  return $resource("myApiHost" , {}, {
+  return $resource("localhost:8080/login" , {}, {
     post:{
       method:"POST",
       headers: {

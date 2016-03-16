@@ -11,7 +11,7 @@ userSchema.add({
     expiration: Number
 });
 
-userSchema.methods.toDTO = function (following, withToken) {
+userSchema.methods.toDTO = function (withToken) {
     var obj = this.toObject();
 
     var dto = {

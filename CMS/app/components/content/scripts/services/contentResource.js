@@ -1,5 +1,7 @@
+//return $resource("localhost:3000/:path",{} ,{
+
 ContentApp.factory('contentResource', ["$resource", function($resource){
-    return $resource("https://frima-cms-server.herokuapp.com/:path",{} ,{
+    return $resource("localhost:3000/:path",{} ,{
         getConstantBoss: {
             method:"GET",
             params:{

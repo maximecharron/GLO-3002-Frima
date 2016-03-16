@@ -10,6 +10,7 @@ var cors = require('cors');
 var passport = require('passport');
 
 var mongoose = require('mongoose');
+var login = require('./routes/login');
 var status = require('./routes/status');
 var mongoUri = process.env.MONGOLAB_URI || 'mongodb://localhost/frimaGameServer';
 mongoose.connect(mongoUri);
@@ -22,7 +23,9 @@ var corsOptions = {
     credentials: true
 };
 require('./middleware/passport')(passport, app);
+var tokenSecret = 'CMS_TOKEN_SECRET' || process.env.TOKEN_SECRET;
 
+app.set('jwtTokenSecret', tokenSecret);
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -36,13 +39,14 @@ app.use(passport.session());
 app.use(flash());
 app.use(cors(corsOptions));
 
-//app.post('/login', passport.authenticate('local-login')); //TODO Add login
-//app.get('/logout', login.logout);
+app.post('/login', passport.authenticate('local-login'), login.getToken);
+app.get('/logout', login.logout);
+app.post('/signup', passport.authenticate('local-signup'), login.getToken);
 app.get('/status', status.getStatus);
 
-app.get('/bossesConstant', boss.getConstantBossList);
-app.get('/bosses', boss.getBossList);
-app.post('/update', boss.updateBoss);
+app.get('/bossesConstant', authentication.isAuthenticated,boss.getConstantBossList);
+app.get('/bosses',authentication.isAuthenticated, boss.getBossList);
+app.post('/update',authentication.isAuthenticated, boss.updateBoss);
 
 var port = process.env.PORT || 3000;
 app.listen(port);
