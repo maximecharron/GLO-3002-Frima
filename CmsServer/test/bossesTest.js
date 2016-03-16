@@ -4,6 +4,17 @@ var sinon = require('sinon');
 var mocha = require('mocha');
 var bossRepositoryStub = {};
 var redisStub = {};
+var redisClientStub = {};
+redisClientStub.publish = function (channel, message)
+{
+};
+
+redisClientStub.hmset = function (key, values)
+{
+};
+redisStub.createClient = function(url){
+    return redisClientStub;
+};
 var bosses = proxyquire('./../routes/bosses.js', {
     './../repository/bossRepository.js': bossRepositoryStub,
     'redis': redisStub
@@ -48,20 +59,13 @@ bossRepositoryStub.findBossList = function (callback)
     var list = [];
     callback(list);
 };
-redisStub.publish = function (channel, message)
-{
-};
-
-redisStub.hmset = function (key, values)
-{
-};
 //Before all tests
 before(function (done)
 {
     sendSpy = sinon.spy(res, "send");
     statusSpy = sinon.spy(res, "status");
-    redisHmsetSpy = sinon.spy(redisStub, "hmset");
-    redisPublishSpy = sinon.spy(redisStub, "publish");
+    redisHmsetSpy = sinon.spy(redisClientStub, "hmset");
+    redisPublishSpy = sinon.spy(redisClientStub, "publish");
     done();
 });
 
@@ -103,6 +107,8 @@ describe('Bosses route does', function ()
         };
         bossRepoSpy = sinon.spy(bossRepositoryStub, "updateBoss");
         bosses.updateBoss(request, res);
+        sinon.assert.calledOnce(redisHmsetSpy);
+        sinon.assert.calledOnce(redisPublishSpy);
         sinon.assert.calledOnce(bossRepoSpy);
         sinon.assert.calledOnce(sendSpy);
         sinon.assert.calledOnce(statusSpy);
