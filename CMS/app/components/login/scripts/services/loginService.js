@@ -1,10 +1,15 @@
-loginApp.factory('loginService', ["loginResource", "$rootScope", function (loginResource, $rootScope) {
+loginApp.factory('loginService', ["loginResource", "$cookies", "$rootScope", function (loginResource, $rootScope) {
 
-  function getUser() {
-      return $rootScope.user;
-  }
+    function getUser() {
+        return $rootScope.user;
+    }
 
-  return {
-      getUser: getUser
-  };
+    function setUser(user) {
+        $rootScope.user = user;
+        $cookies.putObject("user", $rootScope.user);
+    }
+
+    return {
+        getUser: getUser
+    };
 }])

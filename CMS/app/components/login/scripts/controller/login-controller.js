@@ -1,4 +1,4 @@
-loginApp.controller("login-controller", function ($scope, $location, loginResource) {
+loginApp.controller("login-controller", function ($scope, loginService, $location, loginResource) {
 
     <!-- $scope déclare les variables utilisées dans le html -->
 
@@ -14,10 +14,11 @@ loginApp.controller("login-controller", function ($scope, $location, loginResour
         //window.alert( $scope.email + " " + $scope.password);
 
         loginResource.post(credentials, function onSuccess(data) {
-
+            loginService.SetUser(data);
             $location.path("/content");
-
+            console.log("redirecting to content")
         }, function onError(data) {
+            console.log(data)
             $location.path("/login");
 
         });
