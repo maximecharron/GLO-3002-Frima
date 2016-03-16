@@ -1,7 +1,7 @@
 //return $resource("localhost:3000/:path",{} ,{
 
 ContentApp.factory('contentResource', ["$resource", function($resource){
-    return $resource("localhost:3000/:path",{} ,{
+    return $resource("http://localhost:3000/:path",{} ,{
         getConstantBoss: {
             method:"GET",
             params:{
