@@ -20,7 +20,7 @@ dbBossStub.backupBoss = function(boss) {};
 
 
 before(function(done){
-    redisCommunicationServiceStub = sinon.stub(RedisCommunicationService.prototype); //J'essaie de quoi...
+    redisCommunicationServiceStub = sinon.stub(RedisCommunicationService.prototype);
     dbBossSpy = sinon.spy(dbBossStub, "backupBoss");
     done();
 })

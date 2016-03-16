@@ -1,5 +1,5 @@
-var redisPub = require('./redisConnectionService.js').redisPub;
-var redisSet = require('./redisConnectionService.js').redisSet;
+var redis = require('redis').createClient(process.env.REDIS_URL);
+
 var hostname = process.env.SERVER_NAME || require('os').hostname();
 
 //Constructor
@@ -11,22 +11,22 @@ function RedisCommunicationService()
 //Public method
 RedisCommunicationService.prototype.setBoss = function (boss)
 {
-    redisSet.hmset(hostname, boss.toJson());
+    redis.hmset(hostname, boss.toJson());
 };
 
 RedisCommunicationService.prototype.setBossCurrentLife = function (currentBossLife)
 {
-    redisSet.hmset(hostname, {'currentBossLife': currentBossLife});
+    redis.hmset(hostname, {'currentBossLife': currentBossLife});
 };
 
 RedisCommunicationService.prototype.publishBossDead = function (bossString)
 {
-    redisPub.publish("bossDead", bossString);
+    redis.publish("bossDead", bossString);
 };
 
 RedisCommunicationService.prototype.findBoss = function (hostname, callback) //We want to pass hostname here
 {
-    redisSet.hgetall(hostname, function(err, object){
+    redis.hgetall(hostname, function(err, object){
         callback(err, object);
     });
 };

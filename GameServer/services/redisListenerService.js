@@ -1,4 +1,4 @@
-var redisSub = require('./redisConnectionService.js').redisSub;
+var redisSub = require('redis').createClient(process.env.REDIS_URL);
 var hostname = process.env.SERVER_NAME || require('os').hostname();
 
 var self;

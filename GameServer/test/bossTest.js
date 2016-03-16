@@ -118,4 +118,36 @@ describe("Boss", function ()
         });
     });
 
+    describe("setMaximumLife", function()
+    {
+        it("should return maximumBossLife equal to life", function()
+        {
+            //Arrange
+            var expectedBossLife = 1000;
+
+            //Act
+            boss.setMaximumLife(expectedBossLife);
+            var resultLife = boss.getMaximumLife();
+
+            //Assert
+            expect(expectedBossLife).to.equal(resultLife);
+        });
+    });
+
+    describe("setCurrentLife", function()
+    {
+        it("should return currentBossLife equal to life", function()
+        {
+            //Arrange
+            var expectedBossLife = 50;
+
+            //Act
+            boss.setCurrentLife(expectedBossLife);
+            var resultLife = boss.getLife();
+
+            //Assert
+            expect(expectedBossLife).to.equal(resultLife);
+        });
+    });
+
 });
