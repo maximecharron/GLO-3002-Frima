@@ -1,18 +1,36 @@
 {
-  "name": "server-frima",
-  "description": "socket.io app",
+  "name": "glo-3002-frima-gameserver",
+  "version": "0.0.0",
+  "private": true,
+  "main": "server.js",
   "dependencies": {
     "async": "^1.5.2",
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "~1.13.1",
+    "connect-flash": "~0.1.1",
+    "cookie-parser": "~1.3.5",
+    "cors": "^2.7.1",
     "express": "~4.13.3",
+    "express-session": "~1.11.3",
+    "jwt-simple": "~0.3.0",
+    "mock-socket": "^2.0.0",
+    "moment": "^2.11.2",
+    "mongoose": "^4.4.5",
     "newrelic": "^1.25.3",
+    "passport": "~0.2.2",
+    "passport-facebook": "~2.0.0",
+    "passport-google": "~0.3.0",
+    "passport-local": "~1.0.0",
     "redis": "^2.4.2",
+    "request": "^2.69.0",
+    "underscore": "~1.8.3",
     "ws": "^1.0.1"
   },
   "engine": "node 4.0.0",
   "scripts": {
     "prestart": "npm install",
     "start": "node server.js",
-    "test": "mocha test"
+    "test": "mocha test/bossTest.js && mocha test/webSocketHandlerTest.js"
   },
   "devDependencies": {
     "chai": "^3.5.0",

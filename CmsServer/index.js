@@ -4,13 +4,14 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var flash = require('connect-flash');
+var boss = require('./routes/bosses.js');
 
 var cors = require('cors');
 var passport = require('passport');
 
 var mongoose = require('mongoose');
 var status = require('./routes/status');
-var mongoUri = process.env.MONGOLAB_URI || 'mongodb://localhost/frima-cms';
+var mongoUri = process.env.MONGOLAB_URI || 'mongodb://localhost/frimaGameServer';
 mongoose.connect(mongoUri);
 
 var authentication = require('./middleware/authentication');
@@ -20,14 +21,11 @@ var corsOptions = {
     methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'UPDATE'],
     credentials: true
 };
-var redisUrl = 'redis://h:p88tk5goahehq8c9hta4ugr533t@ec2-54-227-252-28.compute-1.amazonaws.com:7069';
-
-var redis = require('redis').createClient(redisUrl);
 require('./middleware/passport')(passport, app);
 
 app.use(cookieParser());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(session({
     secret: 'frima_session_secret',
     resave: true,
@@ -38,17 +36,13 @@ app.use(passport.session());
 app.use(flash());
 app.use(cors(corsOptions));
 
-//app.post('/login', passport.authenticate('local-login'));
+//app.post('/login', passport.authenticate('local-login')); //TODO Add login
 //app.get('/logout', login.logout);
 app.get('/status', status.getStatus);
 
-
-app.post('/update', function(req, res){
-    redis.set('currentBossLife', req.body.newBossLife);
-    redis.set('constantBossLife', req.body.newBossLife)
-    redis.publish('CMS', req.body.newBossLife);
-    res.status(200).send(req.body);
-})
+app.get('/bossesConstant', boss.getConstantBossList);
+app.get('/bosses', boss.getBossList);
+app.post('/update', boss.updateBoss);
 
 var port = process.env.PORT || 3000;
 app.listen(port);

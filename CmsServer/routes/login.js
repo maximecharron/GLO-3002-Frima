@@ -1,10 +1,6 @@
 var passport = require('passport');
 var request = require('request');
 var User = require('../models/user').model;
-var moment = require('moment');
-var jwt = require('jwt-simple');
-var tokenSecret = 'FRIMA_TOKEN_SECRET' || process.env.TOKEN_SECRET;
-
 var authentication = require('../middleware/authentication');
 
 exports.passportLogin = passport.authenticate('local-login', {
