@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Communication;
 using Assets.Scripts.Communication.DTOs;
+using Assets.Scripts.Extensions;
 using System;
 using System.Net;
 using UnityEngine;
@@ -14,11 +15,11 @@ namespace Assets.Scripts.Scenes
 
         private const string LOGIN_URL = "/login";
 
-        public EventSystem eventSystem;
-        public InputField usernameInputField;
-        public InputField passwordInputField;
-        public Text loginErrorLabel;
-        public Button loginButton;
+        // Configurable script parameters
+        public InputField UsernameInputField;
+        public InputField PasswordInputField;
+        public Text LoginErrorLabel;
+        public Button LoginButton;
 
         private GameController gameController;
         private HttpService httpService;
@@ -26,13 +27,9 @@ namespace Assets.Scripts.Scenes
         void Start() {
             gameController = (GameController)FindObjectOfType(typeof(GameController));
             httpService = (HttpService)FindObjectOfType(typeof(HttpService));
-            loginErrorLabel.transform.gameObject.SetActive(false);
+            LoginErrorLabel.transform.gameObject.SetActive(false);
         }
 
-
-        void Update() {
-
-        }
 
         public void OnExitButtonPointerClick()
         {
@@ -44,19 +41,24 @@ namespace Assets.Scripts.Scenes
             Login();
         }
 
+        public void OnInputFieldValueChanged()
+        {
+            LoginButton.interactable = UsernameInputField.text.Length > 0 && PasswordInputField.text.Length > 0;
+        }
+
         private void Login()
         {
             WWWForm form = new WWWForm();
-            form.AddField("username", usernameInputField.text);
-            form.AddField("password", passwordInputField.text);
+            form.AddField("username", UsernameInputField.text);
+            form.AddField("password", PasswordInputField.text);
 
             httpService.HttpPost(LOGIN_URL, form, LoginCallback);
-            loginButton.interactable = false;
+            LoginButton.interactable = false;
         }
 
         private void LoginCallback(WWW request)
         {
-            loginButton.interactable = true;
+            LoginButton.interactable = true;
             if (request.GetStatusCode() == HttpStatusCode.OK || request.GetStatusCode() == 0)
             {
                 ProcessSuccessfulLogin(request);
@@ -71,13 +73,13 @@ namespace Assets.Scripts.Scenes
             Debug.Log(String.Format("Error: Response Headers: {0}.", request.responseHeaders.ToFormattatedString()));
             if (request.GetStatusCode() == HttpStatusCode.Unauthorized)
             {
-                loginErrorLabel.text = "Invalid username or password.";
+                LoginErrorLabel.text = "Invalid username or password.";
             }
             else
             {
-                loginErrorLabel.text = request.error;
+                LoginErrorLabel.text = request.error;
             }
-            loginErrorLabel.transform.gameObject.SetActive(true);
+            LoginErrorLabel.transform.gameObject.SetActive(true);
         }
 
         private void ProcessSuccessfulLogin(WWW request)

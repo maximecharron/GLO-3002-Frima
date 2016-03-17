@@ -7,16 +7,6 @@ namespace Assets.Scripts.Scenes
 
     public class TitleSceneController : SceneController {
 
-        public EventSystem eventSystem;
-
-        void Start() {
-
-        }
-
-        void Update() {
-
-        }
-
         public void OnLoginButtonPointerClick()
         {
             SceneManager.LoadScene(LOGIN_SCENE_NAME);

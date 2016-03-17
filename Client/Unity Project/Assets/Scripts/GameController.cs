@@ -9,9 +9,9 @@ namespace Assets.Scripts
     [RequireComponent(typeof(AudioSource))]
     public class GameController : MonoBehaviour
     {
-        public HttpService httpService;
+        public HttpService HttpService;
 
-        public string sessionToken { get; set; }
+        public string SessionToken { get; set; }
 
         private static GameController instance;
 
@@ -30,14 +30,14 @@ namespace Assets.Scripts
 
         public void SetUserSession(string token, string username)
         {
-            this.sessionToken = token;
-            httpService.sessionToken = token;
+            this.SessionToken = token;
+            HttpService.SessionToken = token;
         }
 
         public void ClearUserSession()
         {
-            this.sessionToken = null;
-            httpService.sessionToken = null;
+            this.SessionToken = null;
+            HttpService.SessionToken = null;
         }
     }
 }

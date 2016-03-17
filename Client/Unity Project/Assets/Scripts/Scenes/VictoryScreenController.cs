@@ -9,14 +9,6 @@ namespace Assets.Scripts.Scenes
     public class VictoryScreenController : SceneController
     {
 
-        void Start(){
-
-        }
-
-        void Update(){
-
-        }
-
         public void OnPlayAgainButtonPointerClick()
         {
             SceneManager.LoadScene(GAME_SCENE_NAME);

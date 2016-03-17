@@ -8,6 +8,7 @@ using System.Net;
 using Assets.Scripts.Communication.DTOs;
 using Assets.Scripts.Utils;
 using System;
+using Assets.Scripts.Extensions;
 
 namespace Assets.Scripts.Scenes.Registration
 {
@@ -15,25 +16,25 @@ namespace Assets.Scripts.Scenes.Registration
     {
         private const string REGISTRATION_URL = "/signup";
 
-        public EventSystem eventSystem;
-        public InputField usernameInputField;
-        public InputField passwordInputField;
-        public InputField passwordConfirmInputField;
-        public InputField emailInputField;
-        public Text usernameErrorLabel;
-        public Text registrationErrorLabel;
-        public RegistrationFormValidationController registrationFormValidationController;
-        public Button registerButton;
+        // Configurable script parameters
+        public InputField UsernameInputField;
+        public InputField PasswordInputField;
+        public InputField PasswordConfirmInputField;
+        public InputField EmailInputField;
+        public Text UsernameErrorLabel;
+        public Text RegistrationErrorLabel;
+        public RegistrationFormValidationController FormValidationController;
+        public Button RegisterButton;
 
-        private GameController gameController;
-        private HttpService httpService;
+        private GameController GameController;
+        private HttpService HttpService;
 
         void Start()
         {
-            gameController = (GameController)FindObjectOfType(typeof(GameController));
-            httpService = (HttpService)FindObjectOfType(typeof(HttpService));
+            GameController = (GameController)FindObjectOfType(typeof(GameController));
+            HttpService = (HttpService)FindObjectOfType(typeof(HttpService));
 
-            registrationErrorLabel.transform.gameObject.SetActive(false);
+            RegistrationErrorLabel.transform.gameObject.SetActive(false);
         }
 
         void Update() {
@@ -52,21 +53,21 @@ namespace Assets.Scripts.Scenes.Registration
 
         private void Register()
         {
-            if (registrationFormValidationController.Validate())
+            if (FormValidationController.Validate())
             {
                 WWWForm form = new WWWForm();
-                form.AddField("username", usernameInputField.text);
-                form.AddField("password", passwordInputField.text);
-                form.AddField("email", emailInputField.text);
+                form.AddField("username", UsernameInputField.text);
+                form.AddField("password", PasswordInputField.text);
+                form.AddField("email", EmailInputField.text);
 
-                httpService.HttpPost(REGISTRATION_URL, form, RegisterCallback);
-                registerButton.interactable = false;
+                HttpService.HttpPost(REGISTRATION_URL, form, RegisterCallback);
+                RegisterButton.interactable = false;
             }
         }
 
         private void RegisterCallback(WWW request)
         {
-            registerButton.interactable = true;
+            RegisterButton.interactable = true;
             if (request.GetStatusCode() != HttpStatusCode.OK)
             {
                 ProcessFailedRegistration(request);
@@ -79,20 +80,20 @@ namespace Assets.Scripts.Scenes.Registration
         {
             if (request.GetStatusCode() == HttpStatusCode.Unauthorized)
             {
-                usernameErrorLabel.text = "Username already exists.";
-                usernameErrorLabel.transform.gameObject.SetActive(true);
+                UsernameErrorLabel.text = "Username already exists.";
+                UsernameErrorLabel.transform.gameObject.SetActive(true);
             }
             else
             {
-                registrationErrorLabel.text = request.error;
-                registrationErrorLabel.transform.gameObject.SetActive(true);
+                RegistrationErrorLabel.text = request.error;
+                RegistrationErrorLabel.transform.gameObject.SetActive(true);
             }
         }
 
         private void ProcessSuccessfulRegistration(WWW request)
         {
             RegistrationResultDTO resultDTO = JsonUtility.FromJson<RegistrationResultDTO>(request.text);
-            gameController.SetUserSession(resultDTO.token, resultDTO.username);
+            GameController.SetUserSession(resultDTO.token, resultDTO.username);
             SceneManager.LoadScene(MENU_SCENE_NAME);
         }
     }

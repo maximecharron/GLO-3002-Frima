@@ -8,10 +8,10 @@ namespace Assets.Scripts.Communication.CommandDTOs
     [Serializable]
     public class CommandDefinitionDTO
     {
-        public Command command = new Command();
+        public CommandDefinition command = new CommandDefinition();
 
         [Serializable]
-        public class Command
+        public class CommandDefinition
         {
             public String name;
         }

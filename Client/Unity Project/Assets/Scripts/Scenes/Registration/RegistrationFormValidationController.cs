@@ -9,14 +9,14 @@ namespace Assets.Scripts.Scenes.Registration
     {
 
         // Configurable script parameters
-        public InputField usernameInputField;
-        public InputField passwordInputField;
-        public InputField passwordConfirmInputField;
-        public InputField emailInputField;
-        public Text usernameErrorLabel;
-        public Text passwordErrorLabel;
-        public Text passwordConfirmErrorLabel;
-        public Text emailErrorLabel;
+        public InputField UsernameInputField;
+        public InputField PasswordInputField;
+        public InputField PasswordConfirmInputField;
+        public InputField EmailInputField;
+        public Text UsernameErrorLabel;
+        public Text PasswordErrorLabel;
+        public Text PasswordConfirmErrorLabel;
+        public Text EmailErrorLabel;
 
         void Start()
         {
@@ -26,28 +26,28 @@ namespace Assets.Scripts.Scenes.Registration
         public bool Validate()
         {
             ResetErrorLabels();
-            if (usernameInputField.text.Length <= 3)
+            if (UsernameInputField.text.Length <= 3)
             {
-                usernameErrorLabel.text = "Username too short";
-                usernameErrorLabel.transform.gameObject.SetActive(true);
+                UsernameErrorLabel.text = "Username too short";
+                UsernameErrorLabel.transform.gameObject.SetActive(true);
                 return false;
             }
-            else if (passwordInputField.text.Length <= 3)
+            else if (PasswordInputField.text.Length <= 3)
             {
-                passwordErrorLabel.text = "Password too short";
-                passwordErrorLabel.transform.gameObject.SetActive(true);
+                PasswordErrorLabel.text = "Password too short";
+                PasswordErrorLabel.transform.gameObject.SetActive(true);
                 return false;
             }
-            else if (passwordInputField.text != passwordConfirmInputField.text)
+            else if (PasswordInputField.text != PasswordConfirmInputField.text)
             {
-                passwordConfirmErrorLabel.text = "Password does not match";
-                passwordConfirmErrorLabel.transform.gameObject.SetActive(true);
+                PasswordConfirmErrorLabel.text = "Password does not match";
+                PasswordConfirmErrorLabel.transform.gameObject.SetActive(true);
                 return false;
             }
-            else if (!EmailValidationUtils.IsEmailValid(emailInputField.text))
+            else if (!EmailValidationUtils.IsEmailValid(EmailInputField.text))
             {
-                emailErrorLabel.text = "Invalid email";
-                emailErrorLabel.transform.gameObject.SetActive(true);
+                EmailErrorLabel.text = "Invalid email";
+                EmailErrorLabel.transform.gameObject.SetActive(true);
                 return false;
             }
             return true;
@@ -55,10 +55,10 @@ namespace Assets.Scripts.Scenes.Registration
 
         private void ResetErrorLabels()
         {
-            usernameErrorLabel.transform.gameObject.SetActive(false);
-            passwordErrorLabel.transform.gameObject.SetActive(false);
-            passwordConfirmErrorLabel.transform.gameObject.SetActive(false);
-            emailErrorLabel.transform.gameObject.SetActive(false);
+            UsernameErrorLabel.transform.gameObject.SetActive(false);
+            PasswordErrorLabel.transform.gameObject.SetActive(false);
+            PasswordConfirmErrorLabel.transform.gameObject.SetActive(false);
+            EmailErrorLabel.transform.gameObject.SetActive(false);
         }
 
     }

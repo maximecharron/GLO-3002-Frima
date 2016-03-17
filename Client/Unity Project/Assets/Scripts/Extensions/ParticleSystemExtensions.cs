@@ -4,13 +4,16 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-public static class ParticleSystemExtensions
+namespace Assets.Scripts.Extensions
 {
-    public static void PlayEnable(this ParticleSystem particleSystem)
+    public static class ParticleSystemExtensions
     {
-        particleSystem.Simulate(0.0f, true, true);
-        var emission = particleSystem.emission;
-        emission.enabled = true;
-        particleSystem.Play();
+        public static void PlayEnable(this ParticleSystem particleSystem)
+        {
+            particleSystem.Simulate(0.0f, true, true);
+            var emission = particleSystem.emission;
+            emission.enabled = true;
+            particleSystem.Play();
+        }
     }
 }

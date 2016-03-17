@@ -12,7 +12,7 @@ namespace Assets.Scripts.Communication
     {
         private const string HTTP_SERVER_URI = "https://frima-server-1.herokuapp.com";
 
-        public String sessionToken { get; set; }
+        public String SessionToken { get; set; }
 
         public void HttpGet(String location, Action<WWW> callback)
         {

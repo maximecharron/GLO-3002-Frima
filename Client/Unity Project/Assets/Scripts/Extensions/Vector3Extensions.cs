@@ -4,12 +4,15 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-public static class Vector3Extensions
+namespace Assets.Scripts.Extensions
 {
-
-    public static Vector2 ToVector2(this Vector3 vector3)
+    public static class Vector3Extensions
     {
-        return vector3;
-    }
 
+        public static Vector3 Clone(this Vector3 vector3)
+        {
+            return new Vector3(vector3.x, vector3.y, vector3.z);
+        }
+
+    }
 }

@@ -2,26 +2,29 @@
 using System.Collections;
 using System.Net;
 
-public static class WWWExtensions
+namespace Assets.Scripts.Extensions
 {
-
-    public static HttpStatusCode GetStatusCode(this WWW request)
+    public static class WWWExtensions
     {
-        if (request.responseHeaders == null || !request.responseHeaders.ContainsKey("STATUS"))
-        {
-            return 0;
-        }
-        return parseResponseCodeFromStatusLine(request.responseHeaders["STATUS"]);
-    }
 
-    private static HttpStatusCode parseResponseCodeFromStatusLine(string statusLine)
-    {
-        int code = 0;
-        string[] components = statusLine.Split(' ');
-        if (components.Length < 3 || !int.TryParse(components[1], out code))
+        public static HttpStatusCode GetStatusCode(this WWW request)
         {
-            return 0;
+            if (request.responseHeaders == null || !request.responseHeaders.ContainsKey("STATUS"))
+            {
+                return 0;
+            }
+            return parseResponseCodeFromStatusLine(request.responseHeaders["STATUS"]);
         }
-        return (HttpStatusCode)code;
+
+        private static HttpStatusCode parseResponseCodeFromStatusLine(string statusLine)
+        {
+            int code = 0;
+            string[] components = statusLine.Split(' ');
+            if (components.Length < 3 || !int.TryParse(components[1], out code))
+            {
+                return 0;
+            }
+            return (HttpStatusCode)code;
+        }
     }
 }

@@ -4,16 +4,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-static class AudioSourceExtensions
+namespace Assets.Scripts.Extensions
 {
-    public static void PlayAudioClip(this AudioSource audioSource, AudioClip audioClip, bool loop = false, float volume = 1f)
+    static class AudioSourceExtensions
     {
-        if (audioClip != null)
+        public static void PlayAudioClip(this AudioSource audioSource, AudioClip audioClip, bool loop = false, float volume = 1f)
         {
-            audioSource.clip = audioClip;
-            audioSource.loop = loop;
-            audioSource.volume = volume;
-            audioSource.Play();
+            if (audioClip != null)
+            {
+                audioSource.clip = audioClip;
+                audioSource.loop = loop;
+                audioSource.volume = volume;
+                audioSource.Play();
+            }
         }
     }
 }

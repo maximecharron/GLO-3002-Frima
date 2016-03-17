@@ -10,8 +10,8 @@ namespace Assets.Scripts.Scenes
     {
         private const string LOGOUT_URL = "/logout";
 
-        public EventSystem eventSystem;
-        public Button logOutButton;
+        // Configurable script parameters
+        public Button LogOutButton;
 
         private GameController gameController;
         private HttpService httpService;
@@ -19,10 +19,6 @@ namespace Assets.Scripts.Scenes
         void Start() {
             gameController = (GameController)FindObjectOfType(typeof(GameController));
             httpService = (HttpService)FindObjectOfType(typeof(HttpService));
-        }
-
-        void Update() {
-
         }
 
         public void OnJoinGameButtonPointerClick()
@@ -33,12 +29,12 @@ namespace Assets.Scripts.Scenes
         public void OnLogOutButtonPointerClick()
         {
             httpService.HttpGet(LOGOUT_URL, LogOutCallback);
-            logOutButton.interactable = false;
+            LogOutButton.interactable = false;
         }
 
         private void LogOutCallback(WWW request)
         {
-            logOutButton.interactable = true;
+            LogOutButton.interactable = true;
             gameController.ClearUserSession();
             SceneManager.LoadScene(TITLE_SCENE_NAME);
         }
