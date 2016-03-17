@@ -72,17 +72,13 @@ module.exports = function (passport, app) {
                             return done("The user with email " + email + " already exists and could not be created.");
                         } else {
                             var newUser = new User();
-
-                            newUser.firstname = req.body.firstname;
-                            newUser.lastname = req.body.lastname;
-                            newUser.name = req.body.firstname + " "+ req.body.lastname;
                             newUser.email = email;
-
-                            newUser.username = req.body.username;
+                            newUser.name = req.body.name;
                             newUser.password = newUser.generateHash(password);
+                            newUser.isSuperAdmin = req.body.isSuperAdmin;
                             newUser.save(function (err) {
                                 if (err) {
-                                    console.log(err);
+                                    console.log("Error: ",err);
                                     return done(err);
                                 }
 
@@ -90,9 +86,9 @@ module.exports = function (passport, app) {
                             });
                         }
                     });
-                } else if (!req.user.username) {
+                } else if (!req.user.email) {
                     var user = req.user;
-                    user.username = username;
+                    user.email = email;
                     user.password = user.generateHash(password);
                     user.save(function (err) {
                         if (err) {

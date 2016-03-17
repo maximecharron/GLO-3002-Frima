@@ -1,10 +1,10 @@
-app.factory('authHttpResponseInterceptor',['$q','$rootScope', function($q, $location, $cookies){
+app.factory('authHttpResponseInterceptor',['$q','$rootScope', function($q, $location){
         return {
             response: function(response){
                 if (response.status === 401) {
                     console.log("Response 401");
+                    $location.path('/login');
                 }
-                $location.path('/login');
                 return response || $q.when(response);
             },
             responseError: function(rejection) {
