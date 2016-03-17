@@ -72,6 +72,7 @@ namespace Assets.Scripts.Scenes.Game
 
         private void AssignStateActions()
         {
+            hitState.OnActivate = OnHitStateActivate;
             hitState.OnAnimationSequenceEnd = OnHitAnimationSequenceEnd;
         }
 
@@ -87,7 +88,11 @@ namespace Assets.Scripts.Scenes.Game
 
         void OnMouseDown()
         {
-            bossStateController.AddState(hitState);
+            bossStateController.AddState(hitState, true);
+        }
+
+        private void OnHitStateActivate(CharacterState sender)
+        {
             UpdateBossLife(currentBossLife - DEFAULT_ATTACK_VALUE);
             webSocketService.SendCommand(new BossAttackCommandDTO(DEFAULT_ATTACK_VALUE));
             BossHitFeedbackController.Hit(DEFAULT_ATTACK_VALUE);

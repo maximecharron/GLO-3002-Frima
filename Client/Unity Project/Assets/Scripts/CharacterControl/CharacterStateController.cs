@@ -18,7 +18,11 @@ namespace Assets.Scripts.CharacterControl
             this.animationController = animationController;
         }
 
-        public void AddState(CharacterState state, object actionParameter = null) {
+        public void AddState(CharacterState state, bool overwrite = false) {
+            if (states.Contains(state) && overwrite)
+            {
+                RemoveState(state);
+            }
             if (!states.Contains(state))
             {
                 states.Add(state);
@@ -26,7 +30,7 @@ namespace Assets.Scripts.CharacterControl
             }
         }
 
-        public void SetOnlyState(CharacterState state)
+        public void SetState(CharacterState state)
         {
             AddState(state);
             RemoveAllStates(state);
