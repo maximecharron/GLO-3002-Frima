@@ -1,36 +1,24 @@
 var gulp = require('gulp');
-var gutil = require('gulp-util');
-var runSequence = require('run-sequence');
-var spawn = require('child_process').spawn;
-var symlink = require('gulp-symlink');
-var node;
+var nodemon = require('gulp-nodemon');
+var jshint = require('gulp-jshint');
 
-var paths = {
-    server: ['index.js', './models/**/*.js']
-};
-
-gulp.task('server', function () {
-    if (node) {
-        node.kill();
-    }
-    node = spawn('node', paths.server, {stdio: 'inherit'});
-    node.on('close', function (code) {
-        if (code === 8) {
-            gutil.log('Error detected, waiting for changes...');
-        }
-    });
+gulp.task('lint', function ()
+{
+    gulp.src('./**/*.js')
+        .pipe(jshint())
+        .pipe(jshint.reporter('jshint-stylish'))
+        .pipe(jshint.reporter('fail'));
 });
 
-gulp.task('watch', function () {
-    gulp.watch(paths.server, ['server']);
-});
-
-gulp.task('default', function () {
-    runSequence('server', 'watch');
-});
-
-process.on('exit', function () {
-    if (node) {
-        node.kill();
-    }
+gulp.task('develop', function ()
+{
+    nodemon({
+        script: 'index.js',
+        ext: 'js',
+        tasks: ['lint']
+    })
+        .on('restart', function ()
+        {
+            console.log('restarted!');
+        });
 });

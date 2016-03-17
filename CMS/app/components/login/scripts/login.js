@@ -1,3 +1,3 @@
 'use strict';
 
-var loginApp = angular.module('CMS.login', ['ngRoute']);
+var loginApp = angular.module('CMS.login', ['ngRoute', 'ngCookies']);

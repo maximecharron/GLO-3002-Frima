@@ -41,7 +41,7 @@ ContentApp.controller("content-controller", function ($scope, contentResource) {
             serverName: selectedBoss.serverName,
             bossName: selectedBoss.bossName,
             currentBossLife: selectedBoss.currentBossLife,
-            constantBossLife: selectedBoss.constantBossLife,
+            maximumBossLife: selectedBoss.maximumBossLife,
             status: selectedBoss.status
         }
         contentResource.updateBoss(boss, function onSuccess(data) {
