@@ -1,4 +1,3 @@
-
 //Constructor
 function Boss(hostname, bossName, currentBossLife, maximumBossLife, status)
 {
@@ -41,6 +40,7 @@ Boss.prototype.receiveDamage = function(amountDamage)
     {
         this.currentBossLife = this.currentBossLife - amountDamage;
     }
+
     if(this.currentBossLife <= 0)
     {
         this.status = STATUS.DEAD;

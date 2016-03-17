@@ -10,7 +10,7 @@ bossSchema.add({
     status: String
 });
 
-bossSchema.methods.toDTO = function (following, withToken) {
+bossSchema.methods.toDTO = function () {
     var obj = this.toObject();
 
     var dto = {

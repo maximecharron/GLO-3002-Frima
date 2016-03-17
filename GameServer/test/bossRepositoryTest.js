@@ -1,5 +1,10 @@
 var proxyquire = require('proxyquire');
-var expect = require('chai').expect;
+var chai = require('chai');
+var spies = require('chai-spies');
+chai.use(spies);
+
+var expect = chai.expect;
+var should = chai.should();
 var sinon = require("sinon");
 var DbBoss = require('./../models/boss.js');
 var RedisCommunicationService = require('./../services/redisCommunicationService.js');
@@ -20,8 +25,6 @@ dbBossStub.backupBoss = function(boss) {};
 
 
 before(function(done){
-    redisCommunicationServiceStub = sinon.stub(RedisCommunicationService.prototype);
-    dbBossSpy = sinon.spy(dbBossStub, "backupBoss");
     done();
 })
 
@@ -29,7 +32,7 @@ describe("bossRepository", function ()
 {
     beforeEach(function(done)
     {
-        dbBossSpy.reset();
+        redisCommunicationServiceStub = sinon.createStubInstance(RedisCommunicationService);
         done();
     })
 
@@ -40,13 +43,14 @@ describe("bossRepository", function ()
             //Arrange
 
             var bossRepository = new BossRepository(redisCommunicationServiceStub);
-
+            var redisSpy = chai.spy.on(redisCommunicationServiceStub, 'setBoss');
+            var dbBossSpy = chai.spy.on(dbBossStub, "backupBoss");
             //Act
             bossRepository.saveBoth();
 
             //Assert
-            expect(redisCommunicationServiceStub.setBoss).to.have.been.calledOnce;
-            sinon.assert.calledOnce(dbBossSpy);
+            expect(redisSpy).to.have.been.called.once;
+            expect(dbBossSpy).to.have.been.called.once;
         });
     });
 
@@ -55,7 +59,7 @@ describe("bossRepository", function ()
         it("should call redisCommunicationService.setBoss", function()
         {
             //Arrange
-
+            var redisSpy = chai.spy.on(redisCommunicationServiceStub, 'setBoss');
 
             var bossRepository = new BossRepository(redisCommunicationServiceStub);
             //Act
@@ -63,8 +67,7 @@ describe("bossRepository", function ()
             bossRepository.saveBossRedis();
 
             //Assert
-            expect(redisCommunicationServiceStub.setBoss).to.have.been.calledOnce;
-            redisCommunicationServiceStub.setBoss.restore();
+            expect(redisSpy).to.have.been.called.once;
         });
     });
 
@@ -73,14 +76,15 @@ describe("bossRepository", function ()
         it("should call DbBoss.backupBoss", function()
         {
             //Arrange
-
+            var dbBossSpy = chai.spy.on(dbBossStub, "backupBoss");
             var bossRepository = new BossRepository(redisCommunicationServiceStub);
+
             //Act
 
             bossRepository.saveBossBd();
 
             //Assert
-            sinon.assert.calledOnce(dbBossSpy);
+            expect(dbBossSpy).to.have.been.called.once;
         });
     });
 
@@ -92,7 +96,7 @@ describe("bossRepository", function ()
             var bossExpected = new Boss(bossDef.serverName, bossDef.bossName, bossDef.currentBossLife, bossDef.maximumBossLife, bossDef.status);
 
             redisCommunicationServiceStub.findBoss.withArgs(hostname).callsArgWith(1, null, bossExpected);
-
+            var redisSpy = chai.spy.on(redisCommunicationServiceStub, 'findBoss');
             var bossRepository = new BossRepository(redisCommunicationServiceStub);
 
             //Act
@@ -100,7 +104,7 @@ describe("bossRepository", function ()
             bossRepository.getBoss(function(result)
             {
                 //Assert
-                expect(redisCommunicationServiceStub.findBoss).to.have.been.calledOnce;
+                expect(redisSpy).to.have.been.called.once;
                 expect(bossExpected.toString()).to.equal(result.toString());
                 done();
             });
@@ -114,6 +118,8 @@ describe("bossRepository", function ()
 
             redisCommunicationServiceStub.findBoss.withArgs(hostname).callsArgWith(1, null, null);
 
+            var redisSpy = chai.spy.on(redisCommunicationServiceStub, 'findBoss');
+            var dbBossSpy = chai.spy.on(dbBossStub, "findBoss");
             var bossRepository = new BossRepository(redisCommunicationServiceStub);
 
             //Act
@@ -121,8 +127,8 @@ describe("bossRepository", function ()
             bossRepository.getBoss(function(result)
             {
                 //Assert
-                expect(redisCommunicationServiceStub.findBoss).to.have.been.calledOnce;
-                expect(dbBossStub.findBoss).to.have.been.calledOnce;
+                expect(redisSpy).to.have.been.called.once;
+                expect(dbBossSpy).to.have.been.called.once;
                 expect(bossExpected.toString()).to.equal(result.toString());
                 done();
             });
@@ -137,6 +143,9 @@ describe("bossRepository", function ()
             redisCommunicationServiceStub.findBoss.withArgs(hostname).callsArgWith(1, null, null);
             redisCommunicationServiceStub.findBoss.withArgs(hostname + "Constant").callsArgWith(1, null, bossExpected);
 
+            var redisSpy = chai.spy.on(redisCommunicationServiceStub, 'findBoss');
+            var dbBossSpy = chai.spy.on(dbBossStub, "findBoss");
+
             var bossRepository = new BossRepository(redisCommunicationServiceStub);
 
             //Act
@@ -144,8 +153,8 @@ describe("bossRepository", function ()
             bossRepository.getBoss(function(result)
             {
                 //Assert
-                expect(redisCommunicationServiceStub.findBoss).to.have.been.calledTwice;
-                expect(dbBossStub.findBoss).to.have.been.calledOnce;
+                expect(redisSpy).to.have.been.called.twice;
+                expect(dbBossSpy).to.have.been.called.once;
                 expect(bossExpected.toString()).to.equal(result.toString());
                 done();
             });
@@ -169,6 +178,9 @@ describe("bossRepository", function ()
             redisCommunicationServiceStub.findBoss.withArgs(hostname).callsArgWith(1, null, null);
             redisCommunicationServiceStub.findBoss.withArgs(hostname + "Constant").callsArgWith(1, null, null);
 
+            var redisSpy = chai.spy.on(redisCommunicationServiceStub, 'findBoss');
+            var dbBossSpy = chai.spy.on(dbBossStub, "findBoss");
+
             var bossRepository = new BossRepository(redisCommunicationServiceStub);
 
             //Act
@@ -176,8 +188,8 @@ describe("bossRepository", function ()
             bossRepository.getBoss(function(result)
             {
                 //Assert
-                expect(redisCommunicationServiceStub.findBoss).to.have.been.calledTwice;
-                expect(dbBossStub.findBoss).to.have.been.calledTwice;
+                expect(redisSpy).to.have.been.called.twice;
+                expect(dbBossSpy).to.have.been.called.twice;
                 expect(bossExpected.toString()).to.equal(result.toString());
                 done();
             });
@@ -191,6 +203,9 @@ describe("bossRepository", function ()
 
             redisCommunicationServiceStub.findBoss.callsArgWith(1, null, null);
 
+            var redisSpy = chai.spy.on(redisCommunicationServiceStub, 'findBoss');
+            var dbBossSpy = chai.spy.on(dbBossStub, "findBoss");
+
             var bossRepository = new BossRepository(redisCommunicationServiceStub);
 
             //Act
@@ -198,8 +213,8 @@ describe("bossRepository", function ()
             bossRepository.getBoss(function(result)
             {
                 //Assert
-                expect(redisCommunicationServiceStub.findBoss).to.have.been.calledTwice;
-                expect(dbBossStub.findBoss).to.have.been.calledTwice;
+                expect(redisSpy).to.have.been.called.twice;
+                expect(dbBossSpy).to.have.been.called.twice;
                 expect(bossExpected.toString()).to.equal(result.toString());
                 done();
             });

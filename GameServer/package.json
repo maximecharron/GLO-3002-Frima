@@ -31,6 +31,7 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "chai-spies": "^0.7.1",
     "gulp": "^3.9.1",
     "gulp-jshint": "^2.0.0",
     "gulp-nodemon": "^2.0.6",
@@ -38,9 +39,9 @@
     "jshint": "^2.9.1",
     "jshint-stylish": "^2.1.0",
     "mocha": "^2.4.5",
-    "socket.io-client": "^1.4.5",
-    "sinon": "^1.17.3",
     "mock-socket": "^2.0.0",
-    "proxyquire": "^1.7.4"
+    "proxyquire": "^1.7.4",
+    "sinon": "^1.17.3",
+    "socket.io-client": "^1.4.5"
   }
 }

@@ -13,6 +13,7 @@ describe("Boss", function ()
     beforeEach(function ()
     {
         boss = new Boss(bossDef.serverName, bossDef.bossName, bossDef.currentBossLife, bossDef.maximumBossLife, bossDef.status);
+        boss.revive();
     });
 
     describe("toJson", function()
@@ -52,6 +53,7 @@ describe("Boss", function ()
             //Arrange
             var expectedBossLife = 90;
             var expectedStatus = STATUS.ALIVE;
+
             //Act
             boss.receiveDamage(10);
             var resultLife = boss.getLife();
@@ -70,6 +72,7 @@ describe("Boss", function ()
             //Arrange
             var expectedBossLife = 0;
             var expectedStatus = STATUS.DEAD;
+
             //Act
             boss.receiveDamage(110);
             var resultLife = boss.getLife();
@@ -88,8 +91,10 @@ describe("Boss", function ()
             //Arrange
             var expectedBossLife = 0;
             var expectedStatus = STATUS.DEAD;
+
             //Act
             boss.receiveDamage(100);
+
             var resultLife = boss.getLife();
             var resultStatus = boss.getStatus();
 

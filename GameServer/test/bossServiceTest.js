@@ -3,7 +3,12 @@ for (var moduleId in cache) {
     delete cache[moduleId];
 }
 
-var expect = require('chai').expect;
+var chai = require('chai');
+var spies = require('chai-spies');
+chai.use(spies);
+
+var expect = chai.expect;
+var should = chai.should();
 var sinon = require("sinon");
 
 var BossService = require('./../services/bossService.js');
@@ -17,14 +22,17 @@ var bossCommunicationServiceStub;
 var bossRepositoryStub;
 
 before(function(done){
-
-    bossCommunicationServiceStub = sinon.stub(BossCommunicationService.prototype);
-    bossRepositoryStub = sinon.stub(BossRepository.prototype);
     done();
 })
 
 describe("bossService", function ()
 {
+    beforeEach(function(done)
+    {
+        bossCommunicationServiceStub = sinon.createStubInstance(BossCommunicationService);
+        bossRepositoryStub = sinon.createStubInstance(BossRepository);
+        done();
+    })
     describe("initializeBoss", function()
     {
         it("should call bossRepository getBoss and saveBoth", function()
@@ -33,13 +41,15 @@ describe("bossService", function ()
             var bossExpected = new Boss(bossDef.serverName, bossDef.bossName, bossDef.currentBossLife, bossDef.maximumBossLife, bossDef.status);
             bossRepositoryStub.getBoss.callsArgWith(0, bossExpected);
             var bossService = new BossService(bossCommunicationServiceStub, bossRepositoryStub);
-
+            var getSpy = chai.spy.on(bossRepositoryStub, 'getBoss');
+            var saveSpy = chai.spy.on(bossRepositoryStub, 'saveBoth'
+            );
             //Act
             bossService.initializeBoss();
 
             //Assert
-            expect(bossRepositoryStub.getBoss).to.have.been.calledOnce;
-            expect(bossRepositoryStub.saveBoth).to.have.been.calledOnce;
+            expect(getSpy).to.have.been.called.once;
+            expect(saveSpy).to.have.been.called.once;
         });
     });
 

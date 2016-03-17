@@ -1,11 +1,13 @@
-var expect = require("chai").expect;
+var chai = require('chai');
+var spies = require('chai-spies');
+chai.use(spies);
+
+var expect = chai.expect;
+var should = chai.should();
 var sinon = require("sinon");
 
 var WebSocketAPI = require("../api/webSocketAPI.js");
 var BossService = require("../services/bossService.js");
-var BossCommunicationService = require("../services/bossCommunicationService.js");
-var RedisCommunicationService = require("../services/redisCommunicationService.js");
-var WebSocketServer = require("ws").Server;
 
 describe("Boss", function ()
 {
@@ -15,6 +17,8 @@ describe("Boss", function ()
         {
             //Arrange
             var bossServiceStub = sinon.createStubInstance(BossService);
+            var bossSpy = chai.spy.on(bossServiceStub, 'initializeBoss');
+
 
             var webSocketAPI = new WebSocketAPI(bossServiceStub);
 
@@ -22,7 +26,7 @@ describe("Boss", function ()
             webSocketAPI.initializeBoss();
 
             //Assert
-            expect(bossServiceStub.initializeBoss).to.have.been.calledOnce;
+            expect(bossSpy).to.have.been.called.once;
         })
     })
 });
