@@ -9,13 +9,15 @@ using UnityEngine;
 
 namespace Assets.Scripts.Scenes.Game
 {
-    public class BossHitFeebackController : MonoBehaviour
+    public class BossHitFeedbackController : MonoBehaviour
     {
-
         //Configurable script parameters
         public GameObject HitParticleSystem;
+        public int ParticleSystemPoolSize = 5;
         public GameObject HitBubble;
+        public int AudioSourcePoolSize = 5;
         public AudioClip[] AudioClips;
+        public int HitBubblePoolSize = 5;
 
         private UnityObjectPool particleSystemPool;
         private UnityObjectPool audioSourcePool;
@@ -23,12 +25,12 @@ namespace Assets.Scripts.Scenes.Game
 
         void Start()
         {
-            this.particleSystemPool = new UnityObjectPool(HitParticleSystem, 10);
+            this.particleSystemPool = new UnityObjectPool(HitParticleSystem, ParticleSystemPoolSize);
             this.particleSystemPool.OnCheckIsAvailable = CheckParticlePoolItemAvailable;
-            this.audioSourcePool = new UnityObjectPool(this.gameObject, typeof(AudioSource), 10);
+            this.audioSourcePool = new UnityObjectPool(this.gameObject, typeof(AudioSource), AudioSourcePoolSize);
             this.audioSourcePool.OnCheckIsAvailable = CheckAudioSourcePoolItemAvailable;
             this.HitBubble.SetActive(false);
-            this.hitBubblePool = new UnityObjectPool(HitBubble, 10);
+            this.hitBubblePool = new UnityObjectPool(HitBubble, HitBubblePoolSize);
             this.hitBubblePool.OnCheckIsAvailable = CheckHitBubblePoolItemAvailable;
         }
 
@@ -49,7 +51,7 @@ namespace Assets.Scripts.Scenes.Game
                 particleSystem.transform.position = Camera.main.GetMousePosition().ToVector3(HitParticleSystem.transform.position.z);
                 particleSystem.PlayEnable();
             }
-            catch (NoMorePoolItemAvailableException)
+            catch (PoolExhaustedException)
             {
                 // Intentionally blank
             }
@@ -68,7 +70,7 @@ namespace Assets.Scripts.Scenes.Game
                 int randomAudioClipIndex = Convert.ToInt32(UnityEngine.Random.Range(0, AudioClips.Length));
                 audioSource.PlayAudioClip(AudioClips[randomAudioClipIndex]);
             }
-            catch (NoMorePoolItemAvailableException)
+            catch (PoolExhaustedException)
             {
                 // Intentionally blank
             }
@@ -87,7 +89,7 @@ namespace Assets.Scripts.Scenes.Game
                 HitBubbleController hitBubbleController = hitBubble.GetComponent<HitBubbleController>();
                 hitBubbleController.Show(Camera.main.GetMousePosition(), hitValue);
             }
-            catch (NoMorePoolItemAvailableException)
+            catch (PoolExhaustedException)
             {
                 // Intentionally blank
             }

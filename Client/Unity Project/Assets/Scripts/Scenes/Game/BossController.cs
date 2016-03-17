@@ -21,7 +21,7 @@ namespace Assets.Scripts.Scenes.Game
         public int SpritesheetColumnCount = 6;
         public Text HealthPointValue;
         public Slider HealthPointSlider;
-        public BossHitFeebackController BossHitFeedbackController;
+        public BossHitFeedbackController BossHitFeedbackController;
 
         public delegate void BossDeadEventHandler();
         public event BossDeadEventHandler OnBossDead;

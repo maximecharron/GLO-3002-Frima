@@ -20,11 +20,6 @@ namespace Assets.Scripts.Communication
         private WebSocket webSocket;
         private Dictionary<String, CommandRegistration> registeredCommands = new Dictionary<string, CommandRegistration>();
 
-        void Start()
-        {
-            
-        }
-
         void Update()
         {
             ReceiveCommands();

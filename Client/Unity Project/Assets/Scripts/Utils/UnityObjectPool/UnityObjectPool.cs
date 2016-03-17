@@ -60,7 +60,7 @@ namespace Assets.Scripts.Utils.UnityObjectPool
                 }
             }
 
-            throw new NoMorePoolItemAvailableException();
+            throw new PoolExhaustedException();
         }
 
     }
