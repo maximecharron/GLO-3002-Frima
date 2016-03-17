@@ -1,108 +1,174 @@
 var ws = require('ws');
 var wss = require('ws').Server;
-var redis = require('redis').createClient(process.env.REDIS_URL);
 
-var Boss = require('./../domain/boss.js').Boss;
+var redisSub = require('./../services/redisService.js').redisSub;
+redisSub.subscribe("bossDead");
 
-var STATUS = Object.freeze({ALIVE: "ALIVE", DEAD: "DEAD"});
-var allBoss = {};
+var Boss = require('./../domain/boss.js');
+var BossCommunicationService = require('./../services/bossCommunicationService.js');
+var BossRepository = require('./../repository/bossRepository.js');
+
+var STATUS = Object.freeze({ALIVE: "0", DEAD: "1"});
+
+var lastLifeBroadcasted = 0;
+
 var theBoss;
+var bossRepository = new BossRepository();
+var bossCommunicationService = new BossCommunicationService();
 
 setInterval(function () {
         broadcastBossInformation()
     }, 100
 );
 
-exports.setWebSocketServer = function (webSocketServer)
-{
+setInterval(function () {
+        bossRepository.saveBossBd(theBoss);
+    }, 9000
+);
+
+/*
+ setInterval ( function (){
+ if (theBoss.status == STATUS.DEAD){
+ theBoss.revive(function(boss){
+ theBoss = boss;
+ bossRepository.saveBossBd(theBoss);
+ })
+ }
+ }, 12000)
+ */
+
+redisSub.on('message', function (channel, message) {
+    console.log("Redis message: ", channel);
+    if (channel == "bossDead") {
+        console.log("BroadCast bossDead: ", channel);
+        broadcastBossDead();
+    } else if (channel == theBoss.getServerName()+'CMS'){
+        var bossMessage;
+        console.log("Message is: ", message);
+        try {
+            bossMessage = JSON.parse(message);
+            theBoss.setCurrentLife(bossMessage.currentBossLife);
+            console.log("Boss life (CMS):", theBoss.getLife());
+            theBoss.setConstantLife(bossMessage.constantBossLife);
+            bossRepository.saveBoth(theBoss);
+        } catch (e){
+            console.log(e);
+        }
+    }
+})
+
+exports.setWebSocketServer = function (webSocketServer) {
     wss = webSocketServer;
 }
 
-exports.newConnection = function (webSocket)
-{
-    console.log("WebSocket connected from address: ", webSocket._socket.remoteAddress);
-
-    webSocket.on("message", function (message)
-    {
+exports.newConnection = function (webSocket) {
+    try {
+        webSocket.send(bossCommunicationService.createBossStatusUpdate(theBoss));
+    } catch (e) {
+        console.log(e);
+    }
+    webSocket.on("message", function (message) {
         newMessage(message, webSocket);
     });
 
-    webSocket.on("close", function ()
-    {
+    webSocket.on("close", function () {
         close(webSocket);
     });
 }
 
-function newMessage(message, webSocket)
-{
-    var request = JSON.parse(message);
+function newMessage(message, webSocket) {
 
-    if(request.function.name == "newBoss")
-    {
-        createNewBoss(request);
+    var request = {};
+    try {
+        var request = JSON.parse(message);
+    } catch (e) {
+        return console.error(e);
     }
-    if(request.function.name == "attack")
-    {
-        if(theBoss == undefined)
+
+    if (request.command.name == "attack") {
+        try
         {
-            theBoss = new Boss(request.function.bossName);
-            theBoss.initialize();
+            theBoss.receiveDamage(request.command.parameters.number);
+        }catch (e) {
+            console.log("Problem with receiveDamage: ", e, request);
         }
-        theBoss.receiveDamage(request.function.number);
+    }
+    if (request.command.name == "keepAlive") {
+        keepAlive(webSocket);
     }
 }
 
-function createNewBoss(request)
-{
-    redis.hmset(request.boss.bossName, request.boss);
-    theBoss = new Boss(request.boss.bossName);
-    theBoss.initialize(function(err, data)
-    {
-        if(!err)
-        {
-            allBoss[request.boss.bossName] = theBoss.toJson();
-            console.log("Boss parse :", allBoss["Rambo"]);
-        }
-    });
+function close(webSocket) {
+    try {
+        webSocket.close();
+    } catch (e) {
+        console.log(e);
+    }
+
 }
 
-function close(webSocket)
-{
-    console.log("webSocket at address ", webSocket._socket.remoteAddress, " is disconnected!"); //TODO: For debug purpose
-    webSocket.close();
-}
-
-function broadcast(data)
-{
+function broadcast(data) {
     var message = JSON.stringify(data);
-    if (wss.clients)
-    {
-        wss.clients.forEach(function each(client)
-        {
-            client.send(message);
+    if (wss.clients) {
+        wss.clients.forEach(function each(client) {
+            try {
+                client.send(message);
+            } catch (e) {
+                console.log(e);
+            }
+
         });
     }
 };
 
-function broadcastBossInformation()
-{
-    if(theBoss != undefined)
-    {
-        if (wss.clients)
-        {
-            wss.clients.forEach(function each(client)
-            {
-                client.send(theBoss.toString());
+function keepAlive(websocket) {
+    var response = bossCommunicationService.createBossStatusUpdate(theBoss);
+    try {
+        websocket.send(response);
+    } catch (e) {
+        console.log(e);
+    }
+
+}
+
+function broadcastBossInformation() {
+    if (theBoss) {
+        if (lastLifeBroadcasted != theBoss.getLife() && wss.clients) {
+            console.log("inside broadcast BossLife :", theBoss.getLife())
+            lastLifeBroadcasted = theBoss.getLife();
+            var bossUpdate = bossCommunicationService.createBossStatusUpdate(theBoss);
+            wss.clients.forEach(function each(client) {
+                try {
+                    client.send(bossUpdate);
+                } catch (e) {
+                    console.log(e);
+                }
             });
         }
     }
 };
 
-/*
-message from client:
-attack:
-    {"function":{"name": "attack","bossName": "Rambo", "number": "10"}}
+function broadcastBossDead() {
+    var bossUpdate = bossCommunicationService.createBossStatusUpdate(theBoss);
+    wss.clients.forEach(function each(client) {
+        try {
+            client.send(bossUpdate);
+            client.close();
+        } catch (e) {
+            console.log(e);
+        }
+    });
 
-new boss:
-    {"function":{"name": "newBoss"},"boss":{"bossName": "Rambo","constantBossLife": "100","currentBossLife": "100","status": "ALIVE"}}
-*/
+    theBoss.revive();
+    bossRepository.saveBossBd(theBoss);
+}
+
+exports.initializeBoss = function () {
+    bossRepository.getBoss(function (boss) {
+        theBoss = boss;
+        console.log("theBoss: {0}", theBoss);
+        bossRepository.saveBoth(theBoss);
+        redisSub.subscribe(theBoss.getServerName()+'CMS');
+    });
+
+};

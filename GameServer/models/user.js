@@ -1,12 +1,11 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
 var modelHelpers = require('./modelHelpers.js');
-var _ = require('underscore');
 
 var userSchema = new mongoose.Schema();
 userSchema.add({
-    username : String,
-    email: String,
+    username : {type: String, index: {unique: true, }},
+    email: {type: String, index: {unique: true, }},
     password: String,
     token: String,
     expiration: Number,

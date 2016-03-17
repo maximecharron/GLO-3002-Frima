@@ -2,13 +2,18 @@ loginApp.controller("login-controller", function ($scope, loginService, $locatio
 
     <!-- $scope déclare les variables utilisées dans le html -->
 
-    $scope.signin = function () {
+    $scope.login = function () {
 
-        var data = {
+        var credentials = {
             email: $scope.email,
             password: $scope.password
         }
 
-        window.alert( $scope.email + " " + $scope.password);
+        loginResource.post(credentials, function onSuccess(data) {
+            loginService.setUser(data);
+            $location.path("/content");
+        }, function onError(data) {
+            $location.path("/login");
+        });
     }
 })

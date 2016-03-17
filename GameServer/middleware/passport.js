@@ -19,15 +19,15 @@ module.exports = function (passport, app) {
     });
 
     passport.use('local-login', new LocalStrategy({
-            usernameField: 'email',
+            usernameField: 'username',
             passwordField: 'password',
             passReqToCallback: true
         },
-        function (req, email, password, done) {
+        function (req, username, password, done) {
 
 
             process.nextTick(function () {
-                User.findOne({ 'email': email }, function (err, user) {
+                User.findOne({'username': username}, function (err, user) {
                     if (err) {
                         return done(err);
                     }
@@ -67,27 +67,31 @@ module.exports = function (passport, app) {
             }
             process.nextTick(function () {
                 if (!req.user) {
-                    User.findOne({ 'email': email }, function (err, user) {
+                    User.findOne({'email': email}, function (err, user) {
                         if (err) {
                             return done(err);
                         }
 
                         if (user) {
-                            return done("The user with email " + email + " already exists and could not be created.");
+                            var errorMessage = "The user with email " + email + " already exists and could not be created."
+                            return done(null, false, {message: errorMessage});
                         } else {
-                            var newUser = new User();
+                            User.findOne({'username': req.body.username}, function (err, user) {
+                                var newUser = new User();
 
-                            newUser.email = email;
-                            newUser.username = req.body.username;
-                            newUser.password = newUser.generateHash(password);
-                            newUser.save(function (err) {
-                                if (err) {
-                                    console.log(err);
-                                    return done(err);
-                                }
-                                return done(null, newUser.toDTO(true));
-                            });
+                                newUser.email = email;
+                                newUser.username = req.body.username;
+                                newUser.password = newUser.generateHash(password);
+                                newUser.save(function (err) {
+                                    if (err) {
+                                        console.log(err);
+                                        return done(err);
+                                    }
+                                    return done(null, newUser.toDTO(true));
+                                });
+                            })
                         }
+
                     });
                 } else if (!req.user.username) {
                     var user = req.user;
@@ -107,17 +111,17 @@ module.exports = function (passport, app) {
 
         }));
 
-    passport.use(new FacebookStrategy({
+    passport.use('facebook-login', new FacebookStrategy({
 
-        clientID        : configAuth.facebookAuth.clientID,
-        clientSecret    : configAuth.facebookAuth.clientSecret
-    },
-        function(token, refreshToken, profile, done) {
+            clientID: configAuth.facebookAuth.clientID,
+            clientSecret: configAuth.facebookAuth.clientSecret
+        },
+        function (token, refreshToken, profile, done) {
 
             // asynchronous
-            process.nextTick(function() {
+            process.nextTick(function () {
 
-                User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
+                User.findOne({'facebook.id': profile.id}, function (err, user) {
 
                     if (err)
                         return done(err);
@@ -125,15 +129,15 @@ module.exports = function (passport, app) {
                     if (user) {
                         return done(null, user); // user found, return that user
                     } else {
-                        var newUser            = new User();
+                        var newUser = new User();
                         console.log(profile);
 
-                        newUser.facebook.id    = profile.id; // set the users facebook id
+                        newUser.facebook.id = profile.id; // set the users facebook id
                         newUser.facebook.token = token; // we will save the token that facebook provides to the user
-                        newUser.facebook.username  = profile.name.givenName + ' ' + profile.name.familyName; // look at the passport user profile to see how names are returned
+                        newUser.facebook.username = profile.name.givenName + ' ' + profile.name.familyName; // look at the passport user profile to see how names are returned
                         newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
 
-                        newUser.save(function(err) {
+                        newUser.save(function (err) {
                             if (err)
                                 throw err;
 

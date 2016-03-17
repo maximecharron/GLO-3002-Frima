@@ -22,7 +22,7 @@ deploy:
   - provider: heroku
     api_key: b0b132e4-1f7d-4bd4-a5b0-cd74599d12b4 #TODO: Secure key
     app:
-      server_release: frima-server-test
+      server_release: frima-server-1
     on:
       branch: server_release
 

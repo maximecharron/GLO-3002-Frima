@@ -1,26 +1,30 @@
-<div class="col-md-6 col-md-offset-3 panel-body">
-    <div>
-        <h2>Login</h2>
-        <form name="form" ng-submit="" role="form">
-            <div class="form-group">
-                <label>Email</label>
-                <input type="text" name="username" id="email" class="form-control" ng-model="email"/>
+<div class="page-header">
+</div>
+<div>
+    <div class="row">
+        </br>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3 panel-body">
+            <div>
+                <h2>Login</h2>
 
-            </div>
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" name="password" id="password" class="form-control" ng-model="password"/>
+                <form name="form" ng-submit="" role="form">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="text" name="username" id="email" class="form-control" ng-model="email"/>
 
-            </div>
-            <div class="form-actions">
-                <button type="submit" class="btn btn-primary">Login</button>
-            </div>
-        </form>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" name="password" id="password" class="form-control" ng-model="password"/>
 
-      <div>
-        <button ng-click="signin()"> Test controller! </button>
-      </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary" ng-click="login()">Login</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
-
-<!-- a garder -->
