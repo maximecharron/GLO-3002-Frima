@@ -62,7 +62,6 @@ module.exports = function (passport, app) {
                 email = email.toLowerCase();
             }
             process.nextTick(function () {
-                if (!req.user) {
                     User.findOne({ 'email': email }, function (err, user) {
                         if (err) {
                             return done(err);
@@ -72,8 +71,9 @@ module.exports = function (passport, app) {
                             return done("The user with email " + email + " already exists and could not be created.");
                         } else {
                             var newUser = new User();
-                            newUser.email = email;
                             newUser.name = req.body.name;
+                            newUser.email = email;
+                            newUser.isSuperAdmin = req.body.isSuperAdmin;
                             newUser.password = newUser.generateHash(password);
                             newUser.isSuperAdmin = req.body.isSuperAdmin;
                             newUser.save(function (err) {
@@ -86,20 +86,6 @@ module.exports = function (passport, app) {
                             });
                         }
                     });
-                } else if (!req.user.email) {
-                    var user = req.user;
-                    user.email = email;
-                    user.password = user.generateHash(password);
-                    user.save(function (err) {
-                        if (err) {
-                            return done(err);
-                        }
-
-                        return done(null, user.toDTO(true));
-                    });
-                } else {
-                    return done(null, req.user);
-                }
             });
 
         }));

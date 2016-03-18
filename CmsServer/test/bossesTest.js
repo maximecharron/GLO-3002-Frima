@@ -7,10 +7,12 @@ var redisStub = {};
 var redisClientStub = {};
 redisClientStub.publish = function (channel, message)
 {
+    /* Empty method stub */
 };
 
 redisClientStub.hmset = function (key, values)
 {
+    /* Empty method stub */
 };
 redisStub.createClient = function(url){
     return redisClientStub;
@@ -19,13 +21,14 @@ var bosses = proxyquire('./../routes/bosses.js', {
     './../repository/bossRepository.js': bossRepositoryStub,
     'redis': redisStub
 });
-var res = {
+var response = {
     status: function (status)
     {
         return this;
     },
     send: function (object)
     {
+        /* Empty method stub */
     }
 };
 var request = {
@@ -39,7 +42,7 @@ var request = {
 };
 var sendSpy;
 var statusSpy;
-var bossRepoSpy;
+var bossRepositorySpy;
 var redisHmsetSpy;
 var redisPublishSpy;
 //Stubs
@@ -48,13 +51,13 @@ bossRepositoryStub.updateBoss = function (boss, callback)
     callback(boss);
 };
 
-bossRepositoryStub.findConstantBossList = function (callback)
+bossRepositoryStub.findBaseReferenceBosses = function (callback)
 {
     var list = [];
     callback(list);
 };
 
-bossRepositoryStub.findBossList = function (callback)
+bossRepositoryStub.findBosses = function (callback)
 {
     var list = [];
     callback(list);
@@ -62,8 +65,8 @@ bossRepositoryStub.findBossList = function (callback)
 //Before all tests
 before(function (done)
 {
-    sendSpy = sinon.spy(res, "send");
-    statusSpy = sinon.spy(res, "status");
+    sendSpy = sinon.spy(response, "send");
+    statusSpy = sinon.spy(response, "status");
     redisHmsetSpy = sinon.spy(redisClientStub, "hmset");
     redisPublishSpy = sinon.spy(redisClientStub, "publish");
     done();
@@ -78,9 +81,9 @@ describe('Bosses route does', function ()
     });
     it('get constant boss list by calling bossRepository', function ()
     {
-        bossRepoSpy = sinon.spy(bossRepositoryStub, "findConstantBossList");
-        bosses.getConstantBossList(request, res);
-        sinon.assert.calledOnce(bossRepoSpy);
+        bossRepositorySpy = sinon.spy(bossRepositoryStub, "findBaseReferenceBosses");
+        bosses.getConstantBossList(request, response);
+        sinon.assert.calledOnce(bossRepositorySpy);
         sinon.assert.calledOnce(sendSpy);
         sinon.assert.calledOnce(statusSpy);
         sinon.assert.calledWith(statusSpy, 200);
@@ -88,9 +91,9 @@ describe('Bosses route does', function ()
     });
     it('get boss list by calling bossRepository', function ()
     {
-        bossRepoSpy = sinon.spy(bossRepositoryStub, "findBossList");
-        bosses.getBossList(request, res);
-        sinon.assert.calledOnce(bossRepoSpy);
+        bossRepositorySpy = sinon.spy(bossRepositoryStub, "findBosses");
+        bosses.getBossList(request, response);
+        sinon.assert.calledOnce(bossRepositorySpy);
         sinon.assert.calledOnce(sendSpy);
         sinon.assert.calledWith(statusSpy, 200);
         sinon.assert.calledOnce(statusSpy);
@@ -105,11 +108,11 @@ describe('Bosses route does', function ()
             serverName: request.body.serverName,
             status: request.body.status
         };
-        bossRepoSpy = sinon.spy(bossRepositoryStub, "updateBoss");
-        bosses.updateBoss(request, res);
+        bossRepositorySpy = sinon.spy(bossRepositoryStub, "updateBoss");
+        bosses.updateBoss(request, response);
         sinon.assert.calledOnce(redisHmsetSpy);
         sinon.assert.calledOnce(redisPublishSpy);
-        sinon.assert.calledOnce(bossRepoSpy);
+        sinon.assert.calledOnce(bossRepositorySpy);
         sinon.assert.calledOnce(sendSpy);
         sinon.assert.calledOnce(statusSpy);
         sinon.assert.calledWith(statusSpy, 200);

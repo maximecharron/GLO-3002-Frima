@@ -41,7 +41,8 @@ app.use(cors(corsOptions));
 
 app.post('/login', passport.authenticate('local-login'), login.getToken);
 app.get('/logout', login.logout);
-app.post('/signup', authentication.isAuthenticatedAsSuperAdmin, passport.authenticate('local-signup'));
+
+app.post('/signup', authentication.isAuthenticatedAsSuperAdmin, passport.authenticate('local-signup'), login.getToken);
 app.get('/status', status.getStatus);
 
 app.get('/bossesConstant', authentication.isAuthenticated,boss.getConstantBossList);

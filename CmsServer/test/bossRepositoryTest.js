@@ -21,7 +21,7 @@ var constantBoss = new Boss({
     status: '0'
 });
 
-describe('Boss repository does', function ()
+describe('Boss repository ', function ()
 {
     before(function (done)
     {
@@ -34,30 +34,30 @@ describe('Boss repository does', function ()
         });
     });
 
-    it('get constant boss list', function (done)
+    it('gets constant boss list', function (done)
     {
-        bossRepository.findConstantBossList(function (bosses)
+        bossRepository.findBaseReferenceBosses(function (bosses)
         {
-            assert.equal(1, bosses.length, 'Size is not 1.');
-            assert.equal(bosses[0].serverName, constantBoss.serverName, 'serverName does not match.');
+            assert.equal(bosses.length, 1);
+            assert.equal(constantBoss.serverName, bosses[0].serverName);
             done();
         });
     });
 
-    it('get current boss list', function (done)
+    it('gets current boss list', function (done)
     {
-        bossRepository.findBossList(function (bosses)
+        bossRepository.findBosses(function (bosses)
         {
-            assert.equal(1, bosses.length, 'Size is not 1.');
-            assert.equal(bosses[0].serverName, currentBoss.serverName, 'serverName does not match.');
+            assert.equal(bosses.length, 1);
+            assert.equal(currentBoss.serverName, bosses[0].serverName);
             done();
         });
     });
-    it('find Single Boss', function (done)
+    it('finds Single Boss', function (done)
     {
         bossRepository.findBoss(currentBoss.serverName, function (boss)
         {
-            assert.equal(boss.serverName, currentBoss.serverName, 'serverName does not match.');
+            assert.equal(currentBoss.serverName, boss.serverName);
             done();
         });
     });
@@ -68,7 +68,7 @@ describe('Boss repository does', function ()
         bossToUpdate.maximumBossLife = '1';
         bossRepository.updateBoss(bossToUpdate, function (updatedBoss)
         {
-            assert.equal(updatedBoss.maximumBossLife, bossToUpdate.maximumBossLife, 'BossLife not updated');
+            assert.equal(updatedBoss.maximumBossLife, bossToUpdate.maximumBossLife);
             done();
         });
     });
@@ -85,17 +85,17 @@ describe('Boss repository does', function ()
         });
         it('if no constant boss', function (done)
         {
-            bossRepository.findConstantBossList(function (bosses)
+            bossRepository.findBaseReferenceBosses(function (bosses)
             {
-                assert.equal(null, bosses, 'Bosses is not null');
+                assert.equal(bosses, null);
                 done();
             });
         });
         it('if no current boss', function (done)
         {
-            bossRepository.findBossList(function (bosses)
+            bossRepository.findBosses(function (bosses)
             {
-                assert.equal(null, bosses, 'Bosses is not null');
+                assert.equal(bosses, null);
                 done();
             });
         });
@@ -103,7 +103,7 @@ describe('Boss repository does', function ()
         {
             bossRepository.findBoss(currentBoss.serverName, function (boss)
             {
-                assert.equal(null, boss, 'A boss was found.');
+                assert.equal(boss, null);
                 done();
             });
         });
