@@ -133,4 +133,43 @@ describe("Functionnal webSocket", function ()
 
         });
     });
+
+    describe('keepAlive', function()
+    {
+        it('should receive message bossStatusUpdate', function(done)
+        {
+            this.timeout(5000);
+            //Arrange
+            var jsonKeepAlive =
+            {
+                token: "token",
+                command:
+                {
+                    name: "keepAlive"
+                }
+            };
+
+            //Act
+            webSocketClient.onopen = function()
+            {
+                webSocketClient.send(JSON.stringify(jsonKeepAlive));
+            };
+
+            var json;
+
+            webSocketClient.on("message", function(message)
+            {
+                json = JSON.parse(message);
+            });
+
+            //Assert
+            var expectedCommand = "bossStatusUpdate";
+            setTimeout(function()
+            {
+                assert.equal(expectedCommand, json.command.name);
+                done();
+            }, 1000);
+
+        });
+    });
 });

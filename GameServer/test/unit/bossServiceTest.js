@@ -133,14 +133,12 @@ describe("bossService", function ()
             var bossExpected = new Boss(bossDef.serverName, bossDef.bossName, bossDef.currentBossLife, bossDef.maximumBossLife, bossDef.status);
             bossRepositoryStub.getBoss.callsArgWith(0, bossExpected);
             var bossService = new BossService(bossCommunicationServiceStub, bossRepositoryStub);
-            var getSpy = chai.spy.on(bossRepositoryStub, 'getBoss');
-            var saveSpy = chai.spy.on(bossRepositoryStub, 'saveBoth'
-            );
+            var saveSpy = chai.spy.on(bossRepositoryStub, 'saveBossToMongo');
+
             //Act
-            bossService.initializeBoss();
+            bossService.saveBossDataBase();
 
             //Assert
-            expect(getSpy).to.have.been.called.once;
             expect(saveSpy).to.have.been.called.once;
         });
     });
