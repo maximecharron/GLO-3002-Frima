@@ -10,12 +10,10 @@ namespace Assets.Scripts.CharacterControl
     {
 
         public bool RandomizeSequences { get; set; }
-        public int NumberOfSequencesToPlay { get; set; }
 
-        public SpriteAnimationSettings(bool randomizeSequences = false, int numberOfSequencesToPlay = -1)
+        public SpriteAnimationSettings(bool randomizeSequences = false)
         {
             this.RandomizeSequences = randomizeSequences;
-            this.NumberOfSequencesToPlay = numberOfSequencesToPlay;
         }
     }
 }

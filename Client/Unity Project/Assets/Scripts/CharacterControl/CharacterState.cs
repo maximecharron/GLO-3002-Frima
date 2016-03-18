@@ -47,12 +47,12 @@ namespace Assets.Scripts.CharacterControl
             }
         }
 
-        public void AddAnimationSequencesSpriteAnimationSequence(SpriteAnimationSequence spriteAnimationSequence)
+        public void AddSpriteAnimationSequence(SpriteAnimationSequence spriteAnimationSequence)
         {
             SpriteAnimationSequences.Add(spriteAnimationSequence);
         }
 
-        public void AddTransitionAnimationSequences(CharacterState lastState, SpriteAnimationSequence spriteAnimationSequence)
+        public void AddTransitionAnimationSequence(CharacterState lastState, SpriteAnimationSequence spriteAnimationSequence)
         {
             SpriteTransitionAnimationSequences.Add(lastState, spriteAnimationSequence);
         }

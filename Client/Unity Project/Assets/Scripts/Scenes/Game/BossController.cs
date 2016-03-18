@@ -16,6 +16,10 @@ namespace Assets.Scripts.Scenes.Game
     public class BossController : MonoBehaviour
     {
         private const int DEFAULT_ATTACK_VALUE = 1000;
+        private const int HIT_STATE_PRIORITY = 1;
+        private const int HIT_STATE_ANIMATION_PRIORITY = 1;
+        private const int IDLE_STATE_PRIORITY = 2;
+        private const int IDLE_STATE_ANIMATION_PRIORITY = 2;
 
         //Configurable script parameters
         public int SpritesheetColumnCount = 6;
@@ -29,7 +33,6 @@ namespace Assets.Scripts.Scenes.Game
         private CharacterStateController bossStateController;
         private CharacterState idleState;
         private CharacterState hitState;
-
         private SpriteAnimationSequence idleSequence1 = new SpriteAnimationSequence(new List<int> { 0, 1 }, 5, 3);
         private SpriteAnimationSequence idleSequence2 = new SpriteAnimationSequence(new List<int> { 2, 3 }, 5, 3);
         private SpriteAnimationSequence hitSequence1 = new SpriteAnimationSequence(new List<int> { 18 }, 2, 1);
@@ -59,13 +62,14 @@ namespace Assets.Scripts.Scenes.Game
 
         private void InitializeStates()
         {
-            SpriteAnimationSettings idleStateAnimationSettings = new SpriteAnimationSettings(true);
-            idleState = new CharacterState("Idle", 2, 2, idleStateAnimationSettings);
-            idleState.SpriteAnimationSequences = new List<SpriteAnimationSequence> { idleSequence1, idleSequence2 };
-
-            SpriteAnimationSettings hitStateAnimationSettings = new SpriteAnimationSettings(true, 1);
-            hitState = new CharacterState("Hit", 1, 1, hitStateAnimationSettings);
+            SpriteAnimationSettings hitStateAnimationSettings = new SpriteAnimationSettings(true);
+            hitState = new CharacterState("Hit", HIT_STATE_PRIORITY, HIT_STATE_ANIMATION_PRIORITY, hitStateAnimationSettings);
             hitState.SpriteAnimationSequences = new List<SpriteAnimationSequence> { hitSequence1, hitSequence2, hitSequence3, hitSequence4, hitSequence5 };
+
+
+            SpriteAnimationSettings idleStateAnimationSettings = new SpriteAnimationSettings(true);
+            idleState = new CharacterState("Idle", IDLE_STATE_PRIORITY, IDLE_STATE_ANIMATION_PRIORITY, idleStateAnimationSettings);
+            idleState.SpriteAnimationSequences = new List<SpriteAnimationSequence> { idleSequence1, idleSequence2 };
 
             bossStateController.AddState(idleState);
         }

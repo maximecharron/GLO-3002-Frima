@@ -179,7 +179,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 112632942}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -5}
+  m_LocalPosition: {x: 0, y: 0, z: -100}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 21285037}
@@ -2185,7 +2185,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22489382, guid: 216c7204b351e3a4b8b598949a505e7e, type: 2}
       propertyPath: m_SizeDelta.x
-      value: 5000
+      value: 2500
       objectReference: {fileID: 0}
     - target: {fileID: 22489382, guid: 216c7204b351e3a4b8b598949a505e7e, type: 2}
       propertyPath: m_SizeDelta.y
@@ -3734,6 +3734,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HitParticleSystem: {fileID: 166045364}
+  ParticleSystemPoolSize: 5
   HitBubble: {fileID: 1747901367}
+  AudioSourcePoolSize: 5
   AudioClips:
   - {fileID: 8300000, guid: caf1668eba6f5494c89cd80be1460e0c, type: 3}
+  HitBubblePoolSize: 5

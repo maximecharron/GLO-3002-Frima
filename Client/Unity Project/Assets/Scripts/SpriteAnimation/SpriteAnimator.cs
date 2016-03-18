@@ -80,7 +80,6 @@ namespace Assets.Scripts.SpriteAnimation
                     currentSequenceIndex = 0;
                 }
             }
-            numberOfSequencesPlayed++;
             Sequences[currentSequenceIndex].Reset();
             return Sequences[currentSequenceIndex];
         }
