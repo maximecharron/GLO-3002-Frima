@@ -27,7 +27,7 @@ setInterval(function ()
     {
         try
         {
-            self.bossRepository.saveBossToMongo(self.bossService.getCurrentBoss());
+            self.bossService.saveBossDataBase();
         } catch (error)
         {
             console.log("Problem with interval saveBossToMongo :", error);

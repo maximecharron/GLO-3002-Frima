@@ -42,8 +42,7 @@ describe("bossService", function ()
             bossRepositoryStub.getBoss.callsArgWith(0, bossExpected);
             var bossService = new BossService(bossCommunicationServiceStub, bossRepositoryStub);
             var getSpy = chai.spy.on(bossRepositoryStub, 'getBoss');
-            var saveSpy = chai.spy.on(bossRepositoryStub, 'saveBoth'
-            );
+            var saveSpy = chai.spy.on(bossRepositoryStub, 'saveBoth');
             //Act
             bossService.initializeBoss();
 
@@ -123,6 +122,26 @@ describe("bossService", function ()
             //Assert
             expect(expectedCurrentLife).to.equal(resultBoss.getLife());
             expect(expectedMaximumLife).to.equal(resultBoss.getMaximumLife());
+        });
+    });
+
+    describe("saveBossToDataBase", function()
+    {
+        it("should call bossRepository saveBossToMongo", function()
+        {
+            //Arrange
+            var bossExpected = new Boss(bossDef.serverName, bossDef.bossName, bossDef.currentBossLife, bossDef.maximumBossLife, bossDef.status);
+            bossRepositoryStub.getBoss.callsArgWith(0, bossExpected);
+            var bossService = new BossService(bossCommunicationServiceStub, bossRepositoryStub);
+            var getSpy = chai.spy.on(bossRepositoryStub, 'getBoss');
+            var saveSpy = chai.spy.on(bossRepositoryStub, 'saveBoth'
+            );
+            //Act
+            bossService.initializeBoss();
+
+            //Assert
+            expect(getSpy).to.have.been.called.once;
+            expect(saveSpy).to.have.been.called.once;
         });
     });
 });

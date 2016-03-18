@@ -14,7 +14,6 @@ before(function(done){
 
 describe("Functionnal webSocket", function ()
 {
-
     beforeEach(function ()
     {
         webSocketClient = new WebSocket('ws:localhost:4000');
@@ -29,6 +28,7 @@ describe("Functionnal webSocket", function ()
     {
         it('should receive message bossStatusUpdate from server', function(done)
         {
+            this.timeout(5000);
             webSocketClient.on("message", function(message)
             {
                 //Arrange
@@ -49,6 +49,7 @@ describe("Functionnal webSocket", function ()
     {
         it('should receive message bossStatusUpdate lower than the first receive on connect', function(done)
         {
+            this.timeout(5000);
             //Arrange
             var jsonAttack =
             {
@@ -94,6 +95,7 @@ describe("Functionnal webSocket", function ()
     {
         it('should receive message bossStatusUpdate with status dead', function(done)
         {
+            this.timeout(5000);
             //Arrange
             var jsonAttack =
             {
@@ -131,5 +133,4 @@ describe("Functionnal webSocket", function ()
 
         });
     });
-
 });

@@ -27,7 +27,8 @@
     "prestart": "npm install",
     "start": "node server.js",
     "test": "mocha test/unit && mocha test/functionnal",
-    "cover": "node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec -t 5000"
+    "precover": "node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha ./test/unit --dir ./coverage_unit && node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha ./test/functionnal --dir ./coverage_functionnal",
+    "cover": "node ./node_modules/istanbul-combine/cli.js -d coverage -r lcov -r html coverage_unit/coverage.json coverage_functionnal/coverage.json"
   },
   "devDependencies": {
     "chai": "^3.5.0",
@@ -36,6 +37,7 @@
     "gulp-jshint": "^2.0.0",
     "gulp-nodemon": "^2.0.6",
     "istanbul": "^0.4.2",
+    "istanbul-combine": "^0.3.0",
     "jshint": "^2.9.1",
     "jshint-stylish": "^2.1.0",
     "mocha": "^2.4.5",

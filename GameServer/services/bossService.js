@@ -1,9 +1,7 @@
-var Boss = require('./../domain/boss.js');
-
 //Constructor
 function BossService(bossCommunicationService, bossRepository)
 {
-    this.theBoss = {};
+    this.boss = {};
     this.bossCommunicationService = bossCommunicationService;
     this.bossRepository = bossRepository;
 }
@@ -14,32 +12,37 @@ BossService.prototype.initializeBoss = function()
     var self = this;
     this.bossRepository.getBoss(function (boss)
     {
-        self.theBoss = boss;
-        self.bossRepository.saveBoth(self.theBoss);
+        self.boss = boss;
+        self.bossRepository.saveBoth(self.boss);
     });
 };
 
 BossService.prototype.makeDamage = function(amount, callback)
 {
-    this.theBoss.receiveDamage(amount);
-    callback(this.theBoss);
+    this.boss.receiveDamage(amount);
+    callback(this.boss);
 };
 
 BossService.prototype.reviveBoss = function()
 {
-    this.theBoss.revive();
-    this.bossRepository.saveBoth(this.theBoss);
+    this.boss.revive();
+    this.bossRepository.saveBoth(this.boss);
 };
 
 BossService.prototype.getCurrentBoss = function()
 {
-    return this.theBoss;
+    return this.boss;
 };
 
 BossService.prototype.updateBoss = function(currentLife, maximumLife)
 {
-    this.theBoss.setCurrentLife(currentLife);
-    this.theBoss.setMaximumLife(maximumLife);
+    this.boss.setCurrentLife(currentLife);
+    this.boss.setMaximumLife(maximumLife);
+};
+
+BossService.prototype.saveBossDataBase = function()
+{
+    this.bossRepository.saveBossToMongo(this.boss);
 };
 
 module.exports = BossService;
