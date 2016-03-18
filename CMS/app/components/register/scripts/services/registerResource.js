@@ -1,4 +1,4 @@
-registerApp.factory('registerResource', ["$resource", function($resource){
+angular.module('CMS.register', ['ngRoute', 'ngResource']).factory('registerResource', ["$resource", function($resource){
   return $resource("http://localhost:3000/signup" , {}, {
     post:{
       method:"POST",

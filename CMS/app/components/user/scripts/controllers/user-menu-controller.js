@@ -1,4 +1,4 @@
-app.controller("user-menu-controller", function ($scope,  loginService, logoutResource, $location) {
+angular.module('CMS').controller("user-menu-controller", function ($scope,  loginService, logoutResource, $location) {
 
 
     $scope.userIsLogged = false;
@@ -11,7 +11,7 @@ app.controller("user-menu-controller", function ($scope,  loginService, logoutRe
             $scope.userIsLogged = true;
             $scope.loggedUser = loggedUser;
         }
-    }
+    };
     $scope.verifyIfUserIsLogged();
 
     $scope.logout = function(){

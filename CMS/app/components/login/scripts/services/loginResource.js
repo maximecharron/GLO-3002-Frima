@@ -1,5 +1,5 @@
-loginApp.factory('loginResource', ["$resource", function($resource){
-  return $resource("http://localhost:3000/login" , {}, {
+angular.module('CMS.login', ['ngRoute', 'ngCookies', 'ngResource']).factory('loginResource', ["$resource", function($resource){
+  return $resource("https://frima-cms-server.herokuapp.com/login" , {}, {
     post:{
       method:"POST",
       headers: {

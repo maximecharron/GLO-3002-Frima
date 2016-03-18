@@ -1,4 +1,4 @@
-loginApp.factory('loginService', ["loginResource", "$cookies", "$rootScope", function (loginResource, $cookies, $rootScope) {
+angular.module('CMS.login').factory('loginService', ["loginResource", "$cookies", "$rootScope", function (loginResource, $cookies, $rootScope) {
 
     function setUser(user) {
         $rootScope.user = user;

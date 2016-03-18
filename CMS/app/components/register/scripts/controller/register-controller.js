@@ -1,4 +1,4 @@
-registerApp.controller("register-controller", function ($scope, $location, registerResource) {
+angular.module('CMS.register').controller("register-controller", function ($scope, $location, registerResource) {
     $scope.notRegister = true;
     $scope.success = false;
     $scope.error = false;
@@ -10,8 +10,8 @@ registerApp.controller("register-controller", function ($scope, $location, regis
         var user = {
             "email": $scope.email,
             "password": $scope.password,
-            "name": $scope.name,
-        }
+            "name": $scope.name
+        };
         registerResource.post(user, function onSuccess(data) {
             $scope.success = true;
         }, function onError(data){

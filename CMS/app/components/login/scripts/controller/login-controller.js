@@ -1,13 +1,11 @@
-loginApp.controller("login-controller", function ($scope, loginService, $location, loginResource) {
-
-    <!-- $scope déclare les variables utilisées dans le html -->
+angular.module('CMS.login').controller("login-controller", function ($scope, loginService, $location, loginResource) {
 
     $scope.login = function () {
 
         var credentials = {
             email: $scope.email,
             password: $scope.password
-        }
+        };
 
         loginResource.post(credentials, function onSuccess(data) {
             loginService.setUser(data);
@@ -16,4 +14,4 @@ loginApp.controller("login-controller", function ($scope, loginService, $locatio
             $location.path("/login");
         });
     }
-})
+});

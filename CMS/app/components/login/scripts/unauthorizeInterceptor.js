@@ -1,4 +1,4 @@
-app.factory('authHttpResponseInterceptor',['$q','$rootScope', function($q, $location){
+angular.module('CMS').factory('authHttpResponseInterceptor',['$q','$rootScope', function($q, $location){
         return {
             response: function(response){
                 if (response.status === 401) {

@@ -1,4 +1,4 @@
-loginApp.config(['$routeProvider', function ($routeProvider) {
+angular.module('CMS.login').config(['$routeProvider', function ($routeProvider) {
 
         $routeProvider.when('/login', {
             templateUrl: "components/login/views/login.html",
