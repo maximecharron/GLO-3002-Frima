@@ -1,12 +1,11 @@
-var request = require('supertest');
-var should = require('chai').should();
-var app = require('../../server.js');
-var agent = request.agent(app);
+require('../../server.js');
 
 var WebSocket = require('ws');
 
+before(function(done){
+    setTimeout(function(){done();}, 500);
+})
 
-// get users
 describe('GET /api/users', function() {
     it('returns users as JSON', function(done) {
         var ws = new WebSocket('ws:localhost:3000');
