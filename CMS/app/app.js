@@ -14,7 +14,7 @@ var app = angular.module('CMS', [
         envServiceProvider.config({
             domains: {
                 development: ['localhost', 'dev.local'],
-                production: ['herokuapp.com']
+                production: ['frima-cms-client.herokuapp.com']
             },
             vars: {
                 development: {
