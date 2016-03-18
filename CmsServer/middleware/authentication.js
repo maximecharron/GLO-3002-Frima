@@ -46,23 +46,26 @@ exports.isAuthenticated = function (request, response, next, checkForSuperAdmin)
                             message: 'User associated with token was not found'
                         });
                     }
-                }
             });
-        } catch (error)
+        }
+        catch
+            (error)
         {
             return response.status(UNAUTHORIZED).send({
                 errorCode: 'ACCESS_DENIED',
                 message: 'Error retrieving user associated with token'
             });
         }
-    } else
+    }
+    else
     {
         return response.status(UNAUTHORIZED).send({
             errorCode: 'ACCESS_DENIED',
             message: 'Access token is missing'
         });
     }
-};
+}
+;
 
 exports.retrieveToken = function (request)
 {
