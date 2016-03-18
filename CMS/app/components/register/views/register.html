@@ -50,12 +50,11 @@
                 </div>
                 <div class="form-group">
                     <label for="superAdmin">Super admin?
-                    <input class="form-control" type="checkbox" id="superAdmin" name="superAdmin" required
-                           ng-model="superAdmin"/></label>
+                    <input class="form-control" type="checkbox" id="superAdmin" name="superAdmin" ng-model="superAdmin"/></label>
                 </div>
 
                 <div class="form-actions">
-                    <button type="submit" ng-disabled="form.$invalid || form.confirmEmail.$error.match"
+                    <button type="submit" ng-disabled="form.$invalid || form.confirmEmail.$error.match || form.confirmPassword.$error.match"
                             class="btn btn-primary">Register
                     </button>
                     <a href="#/login" class="btn btn-link">Cancel</a>
