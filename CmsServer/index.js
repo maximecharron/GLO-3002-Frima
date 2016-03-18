@@ -39,7 +39,7 @@ app.use(cors(corsOptions));
 
 app.post('/login', passport.authenticate('local-login'), login.getToken);
 app.get('/logout', login.logout);
-app.post('/signup', authentication.isAuthenticatedAsSuperAdmin, passport.authenticate('local-signup'));
+app.post('/signup', passport.authenticate('local-signup'));
 
 app.get('/bossesConstant', authentication.isAuthenticated,boss.getConstantBossList);
 app.get('/bosses',authentication.isAuthenticated, boss.getBossList);
