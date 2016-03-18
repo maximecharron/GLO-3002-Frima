@@ -11,7 +11,7 @@ namespace Assets.Scripts.Communication
 
     public class WebSocketService : MonoBehaviour
     {
-        private const string WEB_SOCKET_SERVER_URI = "wss://frima-server-1.herokuapp.com";
+        private const string WEB_SOCKET_SERVER_URI = "http://localhost:4000";
 
         public String SessionToken { get; set; }
         public Action OnInitializationComplete { get; set; }
