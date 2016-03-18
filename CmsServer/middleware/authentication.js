@@ -27,7 +27,6 @@ exports.isAuthenticated = function (request, response, next, checkForSuperAdmin)
             UserModel.findOne({'_id': decoded.iss}, function (error, user)
             {
                 if (!error)
-                {
                     if (user)
                     {
                         console.log(user.isSuperAdmin);
@@ -68,7 +67,6 @@ exports.isAuthenticated = function (request, response, next, checkForSuperAdmin)
 exports.retrieveToken = function (request)
 {
     var parsed_url = url.parse(request.url, true);
-
     return (request.body && request.body.access_token) ||
         parsed_url.query.access_token ||
         request.headers.authorization;

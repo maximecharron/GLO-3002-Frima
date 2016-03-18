@@ -22,6 +22,15 @@
     "postinstall": "bower install",
     "prestart": "npm install",
     "start": "node web-server.js",
-    "test": ""
+    "test": "mocha app/test",
+    "cover": "node ./node_modules/istanbul/lib/cli.js cover -x \"**/app/bower_components/**\" ./node_modules/mocha/bin/_mocha app/test -- --ui bdd -R spec -t 5000"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "istanbul": "^0.4.2",
+    "jsdom": "^8.1.0",
+    "karma": "^0.13.22",
+    "mocha": "^2.4.5",
+    "sinon": "^1.17.3"
   }
 }

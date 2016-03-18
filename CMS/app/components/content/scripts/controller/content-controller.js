@@ -1,5 +1,6 @@
-ContentApp.controller("content-controller", function ($scope, contentResource) {
+angular.module('CMS.content').controller("content-controller", function ($scope, contentResource) {
 
+    $scope.invalidCurrentLife = false;
     $scope.updateSuccess = false;
     $scope.updateError = false;
     $scope.updateTypes = [
@@ -18,32 +19,42 @@ ContentApp.controller("content-controller", function ($scope, contentResource) {
 
     $scope.bossChanged = function (newBoss) {
         $scope.selectedBoss = JSON.parse(newBoss);
-
     };
 
     $scope.typeChanged = function (newType) {
         newType = JSON.parse(newType);
         if (newType.type == "constant") {
-            contentResource.getConstantBoss(function (result) {
+            contentResource.getConstantBosses(function (result) {
                 $scope.bosses = result;
             });
         } else {
-            contentResource.getCurrentBoss(function (result) {
+            contentResource.getCurrentBosses(function (result) {
                 $scope.bosses = result;
             });
         }
     };
 
+    $scope.isValidCurrentLife = function(current){
+        var maximum = $scope.selectedBoss.maximumBossLife;
+        if (current > maximum){
+            $scope.invalidCurrentLife = true;
+            return false;
+        } else {
+            $scope.invalidCurrentLife = false;
+            return true;
+        }
+    };
+
     $scope.updateBoss = function (selectedBoss) {
         $scope.updateError = false;
-        $scope.updateSucces = false;
+        $scope.updateSuccess = false;
         var boss = {
             serverName: selectedBoss.serverName,
             bossName: selectedBoss.bossName,
             currentBossLife: selectedBoss.currentBossLife,
-            constantBossLife: selectedBoss.constantBossLife,
+            maximumBossLife: selectedBoss.maximumBossLife,
             status: selectedBoss.status
-        }
+        };
         contentResource.updateBoss(boss, function onSuccess(data) {
             $scope.selectedBoss = data;
             $scope.updateSuccess = true;

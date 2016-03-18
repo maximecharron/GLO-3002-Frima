@@ -8,10 +8,11 @@ var userSchema = new mongoose.Schema({
     password: String,
     token: String,
     expiration: Number,
-    isSuperAdmin: Boolean},{collection: 'cmsUsers'}
-);
+    isSuperAdmin: Boolean
+}, {collection: 'cmsUsers'});
 
-userSchema.methods.toDTO = function (following, withToken) {
+userSchema.methods.toDTO = function (withToken)
+{
     var obj = this.toObject();
 
     var dto = {
@@ -21,7 +22,7 @@ userSchema.methods.toDTO = function (following, withToken) {
         isSuperAdmin: obj.isSuperAdmin
     };
 
-    if(withToken)
+    if (withToken)
     {
         dto.token = obj.token;
     }
