@@ -1,32 +1,32 @@
-var BossRepository =  require('./../repository/BossRepository.js')
-var redisUrl = 'redis://h:p88tk5goahehq8c9hta4ugr533t@ec2-54-227-252-28.compute-1.amazonaws.com:7069' || 'redis://localhost:6379';
+var BossRepository =  require('./../repository/bossRepository.js');
+var redisUrl = process.env.REDIS_URL || 'redis://localhost:6379';
 var redis = require('redis').createClient(redisUrl);
+const OK = 200;
 
-exports.getConstantBossList = function(req, res){
-    BossRepository.findConstantBossList(function(list){
-        res.status(200).send(list);
-    })
+exports.getConstantBossList = function(request, response){
+    BossRepository.findBaseReferenceBosses(function(list){
+        response.status(OK).send(list);
+    });
 };
 
-exports.getBossList = function(req, res){
-    BossRepository.findBossList(function(list){
-        res.status(200).send(list);
-    })
+exports.getBossList = function(request, response){
+    BossRepository.findBosses(function(list){
+        response.status(OK).send(list);
+    });
 };
 
-exports.updateBoss = function(req, res) {
+exports.updateBoss = function(request, response) {
     var boss = {
-        bossName: req.body.bossName,
-        currentBossLife: req.body.currentBossLife,
-        constantBossLife: req.body.constantBossLife,
-        serverName: req.body.serverName,
-        status: req.body.status
-    }
+        bossName: request.body.bossName,
+        currentBossLife: request.body.currentBossLife,
+        maximumBossLife: request.body.maximumBossLife,
+        serverName: request.body.serverName,
+        status: request.body.status
+    };
     BossRepository.updateBoss(boss, function (updatedBoss) {
         redis.hmset(boss.serverName, boss);
-        var channel = boss.serverName+'CMS';
-        console.log("Channel:", channel);
+        var channel = boss.serverName;
         redis.publish(channel, JSON.stringify(boss));
-        res.status(200).send(updatedBoss);
-    })
+        response.status(OK).send(updatedBoss);
+    });
 };

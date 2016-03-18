@@ -130,3 +130,4 @@ Boss.prototype.revive = function(){
 };
 
 module.exports = Boss;
+

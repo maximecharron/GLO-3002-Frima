@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var flash = require('connect-flash');
-var boss = require('./routes/bosses.js')
+var boss = require('./routes/bosses.js');
 
 var cors = require('cors');
 var passport = require('passport');
@@ -25,7 +25,7 @@ require('./middleware/passport')(passport, app);
 
 app.use(cookieParser());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(session({
     secret: 'frima_session_secret',
     resave: true,
@@ -36,13 +36,13 @@ app.use(passport.session());
 app.use(flash());
 app.use(cors(corsOptions));
 
-//app.post('/login', passport.authenticate('local-login')); //TODO Add login
-//app.get('/logout', login.logout);
-app.get('/status', status.getStatus);
+app.post('/login', passport.authenticate('local-login'), login.getToken);
+app.get('/logout', login.logout);
+app.post('/signup', authentication.isAuthenticatedAsSuperAdmin, passport.authenticate('local-signup'));
 
-app.get('/bossesConstant', boss.getConstantBossList);
-app.get('/bosses', boss.getBossList);
-app.post('/update', boss.updateBoss);
+app.get('/bossesConstant', authentication.isAuthenticated,boss.getConstantBossList);
+app.get('/bosses',authentication.isAuthenticated, boss.getBossList);
+app.post('/update',authentication.isAuthenticated, boss.updateBoss);
 
 var port = process.env.PORT || 3000;
 app.listen(port);

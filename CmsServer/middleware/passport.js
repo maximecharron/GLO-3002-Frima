@@ -73,16 +73,14 @@ module.exports = function (passport, app) {
                         } else {
                             var newUser = new User();
 
-                            newUser.firstname = req.body.firstname;
-                            newUser.lastname = req.body.lastname;
-                            newUser.name = req.body.firstname + " "+ req.body.lastname;
+                            newUser.name = req.body.name;
                             newUser.email = email;
 
-                            newUser.username = req.body.username;
+                            newUser.isSuperAdmin = req.body.isSuperAdmin;
                             newUser.password = newUser.generateHash(password);
                             newUser.save(function (err) {
                                 if (err) {
-                                    console.log(err);
+                                    console.log("Error: ", err);
                                     return done(err);
                                 }
 
@@ -90,9 +88,9 @@ module.exports = function (passport, app) {
                             });
                         }
                     });
-                } else if (!req.user.username) {
+                } else if (!req.user.email) {
                     var user = req.user;
-                    user.username = username;
+                    user.email = email;
                     user.password = user.generateHash(password);
                     user.save(function (err) {
                         if (err) {
