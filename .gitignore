@@ -1,6 +1,6 @@
-# Created by https://www.gitignore.io/api/node,webstorm
-
-### Node ###
+Client/Assets/README.txt
+Client/Unity Project/Library/CurrentLayout.dwlt
+*.dwlt
 # Logs
 logs
 *.log

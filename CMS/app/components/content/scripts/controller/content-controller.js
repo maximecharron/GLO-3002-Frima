@@ -1,5 +1,7 @@
-ContentApp.controller("content-controller", function ($scope, contentResource) {
+angular.module('CMS.content').controller("content-controller", function ($scope, contentResource)
+{
 
+    $scope.invalidCurrentLife = false;
     $scope.updateSuccess = false;
     $scope.updateError = false;
     $scope.updateTypes = [
@@ -16,40 +18,68 @@ ContentApp.controller("content-controller", function ($scope, contentResource) {
     $scope.bosses;
     $scope.selectedUpdateType;
 
-    $scope.bossChanged = function (newBoss) {
+    $scope.bossChanged = function (newBoss)
+    {
         $scope.selectedBoss = JSON.parse(newBoss);
-
+        convertLifeToNumber();
     };
 
-    $scope.typeChanged = function (newType) {
+    $scope.typeChanged = function (newType)
+    {
         newType = JSON.parse(newType);
-        if (newType.type == "constant") {
-            contentResource.getConstantBoss(function (result) {
+        if (newType.type == "constant")
+        {
+            contentResource.getConstantBosses(function (result)
+            {
                 $scope.bosses = result;
             });
-        } else {
-            contentResource.getCurrentBoss(function (result) {
+        } else
+        {
+            contentResource.getCurrentBosses(function (result)
+            {
                 $scope.bosses = result;
             });
         }
     };
 
-    $scope.updateBoss = function (selectedBoss) {
+    $scope.isValidCurrentLife = function (current)
+    {
+        var maximum = $scope.selectedBoss.maximumBossLife;
+        if (current > maximum)
+        {
+            $scope.invalidCurrentLife = true;
+            return false;
+        } else
+        {
+            $scope.invalidCurrentLife = false;
+            return true;
+        }
+    };
+
+    $scope.updateBoss = function (selectedBoss)
+    {
         $scope.updateError = false;
-        $scope.updateSucces = false;
+        $scope.updateSuccess = false;
         var boss = {
             serverName: selectedBoss.serverName,
             bossName: selectedBoss.bossName,
             currentBossLife: selectedBoss.currentBossLife,
-            constantBossLife: selectedBoss.constantBossLife,
+            maximumBossLife: selectedBoss.maximumBossLife,
             status: selectedBoss.status
-        }
-        contentResource.updateBoss(boss, function onSuccess(data) {
+        };
+        contentResource.updateBoss(boss, function onSuccess(data)
+        {
             $scope.selectedBoss = data;
+            convertLifeToNumber();
             $scope.updateSuccess = true;
-        }, function onError(data) {
+        }, function onError(data)
+        {
             $scope.updateError = true;
         });
     };
-
+    function convertLifeToNumber()
+    {
+        $scope.selectedBoss.currentBossLife = parseInt($scope.selectedBoss.currentBossLife);
+        $scope.selectedBoss.maximumBossLife = parseInt($scope.selectedBoss.maximumBossLife);
+    };
 });

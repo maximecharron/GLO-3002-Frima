@@ -27,7 +27,6 @@ exports.isAuthenticated = function (request, response, next, checkForSuperAdmin)
             UserModel.findOne({'_id': decoded.iss}, function (error, user)
             {
                 if (!error)
-                {
                     if (user)
                     {
                         console.log(user.isSuperAdmin);
@@ -47,28 +46,30 @@ exports.isAuthenticated = function (request, response, next, checkForSuperAdmin)
                             message: 'User associated with token was not found'
                         });
                     }
-                }
             });
-        } catch (error)
+        }
+        catch
+            (error)
         {
             return response.status(UNAUTHORIZED).send({
                 errorCode: 'ACCESS_DENIED',
                 message: 'Error retrieving user associated with token'
             });
         }
-    } else
+    }
+    else
     {
         return response.status(UNAUTHORIZED).send({
             errorCode: 'ACCESS_DENIED',
             message: 'Access token is missing'
         });
     }
-};
+}
+;
 
 exports.retrieveToken = function (request)
 {
     var parsed_url = url.parse(request.url, true);
-
     return (request.body && request.body.access_token) ||
         parsed_url.query.access_token ||
         request.headers.authorization;

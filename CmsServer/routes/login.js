@@ -10,6 +10,7 @@ exports.passportLogin = passport.authenticate('local-login', {
 });
 
 exports.getToken = function (req, res) {
+    console.log(req.user);
     if (req.user) {
         res.send(req.user);
     } else {
