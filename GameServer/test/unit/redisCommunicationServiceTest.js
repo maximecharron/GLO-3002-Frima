@@ -17,7 +17,7 @@ redisStub.createClient = function(url)
 var redisHmsetSpy;
 var redisPublishSpy;
 var redisHgetAllSpy;
-var RedisCommunicationService = proxyquire('./../services/redisCommunicationService.js', {'redis': redisStub});
+var RedisCommunicationService = proxyquire('./../../services/redisCommunicationService.js', {'redis': redisStub});
 
 redisClientStub.hmset = function (key, values) {};
 redisClientStub.publish = function (key, values) {};

@@ -6,17 +6,16 @@ chai.use(spies);
 var expect = chai.expect;
 var should = chai.should();
 var sinon = require("sinon");
-var DbBoss = require('./../models/boss.js');
-var RedisCommunicationService = require('./../services/redisCommunicationService.js');
-var bossConfig = require('./../config/bossConfig.js');
-var Boss = require("../domain/boss.js");
+var DbBoss = require('./../../models/boss.js');
+var RedisCommunicationService = require('./../../services/redisCommunicationService.js');
+var bossConfig = require('./../../config/bossConfig.js');
+var Boss = require("./../../domain/boss.js");
 var hostname = require('os').hostname();
 
 var dbBossStub = {};
 
-var BossRepository = proxyquire('./../repository/bossRepository.js', {'./../models/boss.js': dbBossStub});
+var BossRepository = proxyquire('./../../repository/bossRepository.js', {'./../models/boss.js': dbBossStub});
 
-var dbBossSpy;
 var redisCommunicationServiceStub
 var bossDef = { serverName:hostname, bossName: "Tyson", currentBossLife: "100", maximumBossLife: "100", status: "0" };
 

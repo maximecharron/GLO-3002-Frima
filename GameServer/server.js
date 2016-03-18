@@ -80,3 +80,5 @@ var webSocketAPI = new WebSocketAPI(bossService, bossCommunicationService, redis
 console.log("websocket server created");
 webSocketAPI.initializeBoss();
 webSocketServer.on("connection", webSocketAPI.newConnection);
+
+module.exports = app;

@@ -26,7 +26,7 @@
   "scripts": {
     "prestart": "npm install",
     "start": "node server.js",
-    "test": "mocha test",
+    "test": "mocha test/unit && mocha test/functionnal",
     "cover": "node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec -t 5000"
   },
   "devDependencies": {
@@ -42,6 +42,7 @@
     "mock-socket": "^2.0.0",
     "proxyquire": "^1.7.4",
     "sinon": "^1.17.3",
-    "socket.io-client": "^1.4.5"
+    "socket.io-client": "^1.4.5",
+    "supertest": "^1.2.0"
   }
 }

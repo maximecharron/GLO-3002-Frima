@@ -11,10 +11,10 @@ var expect = chai.expect;
 var should = chai.should();
 var sinon = require("sinon");
 
-var BossService = require('./../services/bossService.js');
-var BossCommunicationService = require('./../services/bossCommunicationService.js');
-var BossRepository = require('./../repository/bossRepository.js');
-var Boss = require("../domain/boss.js");
+var BossService = require('./../../services/bossService.js');
+var BossCommunicationService = require('./../../services/bossCommunicationService.js');
+var BossRepository = require('./../../repository/bossRepository.js');
+var Boss = require("../../domain/boss.js");
 var hostname = require('os').hostname();
 var bossDef = { serverName:hostname, bossName: "Tyson", currentBossLife: "100", maximumBossLife: "100", status: "0" };
 

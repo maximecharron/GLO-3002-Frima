@@ -6,8 +6,8 @@ var expect = chai.expect;
 var should = chai.should();
 var sinon = require("sinon");
 
-var WebSocketAPI = require("../api/webSocketAPI.js");
-var BossService = require("../services/bossService.js");
+var WebSocketAPI = require("../../api/webSocketAPI.js");
+var BossService = require("../../services/bossService.js");
 
 describe("Boss", function ()
 {

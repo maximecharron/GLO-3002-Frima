@@ -3,7 +3,6 @@ for (var moduleId in cache) {
     delete cache[moduleId];
 }
 
-var proxyquire = require('proxyquire');
 var chai = require('chai');
 var spies = require('chai-spies');
 chai.use(spies);
@@ -13,7 +12,7 @@ var should = chai.should();
 var sinon = require("sinon");
 var WebSocketServer  = require('ws').Server;
 
-var BossCommunicationService = require('./../services/bossCommunicationService.js');
+var BossCommunicationService = require('./../../services/bossCommunicationService.js');
 
 var webSocketServerStub;
 
