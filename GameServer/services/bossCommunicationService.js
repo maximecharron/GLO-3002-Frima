@@ -8,14 +8,14 @@ function BossCommunicationService(webSocketServer)
 }
 
 //Public method
-BossCommunicationService.prototype.createBossStatusUpdate = function(theBoss)
+BossCommunicationService.prototype.createBossStatusUpdate = function(boss)
 {
     return JSON.stringify(
     {
         command:
         {
             name: "bossStatusUpdate",
-            parameters: theBoss.toJson()
+            parameters: boss.toJson()
         }
     });
 };
@@ -29,45 +29,45 @@ BossCommunicationService.prototype.broadcastBossDead = function(theBoss)
         {
             client.send(bossUpdate);
             client.close();
-        } catch (e)
+        } catch (error)
         {
-            console.log(e);
+            console.log(error);
         }
     });
 };
 
-BossCommunicationService.prototype.broadcastBossInformation = function(theBoss)
+BossCommunicationService.prototype.broadcastBossInformation = function(boss)
 {
-    if (theBoss)
+    if (boss)
     {
-        if (this.lastLifeBroadcasted != theBoss.getLife() && this.wss.clients && theBoss.getLife() !== 0)
+        if (this.lastLifeBroadcasted != boss.getLife() && this.wss.clients && boss.getLife() !== 0)
         {
-            this.lastLifeBroadcasted = theBoss.getLife();
-            var bossUpdate = this.createBossStatusUpdate(theBoss);
+            this.lastLifeBroadcasted = boss.getLife();
+            var bossUpdate = this.createBossStatusUpdate(boss);
             this.wss.clients.forEach(function each(client)
             {
                 try
                 {
                     client.send(bossUpdate);
-                } catch (e)
+                } catch (error)
                 {
-                    console.log("Problem with broadcastBossInformation :", e);
+                    console.log("Problem with broadcastBossInformation :", error);
                 }
             });
         }
     }
 };
 
-BossCommunicationService.prototype.keepAlive = function(theBoss, webSocket)
+BossCommunicationService.prototype.keepAlive = function(boss, webSocket)
 {
     var self = this;
-    var response = self.createBossStatusUpdate(theBoss);
+    var response = self.createBossStatusUpdate(boss);
     try
     {
         webSocket.send(response);
-    } catch (e)
+    } catch (error)
     {
-        console.log("Problem with keepAlive :", e);
+        console.log("Problem with keepAlive :", error);
     }
 };
 

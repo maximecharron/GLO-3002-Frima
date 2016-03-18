@@ -12,10 +12,10 @@ function WebSocketAPI(bossService, bossCommunicationService, redisCommunicationS
 //Public method
 WebSocketAPI.prototype.newConnection = function (webSocket)
 {
-    var theBoss = self.bossService.getCurrentBoss();
+    var boss = self.bossService.getCurrentBoss();
     try
     {
-        webSocket.send(self.bossCommunicationService.createBossStatusUpdate(theBoss));
+        webSocket.send(self.bossCommunicationService.createBossStatusUpdate(boss));
     } catch (e)
     {
         console.log(e);
@@ -55,7 +55,6 @@ function newMessage(message, webSocket)
                         self.redisCommunicationService.setBossCurrentLife(boss.getLife());
                     } else
                     {
-                        //console.log("Boss dead omg");
                         self.redisCommunicationService.publishBossDead(boss.toString());
                     }
                 });
@@ -68,12 +67,12 @@ function newMessage(message, webSocket)
 
         if (request.command.name == "keepAlive")
         {
-            var theBoss = self.bossService.getCurrentBoss();
-            self.bossCommunicationService.keepAlive(theBoss, webSocket);
+            var boss = self.bossService.getCurrentBoss();
+            self.bossCommunicationService.keepAlive(boss, webSocket);
         }
-    } catch (e)
+    } catch (error)
     {
-        return console.log("Problem to parse :", e);
+        return console.log("Problem to parse :", error);
     }
 
 

@@ -18,7 +18,7 @@ setInterval(function ()
 
 setInterval(function ()
     {
-        self.bossRepository.saveBossBd(self.bossService.getCurrentBoss());
+        self.bossRepository.saveBossToMongo(self.bossService.getCurrentBoss());
     }, 9000
 );
 

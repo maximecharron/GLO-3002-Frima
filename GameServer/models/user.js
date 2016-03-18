@@ -30,7 +30,7 @@ userSchema.methods.toDTO = function (following, withToken) {
 userSchema.methods.generateHash = function (password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 };
-userSchema.methods.validPassword = function (password) {
+userSchema.methods.isValidPassword = function (password) {
     return bcrypt.compareSync(password, this.password);
 };
 

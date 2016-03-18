@@ -1,4 +1,4 @@
-var DbBoss = require('./../models/boss.js');
+var BossModel = require('./../models/boss.js');
 var hostname = process.env.SERVER_NAME || require('os').hostname();
 var Boss = require('./../domain/boss.js');
 var bossConfig = require('./../config/bossConfig.js');
@@ -19,7 +19,7 @@ BossRepository.prototype.getBoss = function(callBack, constant)
         serverName += "Constant";
     }
 
-    this.redisCommunicationService.findBoss(serverName, function(err, object)
+    this.redisCommunicationService.findBoss(serverName, function(error, object)
     {
         if(object)
         {
@@ -28,7 +28,7 @@ BossRepository.prototype.getBoss = function(callBack, constant)
         }
         else
         {
-            DbBoss.findBoss(serverName, function(bossModel)
+            BossModel.findBoss(serverName, function(bossModel)
             {
                 if(bossModel)
                 {
@@ -58,7 +58,7 @@ BossRepository.prototype.saveBoth = function(boss)
 {
     var self = this;
     self.saveBossRedis(boss);
-    self.saveBossBd(boss);
+    self.saveBossToMongo(boss);
 };
 
 BossRepository.prototype.saveBossRedis = function(boss)
@@ -66,9 +66,9 @@ BossRepository.prototype.saveBossRedis = function(boss)
     this.redisCommunicationService.setBoss(boss);
 };
 
-BossRepository.prototype.saveBossBd = function (boss)
+BossRepository.prototype.saveBossToMongo = function (boss)
 {
-    DbBoss.backupBoss(boss);
+    BossModel.backupBoss(boss);
 };
 
 //Private method

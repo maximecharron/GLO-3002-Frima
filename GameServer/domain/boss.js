@@ -34,11 +34,11 @@ Boss.prototype.toString = function()
         });
 };
 
-Boss.prototype.receiveDamage = function(amountDamage)
+Boss.prototype.receiveDamage = function(damageAmount)
 {
     if (this.currentBossLife > 0)
     {
-        this.currentBossLife = this.currentBossLife - amountDamage;
+        this.currentBossLife = this.currentBossLife - damageAmount;
     }
 
     if(this.currentBossLife <= 0)

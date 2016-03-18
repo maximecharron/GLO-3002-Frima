@@ -12,9 +12,9 @@ module.exports = function (passport, app)
 
     passport.deserializeUser(function (id, done)
     {
-        User.findById(id, function (err, user)
+        User.findById(id, function (error, user)
         {
-            done(err, user);
+            done(error, user);
         });
     });
 
@@ -23,20 +23,20 @@ module.exports = function (passport, app)
             passwordField: 'password',
             passReqToCallback: true
         },
-        function (req, username, password, done)
+        function (request, username, password, done)
         {
 
 
             process.nextTick(function ()
             {
-                User.findOne({'username': username}, function (err, user)
+                User.findOne({'username': username}, function (error, user)
                 {
-                    if (err)
+                    if (error)
                     {
-                        return done(err);
+                        return done(error);
                     }
 
-                    if (!user || !user.validPassword(password))
+                    if (!user || !user.isValidPassword(password))
                     {
                         return done(null, false);
                     }
@@ -68,7 +68,7 @@ module.exports = function (passport, app)
             passwordField: 'password',
             passReqToCallback: true
         },
-        function (req, email, password, done)
+        function (request, email, password, done)
         {
             if (email)
             {
@@ -76,13 +76,13 @@ module.exports = function (passport, app)
             }
             process.nextTick(function ()
             {
-                if (!req.user)
+                if (!request.user)
                 {
-                    User.findOne({'email': email}, function (err, user)
+                    User.findOne({'email': email}, function (error, user)
                     {
-                        if (err)
+                        if (error)
                         {
-                            return done(err);
+                            return done(error);
                         }
 
                         if (user)
@@ -91,19 +91,19 @@ module.exports = function (passport, app)
                             return done(null, false, {message: errorMessage});
                         } else
                         {
-                            User.findOne({'username': req.body.username}, function (err, user)
+                            User.findOne({'username': request.body.username}, function (err, user)
                             {
                                 var newUser = new User();
 
                                 newUser.email = email;
-                                newUser.username = req.body.username;
+                                newUser.username = request.body.username;
                                 newUser.password = newUser.generateHash(password);
-                                newUser.save(function (err)
+                                newUser.save(function (error)
                                 {
-                                    if (err)
+                                    if (error)
                                     {
-                                        console.log(err);
-                                        return done(err);
+                                        console.log(error);
+                                        return done(error);
                                     }
                                     return done(null, newUser.toDTO(true));
                                 });
@@ -111,23 +111,23 @@ module.exports = function (passport, app)
                         }
 
                     });
-                } else if (!req.user.username)
+                } else if (!request.user.username)
                 {
-                    var user = req.user;
+                    var user = request.user;
                     user.username = username;
                     user.password = user.generateHash(password);
-                    user.save(function (err)
+                    user.save(function (error)
                     {
-                        if (err)
+                        if (error)
                         {
-                            return done(err);
+                            return done(error);
                         }
 
                         return done(null, user.toDTO(true));
                     });
                 } else
                 {
-                    return done(null, req.user);
+                    return done(null, request.user);
                 }
             });
 

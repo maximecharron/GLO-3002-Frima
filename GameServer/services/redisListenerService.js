@@ -26,20 +26,18 @@ redisSub.on('message', function (channel, message)
 {
     if (channel == "bossDead")
     {
-        //console.log("BroadCast bossDead: ", channel);
-        var theBoss = self.bossService.getCurrentBoss();
-        self.bossCommunicationService.broadcastBossDead(theBoss);
+        var boss = self.bossService.getCurrentBoss();
+        self.bossCommunicationService.broadcastBossDead(boss);
         self.bossService.reviveBoss();
     } else if (channel == self.serverNameSubscribeCMS)
     {
-        var bossMessage;
         try
         {
-            bossMessage = JSON.parse(message);
+            var bossMessage = JSON.parse(message);
             self.bossService.updateBoss(bossMessage.currentBossLife, bossMessage.maximumBossLife);
-        } catch (e)
+        } catch (error)
         {
-            console.log(e);
+            console.log(error);
         }
     }
 });

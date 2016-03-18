@@ -80,7 +80,7 @@ describe("bossRepository", function ()
 
             //Act
 
-            bossRepository.saveBossBd();
+            bossRepository.saveBossToMongo();
 
             //Assert
             expect(dbBossSpy).to.have.been.called.once;
