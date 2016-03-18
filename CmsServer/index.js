@@ -11,6 +11,7 @@ var passport = require('passport');
 
 var mongoose = require('mongoose');
 var status = require('./routes/status');
+var login = require('./routes/login');
 var mongoUri = process.env.MONGOLAB_URI || 'mongodb://localhost/frimaGameServer';
 mongoose.connect(mongoUri);
 
