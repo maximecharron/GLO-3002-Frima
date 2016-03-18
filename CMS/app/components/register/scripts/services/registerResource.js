@@ -1,4 +1,4 @@
-angular.module('CMS.register', ['ngRoute', 'ngResource', 'envService']).factory('registerResource', ["$resource", "envService", function($resource, envService){
+angular.module('CMS.register', ['ngRoute', 'ngResource', 'environment']).factory('registerResource', ["$resource", "envService", function($resource, envService){
   return $resource(envService.read('apiUrl')+"/signup" , {}, {
     post:{
       method:"POST",

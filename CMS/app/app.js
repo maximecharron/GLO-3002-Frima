@@ -18,10 +18,10 @@ var app = angular.module('CMS', [
             },
             vars: {
                 development: {
-                    apiUrl: '//localhost:3000',
+                    apiUrl: 'http://localhost:3000',
                 },
                 production: {
-                    apiUrl: '//frima-cms-server.herokuapp.com',
+                    apiUrl: 'https://frima-cms-server.herokuapp.com',
                 }
             }
         });
