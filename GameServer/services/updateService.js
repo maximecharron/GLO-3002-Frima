@@ -12,13 +12,27 @@ function UpdateService(bossRepository, bossCommunicationService, bossService)
 //Private method
 setInterval(function ()
     {
-        self.bossCommunicationService.broadcastBossInformation(self.bossService.getCurrentBoss());
+        try
+        {
+            self.bossCommunicationService.broadcastBossInformation(self.bossService.getCurrentBoss());
+        } catch (error)
+        {
+            console.log("Problem with interval broadcastBossInformation :", error);
+        }
+
     }, 100
 );
 
 setInterval(function ()
     {
-        self.bossRepository.saveBossToMongo(self.bossService.getCurrentBoss());
+        try
+        {
+            self.bossRepository.saveBossToMongo(self.bossService.getCurrentBoss());
+        } catch (error)
+        {
+            console.log("Problem with interval saveBossToMongo :", error);
+        }
+
     }, 9000
 );
 
