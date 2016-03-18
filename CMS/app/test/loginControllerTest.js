@@ -16,7 +16,25 @@ describe('Login controller', function ()
     var sandbox;
     var loginService;
     var location;
-    beforeEach(ngModule('CMS.login'));
+    beforeEach(function ()
+    {
+        ngModule('CMS.login');
+        angular.module('CMS.login').config(function (envServiceProvider)
+        {
+            envServiceProvider.config({
+                domains: {
+                    development: ['localhost', 'dev.local']
+                },
+                vars: {
+                    development: {
+                        apiUrl: 'http://localhost:3000'
+                    }
+                }
+            });
+
+            envServiceProvider.check();
+        })
+    });
 
     beforeEach(inject(function ($rootScope, $controller, $injector, $location)
     {
