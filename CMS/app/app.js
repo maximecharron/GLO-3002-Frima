@@ -5,6 +5,7 @@ var app = angular.module('CMS', [
     'ngRoute',
     'ngResource',
     'ngCookies',
+    'ui.validate',
     "CMS.content",
     "CMS.login",
     "CMS.register"

@@ -1,5 +1,6 @@
 angular.module('CMS.content').controller("content-controller", function ($scope, contentResource) {
 
+    $scope.invalidCurrentLife = false;
     $scope.updateSuccess = false;
     $scope.updateError = false;
     $scope.updateTypes = [
@@ -30,6 +31,17 @@ angular.module('CMS.content').controller("content-controller", function ($scope,
             contentResource.getCurrentBosses(function (result) {
                 $scope.bosses = result;
             });
+        }
+    };
+
+    $scope.isValidCurrentLife = function(current){
+        var maximum = $scope.selectedBoss.maximumBossLife;
+        if (current > maximum){
+            $scope.invalidCurrentLife = true;
+            return false;
+        } else {
+            $scope.invalidCurrentLife = false;
+            return true;
         }
     };
 

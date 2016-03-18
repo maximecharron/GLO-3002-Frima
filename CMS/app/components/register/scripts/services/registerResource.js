@@ -1,5 +1,5 @@
 angular.module('CMS.register', ['ngRoute', 'ngResource']).factory('registerResource', ["$resource", function($resource){
-  return $resource("http://localhost:3000/signup" , {}, {
+  return $resource("https://frima-cms-server.herokuapp.com/signup" , {}, {
     post:{
       method:"POST",
       headers: {
