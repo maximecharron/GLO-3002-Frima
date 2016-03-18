@@ -6,7 +6,8 @@
   "scripts": {
     "prestart": "npm install",
     "start": "node index.js",
-    "test": "mocha tests"
+    "test": "mocha test",
+    "cover": "node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec -t 5000"
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
@@ -35,11 +36,13 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "gulp": "^3.9.1",
-    "gulp-symlink": "^2.1.4",
-    "gulp-util": "^3.0.7",
+    "gulp-jshint": "^2.0.0",
+    "gulp-nodemon": "^2.0.6",
+    "istanbul": "^0.4.2",
+    "jshint": "^2.9.1",
+    "jshint-stylish": "^2.1.0",
     "mocha": "^2.4.5",
     "proxyquire": "^1.7.4",
-    "run-sequence": "^1.1.5",
     "sinon": "^1.17.3",
     "unit.js": "^2.0.0"
   }

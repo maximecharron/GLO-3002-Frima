@@ -1,1 +1,0 @@
-//TODO: Add test when login will be functionnal
