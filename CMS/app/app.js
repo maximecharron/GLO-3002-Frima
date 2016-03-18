@@ -6,10 +6,28 @@ var app = angular.module('CMS', [
     'ngResource',
     'ngCookies',
     'ui.validate',
+    'environment',
     "CMS.content",
     "CMS.login",
     "CMS.register"
-]).run(['$rootScope', '$cookies', '$location', function ($rootScope, $cookies, $location) {
+]).config(function(envServiceProvider) {
+        envServiceProvider.config({
+            domains: {
+                development: ['localhost', 'dev.local'],
+                production: ['herokuapp.com']
+            },
+            vars: {
+                development: {
+                    apiUrl: '//localhost:3000',
+                },
+                production: {
+                    apiUrl: '//frima-cms-server.herokuapp.com',
+                }
+            }
+        });
+
+        envServiceProvider.check();
+    }).run(['$rootScope', '$cookies', '$location', function ($rootScope, $cookies, $location) {
 
     if ($cookies.getObject('user') != null) {
         $rootScope.user = $cookies.getObject('user');
