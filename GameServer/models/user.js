@@ -8,10 +8,7 @@ userSchema.add({
     email: {type: String, index: {unique: true, }},
     password: String,
     token: String,
-    expiration: Number,
-    picture: String,
-    google: String,
-    facebook: String
+    expiration: Number
 });
 
 userSchema.methods.toDTO = function (following, withToken) {
@@ -20,10 +17,7 @@ userSchema.methods.toDTO = function (following, withToken) {
     var dto = {
         id: obj._id,
         username : obj.username,
-        email: obj.email,
-        picture: obj.picture,
-        google: obj.google,
-        facebook : obj.facebook
+        email: obj.email
     };
 
     if(withToken){
@@ -36,7 +30,7 @@ userSchema.methods.toDTO = function (following, withToken) {
 userSchema.methods.generateHash = function (password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 };
-userSchema.methods.validPassword = function (password) {
+userSchema.methods.isValidPassword = function (password) {
     return bcrypt.compareSync(password, this.password);
 };
 

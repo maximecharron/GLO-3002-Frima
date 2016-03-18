@@ -1,13 +1,15 @@
-var DbBoss = require('./../models/boss.js');
-var redis = require('./../services/redisService.js').redisSet;
+var BossModel = require('./../models/boss.js');
 var hostname = process.env.SERVER_NAME || require('os').hostname();
-
 var Boss = require('./../domain/boss.js');
 var bossConfig = require('./../config/bossConfig.js');
 
-function BossRepository()
-{}
+//Constructor
+function BossRepository(redisCommunicationService)
+{
+    this.redisCommunicationService = redisCommunicationService;
+}
 
+//Public method
 BossRepository.prototype.getBoss = function(callBack, constant)
 {
     var self = this;
@@ -17,24 +19,20 @@ BossRepository.prototype.getBoss = function(callBack, constant)
         serverName += "Constant";
     }
 
-    redis.hgetall(serverName, function(err, object)
+    this.redisCommunicationService.findBoss(serverName, function(error, object)
     {
-        console.log("redis: {0}", serverName);
         if(object)
         {
-            console.log("inside redis: {0}", serverName);
-            var boss = new Boss(serverName, object.bossName, object.currentBossLife, object.constantBossLife, object.status)
+            var boss = new Boss(serverName, object.bossName, object.currentBossLife, object.maximumBossLife, object.status);
             callBack(boss);
         }
         else
         {
-            DbBoss.findBoss(serverName, function(bossModel)
+            BossModel.findBoss(serverName, function(bossModel)
             {
-                console.log("DbBoss: {0}", serverName);
                 if(bossModel)
                 {
-                    console.log("inside dbBoss: {0}", serverName);
-                    var boss = new Boss(serverName, bossModel.bossName, bossModel.currentBossLife, bossModel.constantBossLife, bossModel.status);
+                    var boss = new Boss(serverName, bossModel.bossName, bossModel.currentBossLife, bossModel.maximumBossLife, bossModel.status);
                     callBack(boss);
                 }
                 else
@@ -53,33 +51,31 @@ BossRepository.prototype.getBoss = function(callBack, constant)
                 }
             });
         }
-    })
-}
-
-BossRepository.prototype.getNewBoss = function(){}
-
-function getConfigBoss(callBack)
-{
-    var boss = new Boss(hostname, bossConfig.bossName, bossConfig.currentLife, bossConfig.constantLife, bossConfig.status );
-    callBack(boss);
-}
+    });
+};
 
 BossRepository.prototype.saveBoth = function(boss)
 {
     var self = this;
-    saveBossRedis(boss);
-    self.saveBossBd(boss);
-}
+    self.saveBossRedis(boss);
+    self.saveBossToMongo(boss);
+};
 
-function saveBossRedis(boss)
+BossRepository.prototype.saveBossRedis = function(boss)
 {
-    console.log("saveBossRedis: {0}", hostname);
-    redis.hmset(hostname, boss.toJson());
-}
+    this.redisCommunicationService.setBoss(boss);
+};
 
-BossRepository.prototype.saveBossBd = function (boss)
+BossRepository.prototype.saveBossToMongo = function (boss)
 {
-    DbBoss.backupBoss(boss);
+    BossModel.backupBoss(boss);
+};
+
+//Private method
+function getConfigBoss(callBack)
+{
+    var boss = new Boss(hostname, bossConfig.bossName, bossConfig.currentLife, bossConfig.maximumBossLife, bossConfig.status );
+    callBack(boss);
 }
 
 module.exports = BossRepository;
