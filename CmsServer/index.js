@@ -12,7 +12,6 @@ var passport = require('passport');
 var mongoose = require('mongoose');
 var login = require('./routes/login');
 var status = require('./routes/status');
-var login = require('./routes/login');
 var mongoUri = process.env.MONGOLAB_URI || 'mongodb://localhost/frimaGameServer';
 mongoose.connect(mongoUri);
 
@@ -42,7 +41,8 @@ app.use(cors(corsOptions));
 
 app.post('/login', passport.authenticate('local-login'), login.getToken);
 app.get('/logout', login.logout);
-app.post('/signup', authentication.isAuthenticatedAsSuperAdmin, passport.authenticate('local-signup'));
+
+app.post('/signup', authentication.isAuthenticatedAsSuperAdmin, passport.authenticate('local-signup'), login.getToken);
 app.get('/status', status.getStatus);
 
 app.get('/bossesConstant', authentication.isAuthenticated,boss.getConstantBossList);
