@@ -1,29 +1,54 @@
 # GLO-3002
 CMS Server
 
-## Install Node JS
-1. Install node by executing the specific installation corresponding to your OS
+### Installer MongoDB
+Suivre le guide d'installation officiel pour votre poste de travail :
+* [Windows](http://docs.mongodb.org/manual/tutorial/install-mongodb-on-windows/)
+* [Mac](http://docs.mongodb.org/manual/tutorial/install-mongodb-on-os-x/)
+* [Linux](http://docs.mongodb.org/manual/administration/install-on-linux/)
 
-    * On Windows : http://nodejs.org/download/
-    * On Mac : http://nodejs.org/download/
-    * On Ubuntu 14.04 (See node Linux for other distributions)
-        <code>sudo apt-get update</code>
-        <code>sudo apt-get install nodejs</code>
-        <code>sudo apt-get install npm</code>
-
-2. Verify that Node is correctly installed by executing this command:
-    <code>node -v</code>
-    * If you get v0.10.x, then Node is installed. If you get an error message, your Node install did not install correctly.
-
-3. Verify that Node package manager (npm) was install during the Node install by executing this command:
-    <code>npm -v</code>
-    * If you get v1.3.x, then npm is installed. If you get an error message, your npm install did not install correctly.
+### Installer Redis
+Suivre le guide d'installation ici: 
+http://redis.io/download
 
 
-# Directives for running the server locally ;)
+### Installer Node JS
+* Windows : http://nodejs.org/download/
+* Mac : http://nodejs.org/download/
+* Ubuntu 14.04 (pour autre version linux : [Documentation Node Linux](https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager))
+```
+sudo apt-get update
+sudo apt-get install nodejs
+sudo apt-get install npm
+```
 
-1. Open a terminal in the CmsServer folder of this project
+Vérifier que Node est installé avec la commande:
+```
+node -v
+```
+Devrais afficher v0.10.x, si vous avez un message d'erreur Node ne s'est pas installé correctement.
+Vérifier que Node est installé avec la commande:
+```
+npm -v
+```
+Devrais afficher v1.3.x, si vous avez un message d'erreur npm ne s'est pas installé correctement.
 
-2. Type <code>npm start</code>
 
-3. Be amazed :P
+# Directives for running the server locally
+
+1. Start mongod. It can be found in the bin of your MongoDB install. If MongoDB is in your path, just run <code>mongod</code>
+2. Start redis-server. It can be found in the bin of your Redis install. If you installed Redis as a service, it may already be running.
+3. Open a console in the CmsServer folder. 
+4. Type <code>npm start</code>
+5. Have fun!
+
+
+# How to run test suite
+
+Test are executed with Mocha and Chai. To run the tests, assuming you are in the CmsServer folder, ensure you have all required dependencies by running <code>npm install</code>.
+
+To run the tests, execute <code>npm test</code>
+
+# How to run test coverage
+
+To run code coverage, execute <code>npm run cover</code>
