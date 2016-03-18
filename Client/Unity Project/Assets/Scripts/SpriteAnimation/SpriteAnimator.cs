@@ -16,7 +16,6 @@ namespace Assets.Scripts.SpriteAnimation
         private Material material;
         private int spriteSheetColumnCount;
         private int currentSequenceIndex = -1;
-        private int numberOfSequencesPlayed = 0;
         private SpriteAnimationSequence currentSequence;
         private float lastAnimateTime = 0;
         private UnityEngine.Random random = new UnityEngine.Random();
@@ -30,8 +29,8 @@ namespace Assets.Scripts.SpriteAnimation
 
         public void Reset()
         {
+            currentSequenceIndex = -1;
             currentSequence = null;
-            numberOfSequencesPlayed = 0;
             lastAnimateTime = 0;
         }
 
@@ -56,7 +55,7 @@ namespace Assets.Scripts.SpriteAnimation
             }
             else
             {
-                if (numberOfSequencesPlayed > 0 && OnAnimationSequenceEnd != null)
+                if (currentSequenceIndex != -1 && OnAnimationSequenceEnd != null)
                 {
                     if (!OnAnimationSequenceEnd())
                     {

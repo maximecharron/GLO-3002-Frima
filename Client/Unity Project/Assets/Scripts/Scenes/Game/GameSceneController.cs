@@ -24,6 +24,7 @@ namespace Assets.Scripts.Scenes.Game
             GameController gameController = FindObjectOfType<GameController>();
             WebSocketService.SessionToken = gameController.SessionToken;
             BossController.OnBossDead += OnBossDead;
+            BossController.gameObject.SetActive(false);
             AdjustBossPositioning();
             InitCommunication();
         }
@@ -39,11 +40,18 @@ namespace Assets.Scripts.Scenes.Game
         private void InitCommunication()
         {
             WebSocketService.OnInitializationComplete = OnCommunicationInitializationComplete;
+            WebSocketService.RegisterCommand(BossStatusUpdateCommandDTO.COMMAND_NAME, BossController.BossStatusUpdateCallback, typeof(BossStatusUpdateCommandDTO));
             WebSocketService.Init();
+        }
+
+        void OnDestroy()
+        {
+            WebSocketService.UnregisterCommand(BossStatusUpdateCommandDTO.COMMAND_NAME);
         }
 
         private void OnCommunicationInitializationComplete()
         {
+            BossController.gameObject.SetActive(true);
             LoadingSceneOverlay.gameObject.SetActive(false);
         }
 

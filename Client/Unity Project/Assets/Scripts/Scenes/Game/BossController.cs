@@ -50,7 +50,6 @@ namespace Assets.Scripts.Scenes.Game
             InitializeStates();
             AssignStateActions();
             webSocketService = FindObjectOfType<WebSocketService>();
-            webSocketService.RegisterCommand(BossStatusUpdateCommandDTO.COMMAND_NAME, BossStatusUpdateCallback, typeof(BossStatusUpdateCommandDTO));
         }
 
         private void InitializeStateController()
@@ -85,11 +84,6 @@ namespace Assets.Scripts.Scenes.Game
             bossStateController.Update();
         }
 
-        void OnDestroy()
-        {
-            webSocketService.UnregisterCommand(BossStatusUpdateCommandDTO.COMMAND_NAME);
-        }
-
         void OnMouseDown()
         {
             bossStateController.AddState(hitState, true);
@@ -108,7 +102,7 @@ namespace Assets.Scripts.Scenes.Game
             return false;
         }
 
-        private void BossStatusUpdateCallback(CommandDTO commandDTO)
+        public void BossStatusUpdateCallback(CommandDTO commandDTO)
         {
             var bossStatusUpateParams = ((BossStatusUpdateCommandDTO)commandDTO).command.parameters;
             if (bossStatusUpateParams.currentBossLife <= 0 || (BossStatus)bossStatusUpateParams.status == BossStatus.DEAD)

@@ -43,9 +43,9 @@ namespace Assets.Scripts.Communication
             String jsonData = webSocket.RecvString();
             if (jsonData != null)
             {
-                CompleteInitialization();
                 CommandDefinitionDTO commandDefinitionDTO = JsonUtility.FromJson<CommandDefinitionDTO>(jsonData);
                 DispatchCommand(commandDefinitionDTO, jsonData);
+                CompleteInitialization();
             }
         }
 
