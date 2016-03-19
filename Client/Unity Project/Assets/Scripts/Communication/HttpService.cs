@@ -10,7 +10,7 @@ namespace Assets.Scripts.Communication
 
     public class HttpService : MonoBehaviour
     {
-        private const string HTTP_SERVER_URI = "http://localhost:4000";
+        private const string HTTP_SERVER_URI = "https://frima-server-1.herokuapp.com";
 
         public String SessionToken { get; set; }
 
