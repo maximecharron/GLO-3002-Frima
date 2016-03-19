@@ -5,19 +5,19 @@ var bossSchema = new mongoose.Schema();
 bossSchema.add({
     serverName : String,
     bossName : String,
-    constantBossLife: String,
+    maximumBossLife: String,
     currentBossLife: String,
     status: String
 });
 
-bossSchema.methods.toDTO = function (following, withToken) {
+bossSchema.methods.toDTO = function () {
     var obj = this.toObject();
 
     var dto = {
         id: obj._id,
         serverName: obj.serverName,
         bossName : obj.bossName,
-        constantBossLife: obj.constantBossLife,
+        maximumBossLife: obj.maximumBossLife,
         currentBossLife: obj.currentBossLife,
         status: obj.status
     };
@@ -35,17 +35,17 @@ exports.model = Boss;
 exports.findBoss = function(serverName, callback){
     Boss.findOne({"serverName": serverName}, function(err, result){
         if (result){
-            callback(result)
+            callback(result);
         } else {
             callback(null);
         }
-    })
-}
+    });
+};
 
 exports.backupBoss = function(boss){
   Boss.findOne({"serverName": hostname}, function(err, result){
         if (result){
-            result.constantBossLife = boss.constantBossLife || boss.getConstantLife();
+            result.maximumBossLife = boss.maximumBossLife || boss.getMaximumLife();
             result.currentBossLife = boss.currentBossLife || boss.getLife();
             result.status = boss.status || boss.getStatus();
             result.save();
@@ -53,11 +53,11 @@ exports.backupBoss = function(boss){
             var bossToSave = new Boss({
                 serverName: hostname,
                 bossName: boss.bossName || boss.getName(),
-                constantBossLife: boss.constantBossLife || boss.getConstantLife(),
+                maximumBossLife: boss.maximumBossLife || boss.getMaximumLife(),
                 currentBossLife:  boss.currentBossLife || boss.getLife(),
                 status: boss.status || boss.getStatus()
             });
             bossToSave.save();
         }
-  })
+  });
 };
