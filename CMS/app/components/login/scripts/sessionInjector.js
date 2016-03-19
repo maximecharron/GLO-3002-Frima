@@ -1,7 +1,7 @@
-angular.module('CMS').factory('sessionInjector',['$q', '$cookies', function($q, $cookies){
+angular.module('CMS').factory('sessionInjector',['$q', '$cookies', 'envService', function($q, $cookies, envService){
         var sessionInjector = {
             request: function(request) {
-                if (request.url.indexOf("frima-cms-server.herokuapp.com") > -1 && request.url.indexOf("login") == -1 && request.url.indexOf("logout") == -1) {
+                if (request.url.indexOf(envService.read('apiUrl')) > -1 && request.url.indexOf("login") == -1 && request.url.indexOf("logout") == -1) {
                     request.headers['authorization'] = $cookies.getObject("user").token;
                 }
                 return request;

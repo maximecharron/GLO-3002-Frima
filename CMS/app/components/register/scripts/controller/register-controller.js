@@ -16,6 +16,8 @@ angular.module('CMS.register').controller("register-controller", function ($scop
             $scope.form.$setPristine();
             $scope.form.$setUntouched();
             $scope.email="";
+            $scope.confirmPassword ="";
+            $scope.confirmEmail = "";
             $scope.password="";
             $scope.name = "";
         }, function onError(){

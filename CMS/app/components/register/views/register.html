@@ -5,11 +5,11 @@
         </br>
     </div>
     <div class="row">
-        <div class="col-md-6 col-md-offset-3 panel-body" ng-hide="success">
+        <div class="col-md-6 col-md-offset-3 panel-body" ng-controller="register-controller">
             <h2>Create new administrator</h2>
             <div ng-show="success" class="has-success">User successfully created</div>
             <div ng-show="error" class="has-error">Woops. An error occurred.</div>
-            <form name="form" role="form" ng-submit="register()" ng-controller="register-controller">
+            <form name="form" role="form" ng-submit="register()">
                 <div class="form-group" ng-class="{'has-error': !form.name.$valid && !form.name.$pristine}">
                     <label for="name">Name</label>
                     <input class="form-control" type="text" id="name" name="name" ng-model="name" required/>
@@ -57,7 +57,6 @@
                     <button type="submit" ng-disabled="form.$invalid || form.confirmEmail.$error.match || form.confirmPassword.$error.match"
                             class="btn btn-primary">Register
                     </button>
-                    <a href="#/login" class="btn btn-link">Cancel</a>
                 </div>
             </form>
         </div>
