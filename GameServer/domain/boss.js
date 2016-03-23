@@ -1,5 +1,5 @@
 //Constructor
-function Boss(hostname, bossName, currentBossLife, maximumBossLife, status)
+function Boss(hostname, bossName, currentBossLife, maximumBossLife, status, date)
 {
     //Private
     this.serverName = hostname;
@@ -7,6 +7,7 @@ function Boss(hostname, bossName, currentBossLife, maximumBossLife, status)
     this.currentBossLife = currentBossLife;
     this.maximumBossLife = maximumBossLife;
     this.status = status;
+    this.startedDate = date;
 
 }
 
@@ -18,7 +19,8 @@ Boss.prototype.toJson = function()
         bossName: this.bossName,
         currentBossLife: this.currentBossLife,
         maximumBossLife: this.maximumBossLife,
-        status: this.status
+        status: this.status,
+        startedDate : this.startedDate
     };
     return bossJson;
 };
@@ -30,7 +32,8 @@ Boss.prototype.toString = function()
             "bossName" : this.bossName,
             "currentBossLife": this.currentBossLife,
             "maximumBossLife": this.maximumBossLife,
-            "status": this.status
+            "status": this.status,
+            "startedDate" : this.startedDate
         });
 };
 
@@ -77,6 +80,17 @@ Boss.prototype.revive = function()
 {
     this.currentBossLife = this.maximumBossLife;
     this.status = STATUS.ALIVE;
+    this.startedDate = Date();
+};
+
+Boss.prototype.setStartedDate = function(date)
+{
+    this.startedDate = date;
+};
+
+Boss.prototype.getStartedDate = function()
+{
+    return this.startedDate;
 };
 
 module.exports = Boss;

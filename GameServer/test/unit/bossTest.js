@@ -155,4 +155,20 @@ describe("Boss", function ()
         });
     });
 
+    describe("setStartedDate", function()
+    {
+        it("should set the StartedDate to current date", function()
+        {
+            //Arrange
+            var expectedDate = Date();
+
+            //Act
+            boss.setStartedDate(expectedDate);
+            var startedDate = boss.getStartedDate();
+
+            //Assert
+            expect(expectedDate).to.equal(startedDate);
+        });
+    });
+
 });

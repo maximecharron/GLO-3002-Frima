@@ -23,7 +23,7 @@ BossRepository.prototype.getBoss = function(callBack, constant)
     {
         if(object)
         {
-            var boss = new Boss(serverName, object.bossName, object.currentBossLife, object.maximumBossLife, object.status);
+            var boss = new Boss(serverName, object.bossName, object.currentBossLife, object.maximumBossLife, object.status, object.startedDate);
             callBack(boss);
         }
         else
@@ -32,7 +32,7 @@ BossRepository.prototype.getBoss = function(callBack, constant)
             {
                 if(bossModel)
                 {
-                    var boss = new Boss(serverName, bossModel.bossName, bossModel.currentBossLife, bossModel.maximumBossLife, bossModel.status);
+                    var boss = new Boss(serverName, bossModel.bossName, bossModel.currentBossLife, bossModel.maximumBossLife, bossModel.status, bossModel.startedDate);
                     callBack(boss);
                 }
                 else
@@ -74,7 +74,7 @@ BossRepository.prototype.saveBossToMongo = function (boss)
 //Private method
 function getConfigBoss(callBack)
 {
-    var boss = new Boss(hostname, bossConfig.bossName, bossConfig.currentLife, bossConfig.maximumBossLife, bossConfig.status );
+    var boss = new Boss(hostname, bossConfig.bossName, bossConfig.currentLife, bossConfig.maximumBossLife, bossConfig.status, Date());
     callBack(boss);
 }
 
