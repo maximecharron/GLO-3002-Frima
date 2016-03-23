@@ -4,15 +4,19 @@ require("./../../constants/bossConstants.js");
 var hostname = require('os').hostname();
 
 var bossDef = { serverName:hostname, bossName: "Tyson", currentBossLife: "100", maximumBossLife: "100", status: "0" };
-var bossExpected = { bossName: "Tyson", currentBossLife: "100", maximumBossLife: "100", status: "0" };
+var bossExpected = { bossName: "Tyson", currentBossLife: "100", maximumBossLife: "100", status: "0", startedDate: new Date().setSeconds(0,0) };
 var boss;
+
+function cutSeconds(date){
+    return date.toLocaleTimeString().replace(/(.*)\D\d+/, '$1');
+}
 
 describe("Boss", function ()
 {
 
     beforeEach(function ()
     {
-        boss = new Boss(bossDef.serverName, bossDef.bossName, bossDef.currentBossLife, bossDef.maximumBossLife, bossDef.status);
+        boss = new Boss(bossDef.serverName, bossDef.bossName, bossDef.currentBossLife, bossDef.maximumBossLife, bossDef.status, new Date().setSeconds(0,0));
         boss.revive();
     });
 

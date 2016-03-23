@@ -80,7 +80,7 @@ Boss.prototype.revive = function()
 {
     this.currentBossLife = this.maximumBossLife;
     this.status = STATUS.ALIVE;
-    this.startedDate = Date();
+    this.startedDate = new Date().setSeconds(0,0);
 };
 
 Boss.prototype.setStartedDate = function(date)
