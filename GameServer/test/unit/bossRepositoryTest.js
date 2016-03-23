@@ -197,7 +197,7 @@ describe("bossRepository", function ()
         it("with no boss in redis, mongo and no constant in redis, mongo should get configBoss", function(done)
         {
             //Arrange
-            var bossExpected = new Boss(hostname, bossConfig.bossName, bossConfig.currentLife, bossConfig.maximumBossLife, bossConfig.status );
+            var bossExpected = new Boss(hostname, bossConfig.bossName, bossConfig.currentLife, bossConfig.maximumBossLife, bossConfig.status, new Date().setSeconds(0,0) );
             dbBossStub.findBoss = function(serverName, callBack) {callBack(null);};
 
             redisCommunicationServiceStub.findBoss.callsArgWith(1, null, null);

@@ -74,7 +74,7 @@ BossRepository.prototype.saveBossToMongo = function (boss)
 //Private method
 function getConfigBoss(callBack)
 {
-    var boss = new Boss(hostname, bossConfig.bossName, bossConfig.currentLife, bossConfig.maximumBossLife, bossConfig.status, Date());
+    var boss = new Boss(hostname, bossConfig.bossName, bossConfig.currentLife, bossConfig.maximumBossLife, bossConfig.status, new Date().setSeconds(0,0));
     callBack(boss);
 }
 
