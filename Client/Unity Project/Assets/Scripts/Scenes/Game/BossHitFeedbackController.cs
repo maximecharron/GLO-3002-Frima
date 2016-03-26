@@ -15,7 +15,7 @@ namespace Assets.Scripts.Scenes.Game
         public GameObject HitParticleSystem;
         public int ParticleSystemPoolSize = 5;
         public GameObject HitBubble;
-        public int AudioSourcePoolSize = 5;
+        public int AudioSourcePoolSize = 10;
         public AudioClip[] AudioClips;
         public int HitBubblePoolSize = 5;
 
