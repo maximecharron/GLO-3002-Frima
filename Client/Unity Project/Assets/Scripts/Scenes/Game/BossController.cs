@@ -15,7 +15,7 @@ namespace Assets.Scripts.Scenes.Game
 
     public class BossController : MonoBehaviour
     {
-        private const int DEFAULT_ATTACK_VALUE = 1000;
+        private const int DEFAULT_ATTACK_VALUE = 5000;
         private const int HIT_STATE_PRIORITY = 1;
         private const int HIT_STATE_ANIMATION_PRIORITY = 1;
         private const int IDLE_STATE_PRIORITY = 2;
@@ -23,9 +23,8 @@ namespace Assets.Scripts.Scenes.Game
 
         //Configurable script parameters
         public int SpritesheetColumnCount = 6;
-        public Text HealthPointValue;
-        public Slider HealthPointSlider;
         public BossHitFeedbackController BossHitFeedbackController;
+        public HealthPointSliderController HealthPointSliderController;
 
         public delegate void BossDeadEventHandler();
         public event BossDeadEventHandler OnBossDead;
@@ -111,7 +110,7 @@ namespace Assets.Scripts.Scenes.Game
             }
             else
             {
-                HealthPointSlider.maxValue = bossStatusUpateParams.maximumBossLife;
+                HealthPointSliderController.MaxValue = bossStatusUpateParams.maximumBossLife;
                 UpdateBossLife(bossStatusUpateParams.currentBossLife);
             }
         }
@@ -127,9 +126,7 @@ namespace Assets.Scripts.Scenes.Game
                 value = 0;
             }
             currentBossLife = value;
-            HealthPointSlider.value = value;
-            HealthPointValue.text = value.ToString();
-            HealthPointValue.gameObject.SetActive(true);
+            HealthPointSliderController.Value = value;
         }
     }
 
