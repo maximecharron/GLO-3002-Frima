@@ -13,6 +13,21 @@ namespace Assets.Scripts.SpriteAnimation
         public int FramesPerSecond { get; set; }
         public int RepeatCount { get; set; }
 
+        public bool EndOfSequence
+        {
+            get
+            {
+                if (RepeatCount == REPEAT_INFINITE)
+                {
+                    return false;
+                }
+                else
+                {
+                    return totalFrame + 1 >= RepeatCount * Frames.Count;
+                }
+            }
+        }
+
         private int currentFrame;
         private int totalFrame;
 
@@ -30,21 +45,9 @@ namespace Assets.Scripts.SpriteAnimation
             totalFrame = -1;
         }
 
-        public bool EndOfSequence()
-        {
-            if (RepeatCount == REPEAT_INFINITE)
-            {
-                return false;
-            }
-            else
-            {
-                return totalFrame + 1 >= RepeatCount * Frames.Count;
-            }
-        }
-
         public int NextFrame()
         {
-            if (!EndOfSequence())
+            if (!EndOfSequence)
             {
                 currentFrame++;
                 if (currentFrame >= Frames.Count)

@@ -2,6 +2,7 @@
 using System.Collections;
 using Assets.Scripts.Extensions;
 using UnityEngine.UI;
+using Assets.Scripts.Utils;
 
 namespace Assets.Scripts.Scenes.Game
 {
@@ -34,7 +35,7 @@ namespace Assets.Scripts.Scenes.Game
             else
             {
                 active = true;
-                float scale = Mathf.Pow((Time.time - startTime), 1f / 5f) / Mathf.Pow(Duration, 1f / 5f);
+                float scale = AnimationUtils.EaseIn(Time.time - startTime, Duration);
                 this.transform.localScale = new Vector3(scale, scale, 1);
             }
         }
