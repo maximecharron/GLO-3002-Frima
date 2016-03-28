@@ -7,7 +7,7 @@ using System;
 
 namespace Assets.Scripts.Scenes.Game.Combos
 {
-    public class ComboHitSequenceController
+    public class ComboHitSequenceController : MonoBehaviour
     {
         private const int GREEN_TEXT_COLOR_MULTIPLIER = 2;
         private const int BLUE_TEXT_COLOR_MULTIPLIER = 3;
@@ -103,13 +103,16 @@ namespace Assets.Scripts.Scenes.Game.Combos
                 if (hitSequence.EndOfSequence)
                 {
                     ProcessSequenceAchieved();
-                    return;
                 }
-                else {
-                    hitSequence.MoveNext();
-                }
+                ProcessHitZoneClicked(hitZoneController);
             }
             OnHitZoneClicked(hitZoneController);
+        }
+
+        private void ProcessHitZoneClicked(ComboHitZoneController hitZoneController)
+        {
+            hitZoneController.PlayHitSound((float)hitSequence.NextHitZoneIndex / hitSequence.HitZones.Count);
+            hitSequence.MoveNext();
         }
 
         private void ProcessSequenceAchieved()

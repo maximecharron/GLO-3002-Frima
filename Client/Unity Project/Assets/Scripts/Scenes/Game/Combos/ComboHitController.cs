@@ -8,6 +8,8 @@ namespace Assets.Scripts.Scenes.Game.Combos
 {
     public class ComboHitController : MonoBehaviour
     {
+        private static Rect DEFAULT_HIT_ZONE = new Rect(-0.2f, -0.4f, 0.4f, 0.62f);
+        private const int RANDOM_HIT_ZONE_COUNT = 4;
 
         //Configurable script parameters
         public BossController BossController;
@@ -15,9 +17,11 @@ namespace Assets.Scripts.Scenes.Game.Combos
         public int ComboHitZonePoolSize;
         public GameObject ComboBonusBubble;
         public int ComboBonusBubblePoolSize;
+        public AudioClip SequenceAchievedAudioClip;
 
         private List<ComboHitSequence> hitSequences = new List<ComboHitSequence>();
         private ComboHitSequenceController hitSequenceController;
+        private ComboHitSequence randomHitSequence;
 
         void Start()
         {
@@ -52,15 +56,28 @@ namespace Assets.Scripts.Scenes.Game.Combos
 
         private void CreateHitSequences()
         {
-            ComboHitSequence hitSequence1 = new ComboHitSequence(5, 2); //Legs
-            hitSequence1.TriggerZone = new Rect(-0.5f, 0f, 1f, 0.5f);
-            hitSequence1.HitZones = new List<Vector2>() { new Vector2(-0.123f, -0.344f), new Vector2(0.116f, -0.344f) };
-            hitSequences.Add(hitSequence1);
+            ComboHitSequence legsHitSequence = new ComboHitSequence(10, 2, DEFAULT_HIT_ZONE); //Legs
+            legsHitSequence.HitZones = new List<Vector2>() { new Vector2(-0.123f, -0.344f), new Vector2(0.116f, -0.344f) };
+            hitSequences.Add(legsHitSequence);
 
-            ComboHitSequence hitSequence2 = new ComboHitSequence(1, 3); //Belly
-            hitSequence2.TriggerZone = new Rect(-0.5f, 0f, 1f, 0.5f);
-            hitSequence2.HitZones = new List<Vector2>() { new Vector2(-0.111f, -0.091f), new Vector2(0.134f, -0.091f), new Vector2(-0.111f, -0.23f), new Vector2(0.134f, -0.23f) };
-            hitSequences.Add(hitSequence2);
+            ComboHitSequence pectoralsHitSequence = new ComboHitSequence(10, 2, DEFAULT_HIT_ZONE); //Pectorals
+            pectoralsHitSequence.HitZones = new List<Vector2>() { new Vector2(-0.08f, 0.018f), new Vector2(0.119f, 0.018f) };
+            hitSequences.Add(pectoralsHitSequence);
+
+            ComboHitSequence bellyHitSequence = new ComboHitSequence(10, 3, DEFAULT_HIT_ZONE); //Belly
+            bellyHitSequence.HitZones = new List<Vector2>() { new Vector2(-0.111f, -0.091f), new Vector2(0.134f, -0.091f), new Vector2(-0.111f, -0.23f), new Vector2(0.134f, -0.23f) };
+            hitSequences.Add(bellyHitSequence);
+
+            ComboHitSequence pectoralHeadCrossHitSequence = new ComboHitSequence(20, 5, DEFAULT_HIT_ZONE); //Pectoral / Head Cross
+            pectoralHeadCrossHitSequence.HitZones = new List<Vector2>() { new Vector2(-0.08f, 0.018f), new Vector2(0.119f, 0.018f), new Vector2(0.015f, 0.222f) };
+            hitSequences.Add(pectoralHeadCrossHitSequence);
+
+            ComboHitSequence pectoralBellyCrossHitSequence = new ComboHitSequence(20, 10, DEFAULT_HIT_ZONE); //Pectoral / Belly Cross
+            pectoralBellyCrossHitSequence.HitZones = new List<Vector2>() { new Vector2(-0.08f, 0.018f), new Vector2(0.134f, -0.23f), new Vector2(0.119f, 0.018f), new Vector2(-0.111f, -0.23f) };
+            hitSequences.Add(pectoralBellyCrossHitSequence);
+
+            randomHitSequence = new RandomizedComboHitSequence(DEFAULT_HIT_ZONE, RANDOM_HIT_ZONE_COUNT, 20, 20, DEFAULT_HIT_ZONE); //Random
+            hitSequences.Add(randomHitSequence);
         }
 
         void Update()
@@ -100,13 +117,17 @@ namespace Assets.Scripts.Scenes.Game.Combos
 
         private void OnHitZoneClickedCallback(ComboHitZoneController hitZoneController)
         {
-            BossController.OnMouseDown();
+            if (hitSequenceController.IsActive)
+            {
+                BossController.OnMouseDown();
+            }
         }
 
         private void OnSequenceAchievedCallback(ComboHitSequence hitSequence)
         {
             BossController.RemoveBossLife(BossController.DEFAULT_ATTACK_VALUE * hitSequence.BonusMultiplier);
             BossController.KnockOut();
+            BossController.gameObject.FindAudioSource(SequenceAchievedAudioClip).Play();
         }
     }
 }

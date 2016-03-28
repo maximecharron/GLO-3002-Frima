@@ -22,5 +22,17 @@ namespace Assets.Scripts.Extensions
             Vector2 worldPosition = Camera.main.GetMousePosition();
             return gameObject.transform.InverseTransformPoint(worldPosition);
         }
+
+        public static AudioSource FindAudioSource(this GameObject gameObject, AudioClip audioClip)
+        {
+            foreach (AudioSource audioSource in gameObject.GetComponents<AudioSource>())
+            {
+                if (audioSource.clip == audioClip)
+                {
+                    return audioSource;
+                }
+            }
+            return null;
+        }
     }
 }

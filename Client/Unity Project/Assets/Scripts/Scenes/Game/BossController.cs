@@ -15,7 +15,7 @@ namespace Assets.Scripts.Scenes.Game
 
     public class BossController : MonoBehaviour
     {
-        public const int DEFAULT_ATTACK_VALUE = 5000;
+        public const int DEFAULT_ATTACK_VALUE = 1000;
         private const int KNOCK_OUT_STATE_PRIORITY = 1;
         private const int KNOCK_OUT_STATE_ANIMATION_PRIORITY = 1;
         private const int HIT_STATE_PRIORITY = 2;
@@ -27,6 +27,8 @@ namespace Assets.Scripts.Scenes.Game
         public int SpritesheetColumnCount = 6;
         public BossHitFeedbackController BossHitFeedbackController;
         public HealthPointSliderController HealthPointSliderController;
+        public AudioClip KnockOutFallAudioClip;
+        public AudioClip KnockOutVoiceAudioClip;
 
         public delegate void BossDeadEventHandler();
         public event BossDeadEventHandler OnBossDead;
@@ -80,9 +82,10 @@ namespace Assets.Scripts.Scenes.Game
 
         private void AssignStateActions()
         {
-            hitState.OnActivate = OnHitStateActivate;
-            hitState.OnAnimationSequenceEnd = OnHitAnimationSequenceEnd;
-            knockOutState.OnAnimationSequenceEnd = OnKnockOutAnimationSequenceEnd;
+            hitState.OnActivate = OnHitStateActivateCallback;
+            hitState.OnAnimationSequenceEnd = OnHitAnimationSequenceEndCallback;
+            knockOutState.OnActivate = OnKnockOutStateActivatCallbacke;
+            knockOutState.OnAnimationSequenceEnd = OnKnockOutAnimationSequenceEndCallback;
         }
 
         void Update()
@@ -101,19 +104,25 @@ namespace Assets.Scripts.Scenes.Game
             bossStateController.AddState(knockOutState);
         }
 
-        private void OnHitStateActivate(CharacterState sender)
+        private void OnHitStateActivateCallback(CharacterState sender)
         {
             RemoveBossLife(DEFAULT_ATTACK_VALUE);
             BossHitFeedbackController.Hit(DEFAULT_ATTACK_VALUE);
         }
 
-        public bool OnHitAnimationSequenceEnd(CharacterState sender)
+        private void OnKnockOutStateActivatCallbacke(CharacterState sender)
+        {
+            this.gameObject.FindAudioSource(KnockOutFallAudioClip).Play();
+            this.gameObject.FindAudioSource(KnockOutVoiceAudioClip).Play();
+        }
+
+        public bool OnHitAnimationSequenceEndCallback(CharacterState sender)
         {
             bossStateController.RemoveState(hitState);
             return false;
         }
 
-        public bool OnKnockOutAnimationSequenceEnd(CharacterState sender)
+        public bool OnKnockOutAnimationSequenceEndCallback(CharacterState sender)
         {
             bossStateController.RemoveState(knockOutState);
             return false;
@@ -136,7 +145,7 @@ namespace Assets.Scripts.Scenes.Game
         public void RemoveBossLife(int value)
         {
             UpdateBossLife(currentBossLife - value);
-            webSocketService.SendCommand(new BossAttackCommandDTO(DEFAULT_ATTACK_VALUE));
+            webSocketService.SendCommand(new BossAttackCommandDTO(value));
         }
 
         private void UpdateBossLife(int value)

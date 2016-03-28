@@ -46,33 +46,32 @@ namespace Assets.Scripts.Scenes.Game.Combos
         }
 
         private int nextHitZoneIndex = 0;
-        private int triggerHitCount = 0;
         private float triggerStartTime = 0;
         private float lastHitTime = 0;
         private int currentlyShownHitZoneIndex = -1;
         private float lastHitZoneDisplayTime = 0;
 
-        public ComboHitSequence(int triggerFrequency, int bonusMultiplier, float maxFirstHitWaitTime = 2f, float maxWaitTimeBetweenHits = 1f, float hitZoneDisplayInterval = 0.25f)
+        public ComboHitSequence(int triggerFrequency, int bonusMultiplier, Rect triggerZone, float maxFirstHitWaitTime = 2f, float maxWaitTimeBetweenHits = 1f, float hitZoneDisplayInterval = 0.5f)
         {
             this.TriggerFrequency = triggerFrequency;
             this.BonusMultiplier = bonusMultiplier;
+            this.TriggerZone = triggerZone;
             this.MaxFirstHitWaitTime = maxFirstHitWaitTime;
             this.MaxWaitTimeBetweenHits = maxWaitTimeBetweenHits;
             this.HitZoneDisplayInterval = hitZoneDisplayInterval;
+            this.HitZones = new List<Vector2>();
         }
 
         public bool IsActivable(Vector2 hitPosition)
         {
-            triggerHitCount++;
-            bool frequencyRequirementMatch = triggerHitCount >= TriggerFrequency;
+            bool frequencyRequirementMatch = UnityEngine.Random.Range(0, TriggerFrequency) == 1;
             bool triggerZoneRequirementMatch = TriggerZone.Contains(hitPosition);
             return frequencyRequirementMatch && triggerZoneRequirementMatch && !IsAlive();
         }
 
-        public void Reset()
+        public virtual void Reset()
         {
             nextHitZoneIndex = 0;
-            triggerHitCount = 0;
             triggerStartTime = Time.time;
             lastHitTime = 0;
             currentlyShownHitZoneIndex = -1;

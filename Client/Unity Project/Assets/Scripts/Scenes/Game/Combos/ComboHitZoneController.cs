@@ -9,6 +9,8 @@ namespace Assets.Scripts.Scenes.Game.Combos
 {
     public class ComboHitZoneController : MonoBehaviour
     {
+        private static float HIT_SOUND_BASE_PITCH = 1f;
+        private static float HIT_SOUND_PITCH_INCREMENT_MULTIPLIER = 0.3f;
 
         // Configurable script parameters
         public float FadeInDuration;
@@ -76,6 +78,13 @@ namespace Assets.Scripts.Scenes.Game.Combos
             {
                 SetAlpha(AnimationUtils.ExponentialEaseOut(Time.time - startTime, FadeInDuration));
             }
+        }
+
+        public void PlayHitSound(float sequenceProgress)
+        {
+            AudioSource audioSource = this.GetComponent<AudioSource>();
+            audioSource.pitch = HIT_SOUND_BASE_PITCH + sequenceProgress * HIT_SOUND_PITCH_INCREMENT_MULTIPLIER;
+            audioSource.Play();
         }
 
         private void SetAlpha(float alpha)
