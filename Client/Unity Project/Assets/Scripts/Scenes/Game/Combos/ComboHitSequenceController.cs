@@ -119,7 +119,6 @@ namespace Assets.Scripts.Scenes.Game.Combos
         {
             ShowBonusBubble();
             OnSequenceAchieved(hitSequence);
-            TerminateSequence();
         }
 
         private void ShowBonusBubble()

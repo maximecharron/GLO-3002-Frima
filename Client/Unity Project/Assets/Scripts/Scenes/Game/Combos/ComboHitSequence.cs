@@ -8,7 +8,6 @@ namespace Assets.Scripts.Scenes.Game.Combos
 {
     public class ComboHitSequence
     {
-
         public Rect TriggerZone {get; set;}
         public int TriggerFrequency { get; set; }
         public float MaxFirstHitWaitTime { get; set; }
@@ -81,6 +80,7 @@ namespace Assets.Scripts.Scenes.Game.Combos
         {
             bool firstHitWaitTimeElapsed = nextHitZoneIndex == 0 && Time.time - triggerStartTime > MaxFirstHitWaitTime;
             bool nextHitWaitTimeElapsed = nextHitZoneIndex > 0 && Time.time - lastHitTime > MaxWaitTimeBetweenHits;
+
             return !firstHitWaitTimeElapsed && !nextHitWaitTimeElapsed;
         }
 
