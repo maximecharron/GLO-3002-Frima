@@ -24,7 +24,7 @@ namespace Assets.Scripts.Scenes.Game
         private const int IDLE_STATE_ANIMATION_PRIORITY = 3;
 
         //Configurable script parameters
-        public int SpritesheetColumnCount = 6;
+        public int SpritesheetColumnCount = 8;
         public BossHitFeedbackController BossHitFeedbackController;
         public HealthPointSliderController HealthPointSliderController;
         public AudioClip KnockOutFallAudioClip;

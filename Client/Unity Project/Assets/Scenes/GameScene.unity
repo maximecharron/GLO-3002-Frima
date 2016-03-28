@@ -4135,7 +4135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc9a094d2cb51084db9e056cc95162c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpritesheetColumnCount: 6
+  SpritesheetColumnCount: 8
   BossHitFeedbackController: {fileID: 2085029936}
   HealthPointSliderController: {fileID: 1051781872}
   KnockOutFallAudioClip: {fileID: 8300000, guid: b485de05d4820c648baa3dca2c99fe6e,
