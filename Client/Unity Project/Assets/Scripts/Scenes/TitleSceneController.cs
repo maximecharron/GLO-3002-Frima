@@ -7,6 +7,14 @@ namespace Assets.Scripts.Scenes
 
     public class TitleSceneController : SceneController {
 
+        private string bossTimePassed = "";
+        private string reward = "";
+
+        public void Start()
+        {
+
+        }
+
         public void OnLoginButtonPointerClick()
         {
             SceneManager.LoadScene(LOGIN_SCENE_NAME);
