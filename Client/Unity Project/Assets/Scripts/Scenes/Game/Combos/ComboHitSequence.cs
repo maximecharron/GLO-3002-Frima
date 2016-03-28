@@ -10,14 +10,12 @@ namespace Assets.Scripts.Scenes.Game.Combos
     {
 
         public Rect TriggerZone {get; set;}
-        public float TriggerFrequency { get; set; }
+        public int TriggerFrequency { get; set; }
         public float MaxFirstHitWaitTime { get; set; }
         public float MaxWaitTimeBetweenHits { get; set; }
         public List<Vector2> HitZones { get; set; }
-        public float HitZoneSizeScale { get; set; }
-        public float BonusMultiplier { get; set; }
+        public int BonusMultiplier { get; set; }
         public float HitZoneDisplayInterval { get; set; }
-        public Action<ComboHitSequence> OnHitSequenceAchieved { get; set; }
         public bool EndOfDisplaySequence
         {
             get
@@ -29,7 +27,21 @@ namespace Assets.Scripts.Scenes.Game.Combos
         {
             get
             {
-                return !(Time.time - lastHitZoneDisplayTime > HitZoneDisplayInterval);
+                return Time.time - lastHitZoneDisplayTime > HitZoneDisplayInterval;
+            }
+        }
+        public bool EndOfSequence
+        {
+            get
+            {
+                return nextHitZoneIndex + 1 >= HitZones.Count;
+            }
+        }
+        public int NextHitZoneIndex
+        {
+            get
+            {
+                return nextHitZoneIndex;
             }
         }
 
@@ -40,11 +52,21 @@ namespace Assets.Scripts.Scenes.Game.Combos
         private int currentlyShownHitZoneIndex = -1;
         private float lastHitZoneDisplayTime = 0;
 
+        public ComboHitSequence(int triggerFrequency, float maxFirstHitWaitTime, float maxWaitTimeBetweenHits, float hitZoneDisplayInterval, int bonusMultiplier)
+        {
+            this.TriggerFrequency = triggerFrequency;
+            this.MaxFirstHitWaitTime = maxFirstHitWaitTime;
+            this.MaxWaitTimeBetweenHits = maxWaitTimeBetweenHits;
+            this.HitZoneDisplayInterval = hitZoneDisplayInterval;
+            this.BonusMultiplier = bonusMultiplier;
+        }
+
         public bool IsActivable(Vector2 hitPosition)
         {
             triggerHitCount++;
-            bool frequencyRequirementMatch = TriggerZone.Contains(hitPosition) && triggerHitCount >= TriggerFrequency;
-            return frequencyRequirementMatch && !IsAlive();
+            bool frequencyRequirementMatch = triggerHitCount >= TriggerFrequency;
+            bool triggerZoneRequirementMatch = TriggerZone.Contains(hitPosition);
+            return frequencyRequirementMatch && triggerZoneRequirementMatch && !IsAlive();
         }
 
         public void Reset()
@@ -63,27 +85,6 @@ namespace Assets.Scripts.Scenes.Game.Combos
             return !firstHitWaitTimeElapsed && !nextHitWaitTimeElapsed;
         }
 
-        public void Hit(Vector2 hitPosition)
-        {
-            if (IsHitInZone(hitPosition))
-            {
-                MoveNext();
-            }
-        }
-
-        private bool IsHitInZone(Vector2 hitPosition)
-        {
-            return true;
-        }
-
-        private void MoveNext()
-        {
-            if (nextHitZoneIndex > HitZones.Count)
-            {
-                OnHitSequenceAchieved(this);
-            }
-        }
-
         public Vector2 GetNextHitZoneToDisplay()
         {
             if (!EndOfDisplaySequence) {
@@ -91,6 +92,12 @@ namespace Assets.Scripts.Scenes.Game.Combos
             }
             lastHitZoneDisplayTime = Time.time;
             return HitZones[currentlyShownHitZoneIndex];
+        }
+
+        public void MoveNext()
+        {
+            lastHitTime = Time.time;
+            nextHitZoneIndex++;
         }
     }
 }

@@ -3601,7 +3601,7 @@ GameObject:
   - 224: {fileID: 1938948518}
   - 114: {fileID: 1938948519}
   m_Layer: 5
-  m_Name: BonusBubble
+  m_Name: ComboBonusBubble
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3634,10 +3634,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1938948517}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c3d5d2e329e1cf4195063cfc3f365c7, type: 3}
+  m_Script: {fileID: 11500000, guid: c13e9f78ac07c984cba59863f6ee45cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Duration: 0.5
+  Duration: 1
 --- !u!1 &2015887797
 GameObject:
   m_ObjectHideFlags: 0
@@ -3677,6 +3677,102 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1025823895}
   m_RootOrder: 0
+--- !u!1 &2016672436
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 224: {fileID: 2016672437}
+  - 222: {fileID: 2016672439}
+  - 114: {fileID: 2016672438}
+  - 58: {fileID: 2016672441}
+  - 114: {fileID: 2016672440}
+  m_Layer: 5
+  m_Name: ComboHitZone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2016672437
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2016672436}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2085029929}
+  m_RootOrder: 0
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0.2, y: 0.2}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2016672438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2016672436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: 594d92967970503478261be18249ce08, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &2016672439
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2016672436}
+--- !u!114 &2016672440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2016672436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f308982ace16e546beddeef9cf4eb14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FadeInDuration: 0.25
+  FadeOutDuration: 0.25
+--- !u!58 &2016672441
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2016672436}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.07
 --- !u!1 &2080354442
 GameObject:
   m_ObjectHideFlags: 0
@@ -3724,6 +3820,7 @@ GameObject:
   - 23: {fileID: 2085029933}
   - 114: {fileID: 2085029932}
   - 114: {fileID: 2085029936}
+  - 114: {fileID: 2085029937}
   - 82: {fileID: 2085029931}
   - 82: {fileID: 2085029930}
   m_Layer: 5
@@ -3742,7 +3839,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 28, z: -143.9999}
   m_LocalScale: {x: 525, y: 525, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 2016672437}
   m_Father: {fileID: 709489110}
   m_RootOrder: 2
 --- !u!82 &2085029930
@@ -3980,3 +4078,19 @@ MonoBehaviour:
   AudioClips:
   - {fileID: 8300000, guid: caf1668eba6f5494c89cd80be1460e0c, type: 3}
   HitBubblePoolSize: 5
+--- !u!114 &2085029937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2085029928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3c9a4b14cd12241919acf7369fa470, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BossController: {fileID: 2085029932}
+  ComboHitZone: {fileID: 2016672436}
+  ComboHitZonePoolSize: 3
+  ComboBonusBubble: {fileID: 1938948517}
+  ComboBonusBubblePoolSize: 3

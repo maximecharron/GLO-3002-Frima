@@ -1,21 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Assets.Scripts.Extensions;
+using UnityEngine.UI;
+using Assets.Scripts.Utils;
 
 namespace Assets.Scripts.Scenes.Game.Combos
 {
-    public class ComboBubbleController : MonoBehaviour
+    public class ComboBonusBubbleController : BubbleController
     {
-
-        // Use this for initialization
-        void Start()
-        {
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
+        
     }
 }

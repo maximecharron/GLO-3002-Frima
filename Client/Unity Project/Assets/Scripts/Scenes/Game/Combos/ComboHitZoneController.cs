@@ -3,6 +3,7 @@ using System.Collections;
 using Assets.Scripts.Extensions;
 using UnityEngine.UI;
 using Assets.Scripts.Utils;
+using System;
 
 namespace Assets.Scripts.Scenes.Game.Combos
 {
@@ -13,11 +14,13 @@ namespace Assets.Scripts.Scenes.Game.Combos
         public float FadeInDuration;
         public float FadeOutDuration;
 
+        public Action<ComboHitZoneController> OnHitZoneClicked { get; set; }
+
         public bool Active
         {
             get
             {
-                return active;
+                return this.gameObject.activeSelf;
             }
         }
 
@@ -38,49 +41,60 @@ namespace Assets.Scripts.Scenes.Game.Combos
             }
         }
 
-        private bool active;
         private bool fadingIn;
 
         // Use this for initialization
         void Start()
         {
-            active = false;
             fadingIn = true;
         }
 
         void Update()
         {
-            if (Time.time - startTime > TotalDuration)
+            Animate();
+        }
+
+        void OnMouseDown()
+        {
+            if (OnHitZoneClicked != null)
             {
-                active = false;
-                this.gameObject.SetActive(false);
-            }
-            else {
-                active = true;
-                Animate();
+                OnHitZoneClicked(this);
             }
         }
 
         private void Animate()
         {
-            float alpha = 0;
-            Image image = this.GetComponentInChildren<Image>();
-            if (Time.time - startTime > FadeInDuration)
+            if (Time.time - startTime > TotalDuration)
             {
-                alpha = AnimationUtils.EaseIn(Time.time - startTime, FadeOutDuration);
+                SetAlpha(0);
+            }
+            else if (Time.time - startTime > FadeInDuration)
+            {
+                SetAlpha(1 - AnimationUtils.LinearTween(Time.time - startTime - FadeInDuration, FadeOutDuration));
             }
             else
             {
-                alpha = AnimationUtils.EaseIn(Time.time - startTime, FadeInDuration);
+                SetAlpha(AnimationUtils.ExponentialEaseOut(Time.time - startTime, FadeInDuration));
             }
+        }
+
+        private void SetAlpha(float alpha)
+        {
+            Image image = this.GetComponent<Image>();
             image.color = new Color(image.color.r, image.color.g, image.color.b, alpha);
         }
 
         public void Show(Vector2 position)
         {
-            this.transform.position = position.ToVector3(this.transform.position.z);
+            this.transform.localPosition = position.ToVector3(this.transform.localPosition.z);
             startTime = Time.time;
+            SetAlpha(0);
             this.gameObject.SetActive(true);
+        }
+
+        public void Hide()
+        {
+            this.gameObject.SetActive(false);
         }
     }
 }

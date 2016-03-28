@@ -15,7 +15,7 @@ namespace Assets.Scripts.Scenes.Game
 
     public class BossController : MonoBehaviour
     {
-        private const int DEFAULT_ATTACK_VALUE = 5000;
+        public const int DEFAULT_ATTACK_VALUE = 5000;
         private const int HIT_STATE_PRIORITY = 1;
         private const int HIT_STATE_ANIMATION_PRIORITY = 1;
         private const int IDLE_STATE_PRIORITY = 2;
@@ -83,15 +83,14 @@ namespace Assets.Scripts.Scenes.Game
             bossStateController.Update();
         }
 
-        void OnMouseDown()
+        public void OnMouseDown()
         {
             bossStateController.AddState(hitState, true);
         }
 
         private void OnHitStateActivate(CharacterState sender)
         {
-            UpdateBossLife(currentBossLife - DEFAULT_ATTACK_VALUE);
-            webSocketService.SendCommand(new BossAttackCommandDTO(DEFAULT_ATTACK_VALUE));
+            RemoveBossLife(DEFAULT_ATTACK_VALUE);
             BossHitFeedbackController.Hit(DEFAULT_ATTACK_VALUE);
         }
 
@@ -113,6 +112,12 @@ namespace Assets.Scripts.Scenes.Game
                 HealthPointSliderController.MaxValue = bossStatusUpateParams.maximumBossLife;
                 UpdateBossLife(bossStatusUpateParams.currentBossLife);
             }
+        }
+
+        public void RemoveBossLife(int value)
+        {
+            UpdateBossLife(currentBossLife - value);
+            webSocketService.SendCommand(new BossAttackCommandDTO(DEFAULT_ATTACK_VALUE));
         }
 
         private void UpdateBossLife(int value)

@@ -10,74 +10,32 @@ namespace Assets.Scripts.Scenes.Game.Combos
     {
 
         //Configurable script parameters
+        public BossController BossController;
         public GameObject ComboHitZone;
-        public int ComboHitZonePoolSize = 5;
+        public int ComboHitZonePoolSize = 3;
+        public GameObject ComboBonusBubble;
+        public int ComboBonusBubblePoolSize = 3;
 
-        private List<ComboHitSequence> comboHitSequences = new List<ComboHitSequence>();
-        private ComboHitSequence activeComboHitSequence = null;
-        private UnityObjectPool comboHitZonePool;
+        private List<ComboHitSequence> hitSequences = new List<ComboHitSequence>();
+        private ComboHitSequenceController hitSequenceController;
 
         void Start()
         {
             this.ComboHitZone.SetActive(false);
-            this.comboHitZonePool = new UnityObjectPool(ComboHitZone, ComboHitZonePoolSize);
-            this.comboHitZonePool.OnCheckIsAvailable = IsComboHitZonePoolItemAvailableCallback;
-            createHitSequences();
+            this.ComboBonusBubble.SetActive(false);
+            CreateHitSequences();
+            InitSequenceController();
         }
 
-        private void createHitSequences()
+        private void InitSequenceController()
         {
-            ComboHitSequence hitSequence1 = new ComboHitSequence();
-            hitSequence1.TriggerZone = new Rect(-0.5f, -0.5f, 0, 0);
-            hitSequence1.TriggerFrequency = 0.5f;
-            hitSequence1.MaxFirstHitWaitTime = 2;
-            hitSequence1.MaxWaitTimeBetweenHits = 0.5f;
-            hitSequence1.HitZoneSizeScale = 1f;
-            hitSequence1.BonusMultiplier = 2;
-            hitSequence1.HitZones = new List<Vector2>() { new Vector2(-0.5f, 0), new Vector2(0.5f, 0) };
-            hitSequence1.OnHitSequenceAchieved = OnHitSequenceAchievedCallback;
-            comboHitSequences.Add(hitSequence1);
-        }
-
-        void Update()
-        {
-            if (activeComboHitSequence != null && !activeComboHitSequence.IsAlive())
-            {
-                activeComboHitSequence = null;
-            }
-            if (activeComboHitSequence != null)
-            {
-                ShowActiveSequenceHitZones();
-            }
-        }
-
-        public void Hit(Vector2 hitPosition)
-        {
-            if (activeComboHitSequence == null)
-            {
-                List<ComboHitSequence> eligibleComboHitSeqences = TryGetNextComboHitSequence(hitPosition);
-                if (eligibleComboHitSeqences.Count > 0) {
-                    activeComboHitSequence = eligibleComboHitSeqences.RandomItem();
-                    activeComboHitSequence.Reset();
-                }
-            }
-            else
-            {
-                activeComboHitSequence.Hit(hitPosition);
-            }
-        }
-
-        public List<ComboHitSequence> TryGetNextComboHitSequence(Vector2 hitPosition)
-        {
-            List<ComboHitSequence> eligibleComboHitSeqences = new List<ComboHitSequence>();
-            foreach (ComboHitSequence comboHitSequence in comboHitSequences)
-            {
-                if (comboHitSequence.IsActivable(hitPosition))
-                {
-                    eligibleComboHitSeqences.Add(comboHitSequence);
-                }
-            }
-            return eligibleComboHitSeqences;
+            UnityObjectPool hitZonePool = new UnityObjectPool(ComboHitZone, ComboHitZonePoolSize);
+            hitZonePool.OnCheckIsAvailable = IsComboHitZonePoolItemAvailableCallback;
+            UnityObjectPool bonusBubblePool = new UnityObjectPool(ComboBonusBubble, ComboBonusBubblePoolSize);
+            bonusBubblePool.OnCheckIsAvailable = IsComboBonusBubblePoolItemAvailableCallback;
+            this.hitSequenceController = new ComboHitSequenceController(hitZonePool, bonusBubblePool);
+            this.hitSequenceController.OnHitZoneClicked = OnHitZoneClickedCallback;
+            this.hitSequenceController.OnSequenceAchieved = OnSequenceAchievedCallback;
         }
 
         private bool IsComboHitZonePoolItemAvailableCallback(UnityEngine.Object unityObject)
@@ -86,20 +44,63 @@ namespace Assets.Scripts.Scenes.Game.Combos
             return !comboHitZoneController.Active;
         }
 
-        private void ShowActiveSequenceHitZones()
+        private bool IsComboBonusBubblePoolItemAvailableCallback(UnityEngine.Object unityObject)
         {
-            if (!activeComboHitSequence.EndOfDisplaySequence && activeComboHitSequence.NextHitZoneReadyToDisplay)
+            ComboBonusBubbleController comboBonusBubbleController = ((GameObject)unityObject).GetComponent<ComboBonusBubbleController>();
+            return !comboBonusBubbleController.Active;
+        }
+
+        private void CreateHitSequences()
+        {
+            ComboHitSequence hitSequence1 = new ComboHitSequence(1, 2f, 1f, 0.25f, 2);
+            hitSequence1.TriggerZone = new Rect(-0.5f, 0f, 1f, 0.5f);
+            hitSequence1.HitZones = new List<Vector2>() { new Vector2(-0.1f, 0), new Vector2(0.1f, 0) };
+            hitSequences.Add(hitSequence1);
+        }
+
+        void Update()
+        {
+            if (hitSequenceController.IsActive)
             {
-                Vector2 nextComboHitZoneToDisplay = activeComboHitSequence.GetNextHitZoneToDisplay();
-                GameObject comboHitZone = (GameObject)comboHitZonePool.GetNext();
-                ComboHitZoneController comboHitZoneController = comboHitZone.GetComponent<ComboHitZoneController>();
-                comboHitZoneController.Show(nextComboHitZoneToDisplay);
+                hitSequenceController.Update();
             }
         }
 
-        private void OnHitSequenceAchievedCallback(ComboHitSequence hitSequence)
+        public void OnMouseDown()
         {
+            if (!hitSequenceController.IsActive)
+            {
+                Vector2 mousePosition = BossController.gameObject.GetMousePosition();
+                List<ComboHitSequence> eligibleComboHitSeqences = TryGetNextComboHitSequence(mousePosition);
+                if (eligibleComboHitSeqences.Count > 0)
+                {
+                    ComboHitSequence hitSequence = eligibleComboHitSeqences.RandomItem();
+                    hitSequenceController.ShowSequence(hitSequence);
+                }
+            }
+        }
 
+        public List<ComboHitSequence> TryGetNextComboHitSequence(Vector2 hitPosition)
+        {
+            List<ComboHitSequence> eligibleComboHitSequences = new List<ComboHitSequence>();
+            foreach (ComboHitSequence comboHitSequence in hitSequences)
+            {
+                if (comboHitSequence.IsActivable(hitPosition))
+                {
+                    eligibleComboHitSequences.Add(comboHitSequence);
+                }
+            }
+            return eligibleComboHitSequences;
+        }
+
+        private void OnHitZoneClickedCallback(ComboHitZoneController hitZoneController)
+        {
+            BossController.OnMouseDown();
+        }
+
+        private void OnSequenceAchievedCallback(ComboHitSequence hitSequence)
+        {
+            BossController.RemoveBossLife(BossController.DEFAULT_ATTACK_VALUE * hitSequence.BonusMultiplier);
         }
     }
 }

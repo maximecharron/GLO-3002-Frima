@@ -86,8 +86,8 @@ namespace Assets.Scripts.Scenes.Game
             try
             {
                 GameObject hitBubble = (GameObject)hitBubblePool.GetNext();
-                HitBubbleController hitBubbleController = hitBubble.GetComponent<HitBubbleController>();
-                hitBubbleController.Show(Camera.main.GetMousePosition(), hitValue);
+                BubbleController hitBubbleController = hitBubble.GetComponent<BubbleController>();
+                hitBubbleController.Show(Camera.main.GetMousePosition(), hitValue + "!");
             }
             catch (PoolExhaustedException)
             {
@@ -97,7 +97,7 @@ namespace Assets.Scripts.Scenes.Game
 
         private bool IsHitBubblePoolItemAvailableCallback(UnityEngine.Object unityObject)
         {
-            HitBubbleController hitBubbleController = ((GameObject)unityObject).GetComponent<HitBubbleController>();
+            BubbleController hitBubbleController = ((GameObject)unityObject).GetComponent<BubbleController>();
             return !hitBubbleController.Active;
         }
 
