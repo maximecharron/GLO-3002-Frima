@@ -120,7 +120,10 @@ describe("Functionnal webSocket", function ()
 
             webSocketClient.on("message", function(message)
             {
-                json = JSON.parse(message);
+                var messageParsed = JSON.parse(message);
+                if(messageParsed.command.parameters.status){
+                    json = messageParsed;
+                }
             });
 
             //Assert

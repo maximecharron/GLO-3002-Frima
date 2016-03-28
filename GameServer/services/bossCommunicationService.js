@@ -1,9 +1,10 @@
 var ws = require('ws');
 
 //Constructor
-function BossCommunicationService(webSocketServer)
+function BossCommunicationService(webSocketServer, lootService)
 {
     this.lastLifeBroadcasted = 0;
+    this.lootService = lootService;
     this.wss = webSocketServer;
 }
 
@@ -23,11 +24,13 @@ BossCommunicationService.prototype.createBossStatusUpdate = function(boss)
 BossCommunicationService.prototype.broadcastBossDead = function(theBoss)
 {
     var bossUpdate = this.createBossStatusUpdate(theBoss);
+    var lootItems = this.lootService.createItemCommand(this.lootService.getLoot());
     this.wss.clients.forEach(function each(client)
     {
         try
         {
             client.send(bossUpdate);
+            client.send(lootItems);
             client.close();
         } catch (error)
         {
