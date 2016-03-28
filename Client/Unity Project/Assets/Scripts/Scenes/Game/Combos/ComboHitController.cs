@@ -39,7 +39,7 @@ namespace Assets.Scripts.Scenes.Game.Combos
             hitZonePool.OnCheckIsAvailable = IsComboHitZonePoolItemAvailableCallback;
             UnityObjectPool bonusBubblePool = new UnityObjectPool(ComboBonusBubble, ComboBonusBubblePoolSize);
             bonusBubblePool.OnCheckIsAvailable = IsComboBonusBubblePoolItemAvailableCallback;
-            this.hitSequenceController = new ComboHitSequenceController(hitZonePool, bonusBubblePool);
+            this.hitSequenceController = new ComboHitSequenceController(hitZonePool, bonusBubblePool, ComboHitZone.transform.localPosition.z);
             this.hitSequenceController.OnHitZoneClicked = OnHitZoneClickedCallback;
             this.hitSequenceController.OnSequenceAchieved = OnSequenceAchievedCallback;
             this.hitSequenceController.OnSequenceTerminated = OnSequenceTerminatedCallback;
@@ -59,29 +59,29 @@ namespace Assets.Scripts.Scenes.Game.Combos
 
         private void CreateHitSequences()
         {
-            ComboHitSequence legsHitSequence = new ComboHitSequence(10, 2, DEFAULT_HIT_ZONE);
+            ComboHitSequence legsHitSequence = new ComboHitSequence("Simple Legs", 10, 2, DEFAULT_HIT_ZONE);
             legsHitSequence.HitZones = new List<Vector2>() { new Vector2(-0.092f, -0.372f), new Vector2(0.1f, -0.372f) };
             hitSequences.Add(legsHitSequence);
 
-            ComboHitSequence pectoralsHitSequence = new ComboHitSequence(10, 2, DEFAULT_HIT_ZONE);
+            ComboHitSequence pectoralsHitSequence = new ComboHitSequence("Simple Pectoral", 10, 2, DEFAULT_HIT_ZONE);
             pectoralsHitSequence.HitZones = new List<Vector2>() { new Vector2(-0.09f, -0.09f), new Vector2(0.111f, -0.09f) };
             hitSequences.Add(pectoralsHitSequence);
 
-            ComboHitSequence bellyHitSequence = new ComboHitSequence(10, 3, DEFAULT_HIT_ZONE);
+            ComboHitSequence bellyHitSequence = new ComboHitSequence("Simple Belly", 10, 3, DEFAULT_HIT_ZONE);
             bellyHitSequence.HitZones = new List<Vector2>() { new Vector2(-0.112f, -0.184f), new Vector2(0.114f, -0.184f), new Vector2(-0.112f, -0.294f), new Vector2(0.114f, -0.294f) };
             hitSequences.Add(bellyHitSequence);
 
-            ComboHitSequence pectoralHeadCrossHitSequence = new ComboHitSequence(10, 5, DEFAULT_HIT_ZONE);
-            pectoralHeadCrossHitSequence.HitZones = pectoralsHitSequence.HitZones;
+            ComboHitSequence pectoralHeadCrossHitSequence = new ComboHitSequence("Pectoral / Head Cross", 10, 5, DEFAULT_HIT_ZONE);
+            pectoralHeadCrossHitSequence.HitZones = new List<Vector2>(pectoralsHitSequence.HitZones);
             pectoralHeadCrossHitSequence.HitZones.Add(new Vector2(0.014f, 0.047f));
             hitSequences.Add(pectoralHeadCrossHitSequence);
 
-            ComboHitSequence pectoralBellyCrossHitSequence = new ComboHitSequence(10, 10, DEFAULT_HIT_ZONE);
-            pectoralHeadCrossHitSequence.HitZones = pectoralsHitSequence.HitZones;
-            pectoralHeadCrossHitSequence.HitZones.AddRange(new List<Vector2>() { new Vector2(-0.112f, -0.294f), new Vector2(0.114f, -0.294f) });
+            ComboHitSequence pectoralBellyCrossHitSequence = new ComboHitSequence("Pectoral / Belly Cross", 10, 10, DEFAULT_HIT_ZONE);
+           pectoralBellyCrossHitSequence.HitZones = new List<Vector2>(pectoralsHitSequence.HitZones);
+            pectoralBellyCrossHitSequence.HitZones.AddRange(new List<Vector2>() { new Vector2(-0.112f, -0.294f), new Vector2(0.114f, -0.294f) });
             hitSequences.Add(pectoralBellyCrossHitSequence);
 
-            randomHitSequence = new RandomizedComboHitSequence(DEFAULT_HIT_ZONE, RANDOM_HIT_ZONE_COUNT, 20, 20, DEFAULT_HIT_ZONE);
+            randomHitSequence = new RandomizedComboHitSequence("Random", DEFAULT_HIT_ZONE, RANDOM_HIT_ZONE_COUNT, 20, 20, DEFAULT_HIT_ZONE);
             hitSequences.Add(randomHitSequence);
         }
 
@@ -102,6 +102,7 @@ namespace Assets.Scripts.Scenes.Game.Combos
                 if (eligibleComboHitSeqences.Count > 0)
                 {
                     ComboHitSequence hitSequence = eligibleComboHitSeqences.RandomItem();
+                    Debug.Log(hitSequence.Name);
                     hitSequenceController.ShowSequence(hitSequence);
                 }
             }

@@ -12,8 +12,8 @@ namespace Assets.Scripts.Scenes.Game.Combos
         public Rect RandomizationBounds { get; set; }
         public int RandomHitZoneCount { get; set; }
 
-        public RandomizedComboHitSequence(Rect randomizationBounds, int randomHitZoneCount, int triggerFrequency, int bonusMultiplier, Rect triggerZone, float maxFirstHitWaitTime = 2f, float maxWaitTimeBetweenHits = 1f, float hitZoneDisplayInterval = 0.5f) :
-            base(triggerFrequency, bonusMultiplier, triggerZone, maxFirstHitWaitTime, maxWaitTimeBetweenHits, hitZoneDisplayInterval)
+        public RandomizedComboHitSequence(string name, Rect randomizationBounds, int randomHitZoneCount, int triggerFrequency, int bonusMultiplier, Rect triggerZone, float maxFirstHitWaitTime = 2f, float maxWaitTimeBetweenHits = 1f, float hitZoneDisplayInterval = 0.5f) :
+            base(name, triggerFrequency, bonusMultiplier, triggerZone, maxFirstHitWaitTime, maxWaitTimeBetweenHits, hitZoneDisplayInterval)
         {
             this.RandomizationBounds = randomizationBounds;
             this.RandomHitZoneCount = randomHitZoneCount;

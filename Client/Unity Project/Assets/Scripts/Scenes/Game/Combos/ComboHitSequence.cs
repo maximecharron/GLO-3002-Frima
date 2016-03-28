@@ -8,6 +8,7 @@ namespace Assets.Scripts.Scenes.Game.Combos
 {
     public class ComboHitSequence
     {
+        public String Name { get; set; }
         public Rect TriggerZone {get; set;}
         public int TriggerFrequency { get; set; }
         public float MaxFirstHitWaitTime { get; set; }
@@ -50,8 +51,9 @@ namespace Assets.Scripts.Scenes.Game.Combos
         private int currentlyShownHitZoneIndex = -1;
         private float lastHitZoneDisplayTime = 0;
 
-        public ComboHitSequence(int triggerFrequency, int bonusMultiplier, Rect triggerZone, float maxFirstHitWaitTime = 2f, float maxWaitTimeBetweenHits = 1f, float hitZoneDisplayInterval = 0.5f)
+        public ComboHitSequence(string name, int triggerFrequency, int bonusMultiplier, Rect triggerZone, float maxFirstHitWaitTime = 2f, float maxWaitTimeBetweenHits = 1f, float hitZoneDisplayInterval = 0.5f)
         {
+            this.Name = name;
             this.TriggerFrequency = triggerFrequency;
             this.BonusMultiplier = bonusMultiplier;
             this.TriggerZone = triggerZone;

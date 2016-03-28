@@ -93,9 +93,9 @@ namespace Assets.Scripts.Scenes.Game.Combos
             image.color = new Color(image.color.r, image.color.g, image.color.b, alpha);
         }
 
-        public void Show(Vector2 position)
+        public void Show(Vector2 position, float zPosition)
         {
-            this.transform.localPosition = position.ToVector3(this.transform.localPosition.z);
+            this.transform.localPosition = position.ToVector3(zPosition);
             startTime = Time.time;
             SetAlpha(0);
             this.gameObject.SetActive(true);

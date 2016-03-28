@@ -37,11 +37,13 @@ namespace Assets.Scripts.Scenes.Game.Combos
         }
         private UnityObjectPool hitZonePool;
         private UnityObjectPool bonusBubblePool;
+        private float baseHitZoneZPosition;
 
-        public ComboHitSequenceController(UnityObjectPool hitZonePool, UnityObjectPool bonusBubblePool)
+        public ComboHitSequenceController(UnityObjectPool hitZonePool, UnityObjectPool bonusBubblePool, float baseHitZoneZPosition)
         {
             this.hitZonePool = hitZonePool;
             this.bonusBubblePool = bonusBubblePool;
+            this.baseHitZoneZPosition = baseHitZoneZPosition;
         }
 
         public void ShowSequence(ComboHitSequence hitSequence)
@@ -89,7 +91,7 @@ namespace Assets.Scripts.Scenes.Game.Combos
                 GameObject comboHitZone = (GameObject)hitZonePool.GetNext();
                 ComboHitZoneController comboHitZoneController = comboHitZone.GetComponent<ComboHitZoneController>();
                 comboHitZoneController.OnHitZoneClicked = OnHitZoneClickedCallback;
-                comboHitZoneController.Show(nextComboHitZoneToDisplay);
+                comboHitZoneController.Show(nextComboHitZoneToDisplay, baseHitZoneZPosition * hitSequence.HitZones.Count - hitSequence.NextHitZoneIndex);
                 hitZones.Add(comboHitZoneController);
             }
             catch (PoolExhaustedException)
