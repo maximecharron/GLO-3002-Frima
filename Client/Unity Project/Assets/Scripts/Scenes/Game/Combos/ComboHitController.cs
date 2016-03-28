@@ -12,9 +12,9 @@ namespace Assets.Scripts.Scenes.Game.Combos
         //Configurable script parameters
         public BossController BossController;
         public GameObject ComboHitZone;
-        public int ComboHitZonePoolSize = 3;
+        public int ComboHitZonePoolSize;
         public GameObject ComboBonusBubble;
-        public int ComboBonusBubblePoolSize = 3;
+        public int ComboBonusBubblePoolSize;
 
         private List<ComboHitSequence> hitSequences = new List<ComboHitSequence>();
         private ComboHitSequenceController hitSequenceController;
@@ -52,10 +52,15 @@ namespace Assets.Scripts.Scenes.Game.Combos
 
         private void CreateHitSequences()
         {
-            ComboHitSequence hitSequence1 = new ComboHitSequence(1, 2f, 1f, 0.25f, 2);
+            ComboHitSequence hitSequence1 = new ComboHitSequence(5, 2); //Legs
             hitSequence1.TriggerZone = new Rect(-0.5f, 0f, 1f, 0.5f);
-            hitSequence1.HitZones = new List<Vector2>() { new Vector2(-0.1f, 0), new Vector2(0.1f, 0) };
+            hitSequence1.HitZones = new List<Vector2>() { new Vector2(-0.123f, -0.344f), new Vector2(0.116f, -0.344f) };
             hitSequences.Add(hitSequence1);
+
+            ComboHitSequence hitSequence2 = new ComboHitSequence(1, 3); //Belly
+            hitSequence2.TriggerZone = new Rect(-0.5f, 0f, 1f, 0.5f);
+            hitSequence2.HitZones = new List<Vector2>() { new Vector2(-0.111f, -0.091f), new Vector2(0.134f, -0.091f), new Vector2(-0.111f, -0.23f), new Vector2(0.134f, -0.23f) };
+            hitSequences.Add(hitSequence2);
         }
 
         void Update()

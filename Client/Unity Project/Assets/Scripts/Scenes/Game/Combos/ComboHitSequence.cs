@@ -52,13 +52,13 @@ namespace Assets.Scripts.Scenes.Game.Combos
         private int currentlyShownHitZoneIndex = -1;
         private float lastHitZoneDisplayTime = 0;
 
-        public ComboHitSequence(int triggerFrequency, float maxFirstHitWaitTime, float maxWaitTimeBetweenHits, float hitZoneDisplayInterval, int bonusMultiplier)
+        public ComboHitSequence(int triggerFrequency, int bonusMultiplier, float maxFirstHitWaitTime = 2f, float maxWaitTimeBetweenHits = 1f, float hitZoneDisplayInterval = 0.25f)
         {
             this.TriggerFrequency = triggerFrequency;
+            this.BonusMultiplier = bonusMultiplier;
             this.MaxFirstHitWaitTime = maxFirstHitWaitTime;
             this.MaxWaitTimeBetweenHits = maxWaitTimeBetweenHits;
             this.HitZoneDisplayInterval = hitZoneDisplayInterval;
-            this.BonusMultiplier = bonusMultiplier;
         }
 
         public bool IsActivable(Vector2 hitPosition)

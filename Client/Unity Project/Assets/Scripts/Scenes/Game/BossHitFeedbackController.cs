@@ -86,8 +86,8 @@ namespace Assets.Scripts.Scenes.Game
             try
             {
                 GameObject hitBubble = (GameObject)hitBubblePool.GetNext();
-                BubbleController hitBubbleController = hitBubble.GetComponent<BubbleController>();
-                hitBubbleController.Show(Camera.main.GetMousePosition(), hitValue + "!");
+                HitBubbleController hitBubbleController = hitBubble.GetComponent<HitBubbleController>();
+                hitBubbleController.Show(Camera.main.GetMousePosition(), hitValue);
             }
             catch (PoolExhaustedException)
             {

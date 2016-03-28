@@ -9,6 +9,11 @@ namespace Assets.Scripts.Scenes.Game.Combos
 {
     public class ComboHitSequenceController
     {
+        private const int GREEN_TEXT_COLOR_MULTIPLIER = 2;
+        private const int BLUE_TEXT_COLOR_MULTIPLIER = 3;
+        private const int RED_TEXT_COLOR_MULTIPLIER = 5;
+        private const int ORANGE_TEXT_COLOR_MULTIPLIER = 10;
+
         public Action<ComboHitZoneController> OnHitZoneClicked { get; set; }
         public Action<ComboHitSequence> OnSequenceAchieved { get; set; }
 
@@ -116,16 +121,40 @@ namespace Assets.Scripts.Scenes.Game.Combos
 
         private void ShowBonusBubble()
         {
-
             try
             {
                 GameObject comboBonusBubble = (GameObject)bonusBubblePool.GetNext();
                 ComboBonusBubbleController comboBonusBubbleController = comboBonusBubble.GetComponent<ComboBonusBubbleController>();
-                comboBonusBubbleController.Show(Camera.main.GetMousePosition(), string.Format("BONUS\r\nX{0}!", hitSequence.BonusMultiplier));
+                Color bonusTextColor = GetBonusTextColor(hitSequence.BonusMultiplier);
+                comboBonusBubbleController.Show(Camera.main.GetMousePosition(), hitSequence.BonusMultiplier, bonusTextColor);
             }
             catch (PoolExhaustedException)
             {
                 // Intentionally blank
+            }
+        }
+
+        private Color GetBonusTextColor(int bonusMultiplier)
+        {
+            if (bonusMultiplier <= GREEN_TEXT_COLOR_MULTIPLIER)
+            {
+                return new Color(0, 148f / 255f, 0);
+            }
+            else if (bonusMultiplier <= BLUE_TEXT_COLOR_MULTIPLIER)
+            {
+                return new Color(11f / 255f, 0, 148f / 255f);
+            }
+            else if (bonusMultiplier <= RED_TEXT_COLOR_MULTIPLIER)
+            {
+                return new Color(1, 0, 0);
+            }
+            else if (bonusMultiplier <= ORANGE_TEXT_COLOR_MULTIPLIER)
+            {
+                return new Color(1, 111f / 255f, 0);
+            }
+            else
+            {
+                return new Color(1, 0, 153f / 255f);
             }
         }
     }
