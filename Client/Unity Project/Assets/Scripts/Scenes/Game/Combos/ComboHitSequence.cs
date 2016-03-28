@@ -63,7 +63,7 @@ namespace Assets.Scripts.Scenes.Game.Combos
 
         public bool IsActivable(Vector2 hitPosition)
         {
-            bool frequencyRequirementMatch = UnityEngine.Random.Range(0, TriggerFrequency) == 1;
+            bool frequencyRequirementMatch = UnityEngine.Random.Range(0, TriggerFrequency) == 0;
             bool triggerZoneRequirementMatch = TriggerZone.Contains(hitPosition);
             return frequencyRequirementMatch && triggerZoneRequirementMatch && !IsAlive();
         }

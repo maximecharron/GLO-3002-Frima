@@ -16,6 +16,7 @@ namespace Assets.Scripts.Scenes.Game.Combos
 
         public Action<ComboHitZoneController> OnHitZoneClicked { get; set; }
         public Action<ComboHitSequence> OnSequenceAchieved { get; set; }
+        public Action<ComboHitSequence> OnSequenceTerminated {get; set;}
 
         private List<ComboHitZoneController> hitZones = new List<ComboHitZoneController>();
         private ComboHitSequence hitSequence = null;
@@ -69,6 +70,7 @@ namespace Assets.Scripts.Scenes.Game.Combos
             }
             hitZones.Clear();
             isActive = false;
+            OnSequenceTerminated(hitSequence);
         }
 
         private void ShowHitZones()

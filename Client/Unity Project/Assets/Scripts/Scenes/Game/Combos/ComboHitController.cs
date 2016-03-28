@@ -8,8 +8,9 @@ namespace Assets.Scripts.Scenes.Game.Combos
 {
     public class ComboHitController : MonoBehaviour
     {
-        private static Rect DEFAULT_HIT_ZONE = new Rect(-0.2f, -0.4f, 0.4f, 0.62f);
+        private static Rect DEFAULT_HIT_ZONE = new Rect(-0.16f, -0.4f, 0.32f, 0.445f);
         private const int RANDOM_HIT_ZONE_COUNT = 4;
+        private const float DELAY_BETWEEN_SEQUENCES = 2f;
 
         //Configurable script parameters
         public BossController BossController;
@@ -22,6 +23,7 @@ namespace Assets.Scripts.Scenes.Game.Combos
         private List<ComboHitSequence> hitSequences = new List<ComboHitSequence>();
         private ComboHitSequenceController hitSequenceController;
         private ComboHitSequence randomHitSequence;
+        private float lastSequenceTime;
 
         void Start()
         {
@@ -40,6 +42,7 @@ namespace Assets.Scripts.Scenes.Game.Combos
             this.hitSequenceController = new ComboHitSequenceController(hitZonePool, bonusBubblePool);
             this.hitSequenceController.OnHitZoneClicked = OnHitZoneClickedCallback;
             this.hitSequenceController.OnSequenceAchieved = OnSequenceAchievedCallback;
+            this.hitSequenceController.OnSequenceTerminated = OnSequenceTerminatedCallback;
         }
 
         private bool IsComboHitZonePoolItemAvailableCallback(UnityEngine.Object unityObject)
@@ -56,27 +59,29 @@ namespace Assets.Scripts.Scenes.Game.Combos
 
         private void CreateHitSequences()
         {
-            ComboHitSequence legsHitSequence = new ComboHitSequence(10, 2, DEFAULT_HIT_ZONE); //Legs
-            legsHitSequence.HitZones = new List<Vector2>() { new Vector2(-0.123f, -0.344f), new Vector2(0.116f, -0.344f) };
+            ComboHitSequence legsHitSequence = new ComboHitSequence(10, 2, DEFAULT_HIT_ZONE);
+            legsHitSequence.HitZones = new List<Vector2>() { new Vector2(-0.092f, -0.372f), new Vector2(0.1f, -0.372f) };
             hitSequences.Add(legsHitSequence);
 
-            ComboHitSequence pectoralsHitSequence = new ComboHitSequence(10, 2, DEFAULT_HIT_ZONE); //Pectorals
-            pectoralsHitSequence.HitZones = new List<Vector2>() { new Vector2(-0.08f, 0.018f), new Vector2(0.119f, 0.018f) };
+            ComboHitSequence pectoralsHitSequence = new ComboHitSequence(10, 2, DEFAULT_HIT_ZONE);
+            pectoralsHitSequence.HitZones = new List<Vector2>() { new Vector2(-0.09f, -0.09f), new Vector2(0.111f, -0.09f) };
             hitSequences.Add(pectoralsHitSequence);
 
-            ComboHitSequence bellyHitSequence = new ComboHitSequence(10, 3, DEFAULT_HIT_ZONE); //Belly
-            bellyHitSequence.HitZones = new List<Vector2>() { new Vector2(-0.111f, -0.091f), new Vector2(0.134f, -0.091f), new Vector2(-0.111f, -0.23f), new Vector2(0.134f, -0.23f) };
+            ComboHitSequence bellyHitSequence = new ComboHitSequence(10, 3, DEFAULT_HIT_ZONE);
+            bellyHitSequence.HitZones = new List<Vector2>() { new Vector2(-0.112f, -0.184f), new Vector2(0.114f, -0.184f), new Vector2(-0.112f, -0.294f), new Vector2(0.114f, -0.294f) };
             hitSequences.Add(bellyHitSequence);
 
-            ComboHitSequence pectoralHeadCrossHitSequence = new ComboHitSequence(20, 5, DEFAULT_HIT_ZONE); //Pectoral / Head Cross
-            pectoralHeadCrossHitSequence.HitZones = new List<Vector2>() { new Vector2(-0.08f, 0.018f), new Vector2(0.119f, 0.018f), new Vector2(0.015f, 0.222f) };
+            ComboHitSequence pectoralHeadCrossHitSequence = new ComboHitSequence(10, 5, DEFAULT_HIT_ZONE);
+            pectoralHeadCrossHitSequence.HitZones = pectoralsHitSequence.HitZones;
+            pectoralHeadCrossHitSequence.HitZones.Add(new Vector2(0.014f, 0.047f));
             hitSequences.Add(pectoralHeadCrossHitSequence);
 
-            ComboHitSequence pectoralBellyCrossHitSequence = new ComboHitSequence(20, 10, DEFAULT_HIT_ZONE); //Pectoral / Belly Cross
-            pectoralBellyCrossHitSequence.HitZones = new List<Vector2>() { new Vector2(-0.08f, 0.018f), new Vector2(0.134f, -0.23f), new Vector2(0.119f, 0.018f), new Vector2(-0.111f, -0.23f) };
+            ComboHitSequence pectoralBellyCrossHitSequence = new ComboHitSequence(10, 10, DEFAULT_HIT_ZONE);
+            pectoralHeadCrossHitSequence.HitZones = pectoralsHitSequence.HitZones;
+            pectoralHeadCrossHitSequence.HitZones.AddRange(new List<Vector2>() { new Vector2(-0.112f, -0.294f), new Vector2(0.114f, -0.294f) });
             hitSequences.Add(pectoralBellyCrossHitSequence);
 
-            randomHitSequence = new RandomizedComboHitSequence(DEFAULT_HIT_ZONE, RANDOM_HIT_ZONE_COUNT, 20, 20, DEFAULT_HIT_ZONE); //Random
+            randomHitSequence = new RandomizedComboHitSequence(DEFAULT_HIT_ZONE, RANDOM_HIT_ZONE_COUNT, 20, 20, DEFAULT_HIT_ZONE);
             hitSequences.Add(randomHitSequence);
         }
 
@@ -90,7 +95,7 @@ namespace Assets.Scripts.Scenes.Game.Combos
 
         public void OnMouseDown()
         {
-            if (!hitSequenceController.IsActive)
+            if (!hitSequenceController.IsActive && Time.time - lastSequenceTime >= DELAY_BETWEEN_SEQUENCES)
             {
                 Vector2 mousePosition = BossController.gameObject.GetMousePosition();
                 List<ComboHitSequence> eligibleComboHitSeqences = TryGetNextComboHitSequence(mousePosition);
@@ -117,7 +122,7 @@ namespace Assets.Scripts.Scenes.Game.Combos
 
         private void OnHitZoneClickedCallback(ComboHitZoneController hitZoneController)
         {
-            if (hitSequenceController.IsActive)
+            if (!hitSequenceController.HitSequence.EndOfSequence)
             {
                 BossController.OnMouseDown();
             }
@@ -128,6 +133,11 @@ namespace Assets.Scripts.Scenes.Game.Combos
             BossController.RemoveBossLife(BossController.DEFAULT_ATTACK_VALUE * hitSequence.BonusMultiplier);
             BossController.KnockOut();
             BossController.gameObject.FindAudioSource(SequenceAchievedAudioClip).Play();
+        }
+
+        private void OnSequenceTerminatedCallback(ComboHitSequence hitSequence)
+        {
+            lastSequenceTime = Time.time;
         }
     }
 }
