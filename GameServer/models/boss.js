@@ -36,7 +36,10 @@ exports.findBoss = function(serverName, callback){
     Boss.findOne({"serverName": serverName}, function(err, result){
         if (result){
             callback(result);
-        } else {
+        }
+        else if (err){
+            console.log(err);
+        }else {
             callback(null);
         }
     });

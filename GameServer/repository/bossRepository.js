@@ -26,6 +26,9 @@ BossRepository.prototype.getBoss = function(callBack, constant)
             var boss = new Boss(serverName, object.bossName, object.currentBossLife, object.maximumBossLife, object.status);
             callBack(boss);
         }
+        else if (error){
+            console.log(error);
+        }
         else
         {
             BossModel.findBoss(serverName, function(bossModel)
