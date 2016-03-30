@@ -41,7 +41,7 @@ namespace Assets.Scripts.SpriteAnimation
                 return;
             }
             lastAnimateTime = Time.time;
-            if (currentSequence == null || currentSequence.EndOfSequence()) {
+            if (currentSequence == null || currentSequence.EndOfSequence) {
                 currentSequence = GetNextSequence();
             }
             this.SetFrame(currentSequence.NextFrame());

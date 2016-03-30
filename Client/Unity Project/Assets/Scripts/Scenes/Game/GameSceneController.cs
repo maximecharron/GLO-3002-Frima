@@ -10,8 +10,8 @@ namespace Assets.Scripts.Scenes.Game
 
     public class GameSceneController : SceneController
     {
-        public const float BOSS_RELATIVE_HEIGHT = 0.75f;
-        public const float BOSS_POSITION_FROM_BOTTOM = 110;
+        public const float BOSS_RELATIVE_HEIGHT = 1f;
+        public const float BOSS_POSITION_FROM_BOTTOM = 90;
 
         // Configurable script parameters
         public WebSocketService WebSocketService;
@@ -24,7 +24,6 @@ namespace Assets.Scripts.Scenes.Game
             GameController gameController = FindObjectOfType<GameController>();
             WebSocketService.SessionToken = gameController.SessionToken;
             BossController.OnBossDead += OnBossDead;
-            BossController.gameObject.SetActive(false);
             AdjustBossPositioning();
             InitCommunication();
         }
@@ -51,7 +50,6 @@ namespace Assets.Scripts.Scenes.Game
 
         private void OnCommunicationInitializationComplete()
         {
-            BossController.gameObject.SetActive(true);
             LoadingSceneOverlay.gameObject.SetActive(false);
         }
 

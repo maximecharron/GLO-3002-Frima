@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Utils.UnityObjectPool
 {
-    class UnityObjectPool
+    public class UnityObjectPool
     {
         public Action<UnityEngine.Object> OnObjectPoolInstantiate { get; set; }
         public Func<UnityEngine.Object, bool> OnCheckIsAvailable { get; set; }

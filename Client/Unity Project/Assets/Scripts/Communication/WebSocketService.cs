@@ -19,6 +19,8 @@ namespace Assets.Scripts.Communication
         private bool initialized = false;
         private WebSocket webSocket;
         private Dictionary<String, CommandRegistration> registeredCommands = new Dictionary<string, CommandRegistration>();
+        private Dictionary<Type, ICommandInterceptor> commandReceiveInterceptors = new Dictionary<Type, ICommandInterceptor>();
+        private Dictionary<Type, ICommandInterceptor> commandSendInterceptors = new Dictionary<Type, ICommandInterceptor>();
 
         void Update()
         {
@@ -70,7 +72,20 @@ namespace Assets.Scripts.Communication
             }
             CommandRegistration commandRegistration = registeredCommands[commandDefinitionDTO.command.name];
             CommandDTO commandDTO = (CommandDTO)JsonUtility.FromJson(jsonData, commandRegistration.Type);
+            if (!DispatchReceiveCommandToInterceptors(commandDTO))
+            {
+                return;
+            }
             commandRegistration.CallbackMethod(commandDTO);
+        }
+
+        private bool DispatchReceiveCommandToInterceptors(CommandDTO commandDTO)
+        {
+            if (commandReceiveInterceptors.ContainsKey(commandDTO.GetType()))
+            {
+                return commandReceiveInterceptors[commandDTO.GetType()].ReceiveIntercept(commandDTO);
+            }
+            return true;
         }
 
         public void RegisterCommand(String commandName, Action<CommandDTO> callbackMethod, Type dtoType)
@@ -83,11 +98,24 @@ namespace Assets.Scripts.Communication
             registeredCommands.Remove(commandName);
         }
 
-        public void SendCommand(CommandDTO commandDTO)
+        public void SendCommand(CommandDTO commandDTO, bool interceptable = true)
         {
+            if (interceptable && !DispatchSendCommandToInterceptors(commandDTO))
+            {
+                return;
+            }
             commandDTO.token = SessionToken;
             String jsonData = JsonUtility.ToJson(commandDTO, true);
             webSocket.SendString(jsonData);
+        }
+
+        private bool DispatchSendCommandToInterceptors(CommandDTO commandDTO)
+        {
+            if (commandSendInterceptors.ContainsKey(commandDTO.GetType()))
+            {
+                return commandSendInterceptors[commandDTO.GetType()].SendIntercept(commandDTO);
+            }
+            return true;
         }
 
         private void KeepConnectionAlive()
@@ -95,6 +123,15 @@ namespace Assets.Scripts.Communication
             SendCommand(new KeepAliveCommandDTO());
         }
 
-        
+        public void AddSendInterceptor(ICommandInterceptor interceptor, Type commandType)
+        {
+            this.commandSendInterceptors.Add(commandType, interceptor);
+        }
+
+        public void AddReceiveInterceptor(ICommandInterceptor interceptor, Type commandType)
+        {
+            this.commandReceiveInterceptors.Add(commandType, interceptor);
+        }
+
     }
 }
