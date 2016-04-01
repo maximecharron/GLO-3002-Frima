@@ -8,7 +8,7 @@ bossSchema.add({
     maximumBossLife: String,
     currentBossLife: String,
     status: String,
-    startedDate: Date
+    creationDate: Date
 });
 
 bossSchema.methods.toDTO = function () {
@@ -21,7 +21,7 @@ bossSchema.methods.toDTO = function () {
         maximumBossLife: obj.maximumBossLife,
         currentBossLife: obj.currentBossLife,
         status: obj.status,
-        startedDate : obj.startedDate
+        startedDate : obj.creationDate
     };
 
     return dto;
@@ -53,7 +53,7 @@ exports.backupBoss = function(boss){
             result.maximumBossLife = boss.maximumBossLife || boss.getMaximumLife();
             result.currentBossLife = boss.currentBossLife || boss.getLife();
             result.status = boss.status || boss.getStatus();
-            result.startedDate = boss.startedDate || boss.getStartedDate();
+            result.creationDate = boss.creationDate || boss.getStartedDate();
             result.save();
         } else {
             var bossToSave = new Boss({
@@ -62,7 +62,7 @@ exports.backupBoss = function(boss){
                 maximumBossLife: boss.maximumBossLife || boss.getMaximumLife(),
                 currentBossLife:  boss.currentBossLife || boss.getLife(),
                 status: boss.status || boss.getStatus(),
-                startedDate : boss.startedDate || boss.getStartedDate()
+                startedDate : boss.creationDate || boss.getStartedDate()
             });
             bossToSave.save();
         }

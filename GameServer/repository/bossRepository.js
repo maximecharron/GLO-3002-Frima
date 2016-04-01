@@ -23,7 +23,7 @@ BossRepository.prototype.getBoss = function(callBack, constant)
     {
         if(object)
         {
-            var boss = new Boss(serverName, object.bossName, object.currentBossLife, object.maximumBossLife, object.status, object.startedDate);
+            var boss = new Boss(serverName, object.bossName, object.currentBossLife, object.maximumBossLife, object.status, object.creationDate);
             callBack(boss);
         }
         else if (error){
@@ -35,7 +35,7 @@ BossRepository.prototype.getBoss = function(callBack, constant)
             {
                 if(bossModel)
                 {
-                    var boss = new Boss(serverName, bossModel.bossName, bossModel.currentBossLife, bossModel.maximumBossLife, bossModel.status, bossModel.startedDate);
+                    var boss = new Boss(serverName, bossModel.bossName, bossModel.currentBossLife, bossModel.maximumBossLife, bossModel.status, bossModel.creationDate);
                     callBack(boss);
                 }
                 else

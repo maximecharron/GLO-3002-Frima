@@ -7,10 +7,6 @@ var bossDef = { serverName:hostname, bossName: "Tyson", currentBossLife: "100", 
 var bossExpected = { bossName: "Tyson", currentBossLife: "100", maximumBossLife: "100", status: "0", startedDate: new Date().setSeconds(0,0) };
 var boss;
 
-function cutSeconds(date){
-    return date.toLocaleTimeString().replace(/(.*)\D\d+/, '$1');
-}
-
 describe("Boss", function ()
 {
 
