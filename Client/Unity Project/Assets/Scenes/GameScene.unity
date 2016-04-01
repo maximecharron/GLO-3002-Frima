@@ -2808,6 +2808,7 @@ GameObject:
   - 4: {fileID: 1025823895}
   - 114: {fileID: 1025823894}
   - 82: {fileID: 1025823896}
+  - 114: {fileID: 1025823897}
   m_Layer: 0
   m_Name: Scene
   m_TagString: Untagged
@@ -2919,6 +2920,17 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!114 &1025823897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1025823893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 373143a3533650f4fa50caa4370cac50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1051781866
 Prefab:
   m_ObjectHideFlags: 0
