@@ -92,9 +92,9 @@ describe("bossRepository", function ()
         it("with boss in redis should only call redisCommunicationService.findBoss once", function(done)
         {
             //Arrange
-            var bossExpected = new Boss(bossDef.serverName, bossDef.bossName, bossDef.currentBossLife, bossDef.maximumBossLife, bossDef.status);
+            var expectedBoss = new Boss(bossDef.serverName, bossDef.bossName, bossDef.currentBossLife, bossDef.maximumBossLife, bossDef.status);
 
-            redisCommunicationServiceStub.findBoss.withArgs(hostname).callsArgWith(1, null, bossExpected);
+            redisCommunicationServiceStub.findBoss.withArgs(hostname).callsArgWith(1, null, expectedBoss);
             var redisSpy = chai.spy.on(redisCommunicationServiceStub, 'findBoss');
             var bossRepository = new BossRepository(redisCommunicationServiceStub);
 
@@ -104,7 +104,7 @@ describe("bossRepository", function ()
             {
                 //Assert
                 expect(redisSpy).to.have.been.called.once;
-                expect(bossExpected.toString()).to.equal(result.toString());
+                expect(expectedBoss.toString()).to.equal(result.toString());
                 done();
             });
         });
@@ -197,7 +197,7 @@ describe("bossRepository", function ()
         it("with no boss in redis, mongo and no constant in redis, mongo should get configBoss", function(done)
         {
             //Arrange
-            var bossExpected = new Boss(hostname, bossConfig.bossName, bossConfig.currentLife, bossConfig.maximumBossLife, bossConfig.status );
+            var bossExpected = new Boss(hostname, bossConfig.bossName, bossConfig.currentLife, bossConfig.maximumBossLife, bossConfig.status, new Date().setSeconds(0,0) );
             dbBossStub.findBoss = function(serverName, callBack) {callBack(null);};
 
             redisCommunicationServiceStub.findBoss.callsArgWith(1, null, null);
