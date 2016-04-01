@@ -4,7 +4,7 @@ require("./../../constants/bossConstants.js");
 var hostname = require('os').hostname();
 
 var bossDef = { serverName:hostname, bossName: "Tyson", currentBossLife: "100", maximumBossLife: "100", status: "0" };
-var bossExpected = { bossName: "Tyson", currentBossLife: "100", maximumBossLife: "100", status: "0", startedDate: new Date().setSeconds(0,0) };
+var bossExpected = { bossName: "Tyson", currentBossLife: "100", maximumBossLife: "100", status: "0", creationDate: new Date().setSeconds(0,0) };
 var boss;
 
 describe("Boss", function ()
@@ -155,19 +155,19 @@ describe("Boss", function ()
         });
     });
 
-    describe("setStartedDate", function()
+    describe("setCreatedDateDate", function()
     {
-        it("should set the StartedDate to current date", function()
+        it("should set the createdDate to current date", function()
         {
             //Arrange
             var expectedDate = Date();
 
             //Act
-            boss.setStartedDate(expectedDate);
-            var startedDate = boss.getStartedDate();
+            boss.setCreationDate(expectedDate);
+            var creationDate = boss.getCreationDate();
 
             //Assert
-            expect(expectedDate).to.equal(startedDate);
+            expect(expectedDate).to.equal(creationDate);
         });
     });
 

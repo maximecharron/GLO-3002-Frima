@@ -20,7 +20,7 @@ Boss.prototype.toJson = function()
         currentBossLife: this.currentBossLife,
         maximumBossLife: this.maximumBossLife,
         status: this.status,
-        startedDate : this.creationDate
+        creationDate : this.creationDate
     };
     return bossJson;
 };
@@ -83,12 +83,12 @@ Boss.prototype.revive = function()
     this.creationDate = new Date().setSeconds(0,0);
 };
 
-Boss.prototype.setStartedDate = function(date)
+Boss.prototype.setCreationDate = function(date)
 {
     this.creationDate = date;
 };
 
-Boss.prototype.getStartedDate = function()
+Boss.prototype.getCreationDate = function()
 {
     return this.creationDate;
 };
