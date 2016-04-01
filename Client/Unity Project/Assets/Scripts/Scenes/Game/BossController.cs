@@ -134,6 +134,8 @@ namespace Assets.Scripts.Scenes.Game
             if (bossStatusUpateParams.currentBossLife <= 0 || (BossStatus)bossStatusUpateParams.status == BossStatus.DEAD)
             {
                 OnBossDead();
+                TimerService timerServ = FindObjectOfType<TimerService>();
+                timerServ.SetBossStartedDate(bossStatusUpateParams.dateStarted);
             }
             else
             {
