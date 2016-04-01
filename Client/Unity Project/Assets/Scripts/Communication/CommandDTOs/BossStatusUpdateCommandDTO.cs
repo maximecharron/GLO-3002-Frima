@@ -24,6 +24,7 @@ namespace Assets.Scripts.Communication.CommandDTOs
                 public Int32 currentBossLife = 10000;
                 public Int32 maximumBossLife = 10000;
                 public Int32 status = 0;
+                public String dateStarted = "";
             }
         }
     }
