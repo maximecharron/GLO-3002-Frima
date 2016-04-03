@@ -21,8 +21,8 @@ namespace Assets.Scripts.Scenes.Game
         public Canvas Canvas;
 
         void Start() {
-            //GameController gameController = FindObjectOfType<GameController>();
-            //WebSocketService.SessionToken = gameController.SessionToken;
+            GameController gameController = FindObjectOfType<GameController>();
+            WebSocketService.SessionToken = gameController.SessionToken;
             BossController.OnBossDead += OnBossDead;
             AdjustBossPositioning();
             InitCommunication();
