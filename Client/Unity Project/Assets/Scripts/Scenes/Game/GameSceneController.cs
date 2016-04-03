@@ -15,6 +15,7 @@ namespace Assets.Scripts.Scenes.Game
 
         // Configurable script parameters
         public WebSocketService WebSocketService;
+        public StaminaController StaminaController;
         public BossController BossController;
         public GameObject Boss;
         public GameObject LoadingSceneOverlay;
