@@ -38,7 +38,12 @@ namespace Assets.Scripts.Scenes.Game
         {
             PlayParticles();
             PlayHitSound();
-            ShowHitBubble(hitValue);
+            ShowHitBubble(string.Format("{0}!", hitValue));
+        }
+
+        public void Miss()
+        {
+            ShowHitBubble("Miss!");
         }
 
         private void PlayParticles()
@@ -81,7 +86,7 @@ namespace Assets.Scripts.Scenes.Game
             return !((AudioSource)unityObject).isPlaying;
         }
 
-        private void ShowHitBubble(int hitValue)
+        private void ShowHitBubble(String hitValue)
         {
             try
             {
