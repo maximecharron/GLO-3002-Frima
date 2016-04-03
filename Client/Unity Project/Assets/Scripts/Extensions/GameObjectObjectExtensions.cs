@@ -8,13 +8,31 @@ namespace Assets.Scripts.Extensions
 {
     static class GameObjectObjectExtensions
     {
-        public static UnityEngine.Object Clone(this GameObject obj)
+        public static UnityEngine.Object Clone(this GameObject gameObject)
         {
-            GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(obj, obj.transform.position.Clone(), Quaternion.identity);
-            gameObject.transform.parent = obj.transform.parent;
-            gameObject.transform.localPosition = obj.transform.localPosition.Clone();
-            gameObject.transform.localScale = obj.transform.localScale.Clone();
-            return gameObject;
+            GameObject gameObjectClone = (GameObject)UnityEngine.Object.Instantiate(gameObject, gameObject.transform.position.Clone(), Quaternion.identity);
+            gameObjectClone.transform.parent = gameObject.transform.parent;
+            gameObjectClone.transform.localPosition = gameObject.transform.localPosition.Clone();
+            gameObjectClone.transform.localScale = gameObject.transform.localScale.Clone();
+            return gameObjectClone;
+        }
+
+        public static Vector2 GetMousePosition(this GameObject gameObject)
+        {
+            Vector2 worldPosition = Camera.main.GetMousePosition();
+            return gameObject.transform.InverseTransformPoint(worldPosition);
+        }
+
+        public static AudioSource FindAudioSource(this GameObject gameObject, AudioClip audioClip)
+        {
+            foreach (AudioSource audioSource in gameObject.GetComponents<AudioSource>())
+            {
+                if (audioSource.clip == audioClip)
+                {
+                    return audioSource;
+                }
+            }
+            return null;
         }
     }
 }
