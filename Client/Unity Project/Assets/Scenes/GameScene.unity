@@ -2807,6 +2807,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1025823895}
   - 114: {fileID: 1025823894}
+  - 114: {fileID: 1025823897}
   - 82: {fileID: 1025823896}
   m_Layer: 0
   m_Name: Scene
@@ -2919,6 +2920,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!114 &1025823897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1025823893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f74d7ea167634fa42b5df9cd66eac955, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BossController: {fileID: 2085029932}
 --- !u!1001 &1051781866
 Prefab:
   m_ObjectHideFlags: 0
@@ -3012,11 +3025,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22414966, guid: 8af024847dd8e4f47b7097231d9a31b3, type: 2}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22414966, guid: 8af024847dd8e4f47b7097231d9a31b3, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22480634, guid: 8af024847dd8e4f47b7097231d9a31b3, type: 2}
       propertyPath: m_AnchoredPosition.x

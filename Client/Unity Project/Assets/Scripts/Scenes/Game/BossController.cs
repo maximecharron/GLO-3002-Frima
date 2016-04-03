@@ -9,13 +9,14 @@ using Assets.Scripts.Communication.CommandDTOs;
 using Assets.Scripts.Extensions;
 using System;
 using Assets.Scripts.Scenes.Game;
+using Assets.Scripts.Utils;
 
 namespace Assets.Scripts.Scenes.Game
 {
 
     public class BossController : MonoBehaviour
     {
-        public const int DEFAULT_ATTACK_VALUE = 1000;
+        public const int DEFAULT_ATTACK_VALUE = 10000;
         private const int KNOCK_OUT_STATE_PRIORITY = 1;
         private const int KNOCK_OUT_STATE_ANIMATION_PRIORITY = 1;
         private const int HIT_STATE_PRIORITY = 2;
@@ -32,6 +33,8 @@ namespace Assets.Scripts.Scenes.Game
 
         public delegate void BossDeadEventHandler();
         public event BossDeadEventHandler OnBossDead;
+        public delegate void BossCreationDateUpdateEventHandler(DateTime creationDate);
+        public event BossCreationDateUpdateEventHandler OnBossCreationDateUpdate;
 
         private CharacterStateController bossStateController;
         private CharacterState idleState;
@@ -131,6 +134,7 @@ namespace Assets.Scripts.Scenes.Game
         public void BossStatusUpdateCallback(CommandDTO commandDTO)
         {
             var bossStatusUpateParams = ((BossStatusUpdateCommandDTO)commandDTO).command.parameters;
+            OnBossCreationDateUpdate(DateTimeUtils.ConvertFromJavaScriptDate(bossStatusUpateParams.creationDate));
             if (bossStatusUpateParams.currentBossLife <= 0 || (BossStatus)bossStatusUpateParams.status == BossStatus.DEAD)
             {
                 OnBossDead();

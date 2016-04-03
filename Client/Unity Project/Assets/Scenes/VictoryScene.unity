@@ -945,6 +945,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c222fb25fcc5b3d41918e5d9fc3773da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  VictoryTimeText: {fileID: 962866480}
 --- !u!4 &1256299142
 Transform:
   m_ObjectHideFlags: 0
