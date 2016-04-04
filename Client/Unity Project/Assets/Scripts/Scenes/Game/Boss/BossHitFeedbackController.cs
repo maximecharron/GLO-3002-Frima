@@ -7,10 +7,13 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace Assets.Scripts.Scenes.Game
+namespace Assets.Scripts.Scenes.Game.Boss
 {
     public class BossHitFeedbackController : MonoBehaviour
     {
+        private static Color HIT_BUBBLE_TEXT_COLOR = Color.black;
+        private static Color HIT_MISS_BUBBLE_TEXT_COLOR = Color.red;
+
         //Configurable script parameters
         public GameObject HitParticleSystem;
         public int ParticleSystemPoolSize = 5;
@@ -38,7 +41,12 @@ namespace Assets.Scripts.Scenes.Game
         {
             PlayParticles();
             PlayHitSound();
-            ShowHitBubble(hitValue);
+            ShowHitBubble(string.Format("{0}!", hitValue), HIT_BUBBLE_TEXT_COLOR);
+        }
+
+        public void HitMiss()
+        {
+            ShowHitBubble("Miss!", HIT_MISS_BUBBLE_TEXT_COLOR);
         }
 
         private void PlayParticles()
@@ -81,13 +89,13 @@ namespace Assets.Scripts.Scenes.Game
             return !((AudioSource)unityObject).isPlaying;
         }
 
-        private void ShowHitBubble(int hitValue)
+        private void ShowHitBubble(string text, Color textColor)
         {
             try
             {
                 GameObject hitBubble = (GameObject)hitBubblePool.GetNext();
-                HitBubbleController hitBubbleController = hitBubble.GetComponent<HitBubbleController>();
-                hitBubbleController.Show(Camera.main.GetMousePosition(), hitValue);
+                BubbleController bubbleController = hitBubble.GetComponent<BubbleController>();
+                bubbleController.Show(Camera.main.GetMousePosition(), text, textColor);
             }
             catch (PoolExhaustedException)
             {
@@ -99,6 +107,11 @@ namespace Assets.Scripts.Scenes.Game
         {
             BubbleController hitBubbleController = ((GameObject)unityObject).GetComponent<BubbleController>();
             return !hitBubbleController.Active;
+        }
+
+        public void HypeAttack()
+        {
+            
         }
 
     }

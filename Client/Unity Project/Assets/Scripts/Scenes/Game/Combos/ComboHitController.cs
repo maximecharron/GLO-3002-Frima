@@ -3,6 +3,8 @@ using System.Collections;
 using Assets.Scripts.Utils.UnityObjectPool;
 using System.Collections.Generic;
 using Assets.Scripts.Extensions;
+using System;
+using Assets.Scripts.Scenes.Game.Boss;
 
 namespace Assets.Scripts.Scenes.Game.Combos
 {
@@ -19,6 +21,8 @@ namespace Assets.Scripts.Scenes.Game.Combos
         public GameObject ComboBonusBubble;
         public int ComboBonusBubblePoolSize;
         public AudioClip SequenceAchievedAudioClip;
+
+        public Action<ComboHitSequence> OnComboHitCompleted { get; set; }
 
         private List<ComboHitSequence> hitSequences = new List<ComboHitSequence>();
         private ComboHitSequenceController hitSequenceController;
@@ -102,7 +106,6 @@ namespace Assets.Scripts.Scenes.Game.Combos
                 if (eligibleComboHitSeqences.Count > 0)
                 {
                     ComboHitSequence hitSequence = eligibleComboHitSeqences.RandomItem();
-                    Debug.Log(hitSequence.Name);
                     hitSequenceController.ShowSequence(hitSequence);
                 }
             }
@@ -134,6 +137,7 @@ namespace Assets.Scripts.Scenes.Game.Combos
             BossController.RemoveBossLife(BossController.DEFAULT_ATTACK_VALUE * hitSequence.BonusMultiplier);
             BossController.KnockOut();
             BossController.gameObject.FindAudioSource(SequenceAchievedAudioClip).Play();
+            OnComboHitCompleted(hitSequence);
         }
 
         private void OnSequenceTerminatedCallback(ComboHitSequence hitSequence)

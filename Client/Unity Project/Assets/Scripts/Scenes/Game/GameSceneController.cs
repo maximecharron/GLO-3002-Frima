@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Assets.Scripts.Communication;
 using Assets.Scripts.Communication.CommandDTOs;
+using Assets.Scripts.Scenes.Game.Boss;
 
 namespace Assets.Scripts.Scenes.Game
 {
@@ -21,8 +22,8 @@ namespace Assets.Scripts.Scenes.Game
         public Canvas Canvas;
 
         void Start() {
-            GameController gameController = FindObjectOfType<GameController>();
-            WebSocketService.SessionToken = gameController.SessionToken;
+            //GameController gameController = FindObjectOfType<GameController>();
+            //WebSocketService.SessionToken = gameController.SessionToken;
             BossController.OnBossDead += OnBossDead;
             AdjustBossPositioning();
             InitCommunication();

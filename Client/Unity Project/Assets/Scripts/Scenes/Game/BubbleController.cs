@@ -32,11 +32,13 @@ namespace Assets.Scripts.Scenes.Game
             }
         }
 
-        public void Show(Vector2 position, string value)
+        public void Show(Vector2 position, string value, Color textColor)
         {
             this.transform.position = position.ToVector3(this.transform.position.z);
             startTime = Time.time;
-            GetComponentInChildren<Text>().text = value.ToString();
+            Text text = GetComponentInChildren<Text>();
+            text.text = value;
+            text.color = textColor;
             this.gameObject.SetActive(true);
         }
     }

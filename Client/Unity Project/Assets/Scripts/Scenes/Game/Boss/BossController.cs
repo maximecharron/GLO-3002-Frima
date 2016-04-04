@@ -10,23 +10,29 @@ using Assets.Scripts.Extensions;
 using System;
 using Assets.Scripts.Scenes.Game;
 using Assets.Scripts.Utils;
+using Assets.Scripts.Scenes.Game.Stamina;
+using Assets.Scripts.Scenes.Game.Hype;
 
-namespace Assets.Scripts.Scenes.Game
+namespace Assets.Scripts.Scenes.Game.Boss
 {
 
     public class BossController : MonoBehaviour
     {
-        public const int DEFAULT_ATTACK_VALUE = 10000;
-        private const int KNOCK_OUT_STATE_PRIORITY = 1;
-        private const int KNOCK_OUT_STATE_ANIMATION_PRIORITY = 1;
-        private const int HIT_STATE_PRIORITY = 2;
-        private const int HIT_STATE_ANIMATION_PRIORITY = 2;
-        private const int IDLE_STATE_PRIORITY = 3;
-        private const int IDLE_STATE_ANIMATION_PRIORITY = 3;
+        public const int DEFAULT_ATTACK_VALUE = 1000;
+        private const int HIT_MISS_STATE_PRIORITY = 1;
+        private const int HIT_MISS_STATE_ANIMATION_PRIORITY = 1;
+        private const int KNOCK_OUT_STATE_PRIORITY = 2;
+        private const int KNOCK_OUT_STATE_ANIMATION_PRIORITY = 2;
+        private const int HIT_STATE_PRIORITY = 3;
+        private const int HIT_STATE_ANIMATION_PRIORITY = 3;
+        private const int IDLE_STATE_PRIORITY = 4;
+        private const int IDLE_STATE_ANIMATION_PRIORITY = 4;
 
         //Configurable script parameters
         public int SpritesheetColumnCount = 8;
         public BossHitFeedbackController BossHitFeedbackController;
+        public StaminaController StaminaController;
+        public HypeController HypeController;
         public HealthPointSliderController HealthPointSliderController;
         public AudioClip KnockOutFallAudioClip;
         public AudioClip KnockOutVoiceAudioClip;
@@ -40,6 +46,7 @@ namespace Assets.Scripts.Scenes.Game
         private CharacterState idleState;
         private CharacterState hitState;
         private CharacterState knockOutState;
+        private CharacterState hitMissState;
         private SpriteAnimationSequence idleSequence1 = new SpriteAnimationSequence(new List<int> { 0, 1 }, 5, 3);
         private SpriteAnimationSequence idleSequence2 = new SpriteAnimationSequence(new List<int> { 2, 3 }, 5, 3);
         private SpriteAnimationSequence hitSequence1 = new SpriteAnimationSequence(new List<int> { 18 }, 2, 1);
@@ -47,6 +54,7 @@ namespace Assets.Scripts.Scenes.Game
         private SpriteAnimationSequence hitSequence3 = new SpriteAnimationSequence(new List<int> { 24 }, 2, 1);
         private SpriteAnimationSequence knockOutSequence1 = new SpriteAnimationSequence(new List<int> { 26, 28, 30, 31 }, 5, 1);
         private SpriteAnimationSequence knockOutSequence2 = new SpriteAnimationSequence(new List<int> { 23, 27, 29, 30, 31 }, 5, 1);
+        private SpriteAnimationSequence hitMissSequence = new SpriteAnimationSequence(new List<int> { 16 }, 2, 1);
 
         private WebSocketService webSocketService;
         private int currentBossLife = 0;
@@ -56,6 +64,7 @@ namespace Assets.Scripts.Scenes.Game
             InitializeStateController();
             InitializeStates();
             AssignStateActions();
+            HypeController.OnHypeAttack = OnHypeAttackCallback;
             webSocketService = FindObjectOfType<WebSocketService>();
         }
 
@@ -68,6 +77,10 @@ namespace Assets.Scripts.Scenes.Game
 
         private void InitializeStates()
         {
+            SpriteAnimationSettings missStateAnimationSettings = new SpriteAnimationSettings(true);
+            hitMissState = new CharacterState("Hit Miss", HIT_MISS_STATE_PRIORITY, HIT_MISS_STATE_ANIMATION_PRIORITY, missStateAnimationSettings);
+            hitMissState.SpriteAnimationSequences = new List<SpriteAnimationSequence> { hitMissSequence };
+
             SpriteAnimationSettings hitStateAnimationSettings = new SpriteAnimationSettings(true);
             hitState = new CharacterState("Hit", HIT_STATE_PRIORITY, HIT_STATE_ANIMATION_PRIORITY, hitStateAnimationSettings);
             hitState.SpriteAnimationSequences = new List<SpriteAnimationSequence> { hitSequence1, hitSequence2, hitSequence3 };
@@ -89,6 +102,8 @@ namespace Assets.Scripts.Scenes.Game
             hitState.OnAnimationSequenceEnd = OnHitAnimationSequenceEndCallback;
             knockOutState.OnActivate = OnKnockOutStateActivatCallbacke;
             knockOutState.OnAnimationSequenceEnd = OnKnockOutAnimationSequenceEndCallback;
+            hitMissState.OnActivate = OnHitMissStateActivateCallback;
+            hitMissState.OnAnimationSequenceEnd = OnHitMissAnimationSequenceEndCallback;
         }
 
         void Update()
@@ -98,7 +113,15 @@ namespace Assets.Scripts.Scenes.Game
 
         public void OnMouseDown()
         {
-            bossStateController.AddState(hitState, true);
+            if (StaminaController.IsHitMiss())
+            {
+                bossStateController.AddState(hitMissState, true);
+            }
+            else
+            {
+                bossStateController.RemoveState(hitState);
+                bossStateController.AddState(hitState, true);
+            }
         }
 
         public void KnockOut()
@@ -106,10 +129,11 @@ namespace Assets.Scripts.Scenes.Game
             bossStateController.RemoveState(hitState);
             bossStateController.AddState(knockOutState);
         }
-
         private void OnHitStateActivateCallback(CharacterState sender)
         {
             RemoveBossLife(DEFAULT_ATTACK_VALUE);
+            StaminaController.DecreaseStamina();
+            HypeController.IncreaseHype();
             BossHitFeedbackController.Hit(DEFAULT_ATTACK_VALUE);
         }
 
@@ -128,6 +152,17 @@ namespace Assets.Scripts.Scenes.Game
         public bool OnKnockOutAnimationSequenceEndCallback(CharacterState sender)
         {
             bossStateController.RemoveState(knockOutState);
+            return false;
+        }
+
+        private void OnHitMissStateActivateCallback(CharacterState sender)
+        {
+            BossHitFeedbackController.HitMiss();
+        }
+
+        public bool OnHitMissAnimationSequenceEndCallback(CharacterState sender)
+        {
+            bossStateController.RemoveState(hitMissState);
             return false;
         }
 
@@ -164,6 +199,11 @@ namespace Assets.Scripts.Scenes.Game
             }
             currentBossLife = value;
             HealthPointSliderController.Value = value;
+        }
+
+        private void OnHypeAttackCallback()
+        {
+            BossHitFeedbackController.HypeAttack();
         }
     }
 

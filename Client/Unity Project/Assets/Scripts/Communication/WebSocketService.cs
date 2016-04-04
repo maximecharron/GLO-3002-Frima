@@ -125,12 +125,12 @@ namespace Assets.Scripts.Communication
 
         public void AddSendInterceptor(ICommandInterceptor interceptor, Type commandType)
         {
-            this.commandSendInterceptors.Add(commandType, interceptor);
+            this.commandSendInterceptors.AddOrReplace(commandType, interceptor);
         }
 
         public void AddReceiveInterceptor(ICommandInterceptor interceptor, Type commandType)
         {
-            this.commandReceiveInterceptors.Add(commandType, interceptor);
+            this.commandReceiveInterceptors.AddOrReplace(commandType, interceptor);
         }
 
     }
