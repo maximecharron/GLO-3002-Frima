@@ -9,6 +9,8 @@ using Assets.Scripts.Communication.CommandDTOs;
 using Assets.Scripts.Extensions;
 using System;
 using Assets.Scripts.Scenes.Game;
+using Assets.Scripts.Scenes.Game.Stamina;
+using Assets.Scripts.Scenes.Game.Hype;
 
 namespace Assets.Scripts.Scenes.Game
 {
@@ -33,6 +35,7 @@ namespace Assets.Scripts.Scenes.Game
         public AudioClip KnockOutFallAudioClip;
         public AudioClip KnockOutVoiceAudioClip;
         public StaminaController StaminaController;
+        public HypeController HypeController;
 
         public delegate void BossDeadEventHandler();
         public event BossDeadEventHandler OnBossDead;
@@ -59,6 +62,7 @@ namespace Assets.Scripts.Scenes.Game
             InitializeStateController();
             InitializeStates();
             AssignStateActions();
+            HypeController.OnHypeAttack = OnHypeAttackCallback;
             webSocketService = FindObjectOfType<WebSocketService>();
         }
 
@@ -127,6 +131,7 @@ namespace Assets.Scripts.Scenes.Game
         {
             RemoveBossLife(DEFAULT_ATTACK_VALUE);
             StaminaController.drainHitStamina();
+            HypeController.addHitHype();
             BossHitFeedbackController.Hit(DEFAULT_ATTACK_VALUE);
         }
 
@@ -186,6 +191,11 @@ namespace Assets.Scripts.Scenes.Game
             }
             currentBossLife = value;
             HealthPointSliderController.Value = value;
+        }
+
+        private void OnHypeAttackCallback()
+        {
+            BossHitFeedbackController.PowerHit();
         }
     }
 

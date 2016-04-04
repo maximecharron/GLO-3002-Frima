@@ -4,7 +4,7 @@ using System.Collections;
 using UnityEngine.UI;
 
 
-namespace Assets.Scripts.Scenes.Game
+namespace Assets.Scripts.Scenes.Game.Stamina
 {
     
     
@@ -12,7 +12,6 @@ namespace Assets.Scripts.Scenes.Game
     {
 
         public StaminaSliderController StaminaSliderController;
-        public Button RestoreStaminaButton;
         private const float STAMINA_DRAIN_ON_HIT = 5f ;
         private const float STAMINA_RESTORE_VALUE = 0.5f;
         private const float STAMINA_RESTORATION_FREQUENCY_SECONDS = 0.05f;
@@ -21,11 +20,6 @@ namespace Assets.Scripts.Scenes.Game
         public void drainHitStamina()
         {
             StaminaSliderController.Value -= STAMINA_DRAIN_ON_HIT;
-        }
-
-        public void restoreStamina(int staminaCount)
-        {  
-
         }
 
         public void OnStaminaButtonClick()

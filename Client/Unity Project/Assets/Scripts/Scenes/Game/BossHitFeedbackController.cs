@@ -106,5 +106,10 @@ namespace Assets.Scripts.Scenes.Game
             return !hitBubbleController.Active;
         }
 
+        public void PowerHit()
+        {
+            this.gameObject.GetComponent<Renderer>();
+        }
+
     }
 }
