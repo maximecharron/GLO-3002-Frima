@@ -5483,6 +5483,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8392eb57e005a6742a18021701858f06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ComboHitController: {fileID: 2085029937}
   HypeSliderController: {fileID: 1682240563}
 --- !u!1 &2085427477
 GameObject:
