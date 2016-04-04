@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-namespace Assets.Scripts.SpriteAnimation
+namespace Assets.Scripts.Animation.SpriteAnimation
 {
     public class SpriteAnimationSequence
     {

@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Assets.Scripts.SpriteAnimation;
+using Assets.Scripts.Animation.SpriteAnimation;
 
 namespace Assets.Scripts.CharacterControl
 {

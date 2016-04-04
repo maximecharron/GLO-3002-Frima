@@ -28,6 +28,7 @@ namespace Assets.Scripts.Scenes.Game
         {
             if (Time.time - lastBatchSendTime > BatchSendInterval && postponedAttackValue != 0)
             {
+                Debug.Log(String.Format("Sent: {0}", postponedAttackValue));
                 webSocketService.SendCommand(new BossAttackCommandDTO(postponedAttackValue), false);
                 postponedAttackValue = 0;
                 lastBatchSendTime = Time.time;

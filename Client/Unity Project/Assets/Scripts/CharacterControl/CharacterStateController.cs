@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Assets.Scripts.Extensions;
-using Assets.Scripts.SpriteAnimation;
+using Assets.Scripts.Animation.SpriteAnimation;
+using System;
 
 namespace Assets.Scripts.CharacterControl
 {
@@ -25,6 +26,7 @@ namespace Assets.Scripts.CharacterControl
             }
             if (!states.Contains(state))
             {
+                Debug.Log(String.Format("Addeded: {0}", state.StateName));
                 states.Add(state);
                 AddStateToHistory(state); 
             }
@@ -50,6 +52,7 @@ namespace Assets.Scripts.CharacterControl
         {
             if (states.Contains(state))
             {
+                Debug.Log(String.Format("Removed: {0}", state.StateName));
                 state.Deactivate();
                 states.Remove(state);
             }

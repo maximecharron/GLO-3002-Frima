@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System;
 using Assets.Scripts.CharacterControl;
 
-namespace Assets.Scripts.SpriteAnimation
+namespace Assets.Scripts.Animation.SpriteAnimation
 {
     public class SpriteAnimator
     {

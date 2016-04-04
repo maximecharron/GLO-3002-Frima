@@ -12,12 +12,13 @@ namespace Assets.Scripts.Scenes.Game
         public DateTime BossCreationDate {get; set;}
         public DateTime BossKillDate { get; set; }
         public BossController BossController;
+        public BossDeathController BossDeathController;
 
         void Start()
         {
             DontDestroyOnLoad(this.gameObject);
             BossController.OnBossCreationDateUpdate += OnBossCreationDateUpdateCallback;
-            BossController.OnBossDead += OnBossDeadCallback;
+            BossDeathController.OnBossDeathEnd += OnBossDeadCallback;
         }
 
         private void OnBossDeadCallback()

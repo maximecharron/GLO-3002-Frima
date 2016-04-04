@@ -17,14 +17,15 @@ namespace Assets.Scripts.Scenes.Game
         // Configurable script parameters
         public WebSocketService WebSocketService;
         public BossController BossController;
+        public BossDeathController BossDeathController;
         public GameObject Boss;
         public GameObject LoadingSceneOverlay;
         public Canvas Canvas;
 
         void Start() {
-            //GameController gameController = FindObjectOfType<GameController>();
-            //WebSocketService.SessionToken = gameController.SessionToken;
-            BossController.OnBossDead += OnBossDead;
+            GameController gameController = FindObjectOfType<GameController>();
+            WebSocketService.SessionToken = gameController.SessionToken;
+            BossDeathController.OnBossDeathEnd += OnBossDead;
             AdjustBossPositioning();
             InitCommunication();
         }

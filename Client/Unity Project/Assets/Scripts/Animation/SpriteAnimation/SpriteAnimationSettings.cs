@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.SpriteAnimation;
+﻿using Assets.Scripts.Animation.SpriteAnimation;
 using System;
 using System.Collections.Generic;
 using System.Linq;

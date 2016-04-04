@@ -16,6 +16,7 @@ namespace Assets.Scripts.Scenes.Game.Combos
 
         //Configurable script parameters
         public BossController BossController;
+        public BossDeathController BossDeathController;
         public GameObject ComboHitZone;
         public int ComboHitZonePoolSize;
         public GameObject ComboBonusBubble;
@@ -28,6 +29,7 @@ namespace Assets.Scripts.Scenes.Game.Combos
         private ComboHitSequenceController hitSequenceController;
         private ComboHitSequence randomHitSequence;
         private float lastSequenceTime;
+        private bool enabled = true;
 
         void Start()
         {
@@ -35,6 +37,7 @@ namespace Assets.Scripts.Scenes.Game.Combos
             this.ComboBonusBubble.SetActive(false);
             CreateHitSequences();
             InitSequenceController();
+            BossDeathController.OnBossDeathStart += OnBossDeathStartCallback;
         }
 
         private void InitSequenceController()
@@ -81,7 +84,7 @@ namespace Assets.Scripts.Scenes.Game.Combos
             hitSequences.Add(pectoralHeadCrossHitSequence);
 
             ComboHitSequence pectoralBellyCrossHitSequence = new ComboHitSequence("Pectoral / Belly Cross", 10, 10, DEFAULT_HIT_ZONE);
-           pectoralBellyCrossHitSequence.HitZones = new List<Vector2>(pectoralsHitSequence.HitZones);
+            pectoralBellyCrossHitSequence.HitZones = new List<Vector2>(pectoralsHitSequence.HitZones);
             pectoralBellyCrossHitSequence.HitZones.AddRange(new List<Vector2>() { new Vector2(-0.112f, -0.294f), new Vector2(0.114f, -0.294f) });
             hitSequences.Add(pectoralBellyCrossHitSequence);
 
@@ -91,7 +94,7 @@ namespace Assets.Scripts.Scenes.Game.Combos
 
         void Update()
         {
-            if (hitSequenceController.IsActive)
+            if (enabled && hitSequenceController.IsActive)
             {
                 hitSequenceController.Update();
             }
@@ -99,7 +102,7 @@ namespace Assets.Scripts.Scenes.Game.Combos
 
         public void OnMouseDown()
         {
-            if (!hitSequenceController.IsActive && Time.time - lastSequenceTime >= DELAY_BETWEEN_SEQUENCES)
+            if (enabled && !hitSequenceController.IsActive && Time.time - lastSequenceTime >= DELAY_BETWEEN_SEQUENCES)
             {
                 Vector2 mousePosition = BossController.gameObject.GetMousePosition();
                 List<ComboHitSequence> eligibleComboHitSeqences = TryGetNextComboHitSequence(mousePosition);
@@ -143,6 +146,11 @@ namespace Assets.Scripts.Scenes.Game.Combos
         private void OnSequenceTerminatedCallback(ComboHitSequence hitSequence)
         {
             lastSequenceTime = Time.time;
+        }
+
+        private void OnBossDeathStartCallback()
+        {
+            enabled = false;
         }
     }
 }

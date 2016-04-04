@@ -2,7 +2,7 @@
 using System.Collections;
 using System;
 
-namespace Assets.Scripts.SpriteAnimation
+namespace Assets.Scripts.Animation.SpriteAnimation
 {
     public class SpriteAnimationNotAvailableException : Exception
     {
