@@ -19,14 +19,17 @@ namespace Assets.Scripts.Scenes.Game.Boss
     public class BossController : MonoBehaviour
     {
         public const int DEFAULT_ATTACK_VALUE = 1000;
+        public const int HYPE_ATTACK_VALUE = Int32.MaxValue;
         private const int HIT_MISS_STATE_PRIORITY = 1;
         private const int HIT_MISS_STATE_ANIMATION_PRIORITY = 1;
-        private const int KNOCK_OUT_STATE_PRIORITY = 2;
-        private const int KNOCK_OUT_STATE_ANIMATION_PRIORITY = 2;
-        private const int HIT_STATE_PRIORITY = 3;
-        private const int HIT_STATE_ANIMATION_PRIORITY = 3;
-        private const int IDLE_STATE_PRIORITY = 4;
-        private const int IDLE_STATE_ANIMATION_PRIORITY = 4;
+        private const int HYPE_HIT_STATE_PRIORITY = 2;
+        private const int HYPE_HIT_STATE_ANIMATION_PRIORITY = 2;
+        private const int COMBO_HIT_STATE_PRIORITY = 3;
+        private const int COMBO_HIT_STATE_ANIMATION_PRIORITY = 3;
+        private const int HIT_STATE_PRIORITY = 4;
+        private const int HIT_STATE_ANIMATION_PRIORITY = 4;
+        private const int IDLE_STATE_PRIORITY = 5;
+        private const int IDLE_STATE_ANIMATION_PRIORITY = 5;
 
         //Configurable script parameters
         public int SpritesheetColumnCount = 8;
@@ -45,16 +48,18 @@ namespace Assets.Scripts.Scenes.Game.Boss
         private CharacterStateController bossStateController;
         private CharacterState idleState;
         private CharacterState hitState;
-        private CharacterState knockOutState;
+        private CharacterState comboHitState;
         private CharacterState hitMissState;
+        private CharacterState hypeHitState;
         private SpriteAnimationSequence idleSequence1 = new SpriteAnimationSequence(new List<int> { 0, 1 }, 5, 3);
         private SpriteAnimationSequence idleSequence2 = new SpriteAnimationSequence(new List<int> { 2, 3 }, 5, 3);
         private SpriteAnimationSequence hitSequence1 = new SpriteAnimationSequence(new List<int> { 18 }, 2, 1);
         private SpriteAnimationSequence hitSequence2 = new SpriteAnimationSequence(new List<int> { 22 }, 2, 1);
         private SpriteAnimationSequence hitSequence3 = new SpriteAnimationSequence(new List<int> { 24 }, 2, 1);
-        private SpriteAnimationSequence knockOutSequence1 = new SpriteAnimationSequence(new List<int> { 26, 28, 30, 31 }, 5, 1);
-        private SpriteAnimationSequence knockOutSequence2 = new SpriteAnimationSequence(new List<int> { 23, 27, 29, 30, 31 }, 5, 1);
+        private SpriteAnimationSequence comboHitSequence1 = new SpriteAnimationSequence(new List<int> { 26, 28, 30, 31 }, 5, 1);
+        private SpriteAnimationSequence comboHitSequence2 = new SpriteAnimationSequence(new List<int> { 23, 27, 29, 30, 31 }, 5, 1);
         private SpriteAnimationSequence hitMissSequence = new SpriteAnimationSequence(new List<int> { 16 }, 2, 1);
+        private SpriteAnimationSequence hypeHitSequence = new SpriteAnimationSequence(new List<int> { 20, 37 }, 2, 5);
 
         private WebSocketService webSocketService;
         private int currentBossLife = 0;
@@ -85,9 +90,13 @@ namespace Assets.Scripts.Scenes.Game.Boss
             hitState = new CharacterState("Hit", HIT_STATE_PRIORITY, HIT_STATE_ANIMATION_PRIORITY, hitStateAnimationSettings);
             hitState.SpriteAnimationSequences = new List<SpriteAnimationSequence> { hitSequence1, hitSequence2, hitSequence3 };
 
-            SpriteAnimationSettings knockOutStateAnimationSettings = new SpriteAnimationSettings(true);
-            knockOutState = new CharacterState("Knock Out", KNOCK_OUT_STATE_PRIORITY, KNOCK_OUT_STATE_ANIMATION_PRIORITY, knockOutStateAnimationSettings);
-            knockOutState.SpriteAnimationSequences = new List<SpriteAnimationSequence> { knockOutSequence1, knockOutSequence2 };
+            SpriteAnimationSettings comboHitStateAnimationSettings = new SpriteAnimationSettings(true);
+            comboHitState = new CharacterState("Combo Hit", COMBO_HIT_STATE_PRIORITY, COMBO_HIT_STATE_ANIMATION_PRIORITY, comboHitStateAnimationSettings);
+            comboHitState.SpriteAnimationSequences = new List<SpriteAnimationSequence> { comboHitSequence1, comboHitSequence2 };
+
+            SpriteAnimationSettings hypeHitStateAnimationSettings = new SpriteAnimationSettings(true);
+            hypeHitState = new CharacterState("Combo Hit", HYPE_HIT_STATE_PRIORITY, HYPE_HIT_STATE_ANIMATION_PRIORITY, comboHitStateAnimationSettings);
+            hypeHitState.SpriteAnimationSequences = new List<SpriteAnimationSequence> { hypeHitSequence };
 
             SpriteAnimationSettings idleStateAnimationSettings = new SpriteAnimationSettings(true);
             idleState = new CharacterState("Idle", IDLE_STATE_PRIORITY, IDLE_STATE_ANIMATION_PRIORITY, idleStateAnimationSettings);
@@ -100,10 +109,11 @@ namespace Assets.Scripts.Scenes.Game.Boss
         {
             hitState.OnActivate = OnHitStateActivateCallback;
             hitState.OnAnimationSequenceEnd = OnHitAnimationSequenceEndCallback;
-            knockOutState.OnActivate = OnKnockOutStateActivatCallbacke;
-            knockOutState.OnAnimationSequenceEnd = OnKnockOutAnimationSequenceEndCallback;
+            comboHitState.OnActivate = OnComboHitStateActivateCallback;
+            comboHitState.OnAnimationSequenceEnd = OnComboHitAnimationSequenceEndCallback;
             hitMissState.OnActivate = OnHitMissStateActivateCallback;
             hitMissState.OnAnimationSequenceEnd = OnHitMissAnimationSequenceEndCallback;
+            hypeHitState.OnAnimationSequenceEnd = OnHypeHitAnimationSequenceEndCallback;
         }
 
         void Update()
@@ -113,22 +123,25 @@ namespace Assets.Scripts.Scenes.Game.Boss
 
         public void OnMouseDown()
         {
+            OnHypeAttackCallback();
+            return;
             if (StaminaController.IsHitMiss())
             {
                 bossStateController.AddState(hitMissState, true);
             }
             else
             {
-                bossStateController.RemoveState(hitState);
+                bossStateController.RemoveAllStates(idleState);
                 bossStateController.AddState(hitState, true);
             }
         }
 
-        public void KnockOut()
+        public void ComboHit()
         {
-            bossStateController.RemoveState(hitState);
-            bossStateController.AddState(knockOutState);
+            bossStateController.RemoveAllStates(idleState);
+            bossStateController.AddState(comboHitState);
         }
+
         private void OnHitStateActivateCallback(CharacterState sender)
         {
             RemoveBossLife(DEFAULT_ATTACK_VALUE);
@@ -137,7 +150,7 @@ namespace Assets.Scripts.Scenes.Game.Boss
             BossHitFeedbackController.Hit(DEFAULT_ATTACK_VALUE);
         }
 
-        private void OnKnockOutStateActivatCallbacke(CharacterState sender)
+        private void OnComboHitStateActivateCallback(CharacterState sender)
         {
             this.gameObject.FindAudioSource(KnockOutFallAudioClip).Play();
             this.gameObject.FindAudioSource(KnockOutVoiceAudioClip).Play();
@@ -149,9 +162,9 @@ namespace Assets.Scripts.Scenes.Game.Boss
             return false;
         }
 
-        public bool OnKnockOutAnimationSequenceEndCallback(CharacterState sender)
+        public bool OnComboHitAnimationSequenceEndCallback(CharacterState sender)
         {
-            bossStateController.RemoveState(knockOutState);
+            bossStateController.RemoveState(comboHitState);
             return false;
         }
 
@@ -164,6 +177,13 @@ namespace Assets.Scripts.Scenes.Game.Boss
         {
             bossStateController.RemoveState(hitMissState);
             return false;
+        }
+
+        public bool OnHypeHitAnimationSequenceEndCallback(CharacterState sender)
+        {
+
+            RemoveBossLife(HYPE_ATTACK_VALUE);
+            return true;
         }
 
         public void BossStatusUpdateCallback(CommandDTO commandDTO)
@@ -203,7 +223,8 @@ namespace Assets.Scripts.Scenes.Game.Boss
 
         private void OnHypeAttackCallback()
         {
-            BossHitFeedbackController.HypeAttack();
+            bossStateController.RemoveAllStates(idleState);
+            bossStateController.AddState(hypeHitState, true);
         }
     }
 

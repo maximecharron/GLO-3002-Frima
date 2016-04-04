@@ -19,6 +19,8 @@ namespace Assets.Scripts.Scenes.Game.Hype
         //Configurable script parameters
         public ComboHitController ComboHitController;
         public HypeSliderController HypeSliderController;
+        public HypeHitExplosionController HypeExplosionController;
+        public Image SceneBackground;
 
         public Action OnHypeAttack { get; set; }
 
@@ -30,6 +32,8 @@ namespace Assets.Scripts.Scenes.Game.Hype
         {
             if (MaxHypeReached)
             {
+                SceneBackground.color = Color.black;
+                HypeExplosionController.Explode();
                 OnHypeAttack();
             }
         }

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Scenes.Game.Boss
 {
@@ -107,11 +108,6 @@ namespace Assets.Scripts.Scenes.Game.Boss
         {
             BubbleController hitBubbleController = ((GameObject)unityObject).GetComponent<BubbleController>();
             return !hitBubbleController.Active;
-        }
-
-        public void HypeAttack()
-        {
-            
         }
 
     }

@@ -135,7 +135,7 @@ namespace Assets.Scripts.Scenes.Game.Combos
         private void OnSequenceAchievedCallback(ComboHitSequence hitSequence)
         {
             BossController.RemoveBossLife(BossController.DEFAULT_ATTACK_VALUE * hitSequence.BonusMultiplier);
-            BossController.KnockOut();
+            BossController.ComboHit();
             BossController.gameObject.FindAudioSource(SequenceAchievedAudioClip).Play();
             OnComboHitCompleted(hitSequence);
         }
