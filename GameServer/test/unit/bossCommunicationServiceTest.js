@@ -11,13 +11,16 @@ var expect = chai.expect;
 var should = chai.should();
 var sinon = require("sinon");
 var WebSocketServer  = require('ws').Server;
+var LootService = require("../../services/lootService.js");
 
 var BossCommunicationService = require('./../../services/bossCommunicationService.js');
 
 var webSocketServerStub;
+var lootServiceStub;
 
 before(function(done){
     webSocketServerStub = sinon.createStubInstance(WebSocketServer);
+    lootServiceStub = {createItemCommand:function(){}, getLoot:function(){}};
     done();
 })
 
@@ -35,7 +38,7 @@ describe("bossCommunicationService", function ()
             var bossStub = {toJson:function(){}};
             var expectedString = JSON.stringify({command:{name:"bossStatusUpdate", parameters: bossStub.toJson}})
 
-            var bossCommunicationService = new BossCommunicationService(webSocketServerStub);
+            var bossCommunicationService = new BossCommunicationService(webSocketServerStub, lootServiceStub);
 
             //Act
             var result = bossCommunicationService.createBossStatusUpdate(bossStub);
@@ -54,7 +57,7 @@ describe("bossCommunicationService", function ()
             var client = {send: function(bossUpdate){}, close: function(){}};
             webSocketServerStub.clients = [client];
 
-            var bossCommunicationService = new BossCommunicationService(webSocketServerStub);
+            var bossCommunicationService = new BossCommunicationService(webSocketServerStub, lootServiceStub);
             var sendSpy = chai.spy.on(client, 'send');
             var closeSpy = chai.spy.on(client, 'close');
 
@@ -62,7 +65,7 @@ describe("bossCommunicationService", function ()
             bossCommunicationService.broadcastBossDead(bossStub);
 
             //Assert
-            expect(sendSpy).to.have.been.called.once;
+            expect(sendSpy).to.have.been.called.twice;
             expect(closeSpy).to.have.been.called.once;
         });
     });
@@ -76,7 +79,8 @@ describe("bossCommunicationService", function ()
             var client = {send: function(bossUpdate){throw "error"}, close: function(){}};
             webSocketServerStub.clients = [client];
 
-            var bossCommunicationService = new BossCommunicationService(webSocketServerStub);
+            lootServiceStub = {createItemCommand:function(){}, getLoot:function(){}};
+            var bossCommunicationService = new BossCommunicationService(webSocketServerStub, lootServiceStub);
             var sendSpy = chai.spy.on(client, 'send');
 
             //Act
@@ -97,7 +101,7 @@ describe("bossCommunicationService", function ()
             var client = {send: function(bossUpdate){}, close: function(){}};
             webSocketServerStub.clients = [client];
             var sendSpy = chai.spy.on(client, 'send');
-            var bossCommunicationService = new BossCommunicationService(webSocketServerStub);
+            var bossCommunicationService = new BossCommunicationService(webSocketServerStub, lootServiceStub);
 
             //Act
             bossCommunicationService.broadcastBossInformation(bossStub);
@@ -116,7 +120,7 @@ describe("bossCommunicationService", function ()
             var client = {send: function(bossUpdate){throw "error"}, close: function(){}};
             webSocketServerStub.clients = [client];
             var sendSpy = chai.spy.on(client, 'send');
-            var bossCommunicationService = new BossCommunicationService(webSocketServerStub);
+            var bossCommunicationService = new BossCommunicationService(webSocketServerStub, lootServiceStub);
 
             //Act
             bossCommunicationService.broadcastBossInformation(bossStub);
@@ -135,7 +139,7 @@ describe("bossCommunicationService", function ()
             var client = {send: function(bossUpdate){}, close: function(){}};
             webSocketServerStub.clients = [client];
             var sendSpy = chai.spy.on(client, 'send');
-            var bossCommunicationService = new BossCommunicationService(webSocketServerStub);
+            var bossCommunicationService = new BossCommunicationService(webSocketServerStub, lootServiceStub);
 
             //Act
             bossCommunicationService.broadcastBossInformation(bossStub);
@@ -154,7 +158,7 @@ describe("bossCommunicationService", function ()
             var client = {send: function(bossUpdate){}, close: function(){}};
             webSocketServerStub.clients = [client];
             var sendSpy = chai.spy.on(client, 'send');
-            var bossCommunicationService = new BossCommunicationService(webSocketServerStub);
+            var bossCommunicationService = new BossCommunicationService(webSocketServerStub, lootServiceStub);
 
             //Act
             bossCommunicationService.broadcastBossInformation(bossStub);
@@ -173,7 +177,7 @@ describe("bossCommunicationService", function ()
             var bossStub = {toJson:function(){},getLife:function(){return 10}};
             var webSocket = {send: function(bossUpdate){}, close: function(){}};
             var sendSpy = chai.spy.on(webSocket, 'send');
-            var bossCommunicationService = new BossCommunicationService(webSocketServerStub);
+            var bossCommunicationService = new BossCommunicationService(webSocketServerStub, lootServiceStub);
 
             //Act
             bossCommunicationService.keepAlive(bossStub, webSocket);
@@ -191,7 +195,7 @@ describe("bossCommunicationService", function ()
             var bossStub = {toJson:function(){},getLife:function(){return 10}};
             var webSocket = {send: function(bossUpdate){throw "error"}, close: function(){}};
             var sendSpy = chai.spy.on(webSocket, 'send');
-            var bossCommunicationService = new BossCommunicationService(webSocketServerStub);
+            var bossCommunicationService = new BossCommunicationService(webSocketServerStub, lootServiceStub);
 
             //Act
             bossCommunicationService.keepAlive(bossStub, webSocket);
