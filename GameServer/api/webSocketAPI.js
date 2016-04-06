@@ -1,11 +1,12 @@
 var self;
 //Constructor
-function WebSocketAPI(bossService, bossCommunicationService, redisCommunicationService, webSocketServer)
+function WebSocketAPI(bossService, bossCommunicationService, redisCommunicationService, webSocketServer, userService)
 {
     this.bossService = bossService;
     this.wss = webSocketServer;
     this.bossCommunicationService = bossCommunicationService;
     this.redisCommunicationService = redisCommunicationService;
+    this.userService = userService;
     self = this;
 }
 
