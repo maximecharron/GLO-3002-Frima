@@ -1,12 +1,13 @@
 var self;
 //Constructor
-function WebSocketAPI(bossService, bossCommunicationService, redisCommunicationService, webSocketServer, userService)
+function WebSocketAPI(bossService, bossCommunicationService, redisCommunicationService, webSocketServer, userService, userCommunicationService)
 {
     this.bossService = bossService;
     this.wss = webSocketServer;
     this.bossCommunicationService = bossCommunicationService;
     this.redisCommunicationService = redisCommunicationService;
     this.userService = userService;
+    this.userCommunicationService = userCommunicationService;
     self = this;
 }
 
@@ -70,6 +71,17 @@ function newMessage(message, webSocket)
         {
             var boss = self.bossService.getCurrentBoss();
             self.bossCommunicationService.keepAlive(boss, webSocket);
+        }
+
+        if(request.command.name == "registerClient")
+        {
+            var webSocketClientId = webSocket._ultron.id;
+            var token = request.command.parameters.token;
+
+            self.userService.addUserWebSocket(webSocketClientId, token);
+            self.userCommunicationService.sendUserStatusUpdate();
+
+//{"command":{"name":"registerClient","parameters":{"token":"aToken"}}}
         }
     } catch (error)
     {

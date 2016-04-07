@@ -29,7 +29,8 @@
     "startamazon": "MONGOLAB_URI=mongodb://cms:cms@ip-172-31-20-252.us-west-2.compute.internal:27017 REDIS_URL=redis://ip-172-31-20-252.us-west-2.compute.internal:6379 node server.js",
     "test": "mocha test/unit && mocha test/functionnal",
     "precover": "node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha ./test/unit --dir ./coverage_unit && node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha ./test/functionnal --dir ./coverage_functionnal",
-    "cover": "node ./node_modules/istanbul-combine/cli.js -d coverage -r lcov -r html coverage_unit/coverage.json coverage_functionnal/coverage.json"
+    "cover": "node ./node_modules/istanbul-combine/cli.js -d coverage -r lcov -r html coverage_unit/coverage.json coverage_functionnal/coverage.json",
+    "debug": "node-debug server.js --debug-brk"
   },
   "devDependencies": {
     "chai": "^3.5.0",
@@ -43,6 +44,7 @@
     "jshint-stylish": "^2.1.0",
     "mocha": "^2.4.5",
     "mock-socket": "^2.0.0",
+    "node-inspector": "^0.12.7",
     "proxyquire": "^1.7.4",
     "sinon": "^1.17.3",
     "socket.io-client": "^1.4.5",

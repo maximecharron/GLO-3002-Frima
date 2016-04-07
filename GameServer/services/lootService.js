@@ -31,7 +31,7 @@ LootService.prototype.createItemCommand = function(item)
 
 //Private method
 function initializeItems(){
-    self.items.push(new AdrenalineShot(), new ProteinShake(), new Belt());
+    self.items.push(new AdrenalineShot(), new ProteinShake());
 }
 
 
