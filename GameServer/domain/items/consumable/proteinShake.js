@@ -4,7 +4,7 @@ function ProteinShake()
     //Private
     this.type = "consumable";
     this.name = "ProteinShake";
-    this.modifiedStats = { stam:10, dex:0 };
+    this.modifiedStats = { stam:10, hype:0 };
 }
 
 

@@ -59,8 +59,17 @@ var webSocketServer = new WebSocketServer({server: server});
 var LootService = require('./services/lootService.js');
 var lootService = new LootService();
 
+var UserRepository = require('./repository/userRepository.js');
+var userRepository = new UserRepository();
+
+var UserService = require('./services/userService.js');
+var userService = new UserService(userRepository);
+
+var UserCommunicationService = require('./services/userCommunicationService.js');
+var userCommunicationService = new UserCommunicationService();
+
 var BossCommunicationService = require('./services/bossCommunicationService.js');
-var bossCommunicationService = new BossCommunicationService(webSocketServer, lootService);
+var bossCommunicationService = new BossCommunicationService(webSocketServer, lootService, userService);
 
 var RedisCommunicationService = require('./services/redisCommunicationService.js');
 var redisCommunicationService = new RedisCommunicationService();
@@ -78,7 +87,7 @@ var UpdateService = require('./services/updateService.js');
 var updateService = new UpdateService(bossRepository, bossCommunicationService, bossService);
 
 var WebSocketAPI = require('./api/webSocketAPI.js');
-var webSocketAPI = new WebSocketAPI(bossService, bossCommunicationService, redisCommunicationService, webSocketServer);
+var webSocketAPI = new WebSocketAPI(bossService, bossCommunicationService, redisCommunicationService, webSocketServer, userService, userCommunicationService);
 
 console.log("websocket server created");
 webSocketAPI.initializeBoss();

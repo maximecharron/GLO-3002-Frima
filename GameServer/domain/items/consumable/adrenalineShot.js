@@ -4,7 +4,7 @@ function AdrenalineShot()
     //Private
     this.type = "consumable";
     this.name = "AdrenalineShot";
-    this.modifiedStats = { stam:0, dex:10 };
+    this.modifiedStats = { stamina : 0, hype : 10 };
 }
 
 

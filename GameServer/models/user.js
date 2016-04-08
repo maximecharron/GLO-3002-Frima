@@ -1,23 +1,26 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
 var modelHelpers = require('./modelHelpers.js');
+var itemSchema = require("./item.js").schema;
 
 var userSchema = new mongoose.Schema();
 userSchema.add({
-    username : {type: String, index: {unique: true, }},
-    email: {type: String, index: {unique: true, }},
-    password: String,
-    token: String,
-    expiration: Number
-});
+    username : { type : String, index : { unique : true, }},
+    email: { type : String, index : { unique : true, }},
+    password : String,
+    token : String,
+    expiration : Number,
+    items : [itemSchema]
+},{ strict : false });
 
-userSchema.methods.toDTO = function (following, withToken) {
+userSchema.methods.toDTO = function (withToken) {
     var obj = this.toObject();
 
     var dto = {
         id: obj._id,
         username : obj.username,
-        email: obj.email
+        email: obj.email,
+        items: obj.items
     };
 
     if(withToken){

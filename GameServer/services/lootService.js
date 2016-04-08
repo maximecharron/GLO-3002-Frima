@@ -1,6 +1,5 @@
 var AdrenalineShot = require('./../domain/items/consumable/adrenalineShot.js');
 var ProteinShake = require('./../domain/items/consumable/proteinShake.js');
-var Belt = require('./../domain/items/wearable/belt.js');
 var self;
 
 //Construction
@@ -33,8 +32,5 @@ LootService.prototype.createItemCommand = function(item)
 function initializeItems(){
     self.items.push(new AdrenalineShot(), new ProteinShake());
 }
-
-
-
 
 module.exports = LootService;

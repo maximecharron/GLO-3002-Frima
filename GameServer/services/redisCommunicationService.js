@@ -22,7 +22,7 @@ RedisCommunicationService.prototype.publishBossDead = function (bossString)
     redis.publish("bossDead", bossString);
 };
 
-RedisCommunicationService.prototype.findBoss = function (hostname, callback) //We want to pass hostname here
+RedisCommunicationService.prototype.findBoss = function (hostname, callback)
 {
     redis.hgetall(hostname, function(err, object){
         callback(err, object);

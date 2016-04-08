@@ -1,10 +1,8 @@
 
 //Constructor
-function UserCommunicationService(webSocketServer, lootService)
+function UserCommunicationService()
 {
-    this.lastLifeBroadcasted = 0;
-    this.lootService = lootService;
-    this.wss = webSocketServer;
+
 }
 
 //Public method
@@ -15,7 +13,11 @@ UserCommunicationService.prototype.sendUserStatusUpdate = function(webSocket)
         command:
         {
             name: "userStatusUpdate",
-            parameters: "stuffHere"
+            parameters:
+            {
+                baseDamage: "10",
+                comboList: "1,2,3,4"
+            }
         }
     });
 

@@ -9,16 +9,51 @@ function UserRepository()
 }
 
 //Public method
-UserRepository.prototype.updateUserItems = function(token, items)
+UserRepository.prototype.addUserItems = function(token, items)
 {
-    getUser(token, function()
+    getUser(token, function(user)
     {
-        user.items = items;
+          items.forEach(function each(item)
+          {
+             user.items.forEach(function each(userItem)
+             {
+                 if(userItem.name == item.name)
+                 {
+                     userItem.quantity++;
+                 }
+             })
+          });
+
         user.save(function (err)
         {
             if (err)
             {
                console.log("Error when updateItems: ", err);
+            }
+        });
+    });
+};
+
+UserRepository.prototype.updateUserItems = function(token, items)
+{
+    getUser(token, function(user)
+    {
+        items.forEach(function each(item)
+        {
+            user.items.forEach(function each(userItem)
+            {
+                if(userItem.name == item.name)
+                {
+                    userItem.quantity -= item.quantity;
+                }
+            })
+        });
+
+        user.save(function (err)
+        {
+            if (err)
+            {
+                console.log("Error when updateItems: ", err);
             }
         });
     });

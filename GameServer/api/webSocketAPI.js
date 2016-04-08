@@ -41,7 +41,7 @@ WebSocketAPI.prototype.initializeBoss = function ()
 //Private method
 function newMessage(message, webSocket)
 {
-
+    var webSocketClientId = webSocket._ultron.id;
     var request = {};
     try
     {
@@ -75,13 +75,16 @@ function newMessage(message, webSocket)
 
         if(request.command.name == "registerClient")
         {
-            var webSocketClientId = webSocket._ultron.id;
             var token = request.command.parameters.token;
 
             self.userService.addUserWebSocket(webSocketClientId, token);
-            self.userCommunicationService.sendUserStatusUpdate();
+            self.userCommunicationService.sendUserStatusUpdate(webSocket);
+        }
 
-//{"command":{"name":"registerClient","parameters":{"token":"aToken"}}}
+        if(request.command.name == "useItems")
+        {
+            var items = request.command.parameters.items;
+            self.userService.updateUserItems(webSocketClientId, items);
         }
     } catch (error)
     {

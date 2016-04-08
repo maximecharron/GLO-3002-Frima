@@ -1,11 +1,15 @@
 var ws = require('ws');
 
+var self;
 //Constructor
-function BossCommunicationService(webSocketServer, lootService)
+function BossCommunicationService(webSocketServer, lootService, userService)
 {
     this.lastLifeBroadcasted = 0;
     this.lootService = lootService;
     this.wss = webSocketServer;
+    this.userService = userService;
+
+    self = this;
 }
 
 //Public method
@@ -24,11 +28,14 @@ BossCommunicationService.prototype.createBossStatusUpdate = function(boss)
 BossCommunicationService.prototype.broadcastBossDead = function(theBoss)
 {
     var bossUpdate = this.createBossStatusUpdate(theBoss);
-    var lootItems = this.lootService.createItemCommand(this.lootService.getLoot());
+
     this.wss.clients.forEach(function each(client)
     {
         try
         {
+            var lootItems = self.lootService.createItemCommand(self.lootService.getLoot());
+            var clientId = client._ultron.id;
+            self.userService.addUserItems(clientId, lootItems);
             client.send(bossUpdate);
             client.send(lootItems);
             client.close();
