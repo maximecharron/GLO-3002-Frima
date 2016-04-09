@@ -20,7 +20,7 @@ var userServiceStub;
 
 before(function(done){
     webSocketServerStub = sinon.createStubInstance(WebSocketServer);
-    lootServiceStub = {createItemCommand:function(){}, getLoot:function(){}};
+    lootServiceStub = {createItemsCommand:function(){}, getLoot:function(){}};
     userServiceStub = {addUserItems:function(a,b){}};
     done();
 })
@@ -90,7 +90,7 @@ describe("bossCommunicationService", function () {
             webSocketServerStub.clients = [client];
 
             lootServiceStub = {
-                createItemCommand: function () {
+                createItemsCommand: function () {
                 }, getLoot: function () {
                 }
             };

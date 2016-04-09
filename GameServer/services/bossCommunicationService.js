@@ -33,12 +33,17 @@ BossCommunicationService.prototype.broadcastBossDead = function(theBoss)
     {
         try
         {
-            var lootItems = self.lootService.createItemCommand(self.lootService.getLoot());
+            var items = self.lootService.getLoot();
+            var lootItems = self.lootService.createItemsCommand(items);
+
             var clientId = client._ultron.id;
-            self.userService.addUserItems(clientId, lootItems);
+
+            self.userService.addUserItems(clientId, items);
+
             client.send(bossUpdate);
             client.send(lootItems);
             client.close();
+
         } catch (error)
         {
             console.log(error);

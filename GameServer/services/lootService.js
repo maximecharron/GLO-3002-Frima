@@ -1,36 +1,56 @@
-var AdrenalineShot = require('./../domain/items/consumable/adrenalineShot.js');
-var ProteinShake = require('./../domain/items/consumable/proteinShake.js');
 var self;
-
 //Construction
-function LootService()
+function LootService(itemRepository)
 {
-    self = this;
+    this.itemRepository = itemRepository;
     this.items = [];
-    initializeItems();
+    //this.probabilityLoot = [1,1,1,1,1,1,2,2,2,3];
+    this.probabilityLoot = [2,2,2,2,2,2,2];
+
+    self = this;
+
+    this.initializeItems();
 }
 
 //public method
 LootService.prototype.getLoot = function(){
-    return self.items[Math.floor((Math.random() * self.items.length))];
-}
+    var itemsLoot = [];
+    var itemQuantity = this.probabilityLoot[Math.floor((Math.random() * this.probabilityLoot.length))];
 
-//Public method
-LootService.prototype.createItemCommand = function(item)
-{
-    return JSON.stringify(
-        {
-            command:
-            {
-                name: "lootItem",
-                parameters: item.toJson()
-            }
-        });
+    for(var i = 0; i < itemQuantity; i++)
+    {
+        itemsLoot.push(this.items[Math.floor((Math.random() * this.items.length))]);
+    }
+
+    return itemsLoot;
 };
 
-//Private method
-function initializeItems(){
-    self.items.push(new AdrenalineShot(), new ProteinShake());
-}
+LootService.prototype.createItemsCommand = function(items)
+{
+    var itemsJson = [];
+
+    items.forEach(function each(item){
+        var singleItemJson = item.toJson();
+        itemsJson.push(singleItemJson);
+    });
+
+    var jsonToSend = {
+        command: {
+            name: "lootItems",
+            parameters:{
+                items: itemsJson
+            }
+        }
+    };
+
+    return JSON.stringify(jsonToSend);
+};
+
+LootService.prototype.initializeItems = function(){
+
+    this.itemRepository.getItems(function(items){
+        self.items = items;
+    });
+};
 
 module.exports = LootService;

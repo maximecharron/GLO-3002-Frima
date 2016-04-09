@@ -56,8 +56,11 @@ console.log("http server listening on %d", port);
 require("./constants/bossConstants.js");
 var webSocketServer = new WebSocketServer({server: server});
 
+var ItemRepository = require('./repository/itemRepository.js');
+var itemRepository = new ItemRepository();
+
 var LootService = require('./services/lootService.js');
-var lootService = new LootService();
+var lootService = new LootService(itemRepository);
 
 var UserRepository = require('./repository/userRepository.js');
 var userRepository = new UserRepository();
@@ -81,7 +84,7 @@ var BossService = require('./services/bossService.js');
 var bossService = new BossService(bossCommunicationService, bossRepository);
 
 var RedisListenerService = require('./services/redisListenerService.js');
-var redisListenerService = new RedisListenerService(bossService, bossCommunicationService);
+var redisListenerService = new RedisListenerService(bossService, bossCommunicationService, lootService);
 
 var UpdateService = require('./services/updateService.js');
 var updateService = new UpdateService(bossRepository, bossCommunicationService, bossService);

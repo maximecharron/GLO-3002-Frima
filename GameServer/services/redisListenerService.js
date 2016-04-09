@@ -4,13 +4,16 @@ var hostname = process.env.SERVER_NAME || require('os').hostname();
 var self;
 
 //Constructor
-function RedisListenerService(bossService, bossCommunicationService)
+function RedisListenerService(bossService, bossCommunicationService, lootService)
 {
     this.serverNameSubscribeCMS = hostname;
     this.bossService = bossService;
     this.bossCommunicationService = bossCommunicationService;
+    this.lootService = lootService;
+
     this.subscribeServerCmsName(this.serverNameSubscribeCMS);
     redisSub.subscribe("bossDead");
+    redisSub.subscribe("itemsUpdate");
     self = this;
 }
 
@@ -29,7 +32,8 @@ redisSub.on('message', function (channel, message)
         var boss = self.bossService.getCurrentBoss();
         self.bossCommunicationService.broadcastBossDead(boss);
         self.bossService.reviveBoss();
-    } else if (channel == self.serverNameSubscribeCMS)
+    }
+    else if (channel == self.serverNameSubscribeCMS)
     {
         try
         {
@@ -39,6 +43,9 @@ redisSub.on('message', function (channel, message)
         {
             console.log(error);
         }
+    }
+    else if (channel == "itemsUpdate"){
+        self.lootService.initializeItems();
     }
 });
 
