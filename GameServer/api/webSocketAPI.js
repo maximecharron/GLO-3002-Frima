@@ -86,6 +86,14 @@ function newMessage(message, webSocket)
             var items = request.command.parameters.items;
             self.userService.updateUserItems(webSocketClientId, items);
         }
+
+        if(request.command.name == "updateUserLevel")
+        {
+            self.userService.levelUpUser( webSocketClientId, request.command.parameters);
+            var informationNextLevel = self.userService.getInformationNextLevel(request.command.parameters.nextLevel);
+            self.userCommunicationService.sendUserLevelUpInformation(webSocket, informationNextLevel);
+        }
+
     } catch (error)
     {
         return console.log("Problem to parse :", error);

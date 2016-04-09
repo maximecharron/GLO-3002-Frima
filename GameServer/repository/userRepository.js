@@ -1,7 +1,6 @@
 var UserModel = require('../models/user').model;
 var jwt = require('jwt-simple');
 
-
 //Constructor
 function UserRepository()
 {
@@ -59,6 +58,24 @@ UserRepository.prototype.updateUserItems = function(token, items)
     });
 };
 
+UserRepository.prototype.levelUpUser = function(token, parameters, xpNextLevel)
+{
+    getUser(token, function(user){
+        user.currentXP = parameters.currentXP;
+        user.currentLevel = parameters.currentLevel;
+        user.XPNextLevel = xpNextLevel;
+        user.stamina += parameters.stamina;
+        user.hype += parameters.hype;
+
+        user.save(function (err)
+        {
+            if (err)
+            {
+                console.log("Error when levelUp user in database: ", err);
+            }
+        });
+    })
+};
 //Private method
 var getUser = function(token, callback)
 {
