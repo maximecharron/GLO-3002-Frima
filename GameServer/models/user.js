@@ -10,7 +10,13 @@ userSchema.add({
     password : String,
     token : String,
     expiration : Number,
-    items : [itemSchema]
+    items : [itemSchema],
+    currentXP: Number,
+    pointNextLevel: Number,
+    XPNextLevel: Number,
+    level: Number,
+    stamina: Number,
+    hype: Number
 },{ strict : false });
 
 userSchema.methods.toDTO = function (withToken) {
@@ -20,7 +26,13 @@ userSchema.methods.toDTO = function (withToken) {
         id: obj._id,
         username : obj.username,
         email: obj.email,
-        items: obj.items
+        items: obj.items,
+        currentXP: obj.currentXP,
+        pointNextLevel: obj.pointNextLevel,
+        XPNextLevel: obj.XPNextLevel,
+        level: obj.level,
+        stamina: obj.stamina,
+        hype: obj.hype
     };
 
     if(withToken){

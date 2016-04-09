@@ -1,5 +1,6 @@
 var LocalStrategy = require('passport-local').Strategy;
 var User = require('../models/user').model;
+var userConfig = require('./../config/userConfig.js');
 var moment = require('moment');
 var jwt = require('jwt-simple');
 
@@ -98,6 +99,12 @@ module.exports = function (passport, app)
                                 newUser.email = email;
                                 newUser.username = request.body.username;
                                 newUser.password = newUser.generateHash(password);
+                                newUser.currentXP = userConfig.currentXP;
+                                newUser.pointNextLevel = userConfig.pointNextLevel;
+                                newUser.XPNextLevel = userConfig.XPNextLevel;
+                                newUser.level = userConfig.level;
+                                newUser.stamina = userConfig.stamina;
+                                newUser.hype = userConfig.hype;
                                 newUser.save(function (error)
                                 {
                                     if (error)
