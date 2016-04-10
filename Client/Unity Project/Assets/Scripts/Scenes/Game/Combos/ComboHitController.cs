@@ -21,6 +21,8 @@ namespace Assets.Scripts.Scenes.Game.Combos
         public int ComboHitZonePoolSize;
         public GameObject ComboBonusBubble;
         public int ComboBonusBubblePoolSize;
+        public GameObject HitFeedbackBubble;
+        public int HitFeedbackBubblePoolSize;
         public AudioClip SequenceAchievedAudioClip;
 
         public Action<ComboHitSequence> OnComboHitCompleted { get; set; }
@@ -46,7 +48,9 @@ namespace Assets.Scripts.Scenes.Game.Combos
             hitZonePool.OnCheckIsAvailable = IsComboHitZonePoolItemAvailableCallback;
             UnityObjectPool bonusBubblePool = new UnityObjectPool(ComboBonusBubble, ComboBonusBubblePoolSize);
             bonusBubblePool.OnCheckIsAvailable = IsComboBonusBubblePoolItemAvailableCallback;
-            this.hitSequenceController = new ComboHitSequenceController(hitZonePool, bonusBubblePool, ComboHitZone.transform.localPosition.z);
+            UnityObjectPool hitFeedbackBubblePool = new UnityObjectPool(HitFeedbackBubble, HitFeedbackBubblePoolSize);
+            hitFeedbackBubblePool.OnCheckIsAvailable = IsHitFeedbackBubblePoolItemAvailableCallback;
+            this.hitSequenceController = new ComboHitSequenceController(hitZonePool, bonusBubblePool, hitFeedbackBubblePool, ComboHitZone.transform.localPosition.z);
             this.hitSequenceController.OnHitZoneClicked = OnHitZoneClickedCallback;
             this.hitSequenceController.OnSequenceAchieved = OnSequenceAchievedCallback;
             this.hitSequenceController.OnSequenceTerminated = OnSequenceTerminatedCallback;
@@ -62,6 +66,12 @@ namespace Assets.Scripts.Scenes.Game.Combos
         {
             ComboBonusBubbleController comboBonusBubbleController = ((GameObject)unityObject).GetComponent<ComboBonusBubbleController>();
             return !comboBonusBubbleController.Active;
+        }
+
+        private bool IsHitFeedbackBubblePoolItemAvailableCallback(UnityEngine.Object unityObject)
+        {
+            ComboHitFeedbackBubbleController comboHitFeedbackController = ((GameObject)unityObject).GetComponent<ComboHitFeedbackBubbleController>();
+            return !comboHitFeedbackController.Active;
         }
 
         private void CreateHitSequences()

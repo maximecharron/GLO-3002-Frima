@@ -37,12 +37,14 @@ namespace Assets.Scripts.Scenes.Game.Combos
         }
         private UnityObjectPool hitZonePool;
         private UnityObjectPool bonusBubblePool;
+        private UnityObjectPool hitFeedbackBubblePool;
         private float baseHitZoneZPosition;
 
-        public ComboHitSequenceController(UnityObjectPool hitZonePool, UnityObjectPool bonusBubblePool, float baseHitZoneZPosition)
+        public ComboHitSequenceController(UnityObjectPool hitZonePool, UnityObjectPool bonusBubblePool, UnityObjectPool hitFeedbackBubblePool, float baseHitZoneZPosition)
         {
             this.hitZonePool = hitZonePool;
             this.bonusBubblePool = bonusBubblePool;
+            this.hitFeedbackBubblePool = hitFeedbackBubblePool;
             this.baseHitZoneZPosition = baseHitZoneZPosition;
         }
 
@@ -115,6 +117,7 @@ namespace Assets.Scripts.Scenes.Game.Combos
 
         private void ProcessHitZoneClicked(ComboHitZoneController hitZoneController)
         {
+            ShowHitFeedbackText();
             hitZoneController.PlayHitSound((float)hitSequence.NextHitZoneIndex / hitSequence.HitZones.Count);
             hitSequence.MoveNext();
         }
@@ -161,6 +164,20 @@ namespace Assets.Scripts.Scenes.Game.Combos
             else
             {
                 return new Color(1, 0, 153f / 255f);
+            }
+        }
+
+        private void ShowHitFeedbackText()
+        {
+            try
+            {
+                GameObject hitFeedbackBubble = (GameObject)hitFeedbackBubblePool.GetNext();
+                ComboHitFeedbackBubbleController hitFeedbackBubbleController = hitFeedbackBubble.GetComponent<ComboHitFeedbackBubbleController>();
+                hitFeedbackBubbleController.Show(Camera.main.GetMousePosition(), hitSequence.NextHitZoneIndex + 1);
+            }
+            catch (PoolExhaustedException)
+            {
+                // Intentionally blank
             }
         }
     }

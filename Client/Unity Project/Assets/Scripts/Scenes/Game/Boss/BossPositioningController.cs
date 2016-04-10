@@ -9,7 +9,7 @@ namespace Assets.Scripts.Scenes.Game.Boss
     class BossPositioningController : MonoBehaviour
     {
         public const float BOSS_RELATIVE_HEIGHT = 1f;
-        public const float BOSS_POSITION_FROM_BOTTOM = 90;
+        public const float BOSS_POSITION_FROM_BOTTOM = 50;
 
         void Start()
         {

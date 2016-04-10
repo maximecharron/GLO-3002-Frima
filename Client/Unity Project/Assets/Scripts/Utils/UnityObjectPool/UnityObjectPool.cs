@@ -9,7 +9,7 @@ namespace Assets.Scripts.Utils.UnityObjectPool
 {
     public class UnityObjectPool
     {
-        public Action<UnityEngine.Object> OnObjectPoolInstantiate { get; set; }
+        public Action<UnityEngine.Object> OnPoolItemInstantiate { get; set; }
         public Func<UnityEngine.Object, bool> OnCheckIsAvailable { get; set; }
 
         private UnityEngine.Object referenceObject;
@@ -42,25 +42,37 @@ namespace Assets.Scripts.Utils.UnityObjectPool
 
         private UnityEngine.Object InstantiatePoolObjects()
         {
-            UnityEngine.Object newPoolObject = referenceObject.Clone();
-            if (OnObjectPoolInstantiate != null)
+            UnityEngine.Object newObject = referenceObject.Clone();
+            if (OnPoolItemInstantiate != null)
             {
-                OnObjectPoolInstantiate(newPoolObject);
+                OnPoolItemInstantiate(newObject);
             }
-            return newPoolObject;
+            return newObject;
         }
 
         public UnityEngine.Object GetNext()
         {
-            foreach (UnityEngine.Object gameObject in poolObjects)
+            foreach (UnityEngine.Object unityObject in poolObjects)
             {
-                if (OnCheckIsAvailable(gameObject))
+                if (IsItemAvailable(unityObject))
                 {
-                    return gameObject;
+                    return unityObject;
                 }
             }
 
             throw new PoolExhaustedException();
+        }
+
+        private bool IsItemAvailable(UnityEngine.Object unityObject)
+        {
+            if (OnCheckIsAvailable == null && unityObject.GetType() == typeof(GameObject))
+            {
+                return !((GameObject)unityObject).activeSelf;
+            }
+            else
+            {
+                return OnCheckIsAvailable(unityObject);
+            }
         }
 
     }

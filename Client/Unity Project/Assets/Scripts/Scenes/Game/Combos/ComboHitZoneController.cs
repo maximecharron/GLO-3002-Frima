@@ -44,11 +44,13 @@ namespace Assets.Scripts.Scenes.Game.Combos
         }
 
         private bool fadingIn;
+        private ComboHitFeedbackBubbleController comboHitFeedbackBubbleController;
 
         // Use this for initialization
         void Start()
         {
             fadingIn = true;
+            comboHitFeedbackBubbleController = this.GetComponentInChildren<ComboHitFeedbackBubbleController>(true);
         }
 
         void Update()

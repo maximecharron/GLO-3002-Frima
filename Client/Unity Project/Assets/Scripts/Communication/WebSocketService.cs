@@ -42,6 +42,10 @@ namespace Assets.Scripts.Communication
 
         private void ReceiveCommands()
         {
+            if (webSocket == null)
+            {
+                return;
+            }
             String jsonData = webSocket.RecvString();
             if (jsonData != null)
             {

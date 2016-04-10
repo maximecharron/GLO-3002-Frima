@@ -14,8 +14,10 @@ namespace Assets.Scripts.Scenes.Game
 
         // Configurable script parameters
         public float Duration;
-        private Vector3 initialLocalPosition;
-        private Vector3 targetLocalPosition;
+
+        private Vector3 targetPosition;
+        private Vector3 initialPosition;
+
 
         public bool Active {
             get {
@@ -23,7 +25,7 @@ namespace Assets.Scripts.Scenes.Game
             }
         }
 
-        private float startTime;
+        private float startTime = float.MinValue;
 
         void Update()
         {
@@ -46,21 +48,46 @@ namespace Assets.Scripts.Scenes.Game
 
         private void AnimatePosition()
         {
-            float yPosition = initialLocalPosition.y + (targetLocalPosition.y - initialLocalPosition.y) * AnimationUtils.ExponentialEaseOut(Time.time - startTime, Duration);
-            this.transform.localPosition = new Vector3(targetLocalPosition.x, yPosition, targetLocalPosition.z);
+            RectTransform transform = this.GetComponent<RectTransform>();
+            float animationCurveValue = AnimationUtils.ExponentialEaseOut(Time.time - startTime, Duration);
+            transform.position = initialPosition + (targetPosition - initialPosition) * animationCurveValue;
         }
 
-        public void Show(Vector2 position, string value, Color textColor)
+        public void Show(Vector2 position, string value, Color? textColor = null, Vector2? targetPosition = null)
         {
-            this.transform.position = position.ToVector3(this.transform.position.z);
-            initialLocalPosition = this.transform.localPosition;
-            targetLocalPosition = new Vector3(MathUtils.ParityGet(Count, Random.Range(-180, -100), Random.Range(100, 180)), 185, initialLocalPosition.z);
+            InitPositioning(position, targetPosition);
+            InitText(value, textColor);
             startTime = Time.time;
-            Text text = GetComponentInChildren<Text>();
-            text.text = value;
-            text.color = textColor;
             Count += 1;
             this.gameObject.SetActive(true);
+        }
+
+        private void InitPositioning(Vector2 position, Vector2? targetPosition)
+        {
+            this.transform.position = position.ToVector3(this.transform.position.z);
+            initialPosition = this.transform.position;
+            if (targetPosition == null)
+            {
+                RectTransform transform = this.GetComponent<RectTransform>();
+                Canvas canvas = FindObjectOfType<Canvas>();
+                this.targetPosition = canvas.transform.TransformPoint(new Vector3(Random.Range(-180, 180), 185, transform.localPosition.z));
+            }
+            else
+            {
+                this.targetPosition = targetPosition.Value.ToVector3(transform.position.z);
+            }
+        }
+
+        private void InitText(string value, Color? textColor = null)
+        {
+            Text text = GetComponentInChildren<Text>(true);
+            text.text = value;
+            if (textColor != null) {
+                text.color = textColor.Value;
+            } else
+            {
+                text.color = Color.black;
+            }
         }
     }
 }

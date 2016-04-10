@@ -18,15 +18,15 @@ namespace Assets.Scripts.Scenes.Game.Boss
 
     public class BossController : MonoBehaviour
     {
-        public const int DEFAULT_ATTACK_VALUE = 10000;
+        public const int DEFAULT_ATTACK_VALUE = 1000;
         private const int KNOCK_OUT_STATE_PRIORITY = 1;
         private const int KNOCK_OUT_STATE_ANIMATION_PRIORITY = 1;
         private const int COMBO_HIT_STATE_PRIORITY = 2;
         private const int COMBO_HIT_STATE_ANIMATION_PRIORITY = 2;
-        private const int HIT_STATE_PRIORITY = 3;
-        private const int HIT_STATE_ANIMATION_PRIORITY = 3;
-        private const int HIT_MISS_STATE_PRIORITY = 4;
-        private const int HIT_MISS_STATE_ANIMATION_PRIORITY = 4;
+        private const int HIT_MISS_STATE_PRIORITY = 3;
+        private const int HIT_MISS_STATE_ANIMATION_PRIORITY = 3;
+        private const int HIT_STATE_PRIORITY = 4;
+        private const int HIT_STATE_ANIMATION_PRIORITY = 4;
         private const int IDLE_STATE_PRIORITY = 5;
         private const int IDLE_STATE_ANIMATION_PRIORITY = 5;
 
