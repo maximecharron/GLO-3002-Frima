@@ -18,15 +18,15 @@ namespace Assets.Scripts.Scenes.Game.Boss
 
     public class BossController : MonoBehaviour
     {
-        public const int DEFAULT_ATTACK_VALUE = 1000;
+        public const int DEFAULT_ATTACK_VALUE = 10000;
         private const int KNOCK_OUT_STATE_PRIORITY = 1;
         private const int KNOCK_OUT_STATE_ANIMATION_PRIORITY = 1;
-        private const int HIT_MISS_STATE_PRIORITY = 2;
-        private const int HIT_MISS_STATE_ANIMATION_PRIORITY = 2;
-        private const int COMBO_HIT_STATE_PRIORITY = 3;
-        private const int COMBO_HIT_STATE_ANIMATION_PRIORITY = 3;
-        private const int HIT_STATE_PRIORITY = 4;
-        private const int HIT_STATE_ANIMATION_PRIORITY = 4;
+        private const int COMBO_HIT_STATE_PRIORITY = 2;
+        private const int COMBO_HIT_STATE_ANIMATION_PRIORITY = 2;
+        private const int HIT_STATE_PRIORITY = 3;
+        private const int HIT_STATE_ANIMATION_PRIORITY = 3;
+        private const int HIT_MISS_STATE_PRIORITY = 4;
+        private const int HIT_MISS_STATE_ANIMATION_PRIORITY = 4;
         private const int IDLE_STATE_PRIORITY = 5;
         private const int IDLE_STATE_ANIMATION_PRIORITY = 5;
 
@@ -60,8 +60,8 @@ namespace Assets.Scripts.Scenes.Game.Boss
         private SpriteAnimationSequence knockOutHitSequence = new SpriteAnimationSequence(new List<int> { 20, 37 }, 2, 3);
 
         private WebSocketService webSocketService;
-        private int currentBossLife = 100;
-        private int maximumBossLife = 100;
+        private int currentBossLife = 100000;
+        private int maximumBossLife = 100000;
 
         void Start()
         {
@@ -129,7 +129,6 @@ namespace Assets.Scripts.Scenes.Game.Boss
 
         public void ComboHit()
         {
-            bossStateController.RemoveAllStates(idleState);
             bossStateController.AddState(comboHitState);
         }
 
@@ -176,14 +175,12 @@ namespace Assets.Scripts.Scenes.Game.Boss
         }
         private void OnKnockOutStateActivateCallback(CharacterState sender)
         {
-            Debug.Log("Init");
             BossDeathController.InitKill();
            
         }
 
         public bool OnKnockOutAnimationSequenceEndCallback(CharacterState sender)
         {
-            Debug.Log("Finish");
             BossDeathController.FinishKill();
             return true;
         }

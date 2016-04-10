@@ -70,7 +70,6 @@ namespace Assets.Scripts.Scenes
 
         private void ProcessFailedLogin(WWW request)
         {
-            Debug.Log(String.Format("Error: Response Headers: {0}.", request.responseHeaders.ToFormattatedString()));
             if (request.GetStatusCode() == HttpStatusCode.Unauthorized)
             {
                 LoginErrorLabel.text = "Invalid username or password.";

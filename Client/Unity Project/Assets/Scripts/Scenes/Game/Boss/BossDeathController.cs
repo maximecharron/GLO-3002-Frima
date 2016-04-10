@@ -12,7 +12,7 @@ namespace Assets.Scripts.Scenes.Game.Boss
 
         //Configurable script parameters
         public BossDeathExplosionController BossDeathExplosionController;
-        public Image SceneBackground;
+        public GameObject SceneBackground;
 
         public delegate void BossDeathStartEventHandler();
         public event BossDeathStartEventHandler OnBossDeathStart;
@@ -21,10 +21,11 @@ namespace Assets.Scripts.Scenes.Game.Boss
 
         private bool killFinishAnimationStarted = false;
         private DateTime killFinishAnimationDate;
+        private Vector3 moveDirection;
 
         public void InitKill()
         {
-            SceneBackground.color = Color.black;
+            SceneBackground.SetActive(false);
             BossDeathExplosionController.Explode();
             OnBossDeathStart();
         }
@@ -33,18 +34,27 @@ namespace Assets.Scripts.Scenes.Game.Boss
         {
             if (!killFinishAnimationStarted)
             {
-                Rigidbody2D rigibody2d = this.gameObject.AddComponent<Rigidbody2D>();
-                rigibody2d.gravityScale = KILL_ANIMATION_GRAVITY_SCALE;
+                moveDirection = Vector3.zero;
                 killFinishAnimationStarted = true;
                 killFinishAnimationDate = DateTime.Now;
             }
         }
 
+        private void ApplyGravity()
+        {
+            float gravityDelta = Physics2D.gravity.y * Time.deltaTime;
+            moveDirection.y = moveDirection.y + gravityDelta;
+            this.transform.localPosition += moveDirection;
+        }
+
         void Update()
         {
-            if (killFinishAnimationStarted && (DateTime.Now - killFinishAnimationDate).TotalSeconds > KILL_ANIMATION_WAIT_TIME)
+            if (killFinishAnimationStarted)
             {
-                OnBossDeathEnd();
+                ApplyGravity();
+                if ((DateTime.Now - killFinishAnimationDate).TotalSeconds > KILL_ANIMATION_WAIT_TIME) {
+                    OnBossDeathEnd();
+                }
             }
         }
     }

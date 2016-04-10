@@ -26,7 +26,6 @@ namespace Assets.Scripts.CharacterControl
             }
             if (!states.Contains(state))
             {
-                Debug.Log(String.Format("Addeded: {0}", state.StateName));
                 states.Add(state);
                 AddStateToHistory(state); 
             }
@@ -52,7 +51,6 @@ namespace Assets.Scripts.CharacterControl
         {
             if (states.Contains(state))
             {
-                Debug.Log(String.Format("Removed: {0}", state.StateName));
                 state.Deactivate();
                 states.Remove(state);
             }
@@ -95,15 +93,15 @@ namespace Assets.Scripts.CharacterControl
 
         private void ExecuteActions()
         {
-            foreach (CharacterState state in states)
+            for (int i = 0; i < states.Count; i++)
             {
-                if (state.IsActivable(states)) {
-                    state.Activate();
-                    state.DoAction();
+                if (states[i].IsActivable(states)) {
+                    states[i].Activate();
+                    states[i].DoAction();
                 }
                 else
                 {
-                    state.Deactivate();
+                    states[i].Deactivate();
                 }
             }
         }

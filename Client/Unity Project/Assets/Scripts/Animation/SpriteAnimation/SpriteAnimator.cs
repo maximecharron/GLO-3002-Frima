@@ -25,6 +25,7 @@ namespace Assets.Scripts.Animation.SpriteAnimation
             this.material = material;
             this.spriteSheetColumnCount = columnCount;
             this.Sequences = new List<SpriteAnimationSequence>();
+            this.Settings = new SpriteAnimationSettings();
         }
 
         public void Reset()

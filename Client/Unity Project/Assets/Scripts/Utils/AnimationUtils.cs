@@ -10,7 +10,7 @@ namespace Assets.Scripts.Utils
     {
         public static float ExponentialEaseOut(float ElaspedTime, float Duration)
         {
-            return Mathf.Pow((ElaspedTime), 1f / 5f) / Mathf.Pow(Duration, 1f / 5f);
+            return 1f * (-Mathf.Pow(2f, -10f * ElaspedTime / Duration) + 1f);
         }
 
         public static float LinearTween(float ElapsedTime, float Duration)
