@@ -58,7 +58,7 @@ module.exports = function (passport, app)
                             return done(err);
                         }
 
-                        return done(null, user.toDTO(true, true));
+                        return done(null, user.toDTO(true));
                     });
                 });
             });
