@@ -64,14 +64,12 @@ describe("bossCommunicationService", function () {
 
             var bossCommunicationService = new BossCommunicationService(webSocketServerStub, lootServiceStub, userServiceStub);
             var sendSpy = chai.spy.on(client, 'send');
-            var closeSpy = chai.spy.on(client, 'close');
 
             //Act
             bossCommunicationService.broadcastBossDead(bossStub);
 
             //Assert
             expect(sendSpy).to.have.been.called.exactly(2);
-            expect(closeSpy).to.have.been.called.once;
         });
     });
 
