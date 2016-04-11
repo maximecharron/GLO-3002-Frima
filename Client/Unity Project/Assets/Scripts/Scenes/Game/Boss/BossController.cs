@@ -233,7 +233,7 @@ namespace Assets.Scripts.Scenes.Game.Boss
             else if (value <= 0)
             {
                 value = 0;
-                //ProcessBossDeath();
+                ProcessBossDeath();
             }
             currentBossLife = value;
             HealthPointSliderController.Value = value;

@@ -37,7 +37,6 @@ namespace Assets.Scripts.Scenes.Game
         public bool ReceiveIntercept(CommandDTO commandDTO)
         {
             BossStatusUpdateCommandDTO bossStatusUpdateCommandDTO = (BossStatusUpdateCommandDTO)commandDTO;
-            Debug.Log(bossStatusUpdateCommandDTO.command.parameters.currentBossLife);
             bossStatusUpdateCommandDTO.command.parameters.currentBossLife -= postponedAttackValue;
             return true;
         }
