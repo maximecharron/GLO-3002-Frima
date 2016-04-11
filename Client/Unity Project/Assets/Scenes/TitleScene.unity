@@ -227,7 +227,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1408880789}
-  m_RootOrder: 0
+  m_RootOrder: 1
 --- !u!1001 &485836424
 Prefab:
   m_ObjectHideFlags: 0
@@ -534,6 +534,45 @@ Camera:
   m_PrefabParentObject: {fileID: 2058306, guid: bd10bb054726a2746b084948f19b34e7,
     type: 2}
   m_PrefabInternal: {fileID: 691736746}
+--- !u!1 &873143958
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 873143959}
+  - 114: {fileID: 873143960}
+  m_Layer: 0
+  m_Name: WebSocketService
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &873143959
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 873143958}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1408880789}
+  m_RootOrder: 0
+--- !u!114 &873143960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 873143958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aa9bfb83f4a93b48a378274687c8328, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1025823893
 GameObject:
   m_ObjectHideFlags: 0
@@ -709,6 +748,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 100}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 873143959}
   - {fileID: 456208543}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -724,6 +764,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HttpService: {fileID: 456208542}
+  WebSocketService: {fileID: 873143960}
 --- !u!82 &1408880791
 AudioSource:
   m_ObjectHideFlags: 0

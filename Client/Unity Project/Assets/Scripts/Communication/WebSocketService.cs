@@ -14,7 +14,6 @@ namespace Assets.Scripts.Communication
         private const string WEB_SOCKET_SERVER_URI = "wss://frima-server-1.herokuapp.com";
 
         public String SessionToken { get; set; }
-        public Action OnInitializationComplete { get; set; }
 
         private bool initialized = false;
         private WebSocket webSocket;
@@ -22,48 +21,32 @@ namespace Assets.Scripts.Communication
         private Dictionary<Type, ICommandInterceptor> commandReceiveInterceptors = new Dictionary<Type, ICommandInterceptor>();
         private Dictionary<Type, ICommandInterceptor> commandSendInterceptors = new Dictionary<Type, ICommandInterceptor>();
 
-        void Update()
+        void Start()
         {
-            ReceiveCommands();
-        }
-
-        public void OnDestroy()
-        {
-            webSocket.Close();
-        }
-
-        public void Init()
-        {
+            DontDestroyOnLoad(this);
             webSocket = new WebSocket(new Uri(WEB_SOCKET_SERVER_URI));
             StartCoroutine(webSocket.Connect());
             String jsonData = webSocket.RecvString();
             InvokeRepeating("KeepConnectionAlive", 1f, 30f);
         }
 
+        void Update()
+        {
+            ReceiveCommands();
+        }
+
+        public void Destroy()
+        {
+            webSocket.Close();
+        }
+
         private void ReceiveCommands()
         {
-            if (webSocket == null)
-            {
-                return;
-            }
             String jsonData = webSocket.RecvString();
             if (jsonData != null)
             {
                 CommandDefinitionDTO commandDefinitionDTO = JsonUtility.FromJson<CommandDefinitionDTO>(jsonData);
                 DispatchCommand(commandDefinitionDTO, jsonData);
-                CompleteInitialization();
-            }
-        }
-
-        private void CompleteInitialization()
-        {
-            if (!initialized)
-            {
-                initialized = true;
-                if (OnInitializationComplete != null)
-                {
-                    OnInitializationComplete();
-                }
             }
         }
 
@@ -71,7 +54,6 @@ namespace Assets.Scripts.Communication
         {
             if (!registeredCommands.ContainsKey(commandDefinitionDTO.command.name))
             {
-                Debug.LogWarning(String.Format("Received a command that is not currently registered: {0}.", commandDefinitionDTO.command.name));
                 return;
             }
             CommandRegistration commandRegistration = registeredCommands[commandDefinitionDTO.command.name];

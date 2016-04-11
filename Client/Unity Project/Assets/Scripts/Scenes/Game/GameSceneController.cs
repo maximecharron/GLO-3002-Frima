@@ -12,30 +12,35 @@ namespace Assets.Scripts.Scenes.Game
     public class GameSceneController : SceneController
     {
         // Configurable script parameters
-        public WebSocketService WebSocketService;
         public BossController BossController;
         public BossDeathController BossDeathController;
         public GameObject Boss;
         public GameObject LoadingSceneOverlay;
         public Canvas Canvas;
 
+        private WebSocketService webSocketService;
+
         void Start() {
-            //GameController gameController = FindObjectOfType<GameController>();
-            //WebSocketService.SessionToken = gameController.SessionToken;
-            BossDeathController.OnBossDeathEnd += OnBossDead;
+            GameController gameController = FindObjectOfType<GameController>();
+            BossDeathController.OnBossDeathStart += OnBossDeathStartCallback;
+            BossDeathController.OnBossDeathEnd += OnBossDeathEndCallback;
             InitCommunication();
         }
 
         private void InitCommunication()
         {
-            WebSocketService.OnInitializationComplete = OnCommunicationInitializationComplete;
-            WebSocketService.RegisterCommand(BossStatusUpdateCommandDTO.COMMAND_NAME, BossController.BossStatusUpdateCallback, typeof(BossStatusUpdateCommandDTO));
-            WebSocketService.Init();
+            webSocketService = FindObjectOfType<WebSocketService>();
+            webSocketService.RegisterCommand(BossStatusUpdateCommandDTO.COMMAND_NAME, BossController.BossStatusUpdateCallback, typeof(BossStatusUpdateCommandDTO));
         }
 
-        void OnDestroy()
+        void Destroy()
         {
-            WebSocketService.UnregisterCommand(BossStatusUpdateCommandDTO.COMMAND_NAME);
+            CloseCommunication();
+        }
+
+        private void CloseCommunication()
+        {
+            webSocketService.UnregisterCommand(BossStatusUpdateCommandDTO.COMMAND_NAME);
         }
 
         private void OnCommunicationInitializationComplete()
@@ -48,7 +53,12 @@ namespace Assets.Scripts.Scenes.Game
             SceneManager.LoadScene(MENU_SCENE_NAME);
         }
 
-        private void OnBossDead()
+        private void OnBossDeathStartCallback()
+        {
+            CloseCommunication();
+        }
+
+        private void OnBossDeathEndCallback()
         {
             SceneManager.LoadScene(VICTORY_SCENE_NAME);
         }

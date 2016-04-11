@@ -40,8 +40,15 @@ namespace Assets.Scripts.Scenes.Game.Boss
         public AudioClip KnockOutFallAudioClip;
         public AudioClip KnockOutVoiceAudioClip;
 
-        public delegate void BossCreationDateUpdateEventHandler(DateTime creationDate);
-        public event BossCreationDateUpdateEventHandler OnBossCreationDateUpdate;
+        public delegate void BossInitCompleteEventHandler();
+        public event BossInitCompleteEventHandler OnBossInitComplete;
+
+        public DateTime CreationDate { get; set; }
+
+        private WebSocketService webSocketService;
+        private int currentBossLife = 100000;
+        private int maximumBossLife = 100000;
+        private bool initializationComplete = false;
 
         private CharacterStateController bossStateController;
         private CharacterState idleState;
@@ -58,10 +65,6 @@ namespace Assets.Scripts.Scenes.Game.Boss
         private SpriteAnimationSequence comboHitSequence2 = new SpriteAnimationSequence(new List<int> { 23, 27, 29, 30, 31 }, 5, 1);
         private SpriteAnimationSequence hitMissSequence = new SpriteAnimationSequence(new List<int> { 16 }, 2, 1);
         private SpriteAnimationSequence knockOutHitSequence = new SpriteAnimationSequence(new List<int> { 20, 37 }, 2, 3);
-
-        private WebSocketService webSocketService;
-        private int currentBossLife = 100000;
-        private int maximumBossLife = 100000;
 
         void Start()
         {
@@ -176,7 +179,6 @@ namespace Assets.Scripts.Scenes.Game.Boss
         private void OnKnockOutStateActivateCallback(CharacterState sender)
         {
             BossDeathController.InitKill();
-           
         }
 
         public bool OnKnockOutAnimationSequenceEndCallback(CharacterState sender)
@@ -187,17 +189,27 @@ namespace Assets.Scripts.Scenes.Game.Boss
 
         public void BossStatusUpdateCallback(CommandDTO commandDTO)
         {
-            var bossStatusUpateParams = ((BossStatusUpdateCommandDTO)commandDTO).command.parameters;
-            OnBossCreationDateUpdate(DateTimeUtils.ConvertFromJavaScriptDate(bossStatusUpateParams.creationDate));
-            if (bossStatusUpateParams.currentBossLife <= 0 || (BossStatus)bossStatusUpateParams.status == BossStatus.DEAD)
+            var bossStatusUpdateParams = ((BossStatusUpdateCommandDTO)commandDTO).command.parameters;
+            if (bossStatusUpdateParams.currentBossLife <= 0 || (BossStatus)bossStatusUpdateParams.status == BossStatus.DEAD)
             {
                 ProcessBossDeath();
             }
             else
             {
-                maximumBossLife = bossStatusUpateParams.maximumBossLife;
+                CompleteInitialization(bossStatusUpdateParams);
+                maximumBossLife = bossStatusUpdateParams.maximumBossLife;
                 HealthPointSliderController.MaxValue = maximumBossLife;
-                UpdateBossLife(bossStatusUpateParams.currentBossLife);
+                UpdateBossLife(bossStatusUpdateParams.currentBossLife);
+            }
+        }
+
+        private void CompleteInitialization(BossStatusUpdateCommandDTO.BossStatusUpdateCommand.BossStatusUpdateParameters bossStatusUpdateParams)
+        {
+            if (!initializationComplete)
+            {
+                initializationComplete = true;
+                CreationDate = DateTimeUtils.ConvertFromJavaScriptDate(bossStatusUpdateParams.creationDate);
+                OnBossInitComplete();
             }
         }
 
@@ -221,7 +233,7 @@ namespace Assets.Scripts.Scenes.Game.Boss
             else if (value <= 0)
             {
                 value = 0;
-                ProcessBossDeath();
+                //ProcessBossDeath();
             }
             currentBossLife = value;
             HealthPointSliderController.Value = value;

@@ -15,7 +15,7 @@ namespace Assets.Scripts.Scenes
         public void Start()
         {
             GameStatisticsController gameStatisticsController = FindObjectOfType<GameStatisticsController>();
-            VictoryTimeText.text = String.Format("Boss killed in {0:0.} minutes!", gameStatisticsController.CalculateBossKillTime().TotalMinutes);
+            VictoryTimeText.text = String.Format("Boss killed in {0:0.} minutes!", gameStatisticsController.BossLifeSpan.TotalMinutes);
         }
 
         public void OnPlayAgainButtonPointerClick()

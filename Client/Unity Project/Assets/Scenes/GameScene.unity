@@ -327,7 +327,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1025823895}
-  m_RootOrder: 1
+  m_RootOrder: 0
 --- !u!114 &142168437
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2635,7 +2635,7 @@ RectTransform:
   - {fileID: 1938948518}
   - {fileID: 112632943}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
@@ -2818,7 +2818,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 1025823895}
   - 114: {fileID: 1025823894}
-  - 114: {fileID: 1025823897}
   - 82: {fileID: 1025823896}
   m_Layer: 0
   m_Name: Scene
@@ -2838,7 +2837,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9c5d60ae2691dc4a9eb6e134404ac7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WebSocketService: {fileID: 2015887798}
   BossController: {fileID: 2085029932}
   BossDeathController: {fileID: 2085029942}
   Boss: {fileID: 2085029928}
@@ -2854,10 +2852,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 100}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 2015887799}
   - {fileID: 142168436}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 3
 --- !u!82 &1025823896
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2932,19 +2929,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
---- !u!114 &1025823897
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1025823893}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f74d7ea167634fa42b5df9cd66eac955, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  BossController: {fileID: 2085029932}
-  BossDeathController: {fileID: 2085029942}
 --- !u!1 &1050043614
 GameObject:
   m_ObjectHideFlags: 0
@@ -4187,8 +4171,8 @@ GameObject:
   - 224: {fileID: 1719111842}
   - 222: {fileID: 1719111845}
   - 114: {fileID: 1719111844}
-  - 114: {fileID: 1719111846}
   - 114: {fileID: 1719111843}
+  - 114: {fileID: 1719111846}
   m_Layer: 5
   m_Name: MusicToggleButton
   m_TagString: Untagged
@@ -4217,8 +4201,7 @@ RectTransform:
 --- !u!114 &1719111843
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11433446, guid: 20bfdeda27b873f4795dfd15d5bd9b60,
-    type: 2}
+  m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1719111841}
   m_Enabled: 1
@@ -4254,8 +4237,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1025823894}
-        m_MethodName: OnMusicToggleButtonClick
+      - m_Target: {fileID: 1719111846}
+        m_MethodName: OnButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4588,7 +4571,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
 --- !u!1 &1923776295
 GameObject:
   m_ObjectHideFlags: 0
@@ -4776,6 +4759,47 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Duration: 1
+--- !u!1 &1950047728
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1950047730}
+  - 114: {fileID: 1950047729}
+  m_Layer: 0
+  m_Name: ScenePersistent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1950047729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1950047728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f74d7ea167634fa42b5df9cd66eac955, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BossController: {fileID: 2085029932}
+  BossDeathController: {fileID: 2085029942}
+--- !u!4 &1950047730
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1950047728}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
 --- !u!1 &1955588798
 GameObject:
   m_ObjectHideFlags: 0
@@ -4897,45 +4921,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1979957370}
---- !u!1 &2015887797
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 2015887799}
-  - 114: {fileID: 2015887798}
-  m_Layer: 0
-  m_Name: WebSocketService
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2015887798
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2015887797}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7aa9bfb83f4a93b48a378274687c8328, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &2015887799
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2015887797}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1025823895}
-  m_RootOrder: 0
 --- !u!1 &2016672436
 GameObject:
   m_ObjectHideFlags: 0
@@ -5597,6 +5582,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BossDeathExplosionController: {fileID: 1525518240}
+  UI: {fileID: 1247456471}
   SceneBackground: {fileID: 1736281397}
 --- !u!114 &2085029943
 MonoBehaviour:

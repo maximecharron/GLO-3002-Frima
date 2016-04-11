@@ -31,7 +31,7 @@ namespace Assets.Scripts.Scenes.Game.Combos
         private ComboHitSequenceController hitSequenceController;
         private ComboHitSequence randomHitSequence;
         private float lastSequenceTime;
-        private bool enabled = true;
+        private new bool enabled = true;
 
         void Start()
         {

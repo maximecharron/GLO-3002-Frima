@@ -11,13 +11,18 @@ namespace Assets.Scripts.Scenes.Game
     {
         public DateTime BossCreationDate {get; set;}
         public DateTime BossKillDate { get; set; }
+        public TimeSpan BossLifeSpan {
+            get {
+                return BossKillDate - BossCreationDate;
+            }
+        }
         public BossController BossController;
         public BossDeathController BossDeathController;
 
         void Start()
         {
             DontDestroyOnLoad(this.gameObject);
-            BossController.OnBossCreationDateUpdate += OnBossCreationDateUpdateCallback;
+            BossController.OnBossInitComplete += OnBossInitCompleteCallback;
             BossDeathController.OnBossDeathEnd += OnBossDeadCallback;
         }
 
@@ -26,14 +31,9 @@ namespace Assets.Scripts.Scenes.Game
             this.BossKillDate = DateTime.Now;
         }
         
-        private void OnBossCreationDateUpdateCallback(DateTime bossCreationDate)
+        private void OnBossInitCompleteCallback()
         {
-            this.BossCreationDate = bossCreationDate;
-        }
-
-        public TimeSpan CalculateBossKillTime()
-        {
-            return BossKillDate - BossCreationDate;
+            this.BossCreationDate = BossController.CreationDate;
         }
     }
 

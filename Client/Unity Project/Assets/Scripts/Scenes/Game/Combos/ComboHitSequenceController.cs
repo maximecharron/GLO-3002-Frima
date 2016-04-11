@@ -7,7 +7,7 @@ using System;
 
 namespace Assets.Scripts.Scenes.Game.Combos
 {
-    public class ComboHitSequenceController : MonoBehaviour
+    public class ComboHitSequenceController
     {
         private const int GREEN_TEXT_COLOR_MULTIPLIER = 2;
         private const int BLUE_TEXT_COLOR_MULTIPLIER = 3;

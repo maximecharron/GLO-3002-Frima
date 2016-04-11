@@ -12,6 +12,7 @@ namespace Assets.Scripts.Scenes.Game.Boss
 
         //Configurable script parameters
         public BossDeathExplosionController BossDeathExplosionController;
+        public GameObject UI;
         public GameObject SceneBackground;
 
         public delegate void BossDeathStartEventHandler();
@@ -26,6 +27,7 @@ namespace Assets.Scripts.Scenes.Game.Boss
         public void InitKill()
         {
             SceneBackground.SetActive(false);
+            UI.SetActive(false);
             BossDeathExplosionController.Explode();
             OnBossDeathStart();
         }

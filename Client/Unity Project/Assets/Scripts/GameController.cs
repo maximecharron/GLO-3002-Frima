@@ -10,6 +10,7 @@ namespace Assets.Scripts
     public class GameController : MonoBehaviour
     {
         public HttpService HttpService;
+        public WebSocketService WebSocketService;
 
         public string SessionToken { get; set; }
 
@@ -32,6 +33,7 @@ namespace Assets.Scripts
         {
             this.SessionToken = token;
             HttpService.SessionToken = token;
+            WebSocketService.SessionToken = token;
         }
 
         public void ClearUserSession()
