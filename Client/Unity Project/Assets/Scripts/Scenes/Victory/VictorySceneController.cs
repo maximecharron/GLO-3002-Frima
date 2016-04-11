@@ -8,7 +8,7 @@ using System;
 
 namespace Assets.Scripts.Scenes
 {
-    public class VictoryScreenController : SceneController
+    public class VictorySceneController : SceneController
     {
         public Text VictoryTimeText;
 
