@@ -27,7 +27,6 @@ module.exports = function (passport, app)
         function (request, username, password, done)
         {
 
-
             process.nextTick(function ()
             {
                 User.findOne({'username': username}, function (error, user)
@@ -110,7 +109,7 @@ module.exports = function (passport, app)
                                     if (error)
                                     {
                                         console.log(error);
-                                        return done(error);
+                                        return done("An error occured. It may be that the username or email is already used.");
                                     }
                                     return done(null, newUser.toDTO(true));
                                 });

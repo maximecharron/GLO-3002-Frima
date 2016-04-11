@@ -3,8 +3,7 @@ var bcrypt = require('bcrypt-nodejs');
 var modelHelpers = require('./modelHelpers.js');
 var itemSchema = require("./item.js").schema;
 
-var userSchema = new mongoose.Schema();
-userSchema.add({
+var userSchema = new mongoose.Schema({
     username : { type : String, index : { unique : true, }},
     email: { type : String, index : { unique : true, }},
     password : String,
