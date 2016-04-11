@@ -38,12 +38,18 @@ BossCommunicationService.prototype.broadcastBossDead = function(theBoss)
 
             var clientId = client._ultron.id;
 
-            self.userService.addUserItems(clientId, items);
+            try
+            {
+                self.userService.addUserItems(clientId, items);
+            }
+            catch (error)
+            {
+                console.log("Impossible to add item to the user: ", error);
+            }
+
 
             client.send(bossUpdate);
             client.send(lootItems);
-            client.close();
-
         } catch (error)
         {
             console.log(error);
