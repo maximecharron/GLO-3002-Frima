@@ -30,6 +30,7 @@ redisSub.on('message', function (channel, message)
     if (channel == "bossDead")
     {
         var boss = self.bossService.getCurrentBoss();
+        console.log(boss);
         self.bossCommunicationService.broadcastBossDead(boss);
         self.bossService.reviveBoss();
     }

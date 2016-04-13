@@ -31,6 +31,8 @@ BossService.prototype.reviveBoss = function()
 
 BossService.prototype.getCurrentBoss = function()
 {
+    console.log(this);
+    console.log(this.boss);
     return this.boss;
 };
 

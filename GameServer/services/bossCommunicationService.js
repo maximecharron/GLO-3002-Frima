@@ -27,8 +27,9 @@ BossCommunicationService.prototype.createBossStatusUpdate = function(boss)
 
 BossCommunicationService.prototype.broadcastBossDead = function(theBoss)
 {
+    console.log(theBoss);
     var bossUpdate = this.createBossStatusUpdate(theBoss);
-
+    console.log(theBoss);
     this.wss.clients.forEach(function each(client)
     {
         try
