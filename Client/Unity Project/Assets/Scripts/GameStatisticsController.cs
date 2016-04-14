@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace Assets.Scripts.Scenes.Game
+namespace Assets.Scripts
 {
     public class GameStatisticsController : MonoBehaviour
     {
@@ -16,14 +16,28 @@ namespace Assets.Scripts.Scenes.Game
                 return BossKillDate - BossCreationDate;
             }
         }
-        public BossController BossController;
-        public BossDeathController BossDeathController;
+
+        private BossController BossController;
+        private BossDeathController BossDeathController;
 
         void Start()
         {
             DontDestroyOnLoad(this.gameObject);
-            BossController.OnBossInitComplete += OnBossInitCompleteCallback;
-            BossDeathController.OnBossDeathEnd += OnBossDeadCallback;
+        }
+
+        void Update()
+        {
+            BossController = FindObjectOfType<BossController>();
+            if (BossController != null)
+            {
+                BossController.OnBossInitComplete -= OnBossInitCompleteCallback;
+                BossController.OnBossInitComplete += OnBossInitCompleteCallback;
+            }
+            BossDeathController = FindObjectOfType<BossDeathController>();
+            if (BossController != null) {
+                BossDeathController.OnBossDeathEnd -= OnBossDeadCallback;
+                BossDeathController.OnBossDeathEnd += OnBossDeadCallback;
+            }
         }
 
         private void OnBossDeadCallback()

@@ -16,9 +16,9 @@ namespace Assets.Scripts.Scenes.Game.Boss
         public GameObject SceneBackground;
 
         public delegate void BossDeathStartEventHandler();
-        public event BossDeathStartEventHandler OnBossDeathStart;
+        public event BossDeathStartEventHandler OnBossDeathStart = delegate { };
         public delegate void BossDeathEndEventHandler();
-        public event BossDeathEndEventHandler OnBossDeathEnd;
+        public event BossDeathEndEventHandler OnBossDeathEnd = delegate { };
 
         private bool killFinishAnimationStarted = false;
         private DateTime killFinishAnimationDate;

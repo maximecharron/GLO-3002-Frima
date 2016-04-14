@@ -18,7 +18,7 @@ namespace Assets.Scripts.Scenes.Game.Boss
 
     public class BossController : MonoBehaviour
     {
-        public const int DEFAULT_ATTACK_VALUE = 1000;
+        public const int DEFAULT_ATTACK_VALUE = 10000;
         private const int KNOCK_OUT_STATE_PRIORITY = 1;
         private const int KNOCK_OUT_STATE_ANIMATION_PRIORITY = 1;
         private const int COMBO_HIT_STATE_PRIORITY = 2;
@@ -41,7 +41,7 @@ namespace Assets.Scripts.Scenes.Game.Boss
         public AudioClip KnockOutVoiceAudioClip;
 
         public delegate void BossInitCompleteEventHandler();
-        public event BossInitCompleteEventHandler OnBossInitComplete;
+        public event BossInitCompleteEventHandler OnBossInitComplete = delegate { };
 
         public DateTime CreationDate { get; set; }
 

@@ -25,6 +25,7 @@ namespace Assets.Scripts.Communication
         {
             DontDestroyOnLoad(this);
             webSocket = new WebSocket(new Uri(WEB_SOCKET_SERVER_URI));
+            Debug.Log("WebSocket Connect");
             StartCoroutine(webSocket.Connect());
             String jsonData = webSocket.RecvString();
             InvokeRepeating("KeepConnectionAlive", 1f, 30f);
@@ -37,6 +38,7 @@ namespace Assets.Scripts.Communication
 
         public void Destroy()
         {
+            Debug.Log("WebSocket Disconnect");
             webSocket.Close();
         }
 
@@ -45,6 +47,7 @@ namespace Assets.Scripts.Communication
             String jsonData = webSocket.RecvString();
             if (jsonData != null)
             {
+                Debug.Log(String.Format("Received: {0}", jsonData));
                 CommandDefinitionDTO commandDefinitionDTO = JsonUtility.FromJson<CommandDefinitionDTO>(jsonData);
                 DispatchCommand(commandDefinitionDTO, jsonData);
             }
@@ -91,7 +94,8 @@ namespace Assets.Scripts.Communication
                 return;
             }
             commandDTO.token = SessionToken;
-            String jsonData = JsonUtility.ToJson(commandDTO, true);
+            String jsonData = JsonUtility.ToJson(commandDTO, false);
+            Debug.Log(String.Format("Sent: {0}", jsonData));
             webSocket.SendString(jsonData);
         }
 
