@@ -18,10 +18,12 @@ namespace Assets.Scripts.Scenes.Game
         public GameObject LoadingSceneOverlay;
         public Canvas Canvas;
 
+        private GameController gameController;
         private WebSocketService webSocketService;
 
         void Start() {
-            GameController gameController = FindObjectOfType<GameController>();
+            gameController = FindObjectOfType<GameController>();
+            gameController.GameAudioEnabled = true;
             BossDeathController.OnBossDeathStart += OnBossDeathStartCallback;
             BossDeathController.OnBossDeathEnd += OnBossDeathEndCallback;
             InitCommunication();
@@ -35,6 +37,7 @@ namespace Assets.Scripts.Scenes.Game
 
         void Destroy()
         {
+            gameController.GameAudioEnabled = false;
             CloseCommunication();
         }
 

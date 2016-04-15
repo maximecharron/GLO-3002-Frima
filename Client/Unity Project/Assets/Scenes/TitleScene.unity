@@ -351,6 +351,45 @@ RectTransform:
   m_PrefabParentObject: {fileID: 22425022, guid: 20bfdeda27b873f4795dfd15d5bd9b60,
     type: 2}
   m_PrefabInternal: {fileID: 485836424}
+--- !u!1 &597912137
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 597912138}
+  - 114: {fileID: 597912139}
+  m_Layer: 0
+  m_Name: Statistics
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &597912138
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 597912137}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1408880789}
+  m_RootOrder: 2
+--- !u!114 &597912139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 597912137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f74d7ea167634fa42b5df9cd66eac955, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &620983754 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 22459136, guid: 6239ef9368031ad4588b660fa9e42cb7,
@@ -750,6 +789,7 @@ Transform:
   m_Children:
   - {fileID: 873143959}
   - {fileID: 456208543}
+  - {fileID: 597912138}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!114 &1408880790
@@ -765,6 +805,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HttpService: {fileID: 456208542}
   WebSocketService: {fileID: 873143960}
+  TitleAudioClip: {fileID: 8300000, guid: a3f73de1d6dcb414c86ca5686f3bf673, type: 3}
+  GameAudioClip: {fileID: 8300000, guid: ed2abb50aa80f4d4290a38baeeee449d, type: 3}
 --- !u!82 &1408880791
 AudioSource:
   m_ObjectHideFlags: 0
@@ -774,7 +816,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 29788fc27511f4841b6916fb26ca70ca, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 0.9
   m_Pitch: 1
