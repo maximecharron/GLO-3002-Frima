@@ -790,6 +790,7 @@ Transform:
   - {fileID: 873143959}
   - {fileID: 456208543}
   - {fileID: 597912138}
+  - {fileID: 1632413054}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!114 &1408880790
@@ -805,8 +806,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HttpService: {fileID: 456208542}
   WebSocketService: {fileID: 873143960}
-  TitleAudioClip: {fileID: 8300000, guid: a3f73de1d6dcb414c86ca5686f3bf673, type: 3}
-  GameAudioClip: {fileID: 8300000, guid: ed2abb50aa80f4d4290a38baeeee449d, type: 3}
 --- !u!82 &1408880791
 AudioSource:
   m_ObjectHideFlags: 0
@@ -816,7 +815,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: a3f73de1d6dcb414c86ca5686f3bf673, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.9
   m_Pitch: 1
@@ -881,6 +880,47 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!1 &1632413053
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1632413054}
+  - 114: {fileID: 1632413055}
+  m_Layer: 0
+  m_Name: BossStatus
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1632413054
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1632413053}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1408880789}
+  m_RootOrder: 3
+--- !u!114 &1632413055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1632413053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1747d25e184c57a43a1d27028f7f4c27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  webSocketService: {fileID: 873143960}
+  gameStatisticsService: {fileID: 597912139}
 --- !u!1001 &1728738858
 Prefab:
   m_ObjectHideFlags: 0

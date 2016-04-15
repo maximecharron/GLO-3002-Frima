@@ -20,15 +20,15 @@ namespace Assets.Scripts.Scenes.Game
         void Start()
         {
             webSocketService = FindObjectOfType<WebSocketService>();
-            webSocketService.AddSendInterceptor(this, typeof(BossAttackCommandDTO));
-            webSocketService.AddReceiveInterceptor(this, typeof(BossStatusUpdateCommandDTO));
+            webSocketService.AddSendInterceptor(this, typeof(BossAttackDTO));
+            webSocketService.AddReceiveInterceptor(this, typeof(BossStatusUpdateDTO));
         }
 
         void Update()
         {
             if (Time.time - lastBatchSendTime > BatchSendInterval && postponedAttackValue != 0)
             {
-                webSocketService.SendCommand(new BossAttackCommandDTO(postponedAttackValue), false);
+                webSocketService.SendCommand(new BossAttackDTO(postponedAttackValue), false);
                 postponedAttackValue = 0;
                 lastBatchSendTime = Time.time;
             }
@@ -36,14 +36,14 @@ namespace Assets.Scripts.Scenes.Game
 
         public bool ReceiveIntercept(CommandDTO commandDTO)
         {
-            BossStatusUpdateCommandDTO bossStatusUpdateCommandDTO = (BossStatusUpdateCommandDTO)commandDTO;
+            BossStatusUpdateDTO bossStatusUpdateCommandDTO = (BossStatusUpdateDTO)commandDTO;
             bossStatusUpdateCommandDTO.command.parameters.currentBossLife -= postponedAttackValue;
             return true;
         }
 
         public bool SendIntercept(CommandDTO commandDTO)
         {
-            BossAttackCommandDTO bossAttackCommandDTO = (BossAttackCommandDTO)commandDTO;
+            BossAttackDTO bossAttackCommandDTO = (BossAttackDTO)commandDTO;
             postponedAttackValue += bossAttackCommandDTO.command.parameters.number;
             return false;
         }

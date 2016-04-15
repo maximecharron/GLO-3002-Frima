@@ -9,6 +9,7 @@ using Assets.Scripts.Communication.DTOs;
 using Assets.Scripts.Utils;
 using System;
 using Assets.Scripts.Extensions;
+using Assets.Scripts.Services;
 
 namespace Assets.Scripts.Scenes.Registration
 {
@@ -26,24 +27,20 @@ namespace Assets.Scripts.Scenes.Registration
         public RegistrationFormValidationController FormValidationController;
         public Button RegisterButton;
 
-        private GameController GameController;
+        private GameControlService GameControlService;
         private HttpService HttpService;
 
         void Start()
         {
-            GameController = (GameController)FindObjectOfType(typeof(GameController));
-            HttpService = (HttpService)FindObjectOfType(typeof(HttpService));
+            GameControlService = FindObjectOfType<GameControlService>();
+            HttpService = FindObjectOfType<HttpService>();
 
             RegistrationErrorLabel.transform.gameObject.SetActive(false);
         }
 
-        void Update() {
-
-        }
-
         public void OnExitButtonPointerClick()
         {
-            SceneManager.LoadScene(TITLE_SCENE_NAME);
+            LoadScene(Scenes.Scene.TITLE_SCENE);
         }
 
         public void OnRegisterButtonPointerClick()
@@ -93,8 +90,8 @@ namespace Assets.Scripts.Scenes.Registration
         private void ProcessSuccessfulRegistration(WWW request)
         {
             RegistrationResultDTO resultDTO = JsonUtility.FromJson<RegistrationResultDTO>(request.text);
-            GameController.SetUserSession(resultDTO.token, resultDTO.username);
-            SceneManager.LoadScene(MENU_SCENE_NAME);
+            GameControlService.SetUserSession(resultDTO.token, resultDTO.username);
+            LoadScene(Scenes.Scene.MENU_SCENE);
         }
     }
 }

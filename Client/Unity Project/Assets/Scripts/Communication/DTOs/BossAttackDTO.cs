@@ -6,24 +6,24 @@ using System.Text;
 namespace Assets.Scripts.Communication.CommandDTOs
 {
     [Serializable]
-    public class BossAttackCommandDTO : CommandDTO
+    public class BossAttackDTO : CommandDTO
     {
         public const string COMMAND_NAME = "attack";
-        public BossAttackCommand command = new BossAttackCommand();
+        public Command command = new Command();
 
-        public BossAttackCommandDTO(Int32 number)
+        public BossAttackDTO(Int32 number)
         {
             this.command.parameters.number = number;
         }
 
         [Serializable]
-        public class BossAttackCommand
+        public class Command
         {
             public String name = COMMAND_NAME;
-            public BossAttackParameters parameters = new BossAttackParameters();
+            public Parameters parameters = new Parameters();
 
             [Serializable]
-            public class BossAttackParameters
+            public class Parameters
             {
                 public Int32 number = 10;
             }

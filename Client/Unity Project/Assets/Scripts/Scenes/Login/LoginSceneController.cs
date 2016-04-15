@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Communication;
 using Assets.Scripts.Communication.DTOs;
 using Assets.Scripts.Extensions;
+using Assets.Scripts.Services;
 using System;
 using System.Net;
 using UnityEngine;
@@ -21,19 +22,19 @@ namespace Assets.Scripts.Scenes
         public Text LoginErrorLabel;
         public Button LoginButton;
 
-        private GameController gameController;
+        private GameControlService gameControlService;
         private HttpService httpService;
 
         void Start() {
-            gameController = (GameController)FindObjectOfType(typeof(GameController));
-            httpService = (HttpService)FindObjectOfType(typeof(HttpService));
+            gameControlService = FindObjectOfType<GameControlService>();
+            httpService = FindObjectOfType<HttpService>();
             LoginErrorLabel.transform.gameObject.SetActive(false);
         }
 
 
         public void OnExitButtonPointerClick()
         {
-            SceneManager.LoadScene(TITLE_SCENE_NAME);
+            LoadScene(Scenes.Scene.TITLE_SCENE);
         }
 
         public void OnLoginButtonPointerClick()
@@ -84,8 +85,8 @@ namespace Assets.Scripts.Scenes
         private void ProcessSuccessfulLogin(WWW request)
         {
             LoginResultDTO resultDTO = JsonUtility.FromJson<LoginResultDTO>(request.text);
-            gameController.SetUserSession(resultDTO.token, resultDTO.username);
-            SceneManager.LoadScene(MENU_SCENE_NAME);
+            gameControlService.SetUserSession(resultDTO.token, resultDTO.username);
+            LoadScene(Scenes.Scene.MENU_SCENE);
         }
     }
 }

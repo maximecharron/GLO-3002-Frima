@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using Assets.Scripts.Communication;
 using Assets.Scripts.Communication.CommandDTOs;
 using Assets.Scripts.Scenes.Game.Boss;
+using Assets.Scripts.Services;
 
 namespace Assets.Scripts.Scenes.Game
 {
@@ -18,52 +19,47 @@ namespace Assets.Scripts.Scenes.Game
         public GameObject LoadingSceneOverlay;
         public Canvas Canvas;
 
-        private GameController gameController;
-        private WebSocketService webSocketService;
+        public bool AudioEnabled
+        {
+            get {
+                return GetComponent<AudioSource>().enabled;
+            }
+            set
+            {
+                GetComponent<AudioSource>().enabled = value;
+            }
+        }
+
+        private GameControlService gameControlService;
 
         void Start() {
-            gameController = FindObjectOfType<GameController>();
-            gameController.GameAudioEnabled = true;
+            gameControlService = FindObjectOfType<GameControlService>();
+            gameControlService.GlobalAudioThemeEnabled = false;
             BossDeathController.OnBossDeathStart += OnBossDeathStartCallback;
             BossDeathController.OnBossDeathEnd += OnBossDeathEndCallback;
-            InitCommunication();
         }
 
-        private void InitCommunication()
+        void OnDestroy()
         {
-            webSocketService = FindObjectOfType<WebSocketService>();
-            webSocketService.RegisterCommand(BossStatusUpdateCommandDTO.COMMAND_NAME, BossController.BossStatusUpdateCallback, typeof(BossStatusUpdateCommandDTO));
-        }
-
-        void Destroy()
-        {
-            gameController.GameAudioEnabled = false;
-            CloseCommunication();
-        }
-
-        private void CloseCommunication()
-        {
-            webSocketService.UnregisterCommand(BossStatusUpdateCommandDTO.COMMAND_NAME);
-        }
-
-        private void OnCommunicationInitializationComplete()
-        {
-            LoadingSceneOverlay.gameObject.SetActive(false);
+            if (gameControlService != null)
+            {
+                gameControlService.GlobalAudioThemeEnabled = true;
+            }
         }
 
         public void OnExitButtonPointerClick()
         {
-            SceneManager.LoadScene(MENU_SCENE_NAME);
+            LoadScene(Scenes.Scene.MENU_SCENE);
         }
 
         private void OnBossDeathStartCallback()
         {
-            CloseCommunication();
+            
         }
 
         private void OnBossDeathEndCallback()
         {
-            SceneManager.LoadScene(VICTORY_SCENE_NAME);
+            LoadScene(Scenes.Scene.VICTORY_SCENE);
         }
 
     }

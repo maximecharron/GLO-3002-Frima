@@ -1,35 +1,33 @@
 ﻿using UnityEngine;
 using Assets.Scripts.Communication;
 using Assets.Scripts.Extensions;
+using UnityEngine.SceneManagement;
 
-namespace Assets.Scripts
+namespace Assets.Scripts.Services
 {
 
 #pragma warning disable CS0618
 
     [RequireComponent(typeof(AudioSource))]
-    public class GameController : MonoBehaviour
+    public class GameControlService : MonoBehaviour
     {
         // Configurable script parameters
         public HttpService HttpService;
         public WebSocketService WebSocketService;
-        public AudioClip TitleAudioClip;
-        public AudioClip GameAudioClip;
 
-        public bool GameAudioEnabled
+        public bool GlobalAudioThemeEnabled
         {
             get {
-                return GetComponent<AudioSource>().clip == GameAudioClip;
+                return GetComponent<AudioSource>().enabled;
             }
             set {
-                GetComponent<AudioSource>().PlayAudioClip(value ? GameAudioClip : TitleAudioClip);
-                GetComponent<AudioSource>().volume = value ? 0.8f : 1f;
+                GetComponent<AudioSource>().enabled = value;
             }
         }
 
         public string SessionToken { get; set; }
 
-        private static GameController instance;
+        private static GameControlService instance;
 
         void Awake()
         {
@@ -42,7 +40,6 @@ namespace Assets.Scripts
                 Destroy(this.gameObject);
             }
             DontDestroyOnLoad(this.gameObject);
-            GameAudioEnabled = false;
         }
 
         public void SetUserSession(string token, string username)

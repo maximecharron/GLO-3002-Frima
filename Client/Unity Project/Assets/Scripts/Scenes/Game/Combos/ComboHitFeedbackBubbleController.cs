@@ -12,7 +12,7 @@ namespace Assets.Scripts.Scenes.Game.Combos
 
         public void Show(Vector2 position, int value)
         {
-            base.Show(position, value.ToString(), HIT_FEEDBACK_TEXT_COLOR, position);
+            base.Show(position, value.ToString(), HIT_FEEDBACK_TEXT_COLOR, false);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using System;
+using Assets.Scripts.Services;
 
 namespace Assets.Scripts.Scenes.Game.Boss
 {
@@ -20,11 +21,23 @@ namespace Assets.Scripts.Scenes.Game.Boss
         public delegate void BossDeathEndEventHandler();
         public event BossDeathEndEventHandler OnBossDeathEnd = delegate { };
 
-        private bool killFinishAnimationStarted = false;
-        private DateTime killFinishAnimationDate;
+        private bool killEndAnimationStarted = false;
+        private DateTime killEndAnimationDate;
         private Vector3 moveDirection;
 
-        public void InitKill()
+        void Update()
+        {
+            if (killEndAnimationStarted)
+            {
+                ApplyGravity();
+                if ((DateTime.Now - killEndAnimationDate).TotalSeconds > KILL_ANIMATION_WAIT_TIME)
+                {
+                    OnBossDeathEnd();
+                }
+            }
+        }
+
+        public void BeginKill()
         {
             SceneBackground.SetActive(false);
             UI.SetActive(false);
@@ -32,13 +45,13 @@ namespace Assets.Scripts.Scenes.Game.Boss
             OnBossDeathStart();
         }
 
-        public void FinishKill()
+        public void EndKill()
         {
-            if (!killFinishAnimationStarted)
+            if (!killEndAnimationStarted)
             {
                 moveDirection = Vector3.zero;
-                killFinishAnimationStarted = true;
-                killFinishAnimationDate = DateTime.Now;
+                killEndAnimationStarted = true;
+                killEndAnimationDate = DateTime.Now;
             }
         }
 
@@ -47,17 +60,6 @@ namespace Assets.Scripts.Scenes.Game.Boss
             float gravityDelta = Physics2D.gravity.y * Time.deltaTime;
             moveDirection.y = moveDirection.y + gravityDelta;
             this.transform.localPosition += moveDirection;
-        }
-
-        void Update()
-        {
-            if (killFinishAnimationStarted)
-            {
-                ApplyGravity();
-                if ((DateTime.Now - killFinishAnimationDate).TotalSeconds > KILL_ANIMATION_WAIT_TIME) {
-                    OnBossDeathEnd();
-                }
-            }
         }
     }
 }

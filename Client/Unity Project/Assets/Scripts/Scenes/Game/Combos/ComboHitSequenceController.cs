@@ -104,6 +104,7 @@ namespace Assets.Scripts.Scenes.Game.Combos
 
         private void OnHitZoneClickedCallback(ComboHitZoneController hitZoneController)
         {
+            OnHitZoneClicked(hitZoneController);
             if (hitSequence.NextHitZoneIndex == hitZones.IndexOf(hitZoneController))
             {
                 if (hitSequence.EndOfSequence)
@@ -112,7 +113,6 @@ namespace Assets.Scripts.Scenes.Game.Combos
                 }
                 ProcessHitZoneClicked(hitZoneController);
             }
-            OnHitZoneClicked(hitZoneController);
         }
 
         private void ProcessHitZoneClicked(ComboHitZoneController hitZoneController)

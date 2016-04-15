@@ -20,7 +20,7 @@ namespace Assets.Scripts.Scenes.Game.Hype
         public ComboHitController ComboHitController;
         public HypeSliderController HypeSliderController;
 
-        public Action OnHypeAttack { get; set; }
+        public Action OnHypeAttack = delegate { };
 
         private DateTime lastHypeAutoDecrease = DateTime.Now;
         private DateTime lastMaxHypeReach = DateTime.MinValue;

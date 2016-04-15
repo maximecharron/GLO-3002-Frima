@@ -53,20 +53,20 @@ namespace Assets.Scripts.Scenes.Game
             transform.position = initialPosition + (targetPosition - initialPosition) * animationCurveValue;
         }
 
-        public void Show(Vector2 position, string value, Color? textColor = null, Vector2? targetPosition = null)
+        public void Show(Vector2 position, string value, Color? textColor = null, bool flyUp = true)
         {
-            InitPositioning(position, targetPosition);
+            InitPositioning(position, flyUp);
             InitText(value, textColor);
             startTime = Time.time;
             Count += 1;
             this.gameObject.SetActive(true);
         }
 
-        private void InitPositioning(Vector2 position, Vector2? targetPosition)
+        private void InitPositioning(Vector2 position, bool flyUp)
         {
             this.transform.position = position.ToVector3(this.transform.position.z);
             initialPosition = this.transform.position;
-            if (targetPosition == null)
+            if (flyUp)
             {
                 RectTransform transform = this.GetComponent<RectTransform>();
                 Canvas canvas = FindObjectOfType<Canvas>();
@@ -74,7 +74,7 @@ namespace Assets.Scripts.Scenes.Game
             }
             else
             {
-                this.targetPosition = targetPosition.Value.ToVector3(transform.position.z);
+                this.targetPosition = position.ToVector3(transform.position.z);
             }
         }
 

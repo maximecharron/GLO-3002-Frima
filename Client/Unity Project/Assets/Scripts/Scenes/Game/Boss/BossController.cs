@@ -12,13 +12,15 @@ using Assets.Scripts.Scenes.Game;
 using Assets.Scripts.Utils;
 using Assets.Scripts.Scenes.Game.Stamina;
 using Assets.Scripts.Scenes.Game.Hype;
+using Assets.Scripts.Services;
+using Assets.Scripts.Services.BossStatus;
 
 namespace Assets.Scripts.Scenes.Game.Boss
 {
 
     public class BossController : MonoBehaviour
     {
-        public const int DEFAULT_ATTACK_VALUE = 10000;
+        public const int DEFAULT_ATTACK_VALUE = 1000;
         private const int KNOCK_OUT_STATE_PRIORITY = 1;
         private const int KNOCK_OUT_STATE_ANIMATION_PRIORITY = 1;
         private const int COMBO_HIT_STATE_PRIORITY = 2;
@@ -40,16 +42,8 @@ namespace Assets.Scripts.Scenes.Game.Boss
         public AudioClip KnockOutFallAudioClip;
         public AudioClip KnockOutVoiceAudioClip;
 
-        public delegate void BossInitCompleteEventHandler();
-        public event BossInitCompleteEventHandler OnBossInitComplete = delegate { };
-
-        public DateTime CreationDate { get; set; }
-
-        private WebSocketService webSocketService;
-        private int currentBossLife = 100000;
-        private int maximumBossLife = 100000;
-        private bool initializationComplete = false;
-
+        private GameStatisticsService gameStatisticsService;
+        private BossStatusService bossStatusService;
         private CharacterStateController bossStateController;
         private CharacterState idleState;
         private CharacterState hitState;
@@ -72,7 +66,17 @@ namespace Assets.Scripts.Scenes.Game.Boss
             InitializeStates();
             AssignStateActions();
             HypeController.OnHypeAttack = OnHypeAttackCallback;
-            webSocketService = FindObjectOfType<WebSocketService>();
+            gameStatisticsService = FindObjectOfType<GameStatisticsService>();
+            bossStatusService = FindObjectOfType<BossStatusService>();
+            bossStatusService.OnBossStatusUpdate += OnBossStatusUpdateCallback;
+            bossStatusService.OnBossDead += OnBossDeadCallback;
+            UpdateBossStatusDisplayValues();
+        }
+
+        void OnDestroy()
+        {
+            bossStatusService.OnBossStatusUpdate -= OnBossStatusUpdateCallback;
+            bossStatusService.OnBossDead -= OnBossDeadCallback;
         }
 
         private void InitializeStateController()
@@ -132,12 +136,13 @@ namespace Assets.Scripts.Scenes.Game.Boss
 
         public void ComboHit()
         {
+            bossStateController.RemoveState(hitState);
             bossStateController.AddState(comboHitState);
         }
 
         private void OnHypeAttackCallback()
         {
-            RemoveBossLife(maximumBossLife);
+            // TODO
         }
 
         private void OnHitStateActivateCallback(CharacterState sender)
@@ -178,65 +183,35 @@ namespace Assets.Scripts.Scenes.Game.Boss
         }
         private void OnKnockOutStateActivateCallback(CharacterState sender)
         {
-            BossDeathController.InitKill();
+            BossDeathController.BeginKill();
         }
 
         public bool OnKnockOutAnimationSequenceEndCallback(CharacterState sender)
         {
-            BossDeathController.FinishKill();
+            BossDeathController.EndKill();
             return true;
         }
 
-        public void BossStatusUpdateCallback(CommandDTO commandDTO)
+        public void OnBossStatusUpdateCallback()
         {
-            var bossStatusUpdateParams = ((BossStatusUpdateCommandDTO)commandDTO).command.parameters;
-            if (bossStatusUpdateParams.currentBossLife <= 0 || (BossStatus)bossStatusUpdateParams.status == BossStatus.DEAD)
-            {
-                ProcessBossDeath();
-            }
-            else
-            {
-                CompleteInitialization(bossStatusUpdateParams);
-                maximumBossLife = bossStatusUpdateParams.maximumBossLife;
-                HealthPointSliderController.MaxValue = maximumBossLife;
-                UpdateBossLife(bossStatusUpdateParams.currentBossLife);
-            }
+            UpdateBossStatusDisplayValues();
         }
 
-        private void CompleteInitialization(BossStatusUpdateCommandDTO.BossStatusUpdateCommand.BossStatusUpdateParameters bossStatusUpdateParams)
+        private void UpdateBossStatusDisplayValues()
         {
-            if (!initializationComplete)
-            {
-                initializationComplete = true;
-                CreationDate = DateTimeUtils.ConvertFromJavaScriptDate(bossStatusUpdateParams.creationDate);
-                OnBossInitComplete();
-            }
+            HealthPointSliderController.MaxValue = bossStatusService.MaximumBossLife;
+            HealthPointSliderController.Value = bossStatusService.CurrentBossLife;
         }
 
-        private void ProcessBossDeath()
+        public void OnBossDeadCallback()
         {
+            bossStatusService.OnBossStatusUpdate -= OnBossStatusUpdateCallback;
             bossStateController.AddState(knockOutState, false);
         }
 
         public void RemoveBossLife(int value)
         {
-            UpdateBossLife(currentBossLife - value);
-            webSocketService.SendCommand(new BossAttackCommandDTO(value));
-        }
-
-        private void UpdateBossLife(int value)
-        {
-            if (value > currentBossLife && value - currentBossLife <= DEFAULT_ATTACK_VALUE)
-            {
-                return;
-            }
-            else if (value <= 0)
-            {
-                value = 0;
-                ProcessBossDeath();
-            }
-            currentBossLife = value;
-            HealthPointSliderController.Value = value;
+            bossStatusService.CurrentBossLife -= value;
         }
     }
 

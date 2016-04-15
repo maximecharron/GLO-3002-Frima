@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,14 +13,13 @@ namespace Assets.Scripts.Scenes.Game
         // Configurable script parameters
         public Sprite MusicOnImage;
         public Sprite MusicOffImage;
+        public GameSceneController gameSceneController;
 
         public void OnButtonClick()
         {
-            GameController gameController = FindObjectOfType<GameController>();
-            AudioSource audioSource = gameController.GetComponent<AudioSource>();
-            audioSource.enabled = !audioSource.enabled;
+            gameSceneController.AudioEnabled = !gameSceneController.AudioEnabled;
             Image image = this.GetComponent<Image>();
-            image.sprite = audioSource.enabled ? MusicOnImage : MusicOffImage;
+            image.sprite = gameSceneController.AudioEnabled ? MusicOnImage : MusicOffImage;
         }
     }
 }

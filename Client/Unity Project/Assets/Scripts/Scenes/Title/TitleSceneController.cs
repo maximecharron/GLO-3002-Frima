@@ -9,12 +9,12 @@ namespace Assets.Scripts.Scenes
 
         public void OnLoginButtonPointerClick()
         {
-            SceneManager.LoadScene(LOGIN_SCENE_NAME);
+            LoadScene(Scenes.Scene.LOGIN_SCENE);
         }
 
         public void OnRegisterButtonPointerClick()
         {
-            SceneManager.LoadScene(REGISTRATION_SCENE_NAME);
+            LoadScene(Scenes.Scene.REGISTRATION_SCENE);
         }
 
         public void OnExitButtonPointerClick()

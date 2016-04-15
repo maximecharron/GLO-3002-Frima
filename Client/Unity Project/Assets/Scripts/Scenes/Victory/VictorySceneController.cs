@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Assets.Scripts.Scenes.Game;
 using System;
+using Assets.Scripts.Services;
 
 namespace Assets.Scripts.Scenes
 {
@@ -14,18 +15,18 @@ namespace Assets.Scripts.Scenes
 
         public void Start()
         {
-            GameStatisticsController gameStatisticsController = FindObjectOfType<GameStatisticsController>();
-            VictoryTimeText.text = String.Format("Boss killed in {0:0.} minutes!", gameStatisticsController.BossLifeSpan.TotalMinutes);
+            GameStatisticsService gameStatisticsService = FindObjectOfType<GameStatisticsService>();
+            VictoryTimeText.text = String.Format("Boss killed in {0:0.} minutes!", gameStatisticsService.BossLifeSpan.TotalMinutes);
         }
 
         public void OnPlayAgainButtonPointerClick()
         {
-            SceneManager.LoadScene(GAME_SCENE_NAME);
+            LoadScene(Scenes.Scene.GAME_SCENE);
         }
 
         public void OnMenuButtonPointerClick()
         {
-            SceneManager.LoadScene(MENU_SCENE_NAME);
+            LoadScene(Scenes.Scene.MENU_SCENE);
         }
     }
 }

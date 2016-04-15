@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Communication;
+using Assets.Scripts.Services;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -13,17 +14,17 @@ namespace Assets.Scripts.Scenes
         // Configurable script parameters
         public Button LogOutButton;
 
-        private GameController gameController;
+        private GameControlService gameController;
         private HttpService httpService;
 
         void Start() {
-            gameController = (GameController)FindObjectOfType(typeof(GameController));
-            httpService = (HttpService)FindObjectOfType(typeof(HttpService));
+            gameController = FindObjectOfType<GameControlService>();
+            httpService = FindObjectOfType<HttpService>();
         }
 
         public void OnJoinGameButtonPointerClick()
         {
-            SceneManager.LoadScene(GAME_SCENE_NAME);
+            LoadScene(Scenes.Scene.GAME_SCENE);
         }
 
         public void OnLogOutButtonPointerClick()
@@ -36,7 +37,7 @@ namespace Assets.Scripts.Scenes
         {
             LogOutButton.interactable = true;
             gameController.ClearUserSession();
-            SceneManager.LoadScene(TITLE_SCENE_NAME);
+            LoadScene(Scenes.Scene.TITLE_SCENE);
         }
     }
 }

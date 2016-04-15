@@ -1,5 +1,7 @@
 ﻿using Assets.Scripts.Communication;
+using Assets.Scripts.Services;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Scenes
 {
@@ -7,11 +9,9 @@ namespace Assets.Scripts.Scenes
     public class SceneController : MonoBehaviour
     {
 
-        protected const string TITLE_SCENE_NAME = "TitleScene";
-        protected const string MENU_SCENE_NAME = "MenuScene";
-        protected const string LOGIN_SCENE_NAME = "LoginScene";
-        protected const string REGISTRATION_SCENE_NAME = "RegistrationScene";
-        protected const string GAME_SCENE_NAME = "GameScene";
-        protected const string VICTORY_SCENE_NAME = "VictoryScene";
+        protected void LoadScene(Scene scene)
+        {
+            SceneManager.LoadScene((int)scene);
+        }
     }
 }

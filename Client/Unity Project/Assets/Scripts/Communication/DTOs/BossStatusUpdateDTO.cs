@@ -6,19 +6,19 @@ using System.Text;
 namespace Assets.Scripts.Communication.CommandDTOs
 {
     [Serializable]
-    public class BossStatusUpdateCommandDTO : CommandDTO
+    public class BossStatusUpdateDTO : CommandDTO
     {
         public const string COMMAND_NAME = "bossStatusUpdate";
-        public BossStatusUpdateCommand command = new BossStatusUpdateCommand();
+        public Command command = new Command();
 
         [Serializable]
-        public class BossStatusUpdateCommand
+        public class Command
         {
             public String name = COMMAND_NAME;
-            public BossStatusUpdateParameters parameters = new BossStatusUpdateParameters();
+            public Parameters parameters = new Parameters();
 
             [Serializable]
-            public class BossStatusUpdateParameters
+            public class Parameters
             {
                 public String bossName = "";
                 public Int32 currentBossLife = 10000;

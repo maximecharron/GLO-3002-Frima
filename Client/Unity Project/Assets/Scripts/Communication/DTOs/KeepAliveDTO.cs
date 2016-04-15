@@ -6,13 +6,13 @@ using System.Text;
 namespace Assets.Scripts.Communication.CommandDTOs
 {
     [Serializable]
-    public class KeepAliveCommandDTO : CommandDTO
+    public class KeepAliveDTO : CommandDTO
     {
         public const string COMMAND_NAME = "keepAlive";
-        public KeepAliveCommand command = new KeepAliveCommand();
+        public Command command = new Command();
 
         [Serializable]
-        public class KeepAliveCommand
+        public class Command
         {
             public String name = COMMAND_NAME;
         }

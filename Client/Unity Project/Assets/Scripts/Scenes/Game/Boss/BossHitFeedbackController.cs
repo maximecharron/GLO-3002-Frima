@@ -42,12 +42,12 @@ namespace Assets.Scripts.Scenes.Game.Boss
         {
             PlayParticles();
             PlayHitSound();
-            ShowHitBubble(string.Format("{0}!", hitValue), HIT_BUBBLE_TEXT_COLOR);
+            ShowHitBubble(string.Format("{0}!", hitValue), HIT_BUBBLE_TEXT_COLOR, true);
         }
 
         public void HitMiss()
         {
-            ShowHitBubble("Miss!", HIT_MISS_BUBBLE_TEXT_COLOR);
+            ShowHitBubble("Miss!", HIT_MISS_BUBBLE_TEXT_COLOR, false);
         }
 
         private void PlayParticles()
@@ -81,7 +81,7 @@ namespace Assets.Scripts.Scenes.Game.Boss
             }
             catch (PoolExhaustedException)
             {
-                // Intentionally blank
+                Debug.Log("Empty pool");
             }
         }
 
@@ -90,13 +90,13 @@ namespace Assets.Scripts.Scenes.Game.Boss
             return !((AudioSource)unityObject).isPlaying;
         }
 
-        private void ShowHitBubble(string text, Color textColor)
+        private void ShowHitBubble(string text, Color textColor, bool flyUp)
         {
             try
             {
                 GameObject hitBubble = (GameObject)hitBubblePool.GetNext();
                 BubbleController bubbleController = hitBubble.GetComponent<BubbleController>();
-                bubbleController.Show(Camera.main.GetMousePosition(), text, textColor);
+                bubbleController.Show(Camera.main.GetMousePosition(), text, textColor, flyUp);
             }
             catch (PoolExhaustedException)
             {
