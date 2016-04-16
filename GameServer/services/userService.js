@@ -27,10 +27,10 @@ UserService.prototype.updateUserItems = function(webSocketId, items)
     this.userRepository.updateUserItems(token, items);
 };
 
-UserService.prototype.levelUpUser = function(webSocketId, parameters)
+UserService.prototype.levelUpUser = function(webSocketId, parameters, levelUpInformation)
 {
     var token = this.userWebSockets[webSocketId];
-    this.userRepository.levelUpUser(token, parameters, this.levelXPTree[parameters.nextLevel]);
+    this.userRepository.levelUpUser(token, parameters, levelUpInformation);
 };
 
 UserService.prototype.getInformationNextLevel = function(nextLevel)

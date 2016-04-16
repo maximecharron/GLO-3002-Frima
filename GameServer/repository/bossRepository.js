@@ -81,6 +81,4 @@ function getConfigBoss(callBack)
     callBack(boss);
 }
 
-
-
 module.exports = BossRepository;

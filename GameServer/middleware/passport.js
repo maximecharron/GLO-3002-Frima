@@ -102,6 +102,7 @@ module.exports = function (passport, app)
                                 newUser.pointNextLevel = userConfig.pointNextLevel;
                                 newUser.XPNextLevel = userConfig.XPNextLevel;
                                 newUser.level = userConfig.level;
+                                newUser.attack = userConfig.attack;
                                 newUser.stamina = userConfig.stamina;
                                 newUser.hype = userConfig.hype;
                                 newUser.save(function (error)

@@ -4,8 +4,7 @@ function LootService(itemRepository)
 {
     this.itemRepository = itemRepository;
     this.items = [];
-    //this.probabilityLoot = [1,1,1,1,1,1,2,2,2,3];
-    this.probabilityLoot = [2,2,2,2,2,2,2];
+    this.probabilityLoot = [1,1,1,1,1,1,2,2,2,3];
 
     self = this;
 

@@ -6,10 +6,12 @@ var itemSchema = new mongoose.Schema();
 
 itemSchema.add({
     type : String,
+    subType : String,
     name : String,
     quantity : Number,
     staminaRegeneration: Number,
-    hypeGeneration: Number
+    hypeGeneration: Number,
+    effectDuration: Number
 });
 
 itemSchema.method('toJSON', modelHelpers.toJSON);
@@ -25,7 +27,7 @@ exports.findItems = function(callback){
             var allItems = [];
             items.forEach(function each(item)
             {
-                var consumable = new Consumable(item.type, item.name, item.staminaRegeneration, item.hypeGeneration);
+                var consumable = new Consumable(item.type, item.subType, item.name, item.staminaRegeneration, item.hypeGeneration, item.effectDuration);
                 allItems.push(consumable);
             });
 

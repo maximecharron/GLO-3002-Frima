@@ -1,25 +1,29 @@
 //Constructor
-function Consumable(type, name, staminaRegeneration, hypeGeneration)
+function Consumable(type, subType, name, staminaRegeneration, hypeGeneration, effectDuration)
 {
     //Private
     this.type = type;
+    this.subType = subType;
     this.name = name;
     this.staminaRegeneration = staminaRegeneration;
     this.hypeGeneration = hypeGeneration;
+    this.effectDuration = effectDuration;
 }
 
 
 //Public method
 Consumable.prototype.toJson = function()
 {
-    var adrenalineJson =
+    var consumable =
     {
         type: this.type,
+        subType: this.subType,
         name: this.name,
         staminaRegeneration: this.staminaRegeneration,
-        hypeGeneration: this.hypeGeneration
+        hypeGeneration: this.hypeGeneration,
+        effectDuration: this.effectDuration
     };
-    return adrenalineJson;
+    return consumable;
 };
 
 Consumable.prototype.toString = function()
@@ -28,8 +32,10 @@ Consumable.prototype.toString = function()
         {
             type: this.type,
             name: this.name,
+            subType: this.subType,
             staminaRegeneration: this.staminaRegeneration,
-            hypeGeneration: this.hypeGeneration
+            hypeGeneration: this.hypeGeneration,
+            effectDuration: this.effectDuration
         });
 };
 

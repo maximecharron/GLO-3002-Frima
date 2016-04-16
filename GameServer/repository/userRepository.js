@@ -1,4 +1,5 @@
 var UserModel = require('../models/user').model;
+var ItemModel = require('../models/item').model;
 var jwt = require('jwt-simple');
 
 //Constructor
@@ -12,16 +13,32 @@ UserRepository.prototype.addUserItems = function(token, items)
 {
     getUser(token, function(user)
     {
-          items.forEach(function each(item)
-          {
-             user.items.forEach(function each(userItem)
-             {
-                 if(userItem.name == item.name)
+        items.forEach(function each(item)
+        {
+            var added = false;
+            user.items.forEach(function each(userItem)
+            {
+                 if( userItem.type == item.type && userItem.subType == item.subType && userItem.name == item.name )
                  {
+                     added = true;
                      userItem.quantity++;
                  }
-             })
-          });
+            });
+
+            if(added == false)
+            {
+                var newItem = new ItemModel;
+                newItem.type = item.type;
+                newItem.subType = item.subType;
+                newItem.name = item.name;
+                newItem.quantity = 1;
+                newItem.staminaRegeneration = item.staminaRegeneration;
+                newItem.hypeGeneration = item.hypeGeneration;
+                newItem.effectDuration = item.effectDuration;
+                user.items.push(newItem);
+            }
+
+        });
 
         user.save(function (err)
         {
@@ -41,7 +58,7 @@ UserRepository.prototype.updateUserItems = function(token, items)
         {
             user.items.forEach(function each(userItem)
             {
-                if(userItem.name == item.name)
+                if( userItem.type == item.type && userItem.subType == item.subType && userItem.name == item.name )
                 {
                     userItem.quantity -= item.quantity;
                 }
@@ -58,14 +75,16 @@ UserRepository.prototype.updateUserItems = function(token, items)
     });
 };
 
-UserRepository.prototype.levelUpUser = function(token, parameters, xpNextLevel)
+UserRepository.prototype.levelUpUser = function(token, parameters, levelUpInformation)
 {
     getUser(token, function(user){
         user.currentXP = parameters.currentXP;
-        user.currentLevel = parameters.currentLevel;
-        user.XPNextLevel = xpNextLevel;
-        user.stamina += parameters.stamina;
-        user.hype += parameters.hype;
+        user.level = parameters.currentLevel;
+        user.XPNextLevel = levelUpInformation.nextLevelXp;
+        user.pointNextLevel = levelUpInformation.pointForNextLevel;
+        user.attack += parseInt(parameters.attack);
+        user.stamina += parseInt(parameters.stamina);
+        user.hype += parseInt(parameters.hype);
 
         user.save(function (err)
         {
@@ -76,6 +95,7 @@ UserRepository.prototype.levelUpUser = function(token, parameters, xpNextLevel)
         });
     })
 };
+
 //Private method
 var getUser = function(token, callback)
 {
@@ -93,6 +113,6 @@ var getUser = function(token, callback)
             }
         }
     });
-}
+};
 
 module.exports = UserRepository;

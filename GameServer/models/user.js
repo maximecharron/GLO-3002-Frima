@@ -14,6 +14,7 @@ var userSchema = new mongoose.Schema({
     pointNextLevel: Number,
     XPNextLevel: Number,
     level: Number,
+    attack: Number,
     stamina: Number,
     hype: Number
 },{ strict : false });
@@ -30,6 +31,7 @@ userSchema.methods.toDTO = function (withToken) {
         pointNextLevel: obj.pointNextLevel,
         XPNextLevel: obj.XPNextLevel,
         level: obj.level,
+        attack: obj.attack,
         stamina: obj.stamina,
         hype: obj.hype
     };
