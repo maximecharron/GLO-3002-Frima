@@ -74,7 +74,7 @@ namespace Assets.Scripts.Services.BossStatus
 
         void OnDestroy()
         {
-            webSocketService.UnregisterCommand(BossStatusUpdateDTO.COMMAND_NAME);
+            webSocketService.UnregisterCommand(BossStatusUpdateDTO.COMMAND_NAME, this.BossStatusUpdateCallback);
         }
 
         private void BossStatusUpdateCallback(CommandDTO commandDTO)

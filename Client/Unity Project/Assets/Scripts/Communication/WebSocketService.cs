@@ -16,7 +16,7 @@ namespace Assets.Scripts.Communication
         public String SessionToken { get; set; }
 
         private WebSocket webSocket;
-        private Dictionary<String, CommandRegistration> registeredCommands = new Dictionary<string, CommandRegistration>();
+        private Dictionary<String, List<CommandRegistration>> registeredCommands = new Dictionary<string, List<CommandRegistration>>();
         private Dictionary<Type, ICommandInterceptor> commandReceiveInterceptors = new Dictionary<Type, ICommandInterceptor>();
         private Dictionary<Type, ICommandInterceptor> commandSendInterceptors = new Dictionary<Type, ICommandInterceptor>();
         private Queue<String> commandReceiveBuffer = new Queue<String>();
@@ -80,11 +80,13 @@ namespace Assets.Scripts.Communication
             {
                 return false;
             }
-            CommandRegistration commandRegistration = registeredCommands[commandDefinitionDTO.command.name];
-            CommandDTO commandDTO = (CommandDTO)JsonUtility.FromJson(jsonData, commandRegistration.Type);
-            if (DispatchReceiveCommandToInterceptors(commandDTO))
+            foreach (CommandRegistration commandRegistration in registeredCommands[commandDefinitionDTO.command.name])
             {
-                commandRegistration.CallbackMethod(commandDTO);
+                CommandDTO commandDTO = (CommandDTO)JsonUtility.FromJson(jsonData, commandRegistration.Type);
+                if (DispatchReceiveCommandToInterceptors(commandDTO))
+                {
+                    commandRegistration.CallbackMethod(commandDTO);
+                }
             }
             return true;
         }
@@ -100,12 +102,17 @@ namespace Assets.Scripts.Communication
 
         public void RegisterCommand(String commandName, Action<CommandDTO> callbackMethod, Type dtoType)
         {
-            registeredCommands.AddOrReplace(commandName, new CommandRegistration(callbackMethod, dtoType));
+            if (!registeredCommands.ContainsKey(commandName))
+            {
+                registeredCommands.TryAdd(commandName, new List<CommandRegistration>());
+            }
+            registeredCommands[commandName].Add(new CommandRegistration(callbackMethod, dtoType));
         }
 
-        public void UnregisterCommand(String commandName)
+        public void UnregisterCommand(String commandName, Action<CommandDTO> callbackMethod)
         {
-            registeredCommands.Remove(commandName);
+            CommandRegistration commandRegistration = registeredCommands[commandName].Find(reg => reg.CallbackMethod == callbackMethod);
+            registeredCommands[commandName].Remove(commandRegistration);
         }
 
         public void SendCommand(CommandDTO commandDTO, bool interceptable = true)
