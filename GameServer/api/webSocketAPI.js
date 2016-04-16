@@ -78,7 +78,7 @@ function newMessage(message, webSocket)
             var token = request.command.parameters.token;
 
             self.userService.addUserWebSocket(webSocketClientId, token);
-            self.userCommunicationService.sendUserStatusUpdate(webSocket);
+            self.userCommunicationService.sendGameStatusUpdate(webSocket);
         }
 
         if(request.command.name == "useItems")

@@ -6,13 +6,13 @@ function UserCommunicationService()
 }
 
 //Public method
-UserCommunicationService.prototype.sendUserStatusUpdate = function(webSocket)
+UserCommunicationService.prototype.sendGameStatusUpdate = function(webSocket)
 {
     var userStatusUpdate =  JSON.stringify(
     {
         command:
         {
-            name: "userStatusUpdate",
+            name: "gameStatusUpdate",
             parameters:
             {
                 baseDamage: "10",
