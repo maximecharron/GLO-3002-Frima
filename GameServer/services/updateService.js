@@ -47,12 +47,19 @@ setInterval(function ()
                     console.log("Problem to getCurrentBossLife on redisCommunicationService: ", err);
                 }
                 else{
-                    var actualBoss = self.bossService.getCurrentBoss();;
-                    if(actualBoss.getLife() != object)
+                    try
                     {
-                        self.bossService.updateCurrentLife(object);
-                        self.bossCommunicationService.broadcastBossInformation(actualBoss);
+                        var actualBoss = self.bossService.getCurrentBoss();
+                        if(actualBoss.getLife() != object)
+                        {
+                            self.bossService.updateCurrentLife(object);
+                            self.bossCommunicationService.broadcastBossInformation(actualBoss);
+                        }
+                    }catch(error)
+                    {
+                        console.log("Problem in interval redisCommunicationService getBossCurrentLife: ", error);
                     }
+
 
                 }
             });

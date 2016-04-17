@@ -93,5 +93,10 @@ Boss.prototype.getCreationDate = function()
     return this.creationDate;
 };
 
+Boss.prototype.getName = function()
+{
+  return this.bossName;
+};
+
 module.exports = Boss;
 
