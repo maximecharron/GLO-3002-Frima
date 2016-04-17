@@ -81,13 +81,13 @@ var BossRepository = require('./repository/bossRepository.js');
 var bossRepository = new BossRepository(redisCommunicationService);
 
 var BossService = require('./services/bossService.js');
-var bossService = new BossService(bossCommunicationService, bossRepository);
+var bossService = new BossService(bossCommunicationService, bossRepository, redisCommunicationService);
 
 var RedisListenerService = require('./services/redisListenerService.js');
 var redisListenerService = new RedisListenerService(bossService, bossCommunicationService, lootService);
 
 var UpdateService = require('./services/updateService.js');
-var updateService = new UpdateService(bossRepository, bossCommunicationService, bossService);
+var updateService = new UpdateService(bossRepository, bossCommunicationService, bossService, redisCommunicationService);
 
 var WebSocketAPI = require('./api/webSocketAPI.js');
 var webSocketAPI = new WebSocketAPI(bossService, bossCommunicationService, redisCommunicationService, webSocketServer, userService, userCommunicationService);

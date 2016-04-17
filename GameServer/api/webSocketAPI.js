@@ -52,10 +52,7 @@ function newMessage(message, webSocket)
             {
                 self.bossService.makeDamage(request.command.parameters.number, function (boss)
                 {
-                    if (boss.getLife() > 0)
-                    {
-                        self.redisCommunicationService.setBossCurrentLife(boss.getLife());
-                    } else
+                    if (boss.getLife() <= 0)
                     {
                         self.redisCommunicationService.publishBossDead(boss.toString());
                     }

@@ -62,6 +62,8 @@ BossRepository.prototype.saveBoth = function(boss)
     var self = this;
     self.saveBossRedis(boss);
     self.saveBossToMongo(boss);
+
+    this.redisCommunicationService.setCurrentLife(boss.getLife());
 };
 
 BossRepository.prototype.saveBossRedis = function(boss)
