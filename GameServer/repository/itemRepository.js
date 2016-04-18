@@ -1,7 +1,5 @@
 var ItemModel = require('./../models/item.js');
 
-
-
 //Constructor
 function ItemRepository()
 {
@@ -13,6 +11,6 @@ ItemRepository.prototype.getItems = function(callBack) {
     ItemModel.findItems(function(items){
         callBack(items);
     });
-}
+};
 
 module.exports = ItemRepository;

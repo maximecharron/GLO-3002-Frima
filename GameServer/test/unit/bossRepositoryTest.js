@@ -52,10 +52,7 @@ describe("bossRepository", function ()
             //Assert
             expect(redisSpy).to.have.been.called.once;
         });
-    });
 
-    describe("saveBoth", function()
-    {
         it("should call DbBoss.backupBoss", function()
         {
             //Arrange
@@ -68,10 +65,7 @@ describe("bossRepository", function ()
             //Assert
             expect(dbBossSpy).to.have.been.called.once;
         });
-    });
 
-    describe("saveBoth", function()
-    {
         it("should call redisCommunicationService.setCurrentLife", function()
         {
             //Arrange
