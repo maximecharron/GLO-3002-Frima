@@ -71,7 +71,7 @@ namespace Assets.Scripts.Scenes.Game
             {
                 RectTransform bubbleTransform = GetComponent<RectTransform>();
                 Rect canvasRect = canvas.GetComponent<RectTransform>().rect;
-                this.targetPosition = canvas.transform.TransformPoint(new Vector3(Random.Range(-180, 180), canvasRect.height / 2 - 130, bubbleTransform.localPosition.z));
+                this.targetPosition = canvas.transform.TransformPoint(new Vector3(Random.Range(-180, 180), canvasRect.height / 2 - 140, bubbleTransform.localPosition.z));
             }
             else
             {

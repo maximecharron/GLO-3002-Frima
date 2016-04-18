@@ -13,18 +13,20 @@ namespace Assets.Scripts.Scenes.Game
     [RequireComponent(typeof(AudioSource))]
     public class GameSceneController : SceneController
     {
+        private const float DEFAULT_AUDIO_VOLUME = 0.8f;
+
         // Configurable script parameters
         public GameObject Boss;
         public Canvas GameCanvas;
 
-        public bool AudioEnabled
+        public bool AudioMuted
         {
             get {
-                return GetComponent<AudioSource>().enabled;
+                return GetComponent<AudioSource>().volume == 0f;
             }
             set
             {
-                GetComponent<AudioSource>().enabled = value;
+                GetComponent<AudioSource>().volume = value ? 0f : DEFAULT_AUDIO_VOLUME;
             }
         }
 
@@ -33,6 +35,7 @@ namespace Assets.Scripts.Scenes.Game
         void Start() {
             gameControlService = FindObjectOfType<GameControlService>();
             gameControlService.GlobalAudioThemeEnabled = false;
+            AudioMuted = false;
         }
 
         void OnDestroy()

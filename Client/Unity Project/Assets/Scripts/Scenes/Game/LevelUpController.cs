@@ -83,7 +83,7 @@ namespace Assets.Scripts.Scenes.Game
         private void UpdateLabels()
         {
             CurrentExperienceText.text = String.Format("Your current experience: {0}", playerPropertyService.ExperiencePoints);
-            UpgradeExplanationText.text = String.Format("Upgrade your powers ({0} points left)", playerPropertyService.UpgradePointsOnLevelComplete - GetUsedUpgradePoints());
+            UpgradeExplanationText.text = String.Format("Upgrade your powers ({0} points left):", playerPropertyService.UpgradePointsOnLevelComplete - GetUsedUpgradePoints());
             StaminaPowerLevelText.text = String.Format("{0} (+{1})", playerPropertyService.StaminaPowerLevel, staminaPowerLevelUpgrade);
             HypePowerLevelText.text = String.Format("{0} (+{1})", playerPropertyService.HypePowerLevel, hypePowerLevelUpgrade);
             AttackPowerLevelText.text = String.Format("{0} (+{1})", playerPropertyService.AttackPowerLevel, attackPowerLevelUpgrade);

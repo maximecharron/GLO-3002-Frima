@@ -18,9 +18,9 @@ namespace Assets.Scripts.Scenes.Game
 
         public void OnButtonClick()
         {
-            gameSceneController.AudioEnabled = !gameSceneController.AudioEnabled;
+            gameSceneController.AudioMuted = !gameSceneController.AudioMuted;
             Image image = GetComponent<Image>();
-            image.sprite = gameSceneController.AudioEnabled ? MusicOnImage : MusicOffImage;
+            image.sprite = gameSceneController.AudioMuted ? MusicOffImage : MusicOnImage;
         }
     }
 }
