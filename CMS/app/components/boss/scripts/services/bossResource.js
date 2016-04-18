@@ -1,4 +1,4 @@
-angular.module('CMS.content', ['ngRoute', 'ngResource', 'environment']).factory('contentResource', ["$resource", 'envService', function($resource, envService){
+angular.module('CMS.boss', ['ngRoute', 'ngResource', 'environment']).factory('bossResource', ["$resource", 'envService', function($resource, envService){
     return $resource(envService.read('apiUrl')+"/:path",{} ,{
         getConstantBosses: {
             method:"GET",

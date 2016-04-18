@@ -7,7 +7,9 @@ var app = angular.module('CMS', [
     'ngCookies',
     'ui.validate',
     'environment',
-    "CMS.content",
+    'toggle-switch',
+    "CMS.boss",
+    "CMS.combo",
     "CMS.login",
     "CMS.register"
 ]).config(function(envServiceProvider) {

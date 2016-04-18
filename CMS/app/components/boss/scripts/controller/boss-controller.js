@@ -1,4 +1,4 @@
-angular.module('CMS.content').controller("content-controller", function ($scope, contentResource)
+angular.module('CMS.boss').controller("boss-controller", function ($scope, bossResource)
 {
 
     $scope.invalidCurrentLife = false;
@@ -29,13 +29,13 @@ angular.module('CMS.content').controller("content-controller", function ($scope,
         newType = JSON.parse(newType);
         if (newType.type == "constant")
         {
-            contentResource.getConstantBosses(function (result)
+            bossResource.getConstantBosses(function (result)
             {
                 $scope.bosses = result;
             });
         } else
         {
-            contentResource.getCurrentBosses(function (result)
+            bossResource.getCurrentBosses(function (result)
             {
                 $scope.bosses = result;
             });
@@ -67,7 +67,7 @@ angular.module('CMS.content').controller("content-controller", function ($scope,
             maximumBossLife: selectedBoss.maximumBossLife,
             status: selectedBoss.status
         };
-        contentResource.updateBoss(boss, function onSuccess(data)
+        bossResource.updateBoss(boss, function onSuccess(data)
         {
             $scope.selectedBoss = data;
             convertLifeToNumber();

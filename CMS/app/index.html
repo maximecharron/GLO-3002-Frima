@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bower_components/angular-bootstrap-toggle-switch/style/bootstrap3/angular-toggle-switch-bootstrap-3.css">
     <link rel="stylesheet" href="styles/grayscale.css">
     <link rel="stylesheet" href="styles/custom.css">
 </head>
@@ -26,14 +27,19 @@
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-cookies/angular-cookies.js"></script>
     <script src="bower_components/angular-environment/dist/angular-environment.min.js"></script>
+    <script src="bower_components/angular-bootstrap-toggle-switch/angular-toggle-switch.min.js"></script>
     <script type="text/javascript" src="bower_components/angular-ui-validate/dist/validate.js"></script>
 
     <!-- Main application -->
     <script src="app.js"></script>
 
-    <!-- Content component -->
-    <script src="components/content/scripts/services/contentResource.js"></script>
-    <script src="components/content/scripts/controller/content-controller.js"></script>
+    <!-- Boss component -->
+    <script src="components/boss/scripts/services/bossResource.js"></script>
+    <script src="components/boss/scripts/controller/boss-controller.js"></script>
+
+    <!-- Combo component -->
+    <script src="components/combo/scripts/services/comboResource.js"></script>
+    <script src="components/combo/scripts/controller/combo-controller.js"></script>
 
     <!-- Register component -->
     <script src="components/register/scripts/services/registerResource.js"></script>
@@ -52,7 +58,8 @@
 
     <!-- Route providers -->
     <script src="components/login/scripts/loginRouteProvider.js"></script>
-    <script src="components/content/scripts/contentRouteProvider.js"></script>
+    <script src="components/boss/scripts/bossRouteProvider.js"></script>
+    <script src="components/combo/scripts/comboRouteProvider.js"></script>
     <script src="components/register/scripts/registerRouteProvider.js"></script>
 
 </div>

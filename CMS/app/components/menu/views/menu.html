@@ -6,8 +6,9 @@
         <div class="collapse nav navbar-collapse" id="navbar-collapse-1" ng-controller="user-menu-controller">
             <div ng-if="user && user != {}">
                 <ul class="nav navbar-nav">
-                    <li><a href="#/content">Bosses</a></li>
+                    <li><a href="#/boss">Bosses</a></li>
                     <li ng-show="user.isSuperAdmin"><a href="#/register">Admin</a></li>
+                    <li><a href="#/combo">Combos</a></li>
                 </ul>
 
                 <div class="navbar-text pull-right" ng-if="userIsLogged">
