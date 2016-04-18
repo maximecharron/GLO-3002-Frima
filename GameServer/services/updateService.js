@@ -53,8 +53,6 @@ setInterval(function ()
                         if(actualBoss.getLife() != object)
                         {
                             self.bossService.updateCurrentLife(parseInt(object));
-                            var newBoss = self.bossService.getCurrentBoss();
-                            self.bossCommunicationService.broadcastBossInformation(newBoss);
                         }
                     }catch(error)
                     {

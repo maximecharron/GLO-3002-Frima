@@ -17,10 +17,10 @@ Boss.prototype.toJson = function()
     var bossJson =
     {
         bossName: this.bossName,
-        currentBossLife: this.currentBossLife,
-        maximumBossLife: this.maximumBossLife,
-        status: this.status,
-        creationDate : this.creationDate
+        currentBossLife: parseInt(this.currentBossLife),
+        maximumBossLife: parseInt(this.maximumBossLife),
+        status: parseInt(this.status),
+        creationDate : parseInt(this.creationDate)
     };
     return bossJson;
 };

@@ -16,12 +16,12 @@ Consumable.prototype.toJson = function()
 {
     var consumable =
     {
-        type: this.type,
-        subType: this.subType,
+        type: parseInt(this.type),
+        subType: parseInt(this.subType),
         name: this.name,
-        staminaRegeneration: this.staminaRegeneration,
-        hypeGeneration: this.hypeGeneration,
-        effectDuration: this.effectDuration
+        staminaRegeneration: parseInt(this.staminaRegeneration),
+        hypeGeneration: parseInt(this.hypeGeneration),
+        effectDuration: parseInt(this.effectDuration)
     };
     return consumable;
 };
