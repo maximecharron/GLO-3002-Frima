@@ -7,7 +7,7 @@ namespace Assets.Scripts.Communication.DTOs.Inbound
 {
     class RegistrationResultDTO
     {
-        public String token = "";
-        public String username = "";
+        public string token = "";
+        public string username = "";
     }
 }

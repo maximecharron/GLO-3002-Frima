@@ -15,9 +15,12 @@ namespace Assets.Scripts.CharacterControl
         public int AnimationPriority { get; set; }
         public Action<CharacterState> Action { get; set; }
         public bool IsActive { get; set; }
-        public Action<CharacterState> OnActivate { get; set; }
-        public Action<CharacterState> OnDeactivate { get; set; }
-        public Func<CharacterState, bool> OnAnimationSequenceEnd { get; set; }
+        public delegate void ActivateEventHandler(CharacterState characterState);
+        public event ActivateEventHandler OnActivate = delegate { };
+        public delegate void DeactivateEventHandler(CharacterState characterState);
+        public event DeactivateEventHandler OnDeactivate = delegate { };
+        public delegate bool AnimationSequenceCompleteEventHandler(CharacterState characterState);
+        public event AnimationSequenceCompleteEventHandler OnAnimationSequenceComplete = delegate { return true; };
         public List<CharacterState> IncompatibleStates { get; set; }
         public List<SpriteAnimationSequence> SpriteAnimationSequences { get; set; }
         public Dictionary<CharacterState, SpriteAnimationSequence> SpriteTransitionAnimationSequences { get; set; }
@@ -93,10 +96,7 @@ namespace Assets.Scripts.CharacterControl
                 return;
             }
             IsActive = true;
-            if (OnActivate != null)
-            {
-                OnActivate(this);
-            }
+            OnActivate(this);
         }
 
         public void Deactivate()
@@ -106,10 +106,7 @@ namespace Assets.Scripts.CharacterControl
                 return;
             }
             IsActive = false;
-            if (OnDeactivate != null)
-            {
-                OnDeactivate(this);
-            }
+            OnDeactivate(this);
         }
 
         public bool IsActivable(List<CharacterState> states)
@@ -131,6 +128,11 @@ namespace Assets.Scripts.CharacterControl
         public bool HasPriority(CharacterState state)
         {
             return Priority <= state.Priority;
+        }
+
+        public bool FireAnimationSequenceCompleteEvent()
+        {
+            return OnAnimationSequenceComplete(this);
         }
     }
 }

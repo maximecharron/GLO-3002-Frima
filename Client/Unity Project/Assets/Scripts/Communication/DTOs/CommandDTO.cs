@@ -8,6 +8,6 @@ namespace Assets.Scripts.Communication.DTOs
     [Serializable]
     public abstract class CommandDTO
     {
-        public String token;
+        public string token;
     }
 }

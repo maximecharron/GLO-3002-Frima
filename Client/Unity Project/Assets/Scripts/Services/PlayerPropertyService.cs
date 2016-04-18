@@ -17,11 +17,12 @@ namespace Assets.Scripts.Services
         private WebSocketService webSocketService;
         private LoginService loginService;
         public int ExperiencePoints { get { return experiencePoints; } }
-        private int experiencePoints;
+        private int experiencePoints = 0;
+        private int updatedExperiencePoints = 0;
         public int UpgradePointsOnLevelComplete { get { return upgradePointsOnLevelComplete; } }
-        private int upgradePointsOnLevelComplete;
+        private int upgradePointsOnLevelComplete = 0;
         public int RequiredExperiencePointsForNextLevel { get { return requiredExperiencePointsForNextLevel; } }
-        private int requiredExperiencePointsForNextLevel;
+        private int requiredExperiencePointsForNextLevel = 0;
         public int Level { get { return level; } }
         private int level;
         public int StaminaPowerLevel { get { return staminaPowerLevel; } }
@@ -37,11 +38,21 @@ namespace Assets.Scripts.Services
             loginService.OnLoginSuccess += LoginSuccessCallback;
             webSocketService = FindObjectOfType<WebSocketService>();
             webSocketService.RegisterCommand(PlayerLevelUpDTO.COMMAND_NAME, PlayerLevelUpCallback, typeof(PlayerLevelUpDTO));
+            InvokeRepeating("UploadExperiencePointsToServer", 5, 5);
+        }
+
+        private void UploadExperiencePointsToServer()
+        {
+            if (experiencePoints != 0 && experiencePoints != updatedExperiencePoints) {
+                webSocketService.SendCommand(new ExperiencePointsUpdateDTO(experiencePoints));
+                updatedExperiencePoints = experiencePoints;
+            }
         }
 
         private void LoginSuccessCallback(LoginResultDTO resultDTO)
         {
             experiencePoints = resultDTO.currentXP;
+            updatedExperiencePoints = experiencePoints;
             upgradePointsOnLevelComplete = resultDTO.pointNextLevel;
             requiredExperiencePointsForNextLevel = resultDTO.XPNextLevel;
             level = resultDTO.level;

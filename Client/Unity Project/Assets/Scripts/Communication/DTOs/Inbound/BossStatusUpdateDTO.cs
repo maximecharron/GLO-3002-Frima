@@ -14,16 +14,16 @@ namespace Assets.Scripts.Communication.DTOs.Inbound
         [Serializable]
         public class Command
         {
-            public String name = COMMAND_NAME;
+            public string name = COMMAND_NAME;
             public Parameters parameters = new Parameters();
 
             [Serializable]
             public class Parameters
             {
-                public String bossName = "";
-                public Int32 currentBossLife = 10000;
-                public Int32 maximumBossLife = 10000;
-                public Int32 status = 0;
+                public string bossName = "";
+                public long currentBossLife = 10000;
+                public long maximumBossLife = 10000;
+                public int status = 0;
                 public long creationDate = 0;
             }
         }

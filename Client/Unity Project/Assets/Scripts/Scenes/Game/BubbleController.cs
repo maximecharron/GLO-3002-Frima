@@ -68,9 +68,10 @@ namespace Assets.Scripts.Scenes.Game
             initialPosition = this.transform.position;
             if (flyUp)
             {
-                RectTransform transform = this.GetComponent<RectTransform>();
+                RectTransform bubbleTransform = this.GetComponent<RectTransform>();
                 Canvas canvas = FindObjectOfType<Canvas>();
-                this.targetPosition = canvas.transform.TransformPoint(new Vector3(Random.Range(-180, 180), 185, transform.localPosition.z));
+                Rect canvasRect = canvas.GetComponent<RectTransform>().rect;
+                this.targetPosition = canvas.transform.TransformPoint(new Vector3(Random.Range(-180, 180), canvasRect.height / 2 - 130, bubbleTransform.localPosition.z));
             }
             else
             {

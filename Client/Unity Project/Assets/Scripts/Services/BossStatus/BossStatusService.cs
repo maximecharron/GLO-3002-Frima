@@ -23,9 +23,9 @@ namespace Assets.Scripts.Services.BossStatus
         private GameStatisticsService gameStatisticsService;
         private BossStatusService instance;
 
-        public String BossName { get { return bossName; } }
-        private String bossName = "";
-        public int CurrentBossLife
+        public string BossName { get { return bossName; } }
+        private string bossName = "";
+        public long CurrentBossLife
         {
             get { return currentBossLife; }
             set
@@ -35,9 +35,9 @@ namespace Assets.Scripts.Services.BossStatus
                 FireCallbacks();
             }
         }
-        private int currentBossLife = 10000;
-        public int MaximumBossLife { get { return maximumBossLife; } }
-        private int maximumBossLife = 10000;
+        private long currentBossLife = 10000;
+        public long MaximumBossLife { get { return maximumBossLife; } }
+        private long maximumBossLife = 10000;
         public BossStatus BossStatus { get { return status; } }
         private BossStatus status = 0;
         public DateTime CreationDate { get { return creationDate; } }
@@ -72,7 +72,7 @@ namespace Assets.Scripts.Services.BossStatus
         {
             var bossStatusUpdateParams = ((BossStatusUpdateDTO)commandDTO).command.parameters;
             this.bossName = bossStatusUpdateParams.bossName;
-            this.currentBossLife = Math.Max(bossStatusUpdateParams.currentBossLife, 0);
+            this.currentBossLife = Math.Max(bossStatusUpdateParams.currentBossLife, 0L);
             this.maximumBossLife = bossStatusUpdateParams.maximumBossLife;
             this.status = (BossStatus)bossStatusUpdateParams.status;
             this.creationDate = DateTimeUtils.ConvertFromJavaScriptDate(bossStatusUpdateParams.creationDate);
@@ -83,6 +83,7 @@ namespace Assets.Scripts.Services.BossStatus
         {
             if (CurrentBossLife <= 0 || BossStatus == BossStatus.DEAD)
             {
+                Debug.Log(String.Format("Start Date: {0}", this.creationDate));
                 gameStatisticsService.BossLifeSpan = DateTime.Now - this.creationDate;
                 OnBossDead();
             }

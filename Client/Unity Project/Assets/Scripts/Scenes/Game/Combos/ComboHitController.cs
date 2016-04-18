@@ -25,7 +25,8 @@ namespace Assets.Scripts.Scenes.Game.Combos
         public int HitFeedbackBubblePoolSize;
         public AudioClip SequenceAchievedAudioClip;
 
-        public Action<ComboHitSequence> OnComboHitCompleted { get; set; }
+        public delegate void ComboHitCompletedEventHandler(ComboHitSequence comboHitSequence);
+        public event ComboHitCompletedEventHandler OnComboHitCompleted = delegate { };
 
         private List<ComboHitSequence> hitSequences = new List<ComboHitSequence>();
         private ComboHitSequenceController hitSequenceController;
@@ -39,21 +40,18 @@ namespace Assets.Scripts.Scenes.Game.Combos
             this.ComboBonusBubble.SetActive(false);
             CreateHitSequences();
             InitSequenceController();
-            BossDeathController.OnBossDeathStart += OnBossDeathStartCallback;
+            BossDeathController.OnBossDeathStart += BossDeathStartEventHandler;
         }
 
         private void InitSequenceController()
         {
-            UnityObjectPool hitZonePool = new UnityObjectPool(ComboHitZone, ComboHitZonePoolSize);
-            hitZonePool.OnCheckIsAvailable = IsComboHitZonePoolItemAvailableCallback;
-            UnityObjectPool bonusBubblePool = new UnityObjectPool(ComboBonusBubble, ComboBonusBubblePoolSize);
-            bonusBubblePool.OnCheckIsAvailable = IsComboBonusBubblePoolItemAvailableCallback;
-            UnityObjectPool hitFeedbackBubblePool = new UnityObjectPool(HitFeedbackBubble, HitFeedbackBubblePoolSize);
-            hitFeedbackBubblePool.OnCheckIsAvailable = IsHitFeedbackBubblePoolItemAvailableCallback;
+            UnityObjectPool hitZonePool = new UnityObjectPool(ComboHitZone, ComboHitZonePoolSize, IsComboHitZonePoolItemAvailableCallback);
+            UnityObjectPool bonusBubblePool = new UnityObjectPool(ComboBonusBubble, ComboBonusBubblePoolSize, IsComboBonusBubblePoolItemAvailableCallback);
+            UnityObjectPool hitFeedbackBubblePool = new UnityObjectPool(HitFeedbackBubble, HitFeedbackBubblePoolSize, IsHitFeedbackBubblePoolItemAvailableCallback);
             this.hitSequenceController = new ComboHitSequenceController(hitZonePool, bonusBubblePool, hitFeedbackBubblePool, ComboHitZone.transform.localPosition.z);
-            this.hitSequenceController.OnHitZoneClicked = OnHitZoneClickedCallback;
-            this.hitSequenceController.OnSequenceAchieved = OnSequenceAchievedCallback;
-            this.hitSequenceController.OnSequenceTerminated = OnSequenceTerminatedCallback;
+            this.hitSequenceController.OnHitZoneClicked += HitZoneClickedEventHandler;
+            this.hitSequenceController.OnSequenceAchieved += SequenceAchievedCallbackEventHandler;
+            this.hitSequenceController.OnSequenceTerminated += SequenceTerminatedEventHandler;
         }
 
         private bool IsComboHitZonePoolItemAvailableCallback(UnityEngine.Object unityObject)
@@ -137,7 +135,7 @@ namespace Assets.Scripts.Scenes.Game.Combos
             return eligibleComboHitSequences;
         }
 
-        private void OnHitZoneClickedCallback(ComboHitZoneController hitZoneController)
+        private void HitZoneClickedEventHandler(ComboHitZoneController hitZoneController)
         {
             if (!hitSequenceController.HitSequence.EndOfSequence)
             {
@@ -145,19 +143,19 @@ namespace Assets.Scripts.Scenes.Game.Combos
             }
         }
 
-        private void OnSequenceAchievedCallback(ComboHitSequence hitSequence)
+        private void SequenceAchievedCallbackEventHandler(ComboHitSequence hitSequence)
         {
             BossController.ComboHit(hitSequence.BonusMultiplier);
             BossController.gameObject.FindAudioSource(SequenceAchievedAudioClip).Play();
             OnComboHitCompleted(hitSequence);
         }
 
-        private void OnSequenceTerminatedCallback(ComboHitSequence hitSequence)
+        private void SequenceTerminatedEventHandler(ComboHitSequence hitSequence)
         {
             lastSequenceTime = Time.time;
         }
 
-        private void OnBossDeathStartCallback()
+        private void BossDeathStartEventHandler()
         {
             enabled = false;
         }

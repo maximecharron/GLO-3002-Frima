@@ -14,7 +14,7 @@ namespace Assets.Scripts.Communication.DTOs.Inbound
         [Serializable]
         public class Command
         {
-            public String name = COMMAND_NAME;
+            public string name = COMMAND_NAME;
             public Parameters parameters = new Parameters();
 
             [Serializable]

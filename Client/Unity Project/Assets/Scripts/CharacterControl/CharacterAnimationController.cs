@@ -60,17 +60,14 @@ namespace Assets.Scripts.CharacterControl
             }
 
             spriteAnimator.Settings = state.SpriteAnimationSettings;
-            spriteAnimator.OnAnimationSequenceEnd = OnAnimationSequenceEnd;
+            spriteAnimator.OnAnimationSequenceComplete -= AnimationSequenceCompleteEventHandler;
+            spriteAnimator.OnAnimationSequenceComplete += AnimationSequenceCompleteEventHandler;
             spriteAnimator.Animate();
         }
 
-        private bool OnAnimationSequenceEnd()
+        private bool AnimationSequenceCompleteEventHandler()
         {
-            if (currentStateAnimation.OnAnimationSequenceEnd != null)
-            {
-                return currentStateAnimation.OnAnimationSequenceEnd(currentStateAnimation);
-            }
-            return true;
+            return currentStateAnimation.FireAnimationSequenceCompleteEvent();
         }
     }
 }

@@ -14,9 +14,11 @@ namespace Assets.Scripts.Scenes.Game.Combos
         private const int RED_TEXT_COLOR_MULTIPLIER = 5;
         private const int ORANGE_TEXT_COLOR_MULTIPLIER = 10;
 
-        public Action<ComboHitZoneController> OnHitZoneClicked { get; set; }
-        public Action<ComboHitSequence> OnSequenceAchieved { get; set; }
-        public Action<ComboHitSequence> OnSequenceTerminated {get; set;}
+        public event ComboHitZoneController.HitZoneClickedEventHandler OnHitZoneClicked = delegate { };
+        public delegate void SequenceAchievedEventHandler(ComboHitSequence comboHitSequence);
+        public event SequenceAchievedEventHandler OnSequenceAchieved = delegate { };
+        public delegate void SequenceTerminatedEventHandler(ComboHitSequence comboHitSequence);
+        public event SequenceTerminatedEventHandler OnSequenceTerminated = delegate { };
 
         private List<ComboHitZoneController> hitZones = new List<ComboHitZoneController>();
         private ComboHitSequence hitSequence = null;
@@ -87,7 +89,8 @@ namespace Assets.Scripts.Scenes.Game.Combos
                 Vector2 nextComboHitZoneToDisplay = hitSequence.GetNextHitZoneToDisplay();
                 GameObject comboHitZone = (GameObject)hitZonePool.GetNext();
                 ComboHitZoneController comboHitZoneController = comboHitZone.GetComponent<ComboHitZoneController>();
-                comboHitZoneController.OnHitZoneClicked = OnHitZoneClickedCallback;
+                comboHitZoneController.OnHitZoneClicked -= HitZoneClickedEventHandler;
+                comboHitZoneController.OnHitZoneClicked += HitZoneClickedEventHandler;
                 comboHitZoneController.Show(nextComboHitZoneToDisplay, baseHitZoneZPosition * hitSequence.HitZones.Count - hitSequence.NextHitZoneIndex);
                 hitZones.Add(comboHitZoneController);
             }
@@ -97,7 +100,7 @@ namespace Assets.Scripts.Scenes.Game.Combos
             }
         }
 
-        private void OnHitZoneClickedCallback(ComboHitZoneController hitZoneController)
+        private void HitZoneClickedEventHandler(ComboHitZoneController hitZoneController)
         {
             OnHitZoneClicked(hitZoneController);
             if (hitSequence.NextHitZoneIndex == hitZones.IndexOf(hitZoneController))

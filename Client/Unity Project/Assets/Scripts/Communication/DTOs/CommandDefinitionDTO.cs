@@ -13,7 +13,7 @@ namespace Assets.Scripts.Communication.DTOs
         [Serializable]
         public class CommandDefinition
         {
-            public String name;
+            public string name;
         }
     }
 }

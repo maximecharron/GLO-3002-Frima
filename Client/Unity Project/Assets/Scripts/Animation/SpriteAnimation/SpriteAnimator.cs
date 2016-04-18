@@ -11,7 +11,9 @@ namespace Assets.Scripts.Animation.SpriteAnimation
         public List<SpriteAnimationSequence> Sequences { get; set; }
         public SpriteAnimationSequence TransitionSequence { get; set; }
         public SpriteAnimationSettings Settings { get; set; }
-        public Func<bool> OnAnimationSequenceEnd { get; set; }
+
+        public delegate bool AnimationSequenceCompleteEventHandler();
+        public event AnimationSequenceCompleteEventHandler OnAnimationSequenceComplete = delegate { return true; };
 
         private Material material;
         private int spriteSheetColumnCount;
@@ -56,12 +58,9 @@ namespace Assets.Scripts.Animation.SpriteAnimation
             }
             else
             {
-                if (currentSequenceIndex != -1 && OnAnimationSequenceEnd != null)
+                if (currentSequenceIndex != -1 && !OnAnimationSequenceComplete())
                 {
-                    if (!OnAnimationSequenceEnd())
-                    {
-                        return currentSequence;
-                    }
+                    return currentSequence;
                 }
                 return GetNextMainSequence();
             }

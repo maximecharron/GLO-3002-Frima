@@ -64,15 +64,15 @@ namespace Assets.Scripts.Scenes.Game.Boss
             gameStatisticsService = FindObjectOfType<GameStatisticsService>();
             playerPropertyService = FindObjectOfType<PlayerPropertyService>();
             bossStatusService = FindObjectOfType<BossStatusService>();
-            bossStatusService.OnBossStatusUpdate += OnBossStatusUpdateCallback;
-            bossStatusService.OnBossDead += OnBossDeadCallback;
+            bossStatusService.OnBossStatusUpdate += BossStatusUpdateEventHandler;
+            bossStatusService.OnBossDead += BossDeadEventHandler;
             UpdateBossStatusDisplayValues();
         }
 
         void OnDestroy()
         {
-            bossStatusService.OnBossStatusUpdate -= OnBossStatusUpdateCallback;
-            bossStatusService.OnBossDead -= OnBossDeadCallback;
+            bossStatusService.OnBossStatusUpdate -= BossStatusUpdateEventHandler;
+            bossStatusService.OnBossDead -= BossDeadEventHandler;
         }
 
         private void InitializeStateController()
@@ -103,14 +103,14 @@ namespace Assets.Scripts.Scenes.Game.Boss
 
         private void AssignStateActions()
         {
-            hitState.OnActivate = OnHitStateActivateCallback;
-            hitState.OnAnimationSequenceEnd = OnHitAnimationSequenceEndCallback;
-            comboHitState.OnActivate = OnComboHitStateActivateCallback;
-            comboHitState.OnAnimationSequenceEnd = OnComboHitAnimationSequenceEndCallback;
-            hitMissState.OnActivate = OnHitMissStateActivateCallback;
-            hitMissState.OnAnimationSequenceEnd = OnHitMissAnimationSequenceEndCallback;
-            knockOutState.OnActivate = OnKnockOutStateActivateCallback;
-            knockOutState.OnAnimationSequenceEnd = OnKnockOutAnimationSequenceEndCallback;
+            hitState.OnActivate += HitStateActivateEventHandler;
+            hitState.OnAnimationSequenceComplete += HitAnimationSequenceCompleteEventHandler;
+            comboHitState.OnActivate += ComboHitStateActivateEventHandler;
+            comboHitState.OnAnimationSequenceComplete += ComboHitAnimationSequenceCompleteEventHandler;
+            hitMissState.OnActivate += HitMissStateActivateEventHandler;
+            hitMissState.OnAnimationSequenceComplete += HitMissAnimationSequenceCompleteEventHandler;
+            knockOutState.OnActivate += KnockOutStateActivateEventHandler;
+            knockOutState.OnAnimationSequenceComplete += OnKnockOutAnimationSequenceEndCallback;
         }
 
         void Update()
@@ -142,7 +142,7 @@ namespace Assets.Scripts.Scenes.Game.Boss
             // TODO
         }
 
-        private void OnHitStateActivateCallback(CharacterState sender)
+        private void HitStateActivateEventHandler(CharacterState sender)
         {
             DecreaseBossLife();
             StaminaController.DecreaseStamina();
@@ -150,35 +150,35 @@ namespace Assets.Scripts.Scenes.Game.Boss
             playerPropertyService.IncreaseExperience();
         }
 
-        private void OnComboHitStateActivateCallback(CharacterState sender)
+        private void ComboHitStateActivateEventHandler(CharacterState sender)
         {
             this.gameObject.FindAudioSource(KnockOutFallAudioClip).Play();
             this.gameObject.FindAudioSource(KnockOutVoiceAudioClip).Play();
         }
 
-        public bool OnHitAnimationSequenceEndCallback(CharacterState sender)
+        public bool HitAnimationSequenceCompleteEventHandler(CharacterState sender)
         {
             bossStateController.RemoveState(hitState);
             return false;
         }
 
-        public bool OnComboHitAnimationSequenceEndCallback(CharacterState sender)
+        public bool ComboHitAnimationSequenceCompleteEventHandler(CharacterState sender)
         {
             bossStateController.RemoveState(comboHitState);
             return false;
         }
 
-        private void OnHitMissStateActivateCallback(CharacterState sender)
+        private void HitMissStateActivateEventHandler(CharacterState sender)
         {
             BossAttackFeedbackController.ShowHitMissFeedback();
         }
 
-        public bool OnHitMissAnimationSequenceEndCallback(CharacterState sender)
+        public bool HitMissAnimationSequenceCompleteEventHandler(CharacterState sender)
         {
             bossStateController.RemoveState(hitMissState);
             return false;
         }
-        private void OnKnockOutStateActivateCallback(CharacterState sender)
+        private void KnockOutStateActivateEventHandler(CharacterState sender)
         {
             BossDeathController.BeginKill();
         }
@@ -189,7 +189,7 @@ namespace Assets.Scripts.Scenes.Game.Boss
             return true;
         }
 
-        public void OnBossStatusUpdateCallback()
+        public void BossStatusUpdateEventHandler()
         {
             UpdateBossStatusDisplayValues();
         }
@@ -200,15 +200,15 @@ namespace Assets.Scripts.Scenes.Game.Boss
             HealthPointSliderController.Value = bossStatusService.CurrentBossLife;
         }
 
-        public void OnBossDeadCallback()
+        public void BossDeadEventHandler()
         {
-            bossStatusService.OnBossStatusUpdate -= OnBossStatusUpdateCallback;
+            bossStatusService.OnBossStatusUpdate -= BossStatusUpdateEventHandler;
             bossStateController.AddState(knockOutState, false);
         }
 
         public void DecreaseBossLife(int multiplier = 1)
         {
-            int bossLifeDecreaseValue = gameControlService.BaseBossDamage * playerPropertyService.AttackPowerLevel * multiplier;
+            int bossLifeDecreaseValue = gameControlService.BaseBossDamage * playerPropertyService.AttackPowerLevel * multiplier * 30;
             bossStatusService.CurrentBossLife -= bossLifeDecreaseValue;
             BossAttackFeedbackController.ShowAttackFeedback(bossLifeDecreaseValue);
         }

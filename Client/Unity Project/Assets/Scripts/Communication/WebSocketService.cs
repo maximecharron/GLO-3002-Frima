@@ -14,10 +14,10 @@ namespace Assets.Scripts.Communication
     {
         private const string WEB_SOCKET_SERVER_URI = "wss://frima-server-1.herokuapp.com";
 
-        public String SessionToken { get; set; }
+        public string SessionToken { get; set; }
 
         private WebSocket webSocket;
-        private Dictionary<String, List<CommandRegistration>> registeredCommands = new Dictionary<string, List<CommandRegistration>>();
+        private Dictionary<string, List<CommandRegistration>> registeredCommands = new Dictionary<string, List<CommandRegistration>>();
         private Dictionary<Type, ICommandInterceptor> inboundCommandInterceptors = new Dictionary<Type, ICommandInterceptor>();
         private Dictionary<Type, ICommandInterceptor> outboundCommandInterceptors = new Dictionary<Type, ICommandInterceptor>();
         private Queue<String> incomingCommandBuffer = new Queue<String>();
@@ -52,7 +52,7 @@ namespace Assets.Scripts.Communication
 
         private void ReceiveCommands()
         {
-            String jsonData = webSocket.RecvString();
+            string jsonData = webSocket.RecvString();
             if (jsonData != null)
             {
                 Debug.Log(String.Format("WebSocket Receive: {0}", jsonData));
@@ -74,7 +74,7 @@ namespace Assets.Scripts.Communication
             }
         }
 
-        private bool DispatchCommand(String jsonData)
+        private bool DispatchCommand(string jsonData)
         {
             CommandDefinitionDTO commandDefinitionDTO = JsonUtility.FromJson<CommandDefinitionDTO>(jsonData);
             if (!registeredCommands.ContainsKey(commandDefinitionDTO.command.name))
@@ -101,7 +101,7 @@ namespace Assets.Scripts.Communication
             return true;
         }
 
-        public void RegisterCommand(String commandName, Action<CommandDTO> callbackMethod, Type dtoType)
+        public void RegisterCommand(string commandName, Action<CommandDTO> callbackMethod, Type dtoType)
         {
             if (!registeredCommands.ContainsKey(commandName))
             {
@@ -110,7 +110,7 @@ namespace Assets.Scripts.Communication
             registeredCommands[commandName].Add(new CommandRegistration(callbackMethod, dtoType));
         }
 
-        public void UnregisterCommand(String commandName, Action<CommandDTO> callbackMethod)
+        public void UnregisterCommand(string commandName, Action<CommandDTO> callbackMethod)
         {
             CommandRegistration commandRegistration = registeredCommands[commandName].Find(reg => reg.CallbackMethod == callbackMethod);
             registeredCommands[commandName].Remove(commandRegistration);
@@ -123,7 +123,7 @@ namespace Assets.Scripts.Communication
                 return;
             }
             commandDTO.token = SessionToken;
-            String jsonData = JsonUtility.ToJson(commandDTO, false);
+            string jsonData = JsonUtility.ToJson(commandDTO, false);
             Debug.Log(String.Format("WebSocket Send: {0}", jsonData));
             webSocket.SendString(jsonData);
         }

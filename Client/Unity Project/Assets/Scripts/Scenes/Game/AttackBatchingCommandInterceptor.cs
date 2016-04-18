@@ -16,7 +16,7 @@ namespace Assets.Scripts.Scenes.Game
         public float BatchSendInterval = 0.5f;
 
         private WebSocketService webSocketService;
-        private int postponedAttackValue = 0;
+        private long postponedAttackValue = 0;
         private float lastBatchSendTime = 0;
 
         void Start()

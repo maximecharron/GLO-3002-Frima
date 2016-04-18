@@ -29,13 +29,10 @@ namespace Assets.Scripts.Scenes.Game.Boss
 
         void Start()
         {
-            this.particleSystemPool = new UnityObjectPool(HitParticleSystem, ParticleSystemPoolSize);
-            this.particleSystemPool.OnCheckIsAvailable = IsParticlePoolItemAvailableCallback;
-            this.audioSourcePool = new UnityObjectPool(this.gameObject, typeof(AudioSource), AudioSourcePoolSize);
-            this.audioSourcePool.OnCheckIsAvailable = IsAudioSourcePoolItemAvailableCallback;
+            this.particleSystemPool = new UnityObjectPool(HitParticleSystem, ParticleSystemPoolSize, IsParticlePoolItemAvailabile);
+            this.audioSourcePool = new UnityObjectPool(this.gameObject, typeof(AudioSource), AudioSourcePoolSize, IsAudioSourcePoolItemAvailable);
             this.HitBubble.SetActive(false);
-            this.hitBubblePool = new UnityObjectPool(HitBubble, HitBubblePoolSize);
-            this.hitBubblePool.OnCheckIsAvailable = IsHitBubblePoolItemAvailableCallback;
+            this.hitBubblePool = new UnityObjectPool(HitBubble, HitBubblePoolSize, IsHitBubblePoolItemAvailable);
         }
 
         public void ShowAttackFeedback(int hitValue)
@@ -66,7 +63,7 @@ namespace Assets.Scripts.Scenes.Game.Boss
             }
         }
 
-        private bool IsParticlePoolItemAvailableCallback(UnityEngine.Object unityObject)
+        private bool IsParticlePoolItemAvailabile(UnityEngine.Object unityObject)
         {
             ParticleSystem particleSystem = ((GameObject)unityObject).GetComponent<ParticleSystem>();
             return !particleSystem.IsAlive();
@@ -85,7 +82,7 @@ namespace Assets.Scripts.Scenes.Game.Boss
             }
         }
 
-        private bool IsAudioSourcePoolItemAvailableCallback(UnityEngine.Object unityObject)
+        private bool IsAudioSourcePoolItemAvailable(UnityEngine.Object unityObject)
         {
             return !((AudioSource)unityObject).isPlaying;
         }
@@ -104,7 +101,7 @@ namespace Assets.Scripts.Scenes.Game.Boss
             }
         }
 
-        private bool IsHitBubblePoolItemAvailableCallback(UnityEngine.Object unityObject)
+        private bool IsHitBubblePoolItemAvailable(UnityEngine.Object unityObject)
         {
             BubbleController hitBubbleController = ((GameObject)unityObject).GetComponent<BubbleController>();
             return !hitBubbleController.Active;

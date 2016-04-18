@@ -9,17 +9,17 @@ namespace Assets.Scripts.Utils.UnityObjectPool
 {
     public class UnityObjectPool
     {
-        public Action<UnityEngine.Object> OnPoolItemInstantiate { get; set; }
-        public Func<UnityEngine.Object, bool> OnCheckIsAvailable { get; set; }
+        public delegate void PoolItemInstantiateEventHandler(UnityEngine.Object obj);
+        public event PoolItemInstantiateEventHandler OnPoolItemInstantiate = delegate { };
 
         private UnityEngine.Object referenceObject;
         private List<UnityEngine.Object> poolObjects = new List<UnityEngine.Object>();
-        private int poolSize;
+        private Func<UnityEngine.Object, bool> itemAvailabilityPredicate;
 
-        public UnityObjectPool(UnityEngine.Object referenceObject, int poolSize)
+        public UnityObjectPool(UnityEngine.Object referenceObject, int poolSize, Func<UnityEngine.Object, bool> itemAvailabilityPredicate)
         {
             this.referenceObject = referenceObject;
-            this.poolSize = poolSize;
+            this.itemAvailabilityPredicate = itemAvailabilityPredicate;
 
             for (int i = 0; i < poolSize; i++)
             {
@@ -27,17 +27,13 @@ namespace Assets.Scripts.Utils.UnityObjectPool
             }
         }
 
-        public UnityObjectPool(List<UnityEngine.Object> poolObjects)
-        {
-            this.poolObjects = poolObjects;
-        }
-
-        public UnityObjectPool(GameObject gameObject, Type objectType, int poolSize)
+        public UnityObjectPool(GameObject gameObject, Type objectType, int poolSize, Func<UnityEngine.Object, bool> itemAvailabilityPredicate)
         {
             for (int i = 0; i < poolSize; i++)
             {
                 this.poolObjects.Add(gameObject.AddComponent(objectType));
             }
+            this.itemAvailabilityPredicate = itemAvailabilityPredicate;
         }
 
         private UnityEngine.Object InstantiatePoolObjects()
@@ -65,14 +61,7 @@ namespace Assets.Scripts.Utils.UnityObjectPool
 
         private bool IsItemAvailable(UnityEngine.Object unityObject)
         {
-            if (OnCheckIsAvailable == null && unityObject.GetType() == typeof(GameObject))
-            {
-                return !((GameObject)unityObject).activeSelf;
-            }
-            else
-            {
-                return OnCheckIsAvailable(unityObject);
-            }
+            return itemAvailabilityPredicate(unityObject);
         }
 
     }

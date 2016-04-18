@@ -16,7 +16,8 @@ namespace Assets.Scripts.Scenes.Game.Combos
         public float FadeInDuration;
         public float FadeOutDuration;
 
-        public Action<ComboHitZoneController> OnHitZoneClicked { get; set; }
+        public delegate void HitZoneClickedEventHandler(ComboHitZoneController comboHitZoneController);
+        public event HitZoneClickedEventHandler OnHitZoneClicked = delegate { };
 
         public bool Active
         {
@@ -48,10 +49,7 @@ namespace Assets.Scripts.Scenes.Game.Combos
 
         void OnMouseDown()
         {
-            if (OnHitZoneClicked != null)
-            {
-                OnHitZoneClicked(this);
-            }
+            OnHitZoneClicked(this);
         }
 
         private void Animate()

@@ -25,7 +25,6 @@ namespace Assets.Scripts.Services
 
         private HttpService httpService;
         private WebSocketService webSocketService;
-        private string sessionToken;
 
         void Start()
         {
@@ -60,7 +59,7 @@ namespace Assets.Scripts.Services
             OnLoginSuccess(loginResultDTO);
         }
 
-        public void SetSessionToken(String token)
+        public void SetSessionToken(string sessionToken)
         {
             httpService.SessionToken = sessionToken;
             webSocketService.SessionToken = sessionToken;
@@ -74,7 +73,7 @@ namespace Assets.Scripts.Services
 
         private void LogOutCallback(WWW request)
         {
-            sessionToken = null;
+            webSocketService.SessionToken = null;
             httpService.SessionToken = null;
             OnLogoutSuccess(request);
         }

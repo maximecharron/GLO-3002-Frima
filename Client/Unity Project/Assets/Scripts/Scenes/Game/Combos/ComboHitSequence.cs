@@ -8,7 +8,7 @@ namespace Assets.Scripts.Scenes.Game.Combos
 {
     public class ComboHitSequence
     {
-        public String Name { get; set; }
+        public string Name { get; set; }
         public Rect TriggerZone {get; set;}
         public int TriggerFrequency { get; set; }
         public float MaxFirstHitWaitTime { get; set; }

@@ -13,15 +13,15 @@ namespace Assets.Scripts.Communication
     {
         private const string HTTP_SERVER_URI = "https://frima-server-1.herokuapp.com";
 
-        public String SessionToken { get; set; }
+        public string SessionToken { get; set; }
 
-        public void HttpGet(String location, Action<WWW> callback)
+        public void HttpGet(string location, Action<WWW> callback)
         {
             Debug.Log(String.Format("HTTP GET: {0}", location));
             StartCoroutine(HttpGetCoroutine(location, callback));
         }
 
-        private IEnumerator HttpGetCoroutine(String location, Action<WWW> callback)
+        private IEnumerator HttpGetCoroutine(string location, Action<WWW> callback)
         {
             WWW request = new WWW(HTTP_SERVER_URI + location);
             yield return request;
@@ -29,13 +29,13 @@ namespace Assets.Scripts.Communication
                 callback(request);
         }
 
-        public void HttpPost(String location, WWWForm form, Action<WWW> callback)
+        public void HttpPost(string location, WWWForm form, Action<WWW> callback)
         {
             Debug.Log(String.Format("HTTP POST: {0}", location));
             StartCoroutine(HttpPostCoroutine(location, form, callback));
         }
 
-        private IEnumerator HttpPostCoroutine(String location, WWWForm form, Action<WWW> callback)
+        private IEnumerator HttpPostCoroutine(string location, WWWForm form, Action<WWW> callback)
         {
             WWW request = new WWW(HTTP_SERVER_URI + location, form);
             yield return request;

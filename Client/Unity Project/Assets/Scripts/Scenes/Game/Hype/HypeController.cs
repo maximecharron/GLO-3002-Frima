@@ -30,7 +30,7 @@ namespace Assets.Scripts.Scenes.Game.Hype
         {
             playerPropertyService = FindObjectOfType<PlayerPropertyService>();
             HypeSliderController.Value = 0;
-            ComboHitController.OnComboHitCompleted = OnComboHitCompletedCallback;
+            ComboHitController.OnComboHitCompleted += ComboHitCompletedEventHandler;
         }
 
         public void OnHypeButtonClick()
@@ -41,7 +41,7 @@ namespace Assets.Scripts.Scenes.Game.Hype
             }
         }
 
-        void OnComboHitCompletedCallback(ComboHitSequence hitSequence)
+        void ComboHitCompletedEventHandler(ComboHitSequence hitSequence)
         {
             IncreaseHype(hitSequence.BonusMultiplier);
         }

@@ -11,7 +11,7 @@ namespace Assets.Scripts.Communication.DTOs.Outbound
         public const string COMMAND_NAME = "registerClient";
         public Command command = new Command();
 
-        public ClientRegistrationDTO(String token)
+        public ClientRegistrationDTO(string token)
         {
             this.command.parameters.token = token;
         }
@@ -19,13 +19,13 @@ namespace Assets.Scripts.Communication.DTOs.Outbound
         [Serializable]
         public class Command
         {
-            public String name = COMMAND_NAME;
+            public string name = COMMAND_NAME;
             public Parameters parameters = new Parameters();
 
             [Serializable]
             public class Parameters
             {
-                public String token = "";
+                public string token = "";
             }
         }
     }

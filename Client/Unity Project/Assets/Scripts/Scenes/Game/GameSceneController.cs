@@ -34,7 +34,7 @@ namespace Assets.Scripts.Scenes.Game
         void Start() {
             gameControlService = FindObjectOfType<GameControlService>();
             gameControlService.GlobalAudioThemeEnabled = false;
-            BossDeathController.OnBossDeathEnd += OnBossDeathEndCallback;
+            BossDeathController.OnBossDeathEnd += BossDeathEndEventHandler;
         }
 
         void OnDestroy()
@@ -50,7 +50,7 @@ namespace Assets.Scripts.Scenes.Game
             LoadScene(Scenes.Scene.MENU_SCENE);
         }
 
-        private void OnBossDeathEndCallback()
+        private void BossDeathEndEventHandler()
         {
             LoadScene(Scenes.Scene.VICTORY_SCENE);
         }
