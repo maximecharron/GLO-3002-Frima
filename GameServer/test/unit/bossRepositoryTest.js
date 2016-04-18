@@ -19,6 +19,8 @@ var BossRepository = proxyquire('./../../repository/bossRepository.js', {'./../m
 var redisCommunicationServiceStub;
 var bossDef = { serverName:hostname, bossName: "Tyson", currentBossLife: "100", maximumBossLife: "100", status: "0" };
 
+var boss;
+
 //Stubs
 dbBossStub.backupBoss = function(boss) {};
 
@@ -31,25 +33,56 @@ describe("bossRepository", function ()
 {
     beforeEach(function(done)
     {
+        boss = new Boss(bossDef.serverName, bossDef.bossName, bossDef.currentBossLife, bossDef.maximumBossLife, bossDef.status);
         redisCommunicationServiceStub = sinon.createStubInstance(RedisCommunicationService);
         done();
     });
 
     describe("saveBoth", function()
     {
-        it("should call redisCommunicationService.setBoss & DbBoss.backupBoss", function()
+        it("should call redisCommunicationService.setBoss", function()
         {
-            ////Arrange
-            //
-            //var bossRepository = new BossRepository(redisCommunicationServiceStub);
-            //var redisSpy = chai.spy.on(redisCommunicationServiceStub, 'setBoss');
-            //var dbBossSpy = chai.spy.on(dbBossStub, "backupBoss");
-            ////Act
-            //bossRepository.saveBoth();
-            //
-            ////Assert
-            //expect(redisSpy).to.have.been.called.once;
-            //expect(dbBossSpy).to.have.been.called.once;
+            //Arrange
+            var bossRepository = new BossRepository(redisCommunicationServiceStub);
+            var redisSpy = chai.spy.on(redisCommunicationServiceStub, 'setBoss');
+
+            //Act
+            bossRepository.saveBoth(boss);
+
+            //Assert
+            expect(redisSpy).to.have.been.called.once;
+        });
+    });
+
+    describe("saveBoth", function()
+    {
+        it("should call DbBoss.backupBoss", function()
+        {
+            //Arrange
+            var bossRepository = new BossRepository(redisCommunicationServiceStub);
+            var dbBossSpy = chai.spy.on(dbBossStub, "backupBoss");
+
+            //Act
+            bossRepository.saveBoth(boss);
+
+            //Assert
+            expect(dbBossSpy).to.have.been.called.once;
+        });
+    });
+
+    describe("saveBoth", function()
+    {
+        it("should call redisCommunicationService.setCurrentLife", function()
+        {
+            //Arrange
+            var bossRepository = new BossRepository(redisCommunicationServiceStub);
+            var redisSpy = chai.spy.on(redisCommunicationServiceStub, 'setCurrentLife');
+
+            //Act
+            bossRepository.saveBoth(boss);
+
+            //Assert
+            expect(redisSpy).to.have.been.called.once;
         });
     });
 
