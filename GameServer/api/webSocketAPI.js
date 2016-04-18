@@ -91,6 +91,11 @@ function newMessage(message, webSocket)
             self.userCommunicationService.sendUserLevelUpInformation(webSocket, informationNextLevel);
         }
 
+        if(request.command.name == "updateUserExperience")
+        {
+            self.userService.updateUserExperience(webSocketClientId, request.command.parameters.currentXP);
+        }
+
     } catch (error)
     {
         return console.log("Problem to parse :", error);

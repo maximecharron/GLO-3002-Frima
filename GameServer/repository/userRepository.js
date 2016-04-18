@@ -93,7 +93,20 @@ UserRepository.prototype.levelUpUser = function(token, parameters, levelUpInform
                 console.log("Error when levelUp user in database: ", err);
             }
         });
-    })
+    });
+};
+
+UserRepository.prototype.updateUserExperience = function(token, currentXP)
+{
+    getUser(token, function(user){
+        user.currentXP = currentXP;
+
+        user.save(function(err){
+            if(err){
+                console.log("Error when save updateUserExperience: ", err);
+            }
+        });
+    });
 };
 
 //Private method
