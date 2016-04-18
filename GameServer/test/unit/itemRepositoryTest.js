@@ -5,26 +5,20 @@ chai.use(spies);
 
 var expect = chai.expect;
 var should = chai.should();
-var sinon = require("sinon");
-var itemModel = require('./../../models/item.js');
-
-var itemModelStub = {};
-var ItemRepository = proxyquire('./../../repository/bossRepository.js', {'./../models/item.js': itemModelStub});
-var item;
 
 //Stubs
+var itemModelStub = {};
 
+var ItemRepository = proxyquire('./../../repository/itemRepository.js', {'./../models/item.js': itemModelStub});
 
 before(function(done){
     done();
 });
 
-describe("bossRepository", function ()
+describe("itemRepository", function ()
 {
     beforeEach(function(done)
     {
-        //boss = new Boss(bossDef.serverName, bossDef.bossName, bossDef.currentBossLife, bossDef.maximumBossLife, bossDef.status);
-        //redisCommunicationServiceStub = sinon.createStubInstance(RedisCommunicationService);
         done();
     });
 
@@ -33,14 +27,14 @@ describe("bossRepository", function ()
         it("should call ItemModel.findItems", function()
         {
             //Arrange
-            //var bossRepository = new BossRepository(redisCommunicationServiceStub);
-            //var redisSpy = chai.spy.on(redisCommunicationServiceStub, 'setBoss');
+            var itemRepository = new ItemRepository();
+            var bdSpy = chai.spy.on(itemModelStub, 'findItems');
 
             //Act
-            //bossRepository.saveBoth(boss);
+            itemRepository.getItems();
 
             //Assert
-            //expect(redisSpy).to.have.been.called.once;
+            expect(bdSpy).to.have.been.called.once;
         });
     });
 
