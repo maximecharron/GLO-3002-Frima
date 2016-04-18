@@ -3,13 +3,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using Assets.Scripts.Communication.DTOs;
+using Assets.Scripts.Services.Communication.DTOs;
 using Assets.Scripts.Extensions;
 
-namespace Assets.Scripts.Communication
+namespace Assets.Scripts.Services.Communication
 {
-
-    public class HttpService : MonoBehaviour
+    public class HttpService : MonoSingleton
     {
         private const string HTTP_SERVER_URI = "https://frima-server-1.herokuapp.com";
 

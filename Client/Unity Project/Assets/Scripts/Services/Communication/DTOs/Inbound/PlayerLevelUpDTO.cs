@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Assets.Scripts.Communication.DTOs.Inbound
+namespace Assets.Scripts.Services.Communication.DTOs.Inbound
 {
     [Serializable]
-    public class GameConfigUpdateDTO : CommandDTO
+    public class PlayerLevelUpDTO : CommandDTO
     {
-        public const string COMMAND_NAME = "gameStatusUpdate";
+        public const string COMMAND_NAME = "userLevelUpInformation";
         public Command command = new Command();
 
         [Serializable]
@@ -20,7 +20,8 @@ namespace Assets.Scripts.Communication.DTOs.Inbound
             [Serializable]
             public class Parameters
             {
-                public Int32 baseDamage = 0;
+                public Int32 pointForNextLevel = 0;
+                public Int32 nextLevelXp = 0;
             }
         }
     }

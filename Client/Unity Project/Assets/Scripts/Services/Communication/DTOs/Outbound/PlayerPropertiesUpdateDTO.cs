@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Assets.Scripts.Communication.DTOs.Outbound
+namespace Assets.Scripts.Services.Communication.DTOs.Outbound
 {
     [Serializable]
     public class PlayerPropertiesUpdateDTO : CommandDTO
@@ -13,11 +13,11 @@ namespace Assets.Scripts.Communication.DTOs.Outbound
 
         public PlayerPropertiesUpdateDTO(Int32 currentExperiencePoints, Int32 currentLevel, Int32 staminaPowerLevelUpgrade, Int32 hypePowerLevelUpgrade, Int32 attackPowerLevelUpgrade)
         {
-            this.command.parameters.currentXP = currentExperiencePoints;
-            this.command.parameters.currentLevel = currentLevel;
-            this.command.parameters.stamina = staminaPowerLevelUpgrade;
-            this.command.parameters.hype = hypePowerLevelUpgrade;
-            this.command.parameters.attack = attackPowerLevelUpgrade;
+            command.parameters.currentXP = currentExperiencePoints;
+            command.parameters.currentLevel = currentLevel;
+            command.parameters.stamina = staminaPowerLevelUpgrade;
+            command.parameters.hype = hypePowerLevelUpgrade;
+            command.parameters.attack = attackPowerLevelUpgrade;
         }
 
         [Serializable]

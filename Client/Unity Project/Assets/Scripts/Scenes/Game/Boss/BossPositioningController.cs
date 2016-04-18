@@ -11,9 +11,12 @@ namespace Assets.Scripts.Scenes.Game.Boss
         public const float BOSS_RELATIVE_HEIGHT = 1f;
         public const float BOSS_POSITION_FROM_BOTTOM = 50;
 
+        //Configurable script parameters
+        public Canvas canvas;
+
         void Start()
         {
-            Rect canvasRect = FindObjectOfType<Canvas>().GetComponent<RectTransform>().rect;
+            Rect canvasRect = canvas.GetComponent<RectTransform>().rect;
             float verticalScale = canvasRect.height * BOSS_RELATIVE_HEIGHT;
             this.transform.localScale = new Vector3(verticalScale, verticalScale, 1);
             this.transform.localPosition = new Vector3(this.transform.localPosition.x, BOSS_POSITION_FROM_BOTTOM - (canvasRect.height - verticalScale) / 2, this.transform.localPosition.z);

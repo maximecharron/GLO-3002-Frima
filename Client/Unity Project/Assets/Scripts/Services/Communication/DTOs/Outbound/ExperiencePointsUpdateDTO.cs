@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Assets.Scripts.Communication.DTOs.Outbound
+namespace Assets.Scripts.Services.Communication.DTOs.Outbound
 {
     [Serializable]
-    public class BossAttackDTO : CommandDTO
+    public class ExperiencePointsUpdateDTO : CommandDTO
     {
-        public const string COMMAND_NAME = "attack";
+        public const string COMMAND_NAME = "updateUserExperience";
         public Command command = new Command();
 
-        public BossAttackDTO(long number)
+        public ExperiencePointsUpdateDTO(Int32 currentExperiencePoints)
         {
-            this.command.parameters.number = number;
+            command.parameters.currentXP = currentExperiencePoints;
         }
 
         [Serializable]
@@ -25,7 +25,7 @@ namespace Assets.Scripts.Communication.DTOs.Outbound
             [Serializable]
             public class Parameters
             {
-                public long number = 10;
+                public Int32 currentXP = 0;
             }
         }
     }

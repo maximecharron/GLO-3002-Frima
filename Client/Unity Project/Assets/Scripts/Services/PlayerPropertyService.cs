@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Assets.Scripts.Communication;
-using Assets.Scripts.Communication.DTOs;
-using Assets.Scripts.Communication.DTOs.Inbound;
-using Assets.Scripts.Communication.DTOs.Outbound;
+using Assets.Scripts.Services.Communication;
+using Assets.Scripts.Services.Communication.DTOs;
+using Assets.Scripts.Services.Communication.DTOs.Inbound;
+using Assets.Scripts.Services.Communication.DTOs.Outbound;
 
 namespace Assets.Scripts.Services
 {
-    public class PlayerPropertyService : MonoBehaviour
+    public class PlayerPropertyService : MonoSingleton
     {
         public delegate void PlayerPropertiesUpdateUpdateEventHandler();
         public event PlayerPropertiesUpdateUpdateEventHandler OnPlayerPropertiesUpdate = delegate { };

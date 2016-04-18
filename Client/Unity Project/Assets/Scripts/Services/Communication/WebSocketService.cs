@@ -3,14 +3,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using Assets.Scripts.Communication.DTOs;
-using Assets.Scripts.Communication.DTOs.Outbound;
+using Assets.Scripts.Services.Communication.DTOs;
+using Assets.Scripts.Services.Communication.DTOs.Outbound;
 using Assets.Scripts.Extensions;
 
-namespace Assets.Scripts.Communication
+namespace Assets.Scripts.Services.Communication
 {
 
-    public class WebSocketService : MonoBehaviour
+    public class WebSocketService : MonoSingleton
     {
         private const string WEB_SOCKET_SERVER_URI = "wss://frima-server-1.herokuapp.com";
 
@@ -24,7 +24,6 @@ namespace Assets.Scripts.Communication
 
         void Start()
         {
-            DontDestroyOnLoad(this);
             webSocket = new WebSocket(new Uri(WEB_SOCKET_SERVER_URI));
             Connect();
         }
@@ -37,8 +36,11 @@ namespace Assets.Scripts.Communication
 
         public void OnDestroy()
         {
-            Debug.Log("WebSocket Disconnect");
-            webSocket.Close();
+            if (webSocket != null)
+            {
+                Debug.Log("WebSocket Disconnect");
+                webSocket.Close();
+            }
             StopAllCoroutines();
         }
 
@@ -144,12 +146,12 @@ namespace Assets.Scripts.Communication
 
         public void AddOutboundInterceptor(ICommandInterceptor interceptor, Type commandType)
         {
-            this.outboundCommandInterceptors.AddOrReplace(commandType, interceptor);
+            outboundCommandInterceptors.AddOrReplace(commandType, interceptor);
         }
 
         public void AddInboundInterceptor(ICommandInterceptor interceptor, Type commandType)
         {
-            this.inboundCommandInterceptors.AddOrReplace(commandType, interceptor);
+            inboundCommandInterceptors.AddOrReplace(commandType, interceptor);
         }
 
     }

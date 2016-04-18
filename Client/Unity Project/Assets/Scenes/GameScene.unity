@@ -3068,7 +3068,7 @@ GameObject:
   - 114: {fileID: 658836273}
   - 114: {fileID: 658836272}
   m_Layer: 5
-  m_Name: LevelUpUI
+  m_Name: LevelUpUICanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3649,7 +3649,7 @@ GameObject:
   - 114: {fileID: 709489108}
   - 114: {fileID: 709489107}
   m_Layer: 5
-  m_Name: GameUI
+  m_Name: GameUICanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3863,7 +3863,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 6f1b684741609de469e22f4227eb9ee5, type: 3}
-    m_FontSize: 20
+    m_FontSize: 25
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 2
@@ -3913,7 +3913,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 20, y: -15}
-  m_SizeDelta: {x: 300, y: 75}
+  m_SizeDelta: {x: 300, y: 80}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &820475589
 GameObject:
@@ -4344,7 +4344,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9c5d60ae2691dc4a9eb6e134404ac7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BossController: {fileID: 2085029932}
   Boss: {fileID: 2085029928}
   GameCanvas: {fileID: 709489109}
 --- !u!4 &1025823895
@@ -4899,7 +4898,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 25, y: 0}
+  m_SizeDelta: {x: 30, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1084570568
 MonoBehaviour:
@@ -4966,7 +4965,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -21}
-  m_SizeDelta: {x: 0, y: 25}
+  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1148697024
 GameObject:
@@ -5711,7 +5710,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 6f1b684741609de469e22f4227eb9ee5, type: 3}
-    m_FontSize: 20
+    m_FontSize: 25
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 2
@@ -6132,7 +6131,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1489413935}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.000091552734}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1916667759}
@@ -6141,8 +6140,8 @@ RectTransform:
   m_RootOrder: 1
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000094890594, y: -50}
-  m_SizeDelta: {x: 0, y: 25}
+  m_AnchoredPosition: {x: 0.000094890594, y: -60}
+  m_SizeDelta: {x: 0.000065237284, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1514207270
 GameObject:
@@ -6892,6 +6891,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7e4d39bb6274594da0684b91e5a2cab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvas: {fileID: 709489109}
   Duration: 0.5
 --- !u!1 &1760682875
 GameObject:
@@ -7059,7 +7059,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 25, y: 0}
+  m_SizeDelta: {x: 30, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1916667760
 MonoBehaviour:
@@ -7280,6 +7280,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c13e9f78ac07c984cba59863f6ee45cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvas: {fileID: 709489109}
   Duration: 1
 --- !u!1 &1955588798
 GameObject:
@@ -7326,6 +7327,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c2a82ae77be0244da9fe7a897406c19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvas: {fileID: 709489109}
   Duration: 1
 --- !u!1 &1979957370
 GameObject:
@@ -7801,12 +7803,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpritesheetColumnCount: 8
-  GameSceneController: {fileID: 0}
+  GameSceneController: {fileID: 1025823894}
   BossAttackFeedbackController: {fileID: 2085029936}
   BossDeathAnimationController: {fileID: 2085029942}
+  ComboHitController: {fileID: 2085029937}
   StaminaController: {fileID: 2085029940}
   HypeController: {fileID: 2085029941}
-  HealthPointSliderController: {fileID: 2023149238}
   KnockOutFallAudioClip: {fileID: 8300000, guid: b485de05d4820c648baa3dca2c99fe6e,
     type: 3}
   KnockOutVoiceAudioClip: {fileID: 8300000, guid: 2c9311c0c5904ce47adb7806a23e8724,
@@ -7895,7 +7897,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa3c9a4b14cd12241919acf7369fa470, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BossController: {fileID: 2085029932}
   ComboHitZone: {fileID: 2016672436}
   ComboHitZonePoolSize: 5
   ComboBonusBubble: {fileID: 1938948517}
@@ -8102,6 +8103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68e14b8b1c039974b92ca13ecd012da9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvas: {fileID: 709489109}
 --- !u!1 &2122665665
 GameObject:
   m_ObjectHideFlags: 0

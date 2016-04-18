@@ -1,11 +1,11 @@
-﻿using Assets.Scripts.Communication;
+﻿using Assets.Scripts.Services.Communication;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Assets.Scripts.Communication.DTOs;
-using Assets.Scripts.Communication.DTOs.Inbound;
-using Assets.Scripts.Communication.DTOs.Outbound;
+using Assets.Scripts.Services.Communication.DTOs;
+using Assets.Scripts.Services.Communication.DTOs.Inbound;
+using Assets.Scripts.Services.Communication.DTOs.Outbound;
 using UnityEngine;
 
 namespace Assets.Scripts.Scenes.Game

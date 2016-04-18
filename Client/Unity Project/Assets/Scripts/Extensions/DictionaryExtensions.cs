@@ -27,6 +27,15 @@ namespace Assets.Scripts.Extensions
             }
         }
 
+        public static T2 GetValueOrDefault<T1, T2>(this Dictionary<T1, T2> dictionary, T1 key, T2 defaultValue)
+        {
+            if (!dictionary.ContainsKey(key))
+            {
+                return defaultValue;
+            }
+            return dictionary[key];
+        }
+
         public static string ToFormattatedString<T1, T2>(this Dictionary<T1, T2> dictionary)
         {
             return string.Join(";", dictionary.Select(x => x.Key + "=" + x.Value).ToArray());

@@ -3,6 +3,8 @@ using System.Collections;
 
 namespace Assets.Scripts.Scenes.Game.Boss
 {
+    [RequireComponent(typeof(ParticleSystem))]
+    [RequireComponent(typeof(AudioSource))]
     public class BossDeathExplosionController : MonoBehaviour {
 
         // Configurable script parameters
@@ -16,7 +18,7 @@ namespace Assets.Scripts.Scenes.Game.Boss
 
         private void PlayParticles()
         {
-            ParticleSystem[] particleSystems = this.GetComponentsInChildren<ParticleSystem>();
+            ParticleSystem[] particleSystems = GetComponentsInChildren<ParticleSystem>();
             foreach (ParticleSystem particleSystem in particleSystems)
             {
                 particleSystem.startSize *= Multiplier;
@@ -29,7 +31,7 @@ namespace Assets.Scripts.Scenes.Game.Boss
 
         private void PlayAudio()
         {
-            AudioSource audioSource = this.GetComponent<AudioSource>();
+            AudioSource audioSource = GetComponent<AudioSource>();
             audioSource.Play();
         }
     }

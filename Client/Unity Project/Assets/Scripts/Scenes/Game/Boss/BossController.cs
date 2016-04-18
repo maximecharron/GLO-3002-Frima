@@ -11,7 +11,7 @@ using Assets.Scripts.Scenes.Game.Combos;
 
 namespace Assets.Scripts.Scenes.Game.Boss
 {
-
+    [RequireComponent(typeof(Renderer))]
     public class BossController : MonoBehaviour
     {
         private const int DEAD_STATE_PRIORITY = 1;
@@ -33,7 +33,6 @@ namespace Assets.Scripts.Scenes.Game.Boss
         public ComboHitController ComboHitController;
         public StaminaController StaminaController;
         public HypeController HypeController;
-        public HealthPointSliderController HealthPointSliderController;
         public AudioClip KnockOutFallAudioClip;
         public AudioClip KnockOutVoiceAudioClip;
 
@@ -55,7 +54,7 @@ namespace Assets.Scripts.Scenes.Game.Boss
         private SpriteAnimationSequence comboHitSequence1 = new SpriteAnimationSequence(new List<int> { 26, 28, 30, 31 }, 5, 1);
         private SpriteAnimationSequence comboHitSequence2 = new SpriteAnimationSequence(new List<int> { 23, 27, 29, 30, 31 }, 5, 1);
         private SpriteAnimationSequence hitMissSequence = new SpriteAnimationSequence(new List<int> { 16 }, 2, 1);
-        private SpriteAnimationSequence deathSequence = new SpriteAnimationSequence(new List<int> { 20, 37 }, 2, 3);
+        private SpriteAnimationSequence deathSequence = new SpriteAnimationSequence(new List<int> { 20, 37 }, 2, 5);
 
         void Start()
         {
@@ -63,12 +62,10 @@ namespace Assets.Scripts.Scenes.Game.Boss
             InitializeStates();
             AssignStateActions();
             InitalizeDependencies();
-            UpdateBossStatusDisplayValues();
         }
 
         void OnDestroy()
         {
-            bossStatusService.OnBossStatusUpdate -= BossStatusUpdateEventHandler;
             bossStatusService.OnBossDead -= BossDeadEventHandler;
         }
 
@@ -120,7 +117,6 @@ namespace Assets.Scripts.Scenes.Game.Boss
             gameStatisticsService = FindObjectOfType<GameStatisticsService>();
             playerPropertyService = FindObjectOfType<PlayerPropertyService>();
             bossStatusService = FindObjectOfType<BossStatusService>();
-            bossStatusService.OnBossStatusUpdate += BossStatusUpdateEventHandler;
             bossStatusService.OnBossDead += BossDeadEventHandler;
         }
 
@@ -209,17 +205,6 @@ namespace Assets.Scripts.Scenes.Game.Boss
         {
             GameSceneController.ShowVictoryScene();
             return false;
-        }
-
-        public void BossStatusUpdateEventHandler()
-        {
-            UpdateBossStatusDisplayValues();
-        }
-
-        private void UpdateBossStatusDisplayValues()
-        {
-            HealthPointSliderController.MaxValue = bossStatusService.MaximumBossLife;
-            HealthPointSliderController.Value = bossStatusService.CurrentBossLife;
         }
 
         public void BossDeadEventHandler()

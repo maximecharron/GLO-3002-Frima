@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.Communication;
+﻿using Assets.Scripts.Services.Communication;
 using Assets.Scripts.Services;
 using UnityEngine;
 using UnityEngine.SceneManagement;

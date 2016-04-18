@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Scenes.Game
 {
+    [RequireComponent(typeof(Renderer))]
     class BackgroundController : MonoBehaviour
     {
         //Configurable script parameters

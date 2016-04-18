@@ -3,18 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Assets.Scripts.Communication.DTOs.Outbound
+namespace Assets.Scripts.Services.Communication.DTOs.Inbound
 {
     [Serializable]
-    public class ClientRegistrationDTO : CommandDTO
+    public class BossStatusUpdateDTO : CommandDTO
     {
-        public const string COMMAND_NAME = "registerClient";
+        public const string COMMAND_NAME = "bossStatusUpdate";
         public Command command = new Command();
-
-        public ClientRegistrationDTO(string token)
-        {
-            this.command.parameters.token = token;
-        }
 
         [Serializable]
         public class Command
@@ -25,7 +20,11 @@ namespace Assets.Scripts.Communication.DTOs.Outbound
             [Serializable]
             public class Parameters
             {
-                public string token = "";
+                public string bossName = "";
+                public long currentBossLife = 10000;
+                public long maximumBossLife = 10000;
+                public int status = 0;
+                public long creationDate = 0;
             }
         }
     }

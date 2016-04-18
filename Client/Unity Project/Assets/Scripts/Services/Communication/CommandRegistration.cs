@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Assets.Scripts.Communication.DTOs;
+using Assets.Scripts.Services.Communication.DTOs;
 
-namespace Assets.Scripts.Communication
+namespace Assets.Scripts.Services.Communication
 {
     public class CommandRegistration
     {

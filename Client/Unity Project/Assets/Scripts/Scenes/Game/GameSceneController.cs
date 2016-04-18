@@ -2,15 +2,15 @@
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using Assets.Scripts.Communication;
-using Assets.Scripts.Communication.DTOs;
+using Assets.Scripts.Services.Communication;
+using Assets.Scripts.Services.Communication.DTOs;
 using Assets.Scripts.Scenes.Game.Boss;
 using Assets.Scripts.Services;
 using Assets.Scripts.Services.BossStatus;
 
 namespace Assets.Scripts.Scenes.Game
 {
-
+    [RequireComponent(typeof(AudioSource))]
     public class GameSceneController : SceneController
     {
         // Configurable script parameters
@@ -37,7 +37,10 @@ namespace Assets.Scripts.Scenes.Game
 
         void OnDestroy()
         {
-            gameControlService.GlobalAudioThemeEnabled = true;
+            if (gameControlService != null)
+            {
+                gameControlService.GlobalAudioThemeEnabled = true;
+            }
         }
 
         public void OnExitButtonClick()

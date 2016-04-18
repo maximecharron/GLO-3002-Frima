@@ -47,7 +47,7 @@ namespace Assets.Scripts.Animation.SpriteAnimation
             if (currentSequence == null || currentSequence.EndOfSequence) {
                 currentSequence = GetNextSequence();
             }
-            this.SetFrame(currentSequence.NextFrame());
+            SetFrame(currentSequence.NextFrame());
         }
 
         private SpriteAnimationSequence GetNextSequence()
@@ -85,8 +85,8 @@ namespace Assets.Scripts.Animation.SpriteAnimation
 
         public void SetFrame(int index)
         {
-            int row = index / this.spriteSheetColumnCount;
-            int column = index % this.spriteSheetColumnCount;
+            int row = index / spriteSheetColumnCount;
+            int column = index % spriteSheetColumnCount;
 
             SetFrame(row, column);
         }

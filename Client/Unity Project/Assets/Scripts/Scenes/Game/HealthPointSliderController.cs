@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using Assets.Scripts.Services.BossStatus;
 
 namespace Assets.Scripts.Scenes.Game
 {
@@ -18,30 +19,31 @@ namespace Assets.Scripts.Scenes.Game
         public Slider HealthPointSlider;
         public Image SliderFill;
 
-        public float MaxValue
+        private BossStatusService bossStatusService;
+
+        void Start()
         {
-            get
-            {
-                return HealthPointSlider.maxValue;
-            }
-            set
-            {
-                HealthPointSlider.maxValue = value;
-            }
+            bossStatusService = FindObjectOfType<BossStatusService>();
+            bossStatusService.OnBossStatusUpdate += BossStatusUpdateEventHandler;
+            UpdateBossStatusDisplayValues();
         }
 
-        public float Value
+        void OnDestroy()
         {
-            get
-            {
-                return HealthPointSlider.value;
-            }
-            set
-            {
-                HealthPointSlider.value = value;
-                HealthPointValue.text = value.ToString();
-                SliderFill.color = GetHealthSliderColor(value / HealthPointSlider.maxValue);
-            }
+            bossStatusService.OnBossStatusUpdate -= BossStatusUpdateEventHandler;
+        }
+
+        public void BossStatusUpdateEventHandler()
+        {
+            UpdateBossStatusDisplayValues();
+        }
+
+        private void UpdateBossStatusDisplayValues()
+        {
+            HealthPointSlider.maxValue = bossStatusService.MaximumBossLife;
+            HealthPointSlider.value = bossStatusService.CurrentBossLife;
+            HealthPointValue.text = bossStatusService.CurrentBossLife.ToString();
+            SliderFill.color = GetHealthSliderColor(HealthPointSlider.value / HealthPointSlider.maxValue);
         }
 
         private Color GetHealthSliderColor(float value)

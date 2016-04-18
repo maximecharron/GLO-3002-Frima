@@ -55,10 +55,10 @@ namespace Assets.Scripts.Scenes.Game.Combos
             UnityObjectPool hitZonePool = new UnityObjectPool(ComboHitZone, ComboHitZonePoolSize, IsComboHitZonePoolItemAvailableCallback);
             UnityObjectPool bonusBubblePool = new UnityObjectPool(ComboBonusBubble, ComboBonusBubblePoolSize, IsComboBonusBubblePoolItemAvailableCallback);
             UnityObjectPool hitFeedbackBubblePool = new UnityObjectPool(HitFeedbackBubble, HitFeedbackBubblePoolSize, IsHitFeedbackBubblePoolItemAvailableCallback);
-            this.hitSequenceController = new ComboHitSequenceController(hitZonePool, bonusBubblePool, hitFeedbackBubblePool, ComboHitZone.transform.localPosition.z);
-            this.hitSequenceController.OnHitZoneClicked += HitZoneClickedEventHandler;
-            this.hitSequenceController.OnSequenceAchieved += SequenceAchievedCallbackEventHandler;
-            this.hitSequenceController.OnSequenceTerminated += SequenceTerminatedEventHandler;
+            hitSequenceController = new ComboHitSequenceController(hitZonePool, bonusBubblePool, hitFeedbackBubblePool, ComboHitZone.transform.localPosition.z);
+            hitSequenceController.OnHitZoneClicked += HitZoneClickedEventHandler;
+            hitSequenceController.OnSequenceAchieved += SequenceAchievedCallbackEventHandler;
+            hitSequenceController.OnSequenceTerminated += SequenceTerminatedEventHandler;
         }
 
         private bool IsComboHitZonePoolItemAvailableCallback(UnityEngine.Object unityObject)

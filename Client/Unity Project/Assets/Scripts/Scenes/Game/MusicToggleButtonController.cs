@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts.Scenes.Game
 {
+    [RequireComponent(typeof(Image))]
     class MusicToggleButtonController : MonoBehaviour
     {
         // Configurable script parameters
@@ -18,7 +19,7 @@ namespace Assets.Scripts.Scenes.Game
         public void OnButtonClick()
         {
             gameSceneController.AudioEnabled = !gameSceneController.AudioEnabled;
-            Image image = this.GetComponent<Image>();
+            Image image = GetComponent<Image>();
             image.sprite = gameSceneController.AudioEnabled ? MusicOnImage : MusicOffImage;
         }
     }

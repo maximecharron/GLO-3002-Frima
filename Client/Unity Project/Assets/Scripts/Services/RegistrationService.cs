@@ -1,5 +1,5 @@
-﻿using Assets.Scripts.Communication;
-using Assets.Scripts.Communication.DTOs.Inbound;
+﻿using Assets.Scripts.Services.Communication;
+using Assets.Scripts.Services.Communication.DTOs.Inbound;
 using Assets.Scripts.Extensions;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Services
 {
-    class RegistrationService : MonoBehaviour
+    class RegistrationService : MonoSingleton
     {
         private const string REGISTRATION_URL = "/signup";
 

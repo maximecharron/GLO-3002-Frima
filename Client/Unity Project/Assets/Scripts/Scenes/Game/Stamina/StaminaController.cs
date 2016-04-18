@@ -13,6 +13,7 @@ namespace Assets.Scripts.Scenes.Game.Stamina
         private const float BASE_STAMINA_DECREASE_ON_HIT = 5f;
         private const float STAMINA_RESTORE_VALUE = 0.5f;
         private const float STAMINA_RESTORATION_FREQUENCY_SECONDS = 0.05f;
+        private const int STAMINA_HIT_MISS_TRESHOLD = 80;
 
         //Configurable script parameters
         public StaminaSliderController StaminaSliderController;
@@ -52,31 +53,7 @@ namespace Assets.Scripts.Scenes.Game.Stamina
 
         public bool IsHitMiss()
         {
-            var randomValue = UnityEngine.Random.value;
-            var staminaValue = StaminaSliderController.Value;
-            bool hitMiss = false;
-
-            if (staminaValue > 50 && staminaValue <= 80)
-            {
-                hitMiss = randomValue < 0.1;
-            }
-            else if (staminaValue > 30 && staminaValue <= 50)
-            {
-                hitMiss = randomValue < 0.3;
-            }
-            else if (staminaValue > 10 && staminaValue <= 30)
-            {
-                hitMiss = randomValue < 0.4;
-            }
-            else if (staminaValue > 5 && staminaValue <= 10)
-            {
-                hitMiss = randomValue < 0.6;
-            }
-            else if (staminaValue <= 5)
-            {
-                hitMiss = true;
-            }
-            return hitMiss;
+            return UnityEngine.Random.value < (STAMINA_HIT_MISS_TRESHOLD - StaminaSliderController.Value) / 100;
         }
     }
 

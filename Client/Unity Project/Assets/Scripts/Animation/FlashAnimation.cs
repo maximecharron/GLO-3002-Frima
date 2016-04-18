@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Animation
 {
+    [RequireComponent(typeof(CanvasGroup))]
     class FlashAnimation : MonoBehaviour
     {
         public float FlashInterval = 1f;
@@ -17,12 +18,12 @@ namespace Assets.Scripts.Animation
             if ((DateTime.Now - lastFlashTime).TotalSeconds > FlashInterval)
             {
                 lastFlashTime = DateTime.Now;
-                if (this.GetComponent<CanvasGroup>().alpha == 0)
+                if (GetComponent<CanvasGroup>().alpha == 0)
                 {
-                    this.GetComponent<CanvasGroup>().alpha = 1;
+                    GetComponent<CanvasGroup>().alpha = 1;
                 } else
                 {
-                    this.GetComponent<CanvasGroup>().alpha = 0;
+                    GetComponent<CanvasGroup>().alpha = 0;
                 }
             }
         }

@@ -7,12 +7,14 @@ using System.Collections.Generic;
 
 namespace Assets.Scripts.Scenes.Game
 {
+    [RequireComponent(typeof(RectTransform))]
     public class BubbleController : MonoBehaviour
     {
         private static Vector3 initialMoveDirection = new Vector3(0, 50, 0);
         private static int Count = 0;
 
         // Configurable script parameters
+        public Canvas canvas;
         public float Duration;
 
         private Vector3 targetPosition;
@@ -47,7 +49,7 @@ namespace Assets.Scripts.Scenes.Game
 
         private void AnimatePosition()
         {
-            RectTransform transform = this.GetComponent<RectTransform>();
+            RectTransform transform = GetComponent<RectTransform>();
             float animationCurveValue = AnimationUtils.ExponentialEaseOut(Time.time - startTime, Duration);
             transform.position = initialPosition + (targetPosition - initialPosition) * animationCurveValue;
         }
@@ -67,8 +69,7 @@ namespace Assets.Scripts.Scenes.Game
             initialPosition = this.transform.position;
             if (flyUp)
             {
-                RectTransform bubbleTransform = this.GetComponent<RectTransform>();
-                Canvas canvas = FindObjectOfType<Canvas>();
+                RectTransform bubbleTransform = GetComponent<RectTransform>();
                 Rect canvasRect = canvas.GetComponent<RectTransform>().rect;
                 this.targetPosition = canvas.transform.TransformPoint(new Vector3(Random.Range(-180, 180), canvasRect.height / 2 - 130, bubbleTransform.localPosition.z));
             }

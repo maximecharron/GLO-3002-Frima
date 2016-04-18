@@ -7,25 +7,10 @@ using UnityEngine;
 
 namespace Assets.Scripts.Services
 {
-    public class GameStatisticsService : MonoBehaviour
+    public class GameStatisticsService : MonoSingleton
     {
         public TimeSpan BossLifeSpan {get { return bossLifeSpan; } set { bossLifeSpan = value; }}
         private TimeSpan bossLifeSpan;
-
-        private GameStatisticsService instance;
-
-        void Awake()
-        {
-            if (instance == null)
-            {
-                instance = this;
-            }
-            else
-            {
-                Destroy(this.gameObject);
-            }
-            DontDestroyOnLoad(this.gameObject);
-        }
     }
 
 

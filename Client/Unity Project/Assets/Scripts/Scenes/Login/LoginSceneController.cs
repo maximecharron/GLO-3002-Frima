@@ -1,6 +1,6 @@
-﻿using Assets.Scripts.Communication;
-using Assets.Scripts.Communication.DTOs.Inbound;
-using Assets.Scripts.Communication.DTOs.Outbound;
+﻿using Assets.Scripts.Services.Communication;
+using Assets.Scripts.Services.Communication.DTOs.Inbound;
+using Assets.Scripts.Services.Communication.DTOs.Outbound;
 using Assets.Scripts.Extensions;
 using Assets.Scripts.Services;
 using System;
@@ -33,6 +33,11 @@ namespace Assets.Scripts.Scenes
             OnInputFieldValueChanged();
         }
 
+        void OnDestroy()
+        {
+            loginService.OnLoginSuccess -= LoginSuccessCallback;
+            loginService.OnLoginFailed -= LoginFailedCallback;
+        }
 
         public void OnExitButtonClick()
         {

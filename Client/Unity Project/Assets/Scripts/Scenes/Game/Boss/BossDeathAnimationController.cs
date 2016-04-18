@@ -8,7 +8,8 @@ namespace Assets.Scripts.Scenes.Game.Boss
 {
     public class BossDeathAnimationController : MonoBehaviour
     {
-        private const int KILL_ANIMATION_GRAVITY_SCALE = 3;
+        private const float BOSS_FALL_ANIMATION_BEGIN_TIME = 3f;
+        private const float KILL_ANIMATION_GRAVITY_SCALE = 3f;
 
         //Configurable script parameters
         public BossDeathExplosionController BossDeathExplosionController;
@@ -16,10 +17,14 @@ namespace Assets.Scripts.Scenes.Game.Boss
         public GameObject SceneBackground;
 
         private Vector3 moveDirection;
+        private DateTime animationStartTime;
 
         public void Animate()
         {
-            ApplyGravity();
+            if ((DateTime.Now - animationStartTime).TotalSeconds > BOSS_FALL_ANIMATION_BEGIN_TIME)
+            {
+                ApplyGravity();
+            }
         }
 
         public void BeginDeathAnimation()
@@ -28,6 +33,7 @@ namespace Assets.Scripts.Scenes.Game.Boss
             Hud.SetActive(false);
             BossDeathExplosionController.Explode();
             moveDirection = Vector3.zero;
+            animationStartTime = DateTime.Now;
         }
 
         private void ApplyGravity()

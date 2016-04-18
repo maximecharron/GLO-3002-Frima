@@ -7,6 +7,8 @@ using System;
 
 namespace Assets.Scripts.Scenes.Game.Combos
 {
+    [RequireComponent(typeof(AudioSource))]
+    [RequireComponent(typeof(Image))]
     public class ComboHitZoneController : MonoBehaviour
     {
         private static float HIT_SOUND_BASE_PITCH = 1f;
@@ -39,7 +41,7 @@ namespace Assets.Scripts.Scenes.Game.Combos
         void Start()
         {
             fadingIn = true;
-            comboHitFeedbackBubbleController = this.GetComponentInChildren<ComboHitFeedbackBubbleController>(true);
+            comboHitFeedbackBubbleController = GetComponentInChildren<ComboHitFeedbackBubbleController>(true);
         }
 
         void Update()
@@ -70,14 +72,14 @@ namespace Assets.Scripts.Scenes.Game.Combos
 
         public void PlayHitSound(float sequenceProgress)
         {
-            AudioSource audioSource = this.GetComponent<AudioSource>();
+            AudioSource audioSource = GetComponent<AudioSource>();
             audioSource.pitch = HIT_SOUND_BASE_PITCH + sequenceProgress * HIT_SOUND_PITCH_INCREMENT_MULTIPLIER;
             audioSource.Play();
         }
 
         private void SetAlpha(float alpha)
         {
-            Image image = this.GetComponent<Image>();
+            Image image = GetComponent<Image>();
             image.color = new Color(image.color.r, image.color.g, image.color.b, alpha);
         }
 

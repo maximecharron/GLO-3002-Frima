@@ -1,6 +1,6 @@
-﻿using Assets.Scripts.Communication;
-using Assets.Scripts.Communication.DTOs.Inbound;
-using Assets.Scripts.Communication.DTOs.Outbound;
+﻿using Assets.Scripts.Services.Communication;
+using Assets.Scripts.Services.Communication.DTOs.Inbound;
+using Assets.Scripts.Services.Communication.DTOs.Outbound;
 using Assets.Scripts.Extensions;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Services
 {
-    class LoginService : MonoBehaviour
+    class LoginService : MonoSingleton
     {
         private const string LOGIN_URL = "/login";
         private const string LOGOUT_URL = "/logout";

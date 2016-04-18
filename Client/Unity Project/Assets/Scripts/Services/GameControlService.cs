@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
-using Assets.Scripts.Communication;
+using Assets.Scripts.Services.Communication;
 using Assets.Scripts.Extensions;
 using UnityEngine.SceneManagement;
-using Assets.Scripts.Communication.DTOs;
-using Assets.Scripts.Communication.DTOs.Inbound;
-using Assets.Scripts.Communication.DTOs.Outbound;
+using Assets.Scripts.Services.Communication.DTOs;
+using Assets.Scripts.Services.Communication.DTOs.Inbound;
+using Assets.Scripts.Services.Communication.DTOs.Outbound;
 
 namespace Assets.Scripts.Services
 {
@@ -12,7 +12,7 @@ namespace Assets.Scripts.Services
 #pragma warning disable CS0618
 
     [RequireComponent(typeof(AudioSource))]
-    public class GameControlService : MonoBehaviour
+    public class GameControlService : MonoSingleton
     {
         private HttpService httpService;
         private WebSocketService webSocketService;
@@ -26,21 +26,6 @@ namespace Assets.Scripts.Services
 
         public int BaseBossDamage { get { return baseBossDamage; } }
         private int baseBossDamage;
-
-        private static GameControlService instance;
-
-        void Awake()
-        {
-            if (instance == null)
-            {
-                instance = this;
-            }
-            else
-            {
-                Destroy(this.gameObject);
-            }
-            DontDestroyOnLoad(this.gameObject);
-        }
 
         void Start()
         {

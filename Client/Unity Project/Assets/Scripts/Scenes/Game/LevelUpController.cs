@@ -9,6 +9,7 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts.Scenes.Game
 {
+    [RequireComponent(typeof(AudioSource))]
     class LevelUpController : MonoBehaviour
     {
         //Configurable script parameters
@@ -38,6 +39,11 @@ namespace Assets.Scripts.Scenes.Game
             playerPropertyService = FindObjectOfType<PlayerPropertyService>();
             playerPropertyService.OnLevelUp += LevelUpCallback;
             Hide();
+        }
+
+        void OnDestroy()
+        {
+            playerPropertyService.OnLevelUp -= LevelUpCallback;
         }
 
         private void ShowPanel()

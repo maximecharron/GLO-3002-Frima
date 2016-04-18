@@ -3,9 +3,9 @@ using UnityEngine.EventSystems;
 using System.Collections;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using Assets.Scripts.Communication;
+using Assets.Scripts.Services.Communication;
 using System.Net;
-using Assets.Scripts.Communication.DTOs.Outbound;
+using Assets.Scripts.Services.Communication.DTOs.Outbound;
 using Assets.Scripts.Utils;
 using System;
 using Assets.Scripts.Extensions;
@@ -34,6 +34,12 @@ namespace Assets.Scripts.Scenes.Registration
             registrationService.OnRegistrationSuccess += RegistrationSuccessCallback;
             registrationService.OnRegistrationFailed += RegistrationFailedCallback;
             RegistrationErrorLabel.transform.gameObject.SetActive(false);
+        }
+
+        void OnDestroy()
+        {
+            registrationService.OnRegistrationSuccess -= RegistrationSuccessCallback;
+            registrationService.OnRegistrationFailed -= RegistrationFailedCallback;
         }
 
         public void OnExitButtonClick()

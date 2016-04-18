@@ -1,7 +1,7 @@
-﻿using Assets.Scripts.Communication;
-using Assets.Scripts.Communication.DTOs;
-using Assets.Scripts.Communication.DTOs.Inbound;
-using Assets.Scripts.Communication.DTOs.Outbound;
+﻿using Assets.Scripts.Services.Communication;
+using Assets.Scripts.Services.Communication.DTOs;
+using Assets.Scripts.Services.Communication.DTOs.Inbound;
+using Assets.Scripts.Services.Communication.DTOs.Outbound;
 using Assets.Scripts.Scenes.Game.Boss;
 using Assets.Scripts.Utils;
 using System;
@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Services.BossStatus
 {
-    class BossStatusService : MonoBehaviour
+    class BossStatusService : MonoSingleton
     {
         public delegate void BossStatusUpdateEventHandler();
         public event BossStatusUpdateEventHandler OnBossStatusUpdate = delegate { };
@@ -43,39 +43,29 @@ namespace Assets.Scripts.Services.BossStatus
         public DateTime CreationDate { get { return creationDate; } }
         private DateTime creationDate = DateTime.Now;
 
-        void Awake()
-        {
-            if (instance == null)
-            {
-                instance = this;
-            }
-            else
-            {
-                Destroy(this.gameObject);
-            }
-            DontDestroyOnLoad(this.gameObject);
-        }
-
         void Start()
         {
             gameStatisticsService = FindObjectOfType<GameStatisticsService>();
             webSocketService = FindObjectOfType<WebSocketService>();
-            webSocketService.RegisterCommand(BossStatusUpdateDTO.COMMAND_NAME, this.BossStatusUpdateCallback, typeof(BossStatusUpdateDTO));
+            webSocketService.RegisterCommand(BossStatusUpdateDTO.COMMAND_NAME, BossStatusUpdateCallback, typeof(BossStatusUpdateDTO));
         }
 
         void OnDestroy()
         {
-            webSocketService.UnregisterCommand(BossStatusUpdateDTO.COMMAND_NAME, this.BossStatusUpdateCallback);
+            if (webSocketService != null)
+            {
+                webSocketService.UnregisterCommand(BossStatusUpdateDTO.COMMAND_NAME, BossStatusUpdateCallback);
+            }
         }
 
         private void BossStatusUpdateCallback(CommandDTO commandDTO)
         {
             var bossStatusUpdateParams = ((BossStatusUpdateDTO)commandDTO).command.parameters;
-            this.bossName = bossStatusUpdateParams.bossName;
-            this.currentBossLife = Math.Max(bossStatusUpdateParams.currentBossLife, 0L);
-            this.maximumBossLife = bossStatusUpdateParams.maximumBossLife;
-            this.status = (BossStatus)bossStatusUpdateParams.status;
-            this.creationDate = DateTimeUtils.ConvertFromJavaScriptDate(bossStatusUpdateParams.creationDate);
+            bossName = bossStatusUpdateParams.bossName;
+            currentBossLife = Math.Max(bossStatusUpdateParams.currentBossLife, 0L);
+            maximumBossLife = bossStatusUpdateParams.maximumBossLife;
+            status = (BossStatus)bossStatusUpdateParams.status;
+            creationDate = DateTimeUtils.ConvertFromJavaScriptDate(bossStatusUpdateParams.creationDate);
             FireCallbacks();
         }
 
@@ -83,8 +73,7 @@ namespace Assets.Scripts.Services.BossStatus
         {
             if (CurrentBossLife <= 0 || BossStatus == BossStatus.DEAD)
             {
-                Debug.Log(String.Format("Start Date: {0}", this.creationDate));
-                gameStatisticsService.BossLifeSpan = DateTime.Now - this.creationDate;
+                gameStatisticsService.BossLifeSpan = DateTime.Now - creationDate;
                 OnBossDead();
             }
             else
