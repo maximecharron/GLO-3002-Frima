@@ -14,7 +14,6 @@ namespace Assets.Scripts.Scenes.Game.Hype
         //Configurable script parameters
         public Slider HypeSlider;
         public Image SliderFill;
-        public Text SliderLabel;
 
         public bool FlashSlider { get; set; }
 

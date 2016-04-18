@@ -9,34 +9,31 @@ namespace Assets.Scripts.Scenes
 {
     public class MenuSceneController : SceneController
     {
-        private const string LOGOUT_URL = "/logout";
 
         // Configurable script parameters
         public Button LogOutButton;
 
-        private GameControlService gameController;
-        private HttpService httpService;
+        private LoginService loginService;
 
         void Start() {
-            gameController = FindObjectOfType<GameControlService>();
-            httpService = FindObjectOfType<HttpService>();
+            loginService = FindObjectOfType<LoginService>();
+            loginService.OnLogoutSuccess += LogOutSuccessCallback;
         }
 
-        public void OnJoinGameButtonPointerClick()
+        public void OnJoinGameButtonClick()
         {
             LoadScene(Scenes.Scene.GAME_SCENE);
         }
 
-        public void OnLogOutButtonPointerClick()
+        public void OnLogOutButtonClick()
         {
-            httpService.HttpGet(LOGOUT_URL, LogOutCallback);
             LogOutButton.interactable = false;
+            loginService.LogOut();
         }
 
-        private void LogOutCallback(WWW request)
+        private void LogOutSuccessCallback(WWW request)
         {
             LogOutButton.interactable = true;
-            gameController.ClearUserSession();
             LoadScene(Scenes.Scene.TITLE_SCENE);
         }
     }

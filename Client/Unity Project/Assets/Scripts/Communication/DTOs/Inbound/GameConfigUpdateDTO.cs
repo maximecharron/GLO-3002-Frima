@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Assets.Scripts.Communication.CommandDTOs
+namespace Assets.Scripts.Communication.DTOs.Inbound
 {
     [Serializable]
-    public class BossStatusUpdateDTO : CommandDTO
+    public class GameConfigUpdateDTO : CommandDTO
     {
-        public const string COMMAND_NAME = "bossStatusUpdate";
+        public const string COMMAND_NAME = "gameStatusUpdate";
         public Command command = new Command();
 
         [Serializable]
@@ -20,11 +20,7 @@ namespace Assets.Scripts.Communication.CommandDTOs
             [Serializable]
             public class Parameters
             {
-                public String bossName = "";
-                public Int32 currentBossLife = 10000;
-                public Int32 maximumBossLife = 10000;
-                public Int32 status = 0;
-                public long creationDate = 0;
+                public Int32 baseDamage = 0;
             }
         }
     }

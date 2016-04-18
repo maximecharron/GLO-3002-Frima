@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Assets.Scripts.Communication.DTOs
+namespace Assets.Scripts.Communication.DTOs.Inbound
 {
-    class LoginResultDTO
+    class RegistrationResultDTO
     {
         public String token = "";
         public String username = "";

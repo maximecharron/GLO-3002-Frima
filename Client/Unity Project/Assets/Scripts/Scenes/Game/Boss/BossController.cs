@@ -1,15 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.Animation.SpriteAnimation;
 using Assets.Scripts.CharacterControl;
-using UnityEngine.UI;
-using Assets.Scripts.Communication;
-using Assets.Scripts.Communication.CommandDTOs;
 using Assets.Scripts.Extensions;
-using System;
-using Assets.Scripts.Scenes.Game;
-using Assets.Scripts.Utils;
 using Assets.Scripts.Scenes.Game.Stamina;
 using Assets.Scripts.Scenes.Game.Hype;
 using Assets.Scripts.Services;
@@ -20,7 +13,6 @@ namespace Assets.Scripts.Scenes.Game.Boss
 
     public class BossController : MonoBehaviour
     {
-        public const int DEFAULT_ATTACK_VALUE = 1000;
         private const int KNOCK_OUT_STATE_PRIORITY = 1;
         private const int KNOCK_OUT_STATE_ANIMATION_PRIORITY = 1;
         private const int COMBO_HIT_STATE_PRIORITY = 2;
@@ -34,7 +26,7 @@ namespace Assets.Scripts.Scenes.Game.Boss
 
         //Configurable script parameters
         public int SpritesheetColumnCount = 8;
-        public BossHitFeedbackController BossHitFeedbackController;
+        public BossAttackFeedbackController BossAttackFeedbackController;
         public BossDeathController BossDeathController;
         public StaminaController StaminaController;
         public HypeController HypeController;
@@ -42,8 +34,10 @@ namespace Assets.Scripts.Scenes.Game.Boss
         public AudioClip KnockOutFallAudioClip;
         public AudioClip KnockOutVoiceAudioClip;
 
+        private GameControlService gameControlService;
         private GameStatisticsService gameStatisticsService;
         private BossStatusService bossStatusService;
+        private PlayerPropertyService playerPropertyService;
         private CharacterStateController bossStateController;
         private CharacterState idleState;
         private CharacterState hitState;
@@ -66,7 +60,9 @@ namespace Assets.Scripts.Scenes.Game.Boss
             InitializeStates();
             AssignStateActions();
             HypeController.OnHypeAttack = OnHypeAttackCallback;
+            gameControlService = FindObjectOfType<GameControlService>();
             gameStatisticsService = FindObjectOfType<GameStatisticsService>();
+            playerPropertyService = FindObjectOfType<PlayerPropertyService>();
             bossStatusService = FindObjectOfType<BossStatusService>();
             bossStatusService.OnBossStatusUpdate += OnBossStatusUpdateCallback;
             bossStatusService.OnBossDead += OnBossDeadCallback;
@@ -134,8 +130,9 @@ namespace Assets.Scripts.Scenes.Game.Boss
             }
         }
 
-        public void ComboHit()
+        public void ComboHit(int bonusMultiplier)
         {
+            DecreaseBossLife(bonusMultiplier);
             bossStateController.RemoveState(hitState);
             bossStateController.AddState(comboHitState);
         }
@@ -147,10 +144,10 @@ namespace Assets.Scripts.Scenes.Game.Boss
 
         private void OnHitStateActivateCallback(CharacterState sender)
         {
-            RemoveBossLife(DEFAULT_ATTACK_VALUE);
+            DecreaseBossLife();
             StaminaController.DecreaseStamina();
             HypeController.IncreaseHype();
-            BossHitFeedbackController.Hit(DEFAULT_ATTACK_VALUE);
+            playerPropertyService.IncreaseExperience();
         }
 
         private void OnComboHitStateActivateCallback(CharacterState sender)
@@ -173,7 +170,7 @@ namespace Assets.Scripts.Scenes.Game.Boss
 
         private void OnHitMissStateActivateCallback(CharacterState sender)
         {
-            BossHitFeedbackController.HitMiss();
+            BossAttackFeedbackController.ShowHitMissFeedback();
         }
 
         public bool OnHitMissAnimationSequenceEndCallback(CharacterState sender)
@@ -209,9 +206,11 @@ namespace Assets.Scripts.Scenes.Game.Boss
             bossStateController.AddState(knockOutState, false);
         }
 
-        public void RemoveBossLife(int value)
+        public void DecreaseBossLife(int multiplier = 1)
         {
-            bossStatusService.CurrentBossLife -= value;
+            int bossLifeDecreaseValue = gameControlService.BaseBossDamage * playerPropertyService.AttackPowerLevel * multiplier;
+            bossStatusService.CurrentBossLife -= bossLifeDecreaseValue;
+            BossAttackFeedbackController.ShowAttackFeedback(bossLifeDecreaseValue);
         }
     }
 

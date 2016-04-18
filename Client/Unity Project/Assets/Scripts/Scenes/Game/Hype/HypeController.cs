@@ -4,15 +4,14 @@ using System.Collections;
 using Assets.Scripts.Scenes.Game.Combos;
 using Assets.Scripts.Scenes.Game.Stamina;
 using UnityEngine.UI;
-
+using Assets.Scripts.Services;
 
 namespace Assets.Scripts.Scenes.Game.Hype
 {
     public class HypeController : MonoBehaviour
     {
         private const float HYPE_INCREASE_ON_HIT = 3f;
-        private const float HYPE_BONUS_MULTIPLIER = 2f;
-        private const float HYPE_AUTO_DECREASE_VALUE = 0.5f;
+        private const float BASE_HYPE_AUTO_DECREASE_VALUE = 0.5f;
         private const float HYPE_AUTO_DECREASE_FREQUENCY_SECONDS = 0.05f;
         private const float HYPE_POWER_AVAILABLE_TIME_SECONDS = 1.5f;
 
@@ -22,9 +21,17 @@ namespace Assets.Scripts.Scenes.Game.Hype
 
         public Action OnHypeAttack = delegate { };
 
+        private PlayerPropertyService playerPropertyService;
         private DateTime lastHypeAutoDecrease = DateTime.Now;
         private DateTime lastMaxHypeReach = DateTime.MinValue;
         private bool MaxHypeReached = false;
+
+        void Start()
+        {
+            playerPropertyService = FindObjectOfType<PlayerPropertyService>();
+            HypeSliderController.Value = 0;
+            ComboHitController.OnComboHitCompleted = OnComboHitCompletedCallback;
+        }
 
         public void OnHypeButtonClick()
         {
@@ -34,20 +41,14 @@ namespace Assets.Scripts.Scenes.Game.Hype
             }
         }
 
-        void Start()
-        {
-            HypeSliderController.Value = 0;
-            ComboHitController.OnComboHitCompleted = OnComboHitCompletedCallback;
-        }
-
         void OnComboHitCompletedCallback(ComboHitSequence hitSequence)
         {
-            IncreaseHype(hitSequence.BonusMultiplier * HYPE_BONUS_MULTIPLIER);
+            IncreaseHype(hitSequence.BonusMultiplier);
         }
 
         void Update()
         {
-            if (HypeSliderController.Value == 100 && !MaxHypeReached)
+            if (HypeSliderController.Value == HypeSliderController.MaxValue && !MaxHypeReached)
             {
                 ProcessMaxHypeReached();
             }
@@ -62,7 +63,7 @@ namespace Assets.Scripts.Scenes.Game.Hype
         {
             if (!MaxHypeReached || (MaxHypeReached && DateTime.Now.Subtract(lastMaxHypeReach).TotalSeconds > HYPE_POWER_AVAILABLE_TIME_SECONDS))
             {
-                HypeSliderController.Value = Math.Max(0, HypeSliderController.Value - HYPE_AUTO_DECREASE_VALUE);
+                HypeSliderController.Value = Math.Max(0, HypeSliderController.Value - (BASE_HYPE_AUTO_DECREASE_VALUE / playerPropertyService.HypePowerLevel));
                 MaxHypeReached = false;
                 HypeSliderController.FlashSlider = false;
             }

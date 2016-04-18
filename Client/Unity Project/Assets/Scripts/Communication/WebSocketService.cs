@@ -3,7 +3,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using Assets.Scripts.Communication.CommandDTOs;
+using Assets.Scripts.Communication.DTOs;
+using Assets.Scripts.Communication.DTOs.Outbound;
 using Assets.Scripts.Extensions;
 
 namespace Assets.Scripts.Communication
@@ -17,9 +18,9 @@ namespace Assets.Scripts.Communication
 
         private WebSocket webSocket;
         private Dictionary<String, List<CommandRegistration>> registeredCommands = new Dictionary<string, List<CommandRegistration>>();
-        private Dictionary<Type, ICommandInterceptor> commandReceiveInterceptors = new Dictionary<Type, ICommandInterceptor>();
-        private Dictionary<Type, ICommandInterceptor> commandSendInterceptors = new Dictionary<Type, ICommandInterceptor>();
-        private Queue<String> commandReceiveBuffer = new Queue<String>();
+        private Dictionary<Type, ICommandInterceptor> inboundCommandInterceptors = new Dictionary<Type, ICommandInterceptor>();
+        private Dictionary<Type, ICommandInterceptor> outboundCommandInterceptors = new Dictionary<Type, ICommandInterceptor>();
+        private Queue<String> incomingCommandBuffer = new Queue<String>();
 
         void Start()
         {
@@ -54,21 +55,21 @@ namespace Assets.Scripts.Communication
             String jsonData = webSocket.RecvString();
             if (jsonData != null)
             {
-                Debug.Log(String.Format("Received: {0}", jsonData));
+                Debug.Log(String.Format("WebSocket Receive: {0}", jsonData));
                 if (!DispatchCommand(jsonData))
                 {
-                    commandReceiveBuffer.Enqueue(jsonData);
+                    incomingCommandBuffer.Enqueue(jsonData);
                 }
             }
         }
 
         private void DispatchBufferedCommands()
         {
-            for (int i = 0; i < commandReceiveBuffer.Count; i++)
+            for (int i = 0; i < incomingCommandBuffer.Count; i++)
             {
-                if (DispatchCommand(commandReceiveBuffer.Peek()))
+                if (DispatchCommand(incomingCommandBuffer.Peek()))
                 {
-                    commandReceiveBuffer.Dequeue();
+                    incomingCommandBuffer.Dequeue();
                 }
             }
         }
@@ -83,7 +84,7 @@ namespace Assets.Scripts.Communication
             foreach (CommandRegistration commandRegistration in registeredCommands[commandDefinitionDTO.command.name])
             {
                 CommandDTO commandDTO = (CommandDTO)JsonUtility.FromJson(jsonData, commandRegistration.Type);
-                if (DispatchReceiveCommandToInterceptors(commandDTO))
+                if (DispatchIncomingCommandToInterceptors(commandDTO))
                 {
                     commandRegistration.CallbackMethod(commandDTO);
                 }
@@ -91,11 +92,11 @@ namespace Assets.Scripts.Communication
             return true;
         }
 
-        private bool DispatchReceiveCommandToInterceptors(CommandDTO commandDTO)
+        private bool DispatchIncomingCommandToInterceptors(CommandDTO commandDTO)
         {
-            if (commandReceiveInterceptors.ContainsKey(commandDTO.GetType()))
+            if (inboundCommandInterceptors.ContainsKey(commandDTO.GetType()))
             {
-                return commandReceiveInterceptors[commandDTO.GetType()].ReceiveIntercept(commandDTO);
+                return inboundCommandInterceptors[commandDTO.GetType()].InboundIntercept(commandDTO);
             }
             return true;
         }
@@ -117,21 +118,21 @@ namespace Assets.Scripts.Communication
 
         public void SendCommand(CommandDTO commandDTO, bool interceptable = true)
         {
-            if (interceptable && !DispatchSendCommandToInterceptors(commandDTO))
+            if (interceptable && !DispatchOutgoingCommandToInterceptors(commandDTO))
             {
                 return;
             }
             commandDTO.token = SessionToken;
             String jsonData = JsonUtility.ToJson(commandDTO, false);
-            Debug.Log(String.Format("Sent: {0}", jsonData));
+            Debug.Log(String.Format("WebSocket Send: {0}", jsonData));
             webSocket.SendString(jsonData);
         }
 
-        private bool DispatchSendCommandToInterceptors(CommandDTO commandDTO)
+        private bool DispatchOutgoingCommandToInterceptors(CommandDTO commandDTO)
         {
-            if (commandSendInterceptors.ContainsKey(commandDTO.GetType()))
+            if (outboundCommandInterceptors.ContainsKey(commandDTO.GetType()))
             {
-                return commandSendInterceptors[commandDTO.GetType()].SendIntercept(commandDTO);
+                return outboundCommandInterceptors[commandDTO.GetType()].OutboundIntercept(commandDTO);
             }
             return true;
         }
@@ -141,14 +142,14 @@ namespace Assets.Scripts.Communication
             SendCommand(new KeepAliveDTO());
         }
 
-        public void AddSendInterceptor(ICommandInterceptor interceptor, Type commandType)
+        public void AddOutboundInterceptor(ICommandInterceptor interceptor, Type commandType)
         {
-            this.commandSendInterceptors.AddOrReplace(commandType, interceptor);
+            this.outboundCommandInterceptors.AddOrReplace(commandType, interceptor);
         }
 
-        public void AddReceiveInterceptor(ICommandInterceptor interceptor, Type commandType)
+        public void AddInboundInterceptor(ICommandInterceptor interceptor, Type commandType)
         {
-            this.commandReceiveInterceptors.AddOrReplace(commandType, interceptor);
+            this.inboundCommandInterceptors.AddOrReplace(commandType, interceptor);
         }
 
     }

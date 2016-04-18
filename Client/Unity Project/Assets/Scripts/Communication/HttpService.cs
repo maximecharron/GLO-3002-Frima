@@ -3,7 +3,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using Assets.Scripts.Communication.CommandDTOs;
+using Assets.Scripts.Communication.DTOs;
+using Assets.Scripts.Extensions;
 
 namespace Assets.Scripts.Communication
 {
@@ -16,6 +17,7 @@ namespace Assets.Scripts.Communication
 
         public void HttpGet(String location, Action<WWW> callback)
         {
+            Debug.Log(String.Format("HTTP GET: {0}", location));
             StartCoroutine(HttpGetCoroutine(location, callback));
         }
 
@@ -29,6 +31,7 @@ namespace Assets.Scripts.Communication
 
         public void HttpPost(String location, WWWForm form, Action<WWW> callback)
         {
+            Debug.Log(String.Format("HTTP POST: {0}", location));
             StartCoroutine(HttpPostCoroutine(location, form, callback));
         }
 

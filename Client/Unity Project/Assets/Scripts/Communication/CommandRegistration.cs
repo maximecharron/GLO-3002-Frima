@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Assets.Scripts.Communication.CommandDTOs;
+using Assets.Scripts.Communication.DTOs;
 
 namespace Assets.Scripts.Communication
 {

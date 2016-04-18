@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Assets.Scripts.Communication;
 using System.Net;
-using Assets.Scripts.Communication.DTOs;
+using Assets.Scripts.Communication.DTOs.Outbound;
 using Assets.Scripts.Utils;
 using System;
 using Assets.Scripts.Extensions;
@@ -15,8 +15,7 @@ namespace Assets.Scripts.Scenes.Registration
 {
     public class RegistrationSceneController : SceneController
     {
-        private const string REGISTRATION_URL = "/signup";
-
+        
         // Configurable script parameters
         public InputField UsernameInputField;
         public InputField PasswordInputField;
@@ -27,54 +26,35 @@ namespace Assets.Scripts.Scenes.Registration
         public RegistrationFormValidationController FormValidationController;
         public Button RegisterButton;
 
-        private GameControlService GameControlService;
-        private HttpService HttpService;
+        private RegistrationService registrationService;
 
         void Start()
         {
-            GameControlService = FindObjectOfType<GameControlService>();
-            HttpService = FindObjectOfType<HttpService>();
-
+            registrationService = FindObjectOfType<RegistrationService>();
+            registrationService.OnRegistrationSuccess += RegistrationSuccessCallback;
+            registrationService.OnRegistrationFailed += RegistrationFailedCallback;
             RegistrationErrorLabel.transform.gameObject.SetActive(false);
         }
 
-        public void OnExitButtonPointerClick()
+        public void OnExitButtonClick()
         {
             LoadScene(Scenes.Scene.TITLE_SCENE);
         }
 
-        public void OnRegisterButtonPointerClick()
+        public void OnRegisterButtonClick()
         {
             Register();
         }
 
         private void Register()
         {
-            if (FormValidationController.Validate())
-            {
-                WWWForm form = new WWWForm();
-                form.AddField("username", UsernameInputField.text);
-                form.AddField("password", PasswordInputField.text);
-                form.AddField("email", EmailInputField.text);
-
-                HttpService.HttpPost(REGISTRATION_URL, form, RegisterCallback);
-                RegisterButton.interactable = false;
-            }
+            RegisterButton.interactable = false;
+            registrationService.Register(UsernameInputField.text, PasswordInputField.text, EmailInputField.text);
         }
 
-        private void RegisterCallback(WWW request)
+        private void RegistrationFailedCallback(WWW request)
         {
             RegisterButton.interactable = true;
-            if (request.GetStatusCode() != HttpStatusCode.OK)
-            {
-                ProcessFailedRegistration(request);
-                return;
-            }
-            ProcessSuccessfulRegistration(request);
-        }
-
-        private void ProcessFailedRegistration(WWW request)
-        {
             if (request.GetStatusCode() == HttpStatusCode.Unauthorized)
             {
                 UsernameErrorLabel.text = "Username already exists.";
@@ -87,11 +67,10 @@ namespace Assets.Scripts.Scenes.Registration
             }
         }
 
-        private void ProcessSuccessfulRegistration(WWW request)
+        private void RegistrationSuccessCallback()
         {
-            RegistrationResultDTO resultDTO = JsonUtility.FromJson<RegistrationResultDTO>(request.text);
-            GameControlService.SetUserSession(resultDTO.token, resultDTO.username);
-            LoadScene(Scenes.Scene.MENU_SCENE);
+            RegisterButton.interactable = true;
+            LoadScene(Scenes.Scene.LOGIN_SCENE);
         }
     }
 }

@@ -20,28 +20,16 @@ namespace Assets.Scripts.Scenes.Game.Combos
 
         public bool Active
         {
-            get
-            {
-                return this.gameObject.activeSelf;
-            }
+            get { return this.gameObject.activeSelf; }
         }
 
         public float TotalDuration
         {
-            get
-            {
-                return FadeInDuration + FadeOutDuration;
-            }
+            get { return FadeInDuration + FadeOutDuration; }
         }
 
+        public float StartTime { get { return startTime; } }
         private float startTime;
-        public float StartTime
-        {
-            get
-            {
-                return startTime;
-            }
-        }
 
         private bool fadingIn;
         private ComboHitFeedbackBubbleController comboHitFeedbackBubbleController;

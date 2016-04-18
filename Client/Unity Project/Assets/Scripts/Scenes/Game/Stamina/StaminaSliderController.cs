@@ -18,7 +18,6 @@ namespace Assets.Scripts.Scenes.Game.Stamina
         //Configurable script parameters
         public Slider StaminaSlider;
         public Image SliderFill;
-        public Text SliderLabel;
 
         public float MaxValue
         {
@@ -33,7 +32,6 @@ namespace Assets.Scripts.Scenes.Game.Stamina
             {
                 StaminaSlider.value = value;
                 SliderFill.color = GetHealthSliderColor(value / StaminaSlider.maxValue);
-                SliderLabel.color = GetHealthSliderColor(value / StaminaSlider.maxValue);
             }
         }
 

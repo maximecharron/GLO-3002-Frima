@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.Communication.CommandDTOs;
+﻿using Assets.Scripts.Communication.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +8,8 @@ namespace Assets.Scripts.Communication
 {
     public interface ICommandInterceptor
     {
-        bool ReceiveIntercept(CommandDTO commandDTO);
+        bool InboundIntercept(CommandDTO commandDTO);
 
-        bool SendIntercept(CommandDTO commandDTO);
+        bool OutboundIntercept(CommandDTO commandDTO);
     }
 }

@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Assets.Scripts.Communication.CommandDTOs;
+using Assets.Scripts.Communication.DTOs;
+using Assets.Scripts.Communication.DTOs.Inbound;
+using Assets.Scripts.Communication.DTOs.Outbound;
 using UnityEngine;
 
 namespace Assets.Scripts.Scenes.Game
@@ -20,8 +22,8 @@ namespace Assets.Scripts.Scenes.Game
         void Start()
         {
             webSocketService = FindObjectOfType<WebSocketService>();
-            webSocketService.AddSendInterceptor(this, typeof(BossAttackDTO));
-            webSocketService.AddReceiveInterceptor(this, typeof(BossStatusUpdateDTO));
+            webSocketService.AddOutboundInterceptor(this, typeof(BossAttackDTO));
+            webSocketService.AddInboundInterceptor(this, typeof(BossStatusUpdateDTO));
         }
 
         void Update()
@@ -34,14 +36,14 @@ namespace Assets.Scripts.Scenes.Game
             }
         }
 
-        public bool ReceiveIntercept(CommandDTO commandDTO)
+        public bool InboundIntercept(CommandDTO commandDTO)
         {
             BossStatusUpdateDTO bossStatusUpdateCommandDTO = (BossStatusUpdateDTO)commandDTO;
             bossStatusUpdateCommandDTO.command.parameters.currentBossLife -= postponedAttackValue;
             return true;
         }
 
-        public bool SendIntercept(CommandDTO commandDTO)
+        public bool OutboundIntercept(CommandDTO commandDTO)
         {
             BossAttackDTO bossAttackCommandDTO = (BossAttackDTO)commandDTO;
             postponedAttackValue += bossAttackCommandDTO.command.parameters.number;

@@ -10,7 +10,7 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts.Scenes.Game.Boss
 {
-    public class BossHitFeedbackController : MonoBehaviour
+    public class BossAttackFeedbackController : MonoBehaviour
     {
         private static Color HIT_BUBBLE_TEXT_COLOR = Color.black;
         private static Color HIT_MISS_BUBBLE_TEXT_COLOR = Color.red;
@@ -38,14 +38,14 @@ namespace Assets.Scripts.Scenes.Game.Boss
             this.hitBubblePool.OnCheckIsAvailable = IsHitBubblePoolItemAvailableCallback;
         }
 
-        public void Hit(int hitValue)
+        public void ShowAttackFeedback(int hitValue)
         {
             PlayParticles();
             PlayHitSound();
             ShowHitBubble(string.Format("{0}!", hitValue), HIT_BUBBLE_TEXT_COLOR, true);
         }
 
-        public void HitMiss()
+        public void ShowHitMissFeedback()
         {
             ShowHitBubble("Miss!", HIT_MISS_BUBBLE_TEXT_COLOR, false);
         }

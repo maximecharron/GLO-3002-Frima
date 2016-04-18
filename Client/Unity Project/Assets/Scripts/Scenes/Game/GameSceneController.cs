@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Assets.Scripts.Communication;
-using Assets.Scripts.Communication.CommandDTOs;
+using Assets.Scripts.Communication.DTOs;
 using Assets.Scripts.Scenes.Game.Boss;
 using Assets.Scripts.Services;
 
@@ -16,8 +16,7 @@ namespace Assets.Scripts.Scenes.Game
         public BossController BossController;
         public BossDeathController BossDeathController;
         public GameObject Boss;
-        public GameObject LoadingSceneOverlay;
-        public Canvas Canvas;
+        public Canvas GameCanvas;
 
         public bool AudioEnabled
         {
@@ -35,7 +34,6 @@ namespace Assets.Scripts.Scenes.Game
         void Start() {
             gameControlService = FindObjectOfType<GameControlService>();
             gameControlService.GlobalAudioThemeEnabled = false;
-            BossDeathController.OnBossDeathStart += OnBossDeathStartCallback;
             BossDeathController.OnBossDeathEnd += OnBossDeathEndCallback;
         }
 
@@ -47,19 +45,24 @@ namespace Assets.Scripts.Scenes.Game
             }
         }
 
-        public void OnExitButtonPointerClick()
+        public void OnExitButtonClick()
         {
             LoadScene(Scenes.Scene.MENU_SCENE);
-        }
-
-        private void OnBossDeathStartCallback()
-        {
-            
         }
 
         private void OnBossDeathEndCallback()
         {
             LoadScene(Scenes.Scene.VICTORY_SCENE);
+        }
+
+        public void PauseGame()
+        {
+            GameCanvas.gameObject.SetActive(false);
+        }
+
+        public void ResumeGame()
+        {
+            GameCanvas.gameObject.SetActive(true);
         }
 
     }

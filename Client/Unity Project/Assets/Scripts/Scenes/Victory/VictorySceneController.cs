@@ -19,12 +19,12 @@ namespace Assets.Scripts.Scenes
             VictoryTimeText.text = String.Format("Boss killed in {0:0.} minutes!", gameStatisticsService.BossLifeSpan.TotalMinutes);
         }
 
-        public void OnPlayAgainButtonPointerClick()
+        public void OnPlayAgainButtonClick()
         {
             LoadScene(Scenes.Scene.GAME_SCENE);
         }
 
-        public void OnMenuButtonPointerClick()
+        public void OnMenuButtonClick()
         {
             LoadScene(Scenes.Scene.MENU_SCENE);
         }

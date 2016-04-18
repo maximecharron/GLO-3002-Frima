@@ -2,7 +2,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
-
+using Assets.Scripts.Services;
 
 namespace Assets.Scripts.Scenes.Game.Stamina
 {
@@ -10,27 +10,19 @@ namespace Assets.Scripts.Scenes.Game.Stamina
 
     public class StaminaController : MonoBehaviour
     {
-        private const float STAMINA_DECREASE_ON_HIT = 5f;
+        private const float BASE_STAMINA_DECREASE_ON_HIT = 5f;
         private const float STAMINA_RESTORE_VALUE = 0.5f;
         private const float STAMINA_RESTORATION_FREQUENCY_SECONDS = 0.05f;
 
         //Configurable script parameters
         public StaminaSliderController StaminaSliderController;
 
+        private PlayerPropertyService playerPropertyService;
         private DateTime lastStaminaAutoIncrease = DateTime.Now;
-
-        public void DecreaseStamina()
-        {
-            StaminaSliderController.Value -= STAMINA_DECREASE_ON_HIT;
-        }
-
-        public void OnStaminaButtonClick()
-        {
-            StaminaSliderController.Value = StaminaSliderController.MaxValue;
-        }
 
         void Start()
         {
+            playerPropertyService = FindObjectOfType<PlayerPropertyService>();
             StaminaSliderController.Value = StaminaSliderController.MaxValue;
         }
 
@@ -41,6 +33,16 @@ namespace Assets.Scripts.Scenes.Game.Stamina
                 AutoIncreaseStamina();
                 lastStaminaAutoIncrease = DateTime.Now;
             }
+        }
+
+        public void DecreaseStamina()
+        {
+            StaminaSliderController.Value -= BASE_STAMINA_DECREASE_ON_HIT / playerPropertyService.StaminaPowerLevel;
+        }
+
+        public void OnStaminaButtonClick()
+        {
+            StaminaSliderController.Value = StaminaSliderController.MaxValue;
         }
 
         private void AutoIncreaseStamina()

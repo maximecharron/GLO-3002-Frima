@@ -9,7 +9,8 @@ namespace Assets.Scripts.Services
 {
     public class GameStatisticsService : MonoBehaviour
     {
-        public TimeSpan BossLifeSpan { get; set; }
+        public TimeSpan BossLifeSpan {get { return bossLifeSpan; } set { bossLifeSpan = value; }}
+        private TimeSpan bossLifeSpan;
 
         private GameStatisticsService instance;
 

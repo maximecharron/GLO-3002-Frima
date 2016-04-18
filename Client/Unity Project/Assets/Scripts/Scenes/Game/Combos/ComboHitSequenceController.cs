@@ -27,14 +27,9 @@ namespace Assets.Scripts.Scenes.Game.Combos
                 return hitSequence;
             }
         }
+        
+        public bool IsActive { get { return isActive; } }
         private bool isActive = false;
-        public bool IsActive
-        {
-            get
-            {
-                return isActive;
-            }
-        }
         private UnityObjectPool hitZonePool;
         private UnityObjectPool bonusBubblePool;
         private UnityObjectPool hitFeedbackBubblePool;

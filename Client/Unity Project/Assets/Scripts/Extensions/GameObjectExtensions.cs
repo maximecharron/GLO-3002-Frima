@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Extensions
 {
-    static class GameObjectObjectExtensions
+    static class GameObjectExtensions
     {
         public static UnityEngine.Object Clone(this GameObject gameObject)
         {

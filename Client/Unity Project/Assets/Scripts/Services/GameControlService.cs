@@ -2,6 +2,9 @@
 using Assets.Scripts.Communication;
 using Assets.Scripts.Extensions;
 using UnityEngine.SceneManagement;
+using Assets.Scripts.Communication.DTOs;
+using Assets.Scripts.Communication.DTOs.Inbound;
+using Assets.Scripts.Communication.DTOs.Outbound;
 
 namespace Assets.Scripts.Services
 {
@@ -11,21 +14,18 @@ namespace Assets.Scripts.Services
     [RequireComponent(typeof(AudioSource))]
     public class GameControlService : MonoBehaviour
     {
-        // Configurable script parameters
-        public HttpService HttpService;
-        public WebSocketService WebSocketService;
+        private HttpService httpService;
+        private WebSocketService webSocketService;
+        private LoginService loginService;
 
         public bool GlobalAudioThemeEnabled
         {
-            get {
-                return GetComponent<AudioSource>().enabled;
-            }
-            set {
-                GetComponent<AudioSource>().enabled = value;
-            }
+            get { return GetComponent<AudioSource>().enabled; }
+            set { GetComponent<AudioSource>().enabled = value; }
         }
 
-        public string SessionToken { get; set; }
+        public int BaseBossDamage { get { return baseBossDamage; } }
+        private int baseBossDamage;
 
         private static GameControlService instance;
 
@@ -42,17 +42,18 @@ namespace Assets.Scripts.Services
             DontDestroyOnLoad(this.gameObject);
         }
 
-        public void SetUserSession(string token, string username)
+        void Start()
         {
-            this.SessionToken = token;
-            HttpService.SessionToken = token;
-            WebSocketService.SessionToken = token;
+            httpService = FindObjectOfType<HttpService>();
+            webSocketService = FindObjectOfType<WebSocketService>();
+            loginService = FindObjectOfType<LoginService>();
+            webSocketService.RegisterCommand(GameConfigUpdateDTO.COMMAND_NAME, GameConfigUpdateCallback, typeof(GameConfigUpdateDTO));
         }
 
-        public void ClearUserSession()
+        public void GameConfigUpdateCallback(CommandDTO commandDTO)
         {
-            this.SessionToken = null;
-            HttpService.SessionToken = null;
+            var gameConfigUpdateParams = ((GameConfigUpdateDTO)commandDTO).command.parameters;
+            baseBossDamage = gameConfigUpdateParams.baseDamage;
         }
 
     }
