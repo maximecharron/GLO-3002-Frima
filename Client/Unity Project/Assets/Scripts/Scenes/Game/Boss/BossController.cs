@@ -7,14 +7,15 @@ using Assets.Scripts.Scenes.Game.Stamina;
 using Assets.Scripts.Scenes.Game.Hype;
 using Assets.Scripts.Services;
 using Assets.Scripts.Services.BossStatus;
+using Assets.Scripts.Scenes.Game.Combos;
 
 namespace Assets.Scripts.Scenes.Game.Boss
 {
 
     public class BossController : MonoBehaviour
     {
-        private const int KNOCK_OUT_STATE_PRIORITY = 1;
-        private const int KNOCK_OUT_STATE_ANIMATION_PRIORITY = 1;
+        private const int DEAD_STATE_PRIORITY = 1;
+        private const int DEAD_STATE_ANIMATION_PRIORITY = 1;
         private const int COMBO_HIT_STATE_PRIORITY = 2;
         private const int COMBO_HIT_STATE_ANIMATION_PRIORITY = 2;
         private const int HIT_MISS_STATE_PRIORITY = 3;
@@ -26,8 +27,10 @@ namespace Assets.Scripts.Scenes.Game.Boss
 
         //Configurable script parameters
         public int SpritesheetColumnCount = 8;
+        public GameSceneController GameSceneController;
         public BossAttackFeedbackController BossAttackFeedbackController;
-        public BossDeathController BossDeathController;
+        public BossDeathAnimationController BossDeathAnimationController;
+        public ComboHitController ComboHitController;
         public StaminaController StaminaController;
         public HypeController HypeController;
         public HealthPointSliderController HealthPointSliderController;
@@ -43,7 +46,7 @@ namespace Assets.Scripts.Scenes.Game.Boss
         private CharacterState hitState;
         private CharacterState comboHitState;
         private CharacterState hitMissState;
-        private CharacterState knockOutState;
+        private CharacterState deadState;
         private SpriteAnimationSequence idleSequence1 = new SpriteAnimationSequence(new List<int> { 0, 1 }, 5, 3);
         private SpriteAnimationSequence idleSequence2 = new SpriteAnimationSequence(new List<int> { 2, 3 }, 5, 3);
         private SpriteAnimationSequence hitSequence1 = new SpriteAnimationSequence(new List<int> { 18 }, 2, 1);
@@ -52,20 +55,14 @@ namespace Assets.Scripts.Scenes.Game.Boss
         private SpriteAnimationSequence comboHitSequence1 = new SpriteAnimationSequence(new List<int> { 26, 28, 30, 31 }, 5, 1);
         private SpriteAnimationSequence comboHitSequence2 = new SpriteAnimationSequence(new List<int> { 23, 27, 29, 30, 31 }, 5, 1);
         private SpriteAnimationSequence hitMissSequence = new SpriteAnimationSequence(new List<int> { 16 }, 2, 1);
-        private SpriteAnimationSequence knockOutHitSequence = new SpriteAnimationSequence(new List<int> { 20, 37 }, 2, 3);
+        private SpriteAnimationSequence deathSequence = new SpriteAnimationSequence(new List<int> { 20, 37 }, 2, 3);
 
         void Start()
         {
             InitializeStateController();
             InitializeStates();
             AssignStateActions();
-            HypeController.OnHypeAttack = OnHypeAttackCallback;
-            gameControlService = FindObjectOfType<GameControlService>();
-            gameStatisticsService = FindObjectOfType<GameStatisticsService>();
-            playerPropertyService = FindObjectOfType<PlayerPropertyService>();
-            bossStatusService = FindObjectOfType<BossStatusService>();
-            bossStatusService.OnBossStatusUpdate += BossStatusUpdateEventHandler;
-            bossStatusService.OnBossDead += BossDeadEventHandler;
+            InitalizeDependencies();
             UpdateBossStatusDisplayValues();
         }
 
@@ -93,9 +90,9 @@ namespace Assets.Scripts.Scenes.Game.Boss
             comboHitState = new CharacterState("Combo Hit", COMBO_HIT_STATE_PRIORITY, COMBO_HIT_STATE_ANIMATION_PRIORITY, defaultAnimationSettings);
             comboHitState.SpriteAnimationSequences = new List<SpriteAnimationSequence> { comboHitSequence1, comboHitSequence2 };
             comboHitState.AddIncompatibleStates(new CharacterState[] { hitState });
-            knockOutState = new CharacterState("Knock Out", KNOCK_OUT_STATE_PRIORITY, KNOCK_OUT_STATE_ANIMATION_PRIORITY, defaultAnimationSettings);
-            knockOutState.SpriteAnimationSequences = new List<SpriteAnimationSequence> { knockOutHitSequence };
-            knockOutState.AddIncompatibleStates(new CharacterState[] { hitMissState, hitState, comboHitState });
+            deadState = new CharacterState("Dead", DEAD_STATE_PRIORITY, DEAD_STATE_ANIMATION_PRIORITY, defaultAnimationSettings);
+            deadState.SpriteAnimationSequences = new List<SpriteAnimationSequence> { deathSequence };
+            deadState.AddIncompatibleStates(new CharacterState[] { hitMissState, hitState, comboHitState });
             idleState = new CharacterState("Idle", IDLE_STATE_PRIORITY, IDLE_STATE_ANIMATION_PRIORITY, defaultAnimationSettings);
             idleState.SpriteAnimationSequences = new List<SpriteAnimationSequence> { idleSequence1, idleSequence2 };
             bossStateController.AddState(idleState);
@@ -109,8 +106,22 @@ namespace Assets.Scripts.Scenes.Game.Boss
             comboHitState.OnAnimationSequenceComplete += ComboHitAnimationSequenceCompleteEventHandler;
             hitMissState.OnActivate += HitMissStateActivateEventHandler;
             hitMissState.OnAnimationSequenceComplete += HitMissAnimationSequenceCompleteEventHandler;
-            knockOutState.OnActivate += KnockOutStateActivateEventHandler;
-            knockOutState.OnAnimationSequenceComplete += OnKnockOutAnimationSequenceEndCallback;
+            deadState.OnActivate += DeadStateActivateEventHandler;
+            deadState.OnUpdate += DeadStateUpdateEventHandler;
+            deadState.OnAnimationSequenceComplete += DeathAnimationSequenceCompleteEventHandler;
+        }
+
+        private void InitalizeDependencies()
+        {
+            HypeController.OnHypeAttack = HypeAttackEventHandler;
+            ComboHitController.OnHitZoneClicked += HitZoneClickedEventHandler;
+            ComboHitController.OnComboHitCompleted += ComboHitCompletedEventHandler;
+            gameControlService = FindObjectOfType<GameControlService>();
+            gameStatisticsService = FindObjectOfType<GameStatisticsService>();
+            playerPropertyService = FindObjectOfType<PlayerPropertyService>();
+            bossStatusService = FindObjectOfType<BossStatusService>();
+            bossStatusService.OnBossStatusUpdate += BossStatusUpdateEventHandler;
+            bossStatusService.OnBossDead += BossDeadEventHandler;
         }
 
         void Update()
@@ -130,16 +141,21 @@ namespace Assets.Scripts.Scenes.Game.Boss
             }
         }
 
-        public void ComboHit(int bonusMultiplier)
+        public void ComboHitCompletedEventHandler(ComboHitSequence hitSequence)
         {
-            DecreaseBossLife(bonusMultiplier);
+            DecreaseBossLife(hitSequence.BonusMultiplier);
             bossStateController.RemoveState(hitState);
             bossStateController.AddState(comboHitState);
         }
 
-        private void OnHypeAttackCallback()
+        private void HypeAttackEventHandler()
         {
             // TODO
+        }
+
+        private void HitZoneClickedEventHandler(ComboHitZoneController comboHitZoneController)
+        {
+            OnMouseDown();
         }
 
         private void HitStateActivateEventHandler(CharacterState sender)
@@ -147,7 +163,7 @@ namespace Assets.Scripts.Scenes.Game.Boss
             DecreaseBossLife();
             StaminaController.DecreaseStamina();
             HypeController.IncreaseHype();
-            playerPropertyService.IncreaseExperience();
+            playerPropertyService.IncreaseExperiencePoints();
         }
 
         private void ComboHitStateActivateEventHandler(CharacterState sender)
@@ -178,15 +194,21 @@ namespace Assets.Scripts.Scenes.Game.Boss
             bossStateController.RemoveState(hitMissState);
             return false;
         }
-        private void KnockOutStateActivateEventHandler(CharacterState sender)
+
+        private void DeadStateActivateEventHandler(CharacterState sender)
         {
-            BossDeathController.BeginKill();
+            BossDeathAnimationController.BeginDeathAnimation();
         }
 
-        public bool OnKnockOutAnimationSequenceEndCallback(CharacterState sender)
+        private void DeadStateUpdateEventHandler(CharacterState sender)
         {
-            BossDeathController.EndKill();
-            return true;
+            BossDeathAnimationController.Animate();
+        }
+
+        private bool DeathAnimationSequenceCompleteEventHandler(CharacterState sender)
+        {
+            GameSceneController.ShowVictoryScene();
+            return false;
         }
 
         public void BossStatusUpdateEventHandler()
@@ -202,13 +224,12 @@ namespace Assets.Scripts.Scenes.Game.Boss
 
         public void BossDeadEventHandler()
         {
-            bossStatusService.OnBossStatusUpdate -= BossStatusUpdateEventHandler;
-            bossStateController.AddState(knockOutState, false);
+            bossStateController.AddState(deadState, false);
         }
 
         public void DecreaseBossLife(int multiplier = 1)
         {
-            int bossLifeDecreaseValue = gameControlService.BaseBossDamage * playerPropertyService.AttackPowerLevel * multiplier * 30;
+            int bossLifeDecreaseValue = gameControlService.BaseBossDamage * playerPropertyService.AttackPowerLevel * multiplier;
             bossStatusService.CurrentBossLife -= bossLifeDecreaseValue;
             BossAttackFeedbackController.ShowAttackFeedback(bossLifeDecreaseValue);
         }

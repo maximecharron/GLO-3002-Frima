@@ -13,12 +13,13 @@ namespace Assets.Scripts.CharacterControl
         public string StateName { get; set; }
         public int Priority { get; set; }
         public int AnimationPriority { get; set; }
-        public Action<CharacterState> Action { get; set; }
         public bool IsActive { get; set; }
         public delegate void ActivateEventHandler(CharacterState characterState);
         public event ActivateEventHandler OnActivate = delegate { };
         public delegate void DeactivateEventHandler(CharacterState characterState);
         public event DeactivateEventHandler OnDeactivate = delegate { };
+        public delegate void UpdateEventHandler(CharacterState characterState);
+        public event UpdateEventHandler OnUpdate = delegate { };
         public delegate bool AnimationSequenceCompleteEventHandler(CharacterState characterState);
         public event AnimationSequenceCompleteEventHandler OnAnimationSequenceComplete = delegate { return true; };
         public List<CharacterState> IncompatibleStates { get; set; }
@@ -81,12 +82,9 @@ namespace Assets.Scripts.CharacterControl
             return SpriteTransitionAnimationSequences[lastStateAnimation];
         }
 
-        public void DoAction()
+        public void Update()
         {
-            if (Action != null)
-            {
-                Action(this);
-            }
+            OnUpdate(this);
         }
 
         public void Activate()
@@ -130,7 +128,7 @@ namespace Assets.Scripts.CharacterControl
             return Priority <= state.Priority;
         }
 
-        public bool FireAnimationSequenceCompleteEvent()
+        public bool AnimationComplete()
         {
             return OnAnimationSequenceComplete(this);
         }

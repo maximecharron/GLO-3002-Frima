@@ -67,7 +67,7 @@ namespace Assets.Scripts.CharacterControl
 
         private bool AnimationSequenceCompleteEventHandler()
         {
-            return currentStateAnimation.FireAnimationSequenceCompleteEvent();
+            return currentStateAnimation.AnimationComplete();
         }
     }
 }

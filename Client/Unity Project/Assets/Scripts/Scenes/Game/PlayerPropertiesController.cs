@@ -20,25 +20,19 @@ namespace Assets.Scripts.Scenes.Game
         void Start()
         {
             playerPropertyService = FindObjectOfType<PlayerPropertyService>();
-            playerPropertyService.OnExperiencePointsUpdate += ExperiencePointsUpdateEventHandler;
-            playerPropertyService.OnLevelUp += LevelUpEventHandler;
-            UpdateLevelLabel();
+            playerPropertyService.OnPlayerPropertiesUpdate += PlayerPropertiesUpdateEventHandler;
             UpdateExperiencePointsLabel();
+            UpdateLevelLabel();
         }
 
         void OnDestroy()
         {
-            playerPropertyService.OnExperiencePointsUpdate -= ExperiencePointsUpdateEventHandler;
-            playerPropertyService.OnLevelUp -= LevelUpEventHandler;
+            playerPropertyService.OnPlayerPropertiesUpdate -= PlayerPropertiesUpdateEventHandler;
         }
 
-        private void ExperiencePointsUpdateEventHandler()
+        private void PlayerPropertiesUpdateEventHandler()
         {
             UpdateExperiencePointsLabel();
-        }
-
-        private void LevelUpEventHandler()
-        {
             UpdateLevelLabel();
         }
 

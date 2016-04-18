@@ -30,6 +30,7 @@ namespace Assets.Scripts.Scenes
             loginService.OnLoginFailed += LoginFailedCallback;
             gameControlService = FindObjectOfType<GameControlService>();
             LoginErrorLabel.transform.gameObject.SetActive(false);
+            OnInputFieldValueChanged();
         }
 
 

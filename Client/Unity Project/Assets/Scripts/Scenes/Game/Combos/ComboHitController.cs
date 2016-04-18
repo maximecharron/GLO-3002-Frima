@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Assets.Scripts.Extensions;
 using System;
 using Assets.Scripts.Scenes.Game.Boss;
+using Assets.Scripts.Services.BossStatus;
 
 namespace Assets.Scripts.Scenes.Game.Combos
 {
@@ -15,8 +16,6 @@ namespace Assets.Scripts.Scenes.Game.Combos
         private const float DELAY_BETWEEN_SEQUENCES = 2f;
 
         //Configurable script parameters
-        public BossController BossController;
-        public BossDeathController BossDeathController;
         public GameObject ComboHitZone;
         public int ComboHitZonePoolSize;
         public GameObject ComboBonusBubble;
@@ -27,7 +26,9 @@ namespace Assets.Scripts.Scenes.Game.Combos
 
         public delegate void ComboHitCompletedEventHandler(ComboHitSequence comboHitSequence);
         public event ComboHitCompletedEventHandler OnComboHitCompleted = delegate { };
+        public event ComboHitZoneController.HitZoneClickedEventHandler OnHitZoneClicked = delegate { };
 
+        private BossStatusService bossStatusService;
         private List<ComboHitSequence> hitSequences = new List<ComboHitSequence>();
         private ComboHitSequenceController hitSequenceController;
         private ComboHitSequence randomHitSequence;
@@ -36,11 +37,17 @@ namespace Assets.Scripts.Scenes.Game.Combos
 
         void Start()
         {
-            this.ComboHitZone.SetActive(false);
-            this.ComboBonusBubble.SetActive(false);
+            bossStatusService = FindObjectOfType<BossStatusService>();
+            bossStatusService.OnBossDead += BossDeadEventHandler;
+            ComboHitZone.SetActive(false);
+            ComboBonusBubble.SetActive(false);
             CreateHitSequences();
             InitSequenceController();
-            BossDeathController.OnBossDeathStart += BossDeathStartEventHandler;
+        }
+
+        void OnDestroy()
+        {
+            bossStatusService.OnBossDead -= BossDeadEventHandler;
         }
 
         private void InitSequenceController()
@@ -112,7 +119,7 @@ namespace Assets.Scripts.Scenes.Game.Combos
         {
             if (enabled && !hitSequenceController.IsActive && Time.time - lastSequenceTime >= DELAY_BETWEEN_SEQUENCES)
             {
-                Vector2 mousePosition = BossController.gameObject.GetMousePosition();
+                Vector2 mousePosition = this.gameObject.GetMousePosition();
                 List<ComboHitSequence> eligibleComboHitSeqences = TryGetNextComboHitSequence(mousePosition);
                 if (eligibleComboHitSeqences.Count > 0)
                 {
@@ -139,14 +146,13 @@ namespace Assets.Scripts.Scenes.Game.Combos
         {
             if (!hitSequenceController.HitSequence.EndOfSequence)
             {
-                BossController.OnMouseDown();
+                OnHitZoneClicked(hitZoneController);
             }
         }
 
         private void SequenceAchievedCallbackEventHandler(ComboHitSequence hitSequence)
         {
-            BossController.ComboHit(hitSequence.BonusMultiplier);
-            BossController.gameObject.FindAudioSource(SequenceAchievedAudioClip).Play();
+            this.gameObject.FindAudioSource(SequenceAchievedAudioClip).Play();
             OnComboHitCompleted(hitSequence);
         }
 
@@ -155,7 +161,7 @@ namespace Assets.Scripts.Scenes.Game.Combos
             lastSequenceTime = Time.time;
         }
 
-        private void BossDeathStartEventHandler()
+        private void BossDeadEventHandler()
         {
             enabled = false;
         }

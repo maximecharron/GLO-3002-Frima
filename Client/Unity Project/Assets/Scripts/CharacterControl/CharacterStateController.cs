@@ -78,7 +78,7 @@ namespace Assets.Scripts.CharacterControl
 
         public void Update()
         {
-            ExecuteActions();
+            UpdateStates();
             animationController.Animate(states);
         }
 
@@ -91,13 +91,13 @@ namespace Assets.Scripts.CharacterControl
             }
         }
 
-        private void ExecuteActions()
+        private void UpdateStates()
         {
             for (int i = 0; i < states.Count; i++)
             {
                 if (states[i].IsActivable(states)) {
                     states[i].Activate();
-                    states[i].DoAction();
+                    states[i].Update();
                 }
                 else
                 {

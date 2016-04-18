@@ -6,6 +6,7 @@ using Assets.Scripts.Communication;
 using Assets.Scripts.Communication.DTOs;
 using Assets.Scripts.Scenes.Game.Boss;
 using Assets.Scripts.Services;
+using Assets.Scripts.Services.BossStatus;
 
 namespace Assets.Scripts.Scenes.Game
 {
@@ -13,8 +14,6 @@ namespace Assets.Scripts.Scenes.Game
     public class GameSceneController : SceneController
     {
         // Configurable script parameters
-        public BossController BossController;
-        public BossDeathController BossDeathController;
         public GameObject Boss;
         public Canvas GameCanvas;
 
@@ -34,15 +33,11 @@ namespace Assets.Scripts.Scenes.Game
         void Start() {
             gameControlService = FindObjectOfType<GameControlService>();
             gameControlService.GlobalAudioThemeEnabled = false;
-            BossDeathController.OnBossDeathEnd += BossDeathEndEventHandler;
         }
 
         void OnDestroy()
         {
-            if (gameControlService != null)
-            {
-                gameControlService.GlobalAudioThemeEnabled = true;
-            }
+            gameControlService.GlobalAudioThemeEnabled = true;
         }
 
         public void OnExitButtonClick()
@@ -50,7 +45,7 @@ namespace Assets.Scripts.Scenes.Game
             LoadScene(Scenes.Scene.MENU_SCENE);
         }
 
-        private void BossDeathEndEventHandler()
+        public void ShowVictoryScene()
         {
             LoadScene(Scenes.Scene.VICTORY_SCENE);
         }

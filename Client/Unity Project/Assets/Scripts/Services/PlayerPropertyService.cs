@@ -9,8 +9,8 @@ namespace Assets.Scripts.Services
 {
     public class PlayerPropertyService : MonoBehaviour
     {
-        public delegate void ExperiencePointsUpdateEventHandler();
-        public event ExperiencePointsUpdateEventHandler OnExperiencePointsUpdate = delegate { };
+        public delegate void PlayerPropertiesUpdateUpdateEventHandler();
+        public event PlayerPropertiesUpdateUpdateEventHandler OnPlayerPropertiesUpdate = delegate { };
         public delegate void OnLevelUpEventHandler();
         public event OnLevelUpEventHandler OnLevelUp = delegate { };
 
@@ -59,6 +59,7 @@ namespace Assets.Scripts.Services
             staminaPowerLevel = resultDTO.stamina;
             hypePowerLevel = resultDTO.hype;
             attackPowerlevel = resultDTO.attack;
+            OnPlayerPropertiesUpdate();
         }
 
         private void PlayerLevelUpCallback(CommandDTO commandDTO)
@@ -66,17 +67,18 @@ namespace Assets.Scripts.Services
             var playerLevelUpParams = ((PlayerLevelUpDTO)commandDTO).command.parameters;
             requiredExperiencePointsForNextLevel = playerLevelUpParams.nextLevelXp;
             upgradePointsOnLevelComplete = playerLevelUpParams.pointForNextLevel;
+            OnPlayerPropertiesUpdate();
         }
 
-        public void IncreaseExperience()
+        public void IncreaseExperiencePoints()
         {
             experiencePoints += 10;
-            OnExperiencePointsUpdate();
             if (experiencePoints >= requiredExperiencePointsForNextLevel)
             {
                 level += 1;
                 OnLevelUp();
             }
+            OnPlayerPropertiesUpdate();
         }
 
         public void Upgrade(int staminaPowerLevelUpgrade, int hypePowerLevelUpgrade, int attackPowerLevelUpgrade)

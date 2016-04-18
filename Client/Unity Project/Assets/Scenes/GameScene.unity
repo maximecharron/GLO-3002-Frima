@@ -4345,7 +4345,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BossController: {fileID: 2085029932}
-  BossDeathController: {fileID: 2085029942}
   Boss: {fileID: 2085029928}
   GameCanvas: {fileID: 709489109}
 --- !u!4 &1025823895
@@ -7802,8 +7801,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpritesheetColumnCount: 8
+  GameSceneController: {fileID: 0}
   BossAttackFeedbackController: {fileID: 2085029936}
-  BossDeathController: {fileID: 2085029942}
+  BossDeathAnimationController: {fileID: 2085029942}
   StaminaController: {fileID: 2085029940}
   HypeController: {fileID: 2085029941}
   HealthPointSliderController: {fileID: 2023149238}
@@ -7896,7 +7896,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BossController: {fileID: 2085029932}
-  BossDeathController: {fileID: 2085029942}
   ComboHitZone: {fileID: 2016672436}
   ComboHitZonePoolSize: 5
   ComboBonusBubble: {fileID: 1938948517}

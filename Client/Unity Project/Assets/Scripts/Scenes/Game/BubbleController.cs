@@ -18,7 +18,6 @@ namespace Assets.Scripts.Scenes.Game
         private Vector3 targetPosition;
         private Vector3 initialPosition;
 
-
         public bool Active {
             get {
                 return this.gameObject.activeSelf;
