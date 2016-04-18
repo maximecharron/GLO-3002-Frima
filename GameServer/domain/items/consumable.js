@@ -31,8 +31,8 @@ Consumable.prototype.toString = function()
     return JSON.stringify(
         {
             type: this.type,
-            name: this.name,
             subType: this.subType,
+            name: this.name,
             staminaRegeneration: this.staminaRegeneration,
             hypeGeneration: this.hypeGeneration,
             effectDuration: this.effectDuration
