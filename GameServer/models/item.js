@@ -5,8 +5,8 @@ var Consumable = require('./../domain/items/consumable.js');
 var itemSchema = new mongoose.Schema();
 
 itemSchema.add({
-    type : String,
-    subType : String,
+    type : Number,
+    subType : Number,
     name : String,
     quantity : Number,
     staminaRegeneration: Number,

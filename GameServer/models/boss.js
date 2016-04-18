@@ -5,10 +5,10 @@ var bossSchema = new mongoose.Schema();
 bossSchema.add({
     serverName : String,
     bossName : String,
-    maximumBossLife: String,
-    currentBossLife: String,
-    status: String,
-    creationDate: Date
+    maximumBossLife: Number,
+    currentBossLife: Number,
+    status: Number,
+    creationDate: Number
 });
 
 bossSchema.methods.toDTO = function () {

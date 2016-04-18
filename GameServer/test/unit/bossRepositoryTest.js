@@ -16,7 +16,7 @@ var dbBossStub = {};
 
 var BossRepository = proxyquire('./../../repository/bossRepository.js', {'./../models/boss.js': dbBossStub});
 
-var redisCommunicationServiceStub
+var redisCommunicationServiceStub;
 var bossDef = { serverName:hostname, bossName: "Tyson", currentBossLife: "100", maximumBossLife: "100", status: "0" };
 
 //Stubs
@@ -25,7 +25,7 @@ dbBossStub.backupBoss = function(boss) {};
 
 before(function(done){
     done();
-})
+});
 
 describe("bossRepository", function ()
 {
@@ -33,7 +33,7 @@ describe("bossRepository", function ()
     {
         redisCommunicationServiceStub = sinon.createStubInstance(RedisCommunicationService);
         done();
-    })
+    });
 
     describe("saveBoth", function()
     {
