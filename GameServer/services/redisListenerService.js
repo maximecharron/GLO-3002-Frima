@@ -4,16 +4,21 @@ var hostname = process.env.SERVER_NAME || require('os').hostname();
 var self;
 
 //Constructor
-function RedisListenerService(bossService, bossCommunicationService, lootService)
+function RedisListenerService(bossService, bossCommunicationService, lootService, gameService)
 {
     this.serverNameSubscribeCMS = hostname;
     this.bossService = bossService;
     this.bossCommunicationService = bossCommunicationService;
     this.lootService = lootService;
+    this.gameService = gameService;
 
     this.subscribeServerCmsName(this.serverNameSubscribeCMS);
+
     redisSub.subscribe("bossDead");
     redisSub.subscribe("itemsUpdate");
+    redisSub.subscribe("comboUpdate");
+    redisSub.subscribe("gameBaseStatUpdate");
+
     self = this;
 }
 
@@ -47,6 +52,13 @@ redisSub.on('message', function (channel, message)
     else if (channel == "itemsUpdate"){
         self.lootService.initializeItems();
     }
+    else if (channel == "comboUpdate") {
+        self.gameService.initializeCombo();
+    }
+    else if (channel == "gameBaseStatUpdate"){
+        self.gameService.initializeGameBaseStat();
+    }
+
 });
 
 module.exports = RedisListenerService;

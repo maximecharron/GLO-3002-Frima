@@ -34,7 +34,7 @@ exports.findItems = function(callback){
             callback(allItems);
         }
         else if(err){
-            console.log(items);
+            console.log("Problem to fetch items in mongo: ",items);
         }
         else{
             callback(null);
