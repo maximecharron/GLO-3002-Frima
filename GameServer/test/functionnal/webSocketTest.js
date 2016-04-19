@@ -8,8 +8,8 @@ var webSocketClient;
 var onConnectCurrentBossLife;
 
 before(function(done){
-    setTimeout(function(){done();}, 500);
-})
+    setTimeout(function(){done();}, 1000);
+});
 
 
 describe("Functionnal webSocket", function ()

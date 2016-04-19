@@ -19,15 +19,23 @@ GameService.prototype.initializeGameService = function(){
     this.initializeGameBaseStat();
 };
 
-GameService.prototype.initializeCombo = function() {
+GameService.prototype.initializeCombo = function(callBack) {
     this.gameRepository.getCombos(function(combos){
         self.combos = combos;
+        if(callBack)
+        {
+            callBack();
+        }
     })
 };
 
-GameService.prototype.initializeGameBaseStat = function(){
+GameService.prototype.initializeGameBaseStat = function(callBack){
     this.gameRepository.getGameBaseStat(function(gameBaseStat){
         self.gameBaseStat = gameBaseStat;
+        if(callBack)
+        {
+            callBack();
+        }
     })
 };
 

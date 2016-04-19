@@ -4,13 +4,14 @@ var hostname = process.env.SERVER_NAME || require('os').hostname();
 var self;
 
 //Constructor
-function RedisListenerService(bossService, bossCommunicationService, lootService, gameService)
+function RedisListenerService(bossService, bossCommunicationService, lootService, gameService, gameCommunicationService)
 {
     this.serverNameSubscribeCMS = hostname;
     this.bossService = bossService;
     this.bossCommunicationService = bossCommunicationService;
     this.lootService = lootService;
     this.gameService = gameService;
+    this.gameCommunicationService = gameCommunicationService;
 
     this.subscribeServerCmsName(this.serverNameSubscribeCMS);
 
@@ -50,15 +51,21 @@ redisSub.on('message', function (channel, message)
         }
     }
     else if (channel == "itemsUpdate"){
+        //Ici l'information ne doit pas être envoyé au user car cela concerne seulement le lootService.
+        //Celui-ci va ré-initializer ça liste en cache à partir de la BD.
+        //Les prochain loot tiendrons compte de la liste initialisé.
         self.lootService.initializeItems();
     }
     else if (channel == "comboUpdate") {
-        self.gameService.initializeCombo();
+        self.gameService.initializeCombo(function(){
+            self.gameCommunicationService.broadCastComboUpdate();
+        });
     }
     else if (channel == "gameBaseStatUpdate"){
-        self.gameService.initializeGameBaseStat();
+        self.gameService.initializeGameBaseStat(function(){
+            self.gameCommunicationService.broadCastGameBaseStatUpdate();
+        });
     }
-
 });
 
 module.exports = RedisListenerService;

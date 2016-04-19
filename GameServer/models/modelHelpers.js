@@ -4,6 +4,5 @@ exports.toJSON = function() {
     delete obj.__v;
     delete obj.password;
 
-
     return obj;
 };

@@ -1,9 +1,6 @@
 
 //Constructor
-function UserCommunicationService()
-{
-
-}
+function UserCommunicationService() { }
 
 //Public method
 UserCommunicationService.prototype.sendUserLevelUpInformation = function(webSocket, levelUpInformation)
