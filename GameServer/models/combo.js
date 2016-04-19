@@ -1,16 +1,14 @@
 var mongoose = require('mongoose');
 var modelHelpers = require('./modelHelpers.js');
 
-var comboSchema = new mongoose.Schema();
-
-comboSchema.add({
+var comboSchema = new mongoose.Schema({
     name : String,
     triggerFrequency : Number,
     bonusMultiplier : Number,
-    triggerZone : Object,
+    triggerZone : mongoose.Schema.Types.Mixed,
     maxFirstHitWaitTime: Number,
     maxWaitTimeBetweenHits: Number,
-    hitZones: [object]
+    hitZones: [mongoose.Schema.Types.Mixed]
 },{ strict : false });
 
 comboSchema.method('toJSON', modelHelpers.toJSON);

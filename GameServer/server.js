@@ -89,11 +89,17 @@ var redisListenerService = new RedisListenerService(bossService, bossCommunicati
 var UpdateService = require('./services/updateService.js');
 var updateService = new UpdateService(bossRepository, bossCommunicationService, bossService, redisCommunicationService);
 
+var GameRepository = require('./repository/gameRepository.js');
+var gameRepository = new GameRepository();
+
 var GameService = require('./services/gameService.js');
-var gameService = new GameService();
+var gameService = new GameService(gameRepository);
+
+var GameCommunicationService = require('./services/gameCommunicationService.js');
+var gameCommunicationService = new GameCommunicationService(webSocketServer, gameService);
 
 var WebSocketAPI = require('./api/webSocketAPI.js');
-var webSocketAPI = new WebSocketAPI(bossService, bossCommunicationService, redisCommunicationService, webSocketServer, userService, userCommunicationService);
+var webSocketAPI = new WebSocketAPI(bossService, bossCommunicationService, redisCommunicationService, webSocketServer, userService, userCommunicationService, gameCommunicationService);
 
 console.log("websocket server created");
 webSocketAPI.initializeBoss();

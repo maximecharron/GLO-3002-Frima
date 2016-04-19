@@ -1,6 +1,6 @@
 var self;
 //Constructor
-function WebSocketAPI(bossService, bossCommunicationService, redisCommunicationService, webSocketServer, userService, userCommunicationService)
+function WebSocketAPI(bossService, bossCommunicationService, redisCommunicationService, webSocketServer, userService, userCommunicationService, gameCommunicationService)
 {
     this.bossService = bossService;
     this.wss = webSocketServer;
@@ -8,6 +8,8 @@ function WebSocketAPI(bossService, bossCommunicationService, redisCommunicationS
     this.redisCommunicationService = redisCommunicationService;
     this.userService = userService;
     this.userCommunicationService = userCommunicationService;
+    this.gameCommunicationService = gameCommunicationService;
+
     self = this;
 }
 
@@ -75,7 +77,7 @@ function newMessage(message, webSocket)
             var token = request.command.parameters.token;
 
             self.userService.addUserWebSocket(webSocketClientId, token);
-            self.userCommunicationService.sendGameStatusUpdate(webSocket);
+            self.gameCommunicationService.sendAllGameInfo(webSocket);
         }
 
         if(request.command.name == "useItems")
