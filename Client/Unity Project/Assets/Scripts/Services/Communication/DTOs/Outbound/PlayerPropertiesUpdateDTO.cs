@@ -29,11 +29,11 @@ namespace Assets.Scripts.Services.Communication.DTOs.Outbound
             [Serializable]
             public class Parameters
             {
-                public Int32 currentXP = 0;
-                public Int32 currentLevel = 0;
-                public Int32 stamina = 0;
-                public Int32 hype = 0;
-                public Int32 attack = 0;
+                public int currentXP = 0;
+                public int currentLevel = 0;
+                public int stamina = 0;
+                public int hype = 0;
+                public int attack = 0;
             }
         }
     }

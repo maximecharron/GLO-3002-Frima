@@ -8,7 +8,7 @@ namespace Assets.Scripts.Services.Communication.DTOs.Inbound
     [Serializable]
     public class GameConfigUpdateDTO : CommandDTO
     {
-        public const string COMMAND_NAME = "gameStatusUpdate";
+        public const string COMMAND_NAME = "gameBaseStatUpdate";
         public Command command = new Command();
 
         [Serializable]
@@ -20,7 +20,8 @@ namespace Assets.Scripts.Services.Communication.DTOs.Inbound
             [Serializable]
             public class Parameters
             {
-                public Int32 baseDamage = 0;
+                public int baseDamage = 0;
+                public int ultimateDamage = 0;
             }
         }
     }

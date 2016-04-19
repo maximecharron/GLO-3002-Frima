@@ -17,5 +17,6 @@ namespace Assets.Scripts.Services.Communication.DTOs.Inbound
         public int stamina = 0;
         public int hype = 0;
         public int attack = 0;
+        public List<LootItemDTO> items = new List<LootItemDTO>();
     }
 }

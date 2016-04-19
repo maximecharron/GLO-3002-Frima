@@ -371,6 +371,7 @@ GameObject:
   - 224: {fileID: 145129869}
   - 222: {fileID: 145129871}
   - 114: {fileID: 145129870}
+  - 82: {fileID: 145129872}
   m_Layer: 5
   m_Name: LevelUpPanel
   m_TagString: Untagged
@@ -433,6 +434,80 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 145129868}
+--- !u!82 &145129872
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 145129868}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: a38927bb0b5d3104d88850bd631ef683, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!1 &166045364
 GameObject:
   m_ObjectHideFlags: 0
@@ -2044,7 +2119,6 @@ MonoBehaviour:
   StaminaPowerLevelText: {fileID: 41571113}
   HypePowerLevelText: {fileID: 296870198}
   AttackPowerLevelText: {fileID: 691150602}
-  LevelUpAudioClip: {fileID: 8300000, guid: a38927bb0b5d3104d88850bd631ef683, type: 3}
   UpgradePointClickAudioClip: {fileID: 8300000, guid: 5dd939c844aa8324499f0c843f82a4a5,
     type: 3}
   RevertButtonClickAudioClip: {fileID: 8300000, guid: b461321425c8ab047a87c7027e3131db,
@@ -2102,7 +2176,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   spreadCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -2124,7 +2198,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
 --- !u!1001 &262331267
 Prefab:
   m_ObjectHideFlags: 0
@@ -2504,7 +2578,7 @@ GameObject:
   - 114: {fileID: 398419514}
   - 114: {fileID: 398419513}
   m_Layer: 5
-  m_Name: HypeAttackButton
+  m_Name: AdrenalineShotButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2599,7 +2673,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 7e22113648752374ab3920e640057067, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8e1d85aa44241174f870408d3da3a662, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2769,8 +2843,8 @@ RectTransform:
   m_RootOrder: 1
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 399.5, y: -50}
-  m_SizeDelta: {x: 266.33334, y: 100}
+  m_AnchoredPosition: {x: 505, y: -50}
+  m_SizeDelta: {x: 336.66666, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &475838939
 MonoBehaviour:
@@ -3289,8 +3363,8 @@ RectTransform:
   m_RootOrder: 2
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 665.8334, y: -50}
-  m_SizeDelta: {x: 266.33334, y: 100}
+  m_AnchoredPosition: {x: 841.6666, y: -50}
+  m_SizeDelta: {x: 336.66666, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &675443053
 MonoBehaviour:
@@ -5295,8 +5369,8 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 133.16667, y: -50}
-  m_SizeDelta: {x: 266.33334, y: 100}
+  m_AnchoredPosition: {x: 168.33333, y: -50}
+  m_SizeDelta: {x: 336.66666, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1225556851
 MonoBehaviour:
@@ -6000,7 +6074,7 @@ GameObject:
   - 114: {fileID: 1470822618}
   - 114: {fileID: 1470822617}
   m_Layer: 5
-  m_Name: StaminaRestoreButton
+  m_Name: ProteinShakeButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6095,7 +6169,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: a06af327dec3bda4bb3a3317e8286418, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a440327053e9e3347a63181806156727, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6519,7 +6593,7 @@ GameObject:
   - 222: {fileID: 1710719532}
   - 114: {fileID: 1710719531}
   m_Layer: 5
-  m_Name: StaminaUpgradeIcon
+  m_Name: StaminaIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6561,7 +6635,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: a06af327dec3bda4bb3a3317e8286418, type: 3}
+  m_Sprite: {fileID: 21300000, guid: bd44b67f6daff7e4b96e1f5d3341190e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

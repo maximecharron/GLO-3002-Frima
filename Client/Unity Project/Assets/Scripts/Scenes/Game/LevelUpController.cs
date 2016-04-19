@@ -20,7 +20,6 @@ namespace Assets.Scripts.Scenes.Game
         public Text StaminaPowerLevelText;
         public Text HypePowerLevelText;
         public Text AttackPowerLevelText;
-        public AudioClip LevelUpAudioClip;
         public AudioClip UpgradePointClickAudioClip;
         public AudioClip RevertButtonClickAudioClip;
         public Button RevertButton;
@@ -62,7 +61,6 @@ namespace Assets.Scripts.Scenes.Game
         {
             InitState();
             ShowPanel();
-            audioSource.PlayAudioClip(LevelUpAudioClip);
         }
 
         private void InitState()
