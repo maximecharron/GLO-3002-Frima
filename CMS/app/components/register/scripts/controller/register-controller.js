@@ -1,5 +1,4 @@
 angular.module('CMS.register').controller("register-controller", function ($scope, $location, registerResource) {
-    $scope.notRegister = true;
     $scope.success = false;
     $scope.error = false;
     $scope.email ="";
@@ -14,7 +13,12 @@ angular.module('CMS.register').controller("register-controller", function ($scop
         };
         registerResource.post(user, function onSuccess(data) {
             $scope.success = true;
-        }, function onError(data){
+            $scope.form.$setPristine();
+            $scope.form.$setUntouched();
+            $scope.email="";
+            $scope.password="";
+            $scope.name = "";
+        }, function onError(){
             $scope.error = true;
         });
     }

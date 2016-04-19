@@ -1,5 +1,5 @@
-angular.module('CMS.register', ['ngRoute', 'ngResource']).factory('registerResource', ["$resource", function($resource){
-  return $resource("https://frima-cms-server.herokuapp.com/signup" , {}, {
+angular.module('CMS.register', ['ngRoute', 'ngResource', 'environment']).factory('registerResource', ["$resource", "envService", function($resource, envService){
+  return $resource(envService.read('apiUrl')+"/signup" , {}, {
     post:{
       method:"POST",
       headers: {

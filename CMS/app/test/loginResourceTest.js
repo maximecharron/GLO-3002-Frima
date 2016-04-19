@@ -12,11 +12,28 @@ const USER = {
     email: "a@a.com"
 };
 describe('Login service', function() {
-    beforeEach(ngModule('CMS.login'));
+    beforeEach(function ()
+    {
+        ngModule('CMS.login');
+        angular.module('CMS.login').config(function (envServiceProvider)
+        {
+            envServiceProvider.config({
+                domains: {
+                    development: ['localhost', 'dev.local']
+                },
+                vars: {
+                    development: {
+                        apiUrl: 'http://localhost:3000'
+                    }
+                }
+            });
 
+            envServiceProvider.check();
+        })
+    });
     beforeEach(inject(function($injector) {
         $httpBackend = $injector.get('$httpBackend');
-        $httpBackend.when('POST','https://frima-cms-server.herokuapp.com/login').respond(USER);
+        $httpBackend.when('POST','http://localhost:3000/login').respond(USER);
         this.$httpBackend = $httpBackend;
     }));
 

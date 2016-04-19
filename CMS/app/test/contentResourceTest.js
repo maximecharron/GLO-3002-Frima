@@ -29,14 +29,32 @@ const BOSS = {
     status: "0"
 };
 describe('Content service', function() {
-    beforeEach(ngModule('CMS.content'));
+    beforeEach(function ()
+    {
+        ngModule('CMS.content');
+        angular.module('CMS.content').config(function (envServiceProvider)
+        {
+            envServiceProvider.config({
+                domains: {
+                    development: ['localhost', 'dev.local']
+                },
+                vars: {
+                    development: {
+                        apiUrl: 'http://localhost:3000'
+                    }
+                }
+            });
+
+            envServiceProvider.check();
+        })
+    });
 
     beforeEach(inject(function($injector) {
         $httpBackend = $injector.get('$httpBackend');
 
-        $httpBackend.when('GET', 'https://frima-cms-server.herokuapp.com/bossesConstant').respond(BOSSES_CONSTANT);
-        $httpBackend.when('GET', 'https://frima-cms-server.herokuapp.com/bosses').respond(BOSSES);
-        $httpBackend.when('POST','https://frima-cms-server.herokuapp.com/update').respond(BOSS);
+        $httpBackend.when('GET', 'http://localhost:3000/bossesConstant').respond(BOSSES_CONSTANT);
+        $httpBackend.when('GET', 'http://localhost:3000/bosses').respond(BOSSES);
+        $httpBackend.when('POST','http://localhost:3000/update').respond(BOSS);
 
         this.$httpBackend = $httpBackend;
     }));

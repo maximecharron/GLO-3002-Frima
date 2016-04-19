@@ -1,5 +1,5 @@
-angular.module('CMS.content', ['ngRoute', 'ngResource']).factory('contentResource', ["$resource", function($resource){
-    return $resource("https://frima-cms-server.herokuapp.com/:path",{} ,{
+angular.module('CMS.boss', ['ngRoute', 'ngResource', 'environment']).factory('bossResource', ["$resource", 'envService', function($resource, envService){
+    return $resource(envService.read('apiUrl')+"/:path",{} ,{
         getConstantBosses: {
             method:"GET",
             params:{

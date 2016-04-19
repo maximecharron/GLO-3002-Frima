@@ -1,5 +1,5 @@
-angular.module('CMS.login', ['ngRoute', 'ngCookies', 'ngResource']).factory('loginResource', ["$resource", function($resource){
-  return $resource("https://frima-cms-server.herokuapp.com/login" , {}, {
+angular.module('CMS.login', ['ngRoute', 'ngCookies', 'ngResource', 'environment']).factory('loginResource', ["$resource", "envService", function($resource, envService){
+  return $resource(envService.read('apiUrl')+"/login" , {}, {
     post:{
       method:"POST",
       headers: {

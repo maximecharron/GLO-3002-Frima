@@ -30,7 +30,25 @@ describe('Content controller', function ()
     var controller;
     var contentResource;
     var sandbox;
-    beforeEach(ngModule('CMS.content'));
+    beforeEach(function ()
+    {
+        ngModule('CMS.content');
+        angular.module('CMS.content').config(function (envServiceProvider)
+        {
+            envServiceProvider.config({
+                domains: {
+                    development: ['localhost', 'dev.local']
+                },
+                vars: {
+                    development: {
+                        apiUrl: '//localhost:3000'
+                    }
+                }
+            });
+
+            envServiceProvider.check();
+        })
+    });
 
     beforeEach(inject(function ($rootScope, $controller, $injector)
     {
@@ -40,31 +58,38 @@ describe('Content controller', function ()
         controller = $controller('content-controller', {$scope: scope, contentResource: contentResource});
     }));
 
-    afterEach(function () {
+    afterEach(function ()
+    {
         sandbox.restore();
     });
 
-    it('should have an initial updateSuccess state', function(){
+    it('should have an initial updateSuccess state', function ()
+    {
         expect(scope.updateSuccess).to.equal(false);
     });
 
-    it('should have an initial updateError state', function(){
+    it('should have an initial updateError state', function ()
+    {
         expect(scope.updateError).to.equal(false);
     });
 
-    it('should have an initial updateTypes state', function(){
+    it('should have an initial updateTypes state', function ()
+    {
         expect(scope.updateTypes).to.be.ok;
     });
 
-    it('should have an initial selectedBoss state', function(){
+    it('should have an initial selectedBoss state', function ()
+    {
         expect(scope.selectedBoss).to.be.undefined;
     });
 
-    it('should have an initial bosses state', function(){
+    it('should have an initial bosses state', function ()
+    {
         expect(scope.bosses).to.be.undefined;
     });
 
-    it('should have an initial selectedUpdateType state', function(){
+    it('should have an initial selectedUpdateType state', function ()
+    {
         expect(scope.selectedUpdateType).to.be.undefined;
     });
 
@@ -129,7 +154,8 @@ describe('Content controller', function ()
     {
         it('should put updateSuccess and updateError to false when starting update', function (done)
         {
-            sandbox.stub(contentResource, "updateBoss", function(boss, callbackSuccess, callbackError){
+            sandbox.stub(contentResource, "updateBoss", function (boss, callbackSuccess, callbackError)
+            {
                 /*Empty stub on purpose*/
             });
             scope.updateSuccess = true;

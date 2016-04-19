@@ -17,10 +17,13 @@ delete require.cache[require.resolve('../bower_components/angular/angular')];
 delete require.cache[require.resolve('../bower_components/angular-mocks')];
 
 require('../bower_components/angular/angular');
-require('../bower_components/angular-mocks');
-var sinon = require('sinon');
-
 global.angular = window.angular;
+require('../bower_components/angular-mocks');
+require('../bower_components/angular-environment/dist/angular-environment');
+require('../bower_components/angular-route/angular-route');
+require('../bower_components/angular-resource/angular-resource');
+
+var sinon = require('sinon');
 module.exports = {
     inject: window.angular.mock.inject,
     module: window.angular.mock.module,
