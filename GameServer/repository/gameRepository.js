@@ -2,10 +2,7 @@ var ComboModel = require('./../models/combo.js');
 var GameBaseStat = require('./../models/gameBaseStat.js');
 
 //Constructor
-function GameRepository()
-{
-
-}
+function GameRepository() { }
 
 //Public method
 GameRepository.prototype.getCombos = function(callBack) {

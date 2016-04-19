@@ -6,10 +6,14 @@ chai.use(spies);
 var expect = chai.expect;
 var should = chai.should();
 
-//Stubs
+var items = "ITEMS";
 var itemModelStub = {};
 
 var ItemRepository = proxyquire('./../../repository/itemRepository.js', {'./../models/item.js': itemModelStub});
+
+//Stubs
+
+itemModelStub.findItems = function(callBack) {callBack(items)};
 
 before(function(done){
     done();
@@ -31,11 +35,14 @@ describe("itemRepository", function ()
             var bdSpy = chai.spy.on(itemModelStub, 'findItems');
 
             //Act
-            itemRepository.getItems();
+            var result;
+            itemRepository.getItems(function(items){
+                result = items;
+            });
 
             //Assert
             expect(bdSpy).to.have.been.called.once;
+            expect(items).to.equal(result);
         });
     });
-
 });
