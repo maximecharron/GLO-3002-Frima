@@ -6,45 +6,28 @@
     </div>
     <div class="row">
         <div class="col-md-offset-4">
-            <h5>Please select a combo to update or create a new combo</h5>
+            <h5>Please select an item to update or create a new item</h5>
             <div class="col-md-8">
-                <select class="form-control" name="comboSelect" id="comboSelect" ng-model="selectedCombo"
-                        ng-change="comboChanged(selectedItem)">
-                    <option ng-repeat="combo in combos" value="{{combo}}">{{combo.name}}
+                <select class="form-control" name="itemSelect" id="itemSelect" ng-model="selectedItem"
+                        ng-change="itemChanged(selectedItem)">
+                    <option ng-repeat="item in items" value="{{item}}">{{item.name}}
                     </option>
                 </select>
             </div>
             <div class="col-md-offset-4">
-            <button class="btn btn-default pull-right" ng-click="newCombo()">New Combo</button>
+                <button class="btn btn-default pull-right" ng-click="newItem()">New Combo</button>
             </div>
         </div>
 
         <div ng-show="selectedItem">
-            <div class="col-md-4">
-                <canvas id="game" width="256" height="256"></canvas>
-                <div>
-                    <toggle-switch
-                            ng-model="remove"
-                            knob-label="Remove"
-                            on-label="On"
-                            off-label="Off">
-                    </toggle-switch>
-                    <toggle-switch
-                            ng-model="triggerZone"
-                            knob-label="Trigger"
-                            on-label="On"
-                            off-label="Off">
-                    </toggle-switch>
-                </div>
-            </div>
             <div class="col-md-8" ng-if="selectedItem">
                 <h5>Combo</h5>
 
-                <div ng-show="updateSuccess" class="has-success">Combo successfully updated!</div>
-                <div ng-show="updateError" class="has-error">Sorry, an error occured while updating the combo. Please
+                <div ng-show="updateSuccess" class="has-success">Item successfully updated!</div>
+                <div ng-show="updateError" class="has-error">Sorry, an error occured while updating the item. Please
                     try again.
                 </div>
-                <form role="form" class="form-horizontal" ng-submit="updateCombo(selectedItem)">
+                <form role="form" class="form-horizontal" ng-submit="updateItem(selectedItem)">
                     <div class="form-group">
                         <label class="control-label" for="bossName">Combo Name: </label>
 
