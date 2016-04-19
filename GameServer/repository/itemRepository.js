@@ -1,10 +1,7 @@
 var ItemModel = require('./../models/item.js');
 
 //Constructor
-function ItemRepository()
-{
-
-}
+function ItemRepository() { }
 
 //Public method
 ItemRepository.prototype.getItems = function(callBack) {
