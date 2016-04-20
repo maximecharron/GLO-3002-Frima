@@ -9,7 +9,7 @@ using Assets.Scripts.Services.BossStatus;
 
 namespace Assets.Scripts.Scenes.Game.Combos
 {
-    public class ComboHitController : MonoBehaviour
+    public class ComboController : MonoBehaviour
     {
         private static Rect DEFAULT_HIT_ZONE = new Rect(-0.16f, -0.4f, 0.32f, 0.445f);
         private const int RANDOM_HIT_ZONE_COUNT = 4;
@@ -25,7 +25,7 @@ namespace Assets.Scripts.Scenes.Game.Combos
         public AudioClip SequenceAchievedAudioClip;
 
         public delegate void ComboHitCompletedEventHandler(ComboHitSequence comboHitSequence);
-        public event ComboHitCompletedEventHandler OnComboHitCompleted = delegate { };
+        public event ComboHitCompletedEventHandler OnComboHitSequenceCompleted = delegate { };
         public event ComboHitZoneController.HitZoneClickedEventHandler OnHitZoneClicked = delegate { };
 
         private BossStatusService bossStatusService;
@@ -153,7 +153,7 @@ namespace Assets.Scripts.Scenes.Game.Combos
         private void SequenceAchievedCallbackEventHandler(ComboHitSequence hitSequence)
         {
             this.gameObject.FindAudioSource(SequenceAchievedAudioClip).Play();
-            OnComboHitCompleted(hitSequence);
+            OnComboHitSequenceCompleted(hitSequence);
         }
 
         private void SequenceTerminatedEventHandler(ComboHitSequence hitSequence)

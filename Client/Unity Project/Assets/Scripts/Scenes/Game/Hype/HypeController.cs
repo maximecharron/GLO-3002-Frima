@@ -18,7 +18,7 @@ namespace Assets.Scripts.Scenes.Game.Hype
         private const float HYPE_POWER_AVAILABLE_TIME_SECONDS = 1.5f;
 
         //Configurable script parameters
-        public ComboHitController ComboHitController;
+        public ComboController ComboController;
         public LootItemController LootItemController;
         public HypeSliderController HypeSliderController;
         public HypeAttackButtonController HypeAttackButtonController;
@@ -41,14 +41,14 @@ namespace Assets.Scripts.Scenes.Game.Hype
             playerPropertyService = FindObjectOfType<PlayerPropertyService>();
             gameControlService = FindObjectOfType<GameControlService>();
             lootItemService = FindObjectOfType<LootItemService>();
-            ComboHitController.OnComboHitCompleted += ComboHitCompletedEventHandler;
+            ComboController.OnComboHitSequenceCompleted += ComboHitSequenceCompletedEventHandler;
             LootItemController.OnLootItemUsed += LootItemUsedEventHandler;
             LootItemController.OnLootItemEffectExpired += LootItemEffectExpiredEventHandler;
             HypeAttackButtonController.OnButtonClicked += HypeAttackTargetClickedEventHandler;
             UpdateRemainingAdrenalineShotCountText();
         }
 
-        void ComboHitCompletedEventHandler(ComboHitSequence hitSequence)
+        void ComboHitSequenceCompletedEventHandler(ComboHitSequence hitSequence)
         {
             IncreaseHype(hitSequence.BonusMultiplier);
         }

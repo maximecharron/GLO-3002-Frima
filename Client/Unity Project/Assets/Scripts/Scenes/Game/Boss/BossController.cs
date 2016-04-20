@@ -33,7 +33,7 @@ namespace Assets.Scripts.Scenes.Game.Boss
         public BossAttackFeedbackController BossAttackFeedbackController;
         public BossDeathAnimationController BossDeathAnimationController;
         public BossExplosionController BossDeathExplosionController;
-        public ComboHitController ComboHitController;
+        public ComboController ComboController;
         public StaminaController StaminaController;
         public HypeController HypeController;
         public AudioClip KnockOutFallAudioClip;
@@ -121,8 +121,8 @@ namespace Assets.Scripts.Scenes.Game.Boss
         private void InitalizeDependencies()
         {
             HypeController.OnHypeAttack += HypeAttackEventHandler;
-            ComboHitController.OnHitZoneClicked += HitZoneClickedEventHandler;
-            ComboHitController.OnComboHitCompleted += ComboHitCompletedEventHandler;
+            ComboController.OnHitZoneClicked += HitZoneClickedEventHandler;
+            ComboController.OnComboHitSequenceCompleted += ComboHitSequenceCompletedEventHandler;
             gameControlService = FindObjectOfType<GameControlService>();
             gameStatisticsService = FindObjectOfType<GameStatisticsService>();
             playerPropertyService = FindObjectOfType<PlayerPropertyService>();
@@ -147,7 +147,7 @@ namespace Assets.Scripts.Scenes.Game.Boss
             }
         }
 
-        public void ComboHitCompletedEventHandler(ComboHitSequence hitSequence)
+        public void ComboHitSequenceCompletedEventHandler(ComboHitSequence hitSequence)
         {
             DecreaseBossLifeDefault(hitSequence.BonusMultiplier);
             bossStateController.RemoveState(hitState);

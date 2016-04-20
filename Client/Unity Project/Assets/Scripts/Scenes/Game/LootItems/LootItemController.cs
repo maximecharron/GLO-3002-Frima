@@ -31,7 +31,10 @@ namespace Assets.Scripts.Scenes.Game.LootItems
 
         void Update()
         {
-            lootItemUsageStartTimeDelta += Time.deltaTime;
+            if (currentLootItem != null)
+            {
+                LootItemCountDown();
+            }
         }
 
         void OnDestroy()
@@ -67,12 +70,12 @@ namespace Assets.Scripts.Scenes.Game.LootItems
             lootItemService.UseLootItem(currentLootItem);
             LootItemInUseDisplayController.DisplayLootItemInUse(lootItem);
             lootItemUsageStartTimeDelta = 0;
-            InvokeRepeating("LootItemCountDown", 1, 1);
             OnLootItemUsed(lootItem);
         }
 
         public void LootItemCountDown()
         {
+            lootItemUsageStartTimeDelta += Time.deltaTime;
             if (lootItemUsageStartTimeDelta > currentLootItem.EffectDuration.TotalSeconds)
             {
                 ProcessLootItemExpired();
@@ -84,7 +87,6 @@ namespace Assets.Scripts.Scenes.Game.LootItems
 
         private void ProcessLootItemExpired()
         {
-            CancelInvoke();
             LootItemInUseDisplayController.HideLootItemInUse();
             OnLootItemEffectExpired(currentLootItem);
             currentLootItem = null;

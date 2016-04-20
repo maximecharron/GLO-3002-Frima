@@ -4203,7 +4203,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8392eb57e005a6742a18021701858f06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ComboHitController: {fileID: 2085029937}
+  ComboController: {fileID: 2085029937}
   LootItemController: {fileID: 2085029940}
   HypeSliderController: {fileID: 1229884299}
   HypeAttackButtonController: {fileID: 1530492137}
@@ -9378,7 +9378,7 @@ MonoBehaviour:
   BossAttackFeedbackController: {fileID: 2085029936}
   BossDeathAnimationController: {fileID: 2085029942}
   BossDeathExplosionController: {fileID: 1525518240}
-  ComboHitController: {fileID: 2085029937}
+  ComboController: {fileID: 2085029937}
   StaminaController: {fileID: 1050043616}
   HypeController: {fileID: 688749829}
   KnockOutFallAudioClip: {fileID: 8300000, guid: b485de05d4820c648baa3dca2c99fe6e,
