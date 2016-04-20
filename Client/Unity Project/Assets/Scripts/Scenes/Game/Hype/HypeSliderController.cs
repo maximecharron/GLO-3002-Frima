@@ -31,6 +31,11 @@ namespace Assets.Scripts.Scenes.Game.Hype
             set { HypeSlider.value = value; }
         }
 
+        void Start()
+        {
+            HypeSlider.value = 0;
+        }
+
         void Update()
         {
             if (FlashSlider)
@@ -38,12 +43,12 @@ namespace Assets.Scripts.Scenes.Game.Hype
                 if (DateTime.Now.Subtract(lastFlashTime).TotalSeconds > FLASH_INTERVAL_SECONDS)
                 {
                     lastFlashTime = DateTime.Now;
-                    alternateSliderColor();
+                    AlternateSliderColor();
                 }
             }
         }
 
-        void alternateSliderColor()
+        private void AlternateSliderColor()
         {
             if (SliderFill.color.Equals(flashColor))
             {

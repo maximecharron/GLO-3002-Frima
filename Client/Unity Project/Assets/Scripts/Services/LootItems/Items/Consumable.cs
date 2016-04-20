@@ -5,16 +5,12 @@ using System.Text;
 
 namespace Assets.Scripts.Services.LootItems
 {
-    public class Consumable : LootItem
+    public abstract class Consumable : LootItem
     {
-        public int EffectDuration { get { return effectDuration; } }
-        private int effectDuration;
-
-        public Consumable(string name, int effectDuration) 
-            : base(name)
+        public Consumable(string name, string iconName, TimeSpan effectDuration) 
+            : base(name, iconName, effectDuration)
         {
             itemType = LootItemType.CONSUMABLE;
-            this.effectDuration = effectDuration;
         }
 
     }

@@ -7,14 +7,16 @@ namespace Assets.Scripts.Services.LootItems
 {
     public class AdrenalineShot : Consumable
     {
-        public int HypeGenerationValue { get { return hypeGenerationValue; } }
-        private int hypeGenerationValue;
+        public int HypePowerValue { get { return hypePowerValue; } }
+        private int hypePowerValue;
 
-        public AdrenalineShot(string name, int hypeGenerationValue, int effectDuration) 
-            : base(name, effectDuration)
+        public override int PowerValue { get { return hypePowerValue; } }
+
+        public AdrenalineShot(string name, int hypePowerValue, TimeSpan effectDuration) 
+            : base(name, "Textures/AdrenalineShot", effectDuration)
         {
             itemSubType = LootItemSubType.ADRENALINE_SHOT;
-            this.hypeGenerationValue = hypeGenerationValue;
+            this.hypePowerValue = hypePowerValue;
         }
     }
 }

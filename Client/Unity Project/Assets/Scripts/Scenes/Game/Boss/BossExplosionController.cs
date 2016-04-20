@@ -5,7 +5,7 @@ namespace Assets.Scripts.Scenes.Game.Boss
 {
     [RequireComponent(typeof(ParticleSystem))]
     [RequireComponent(typeof(AudioSource))]
-    public class BossDeathExplosionController : MonoBehaviour {
+    public class BossExplosionController : MonoBehaviour {
 
         // Configurable script parameters
         public float Multiplier = 1;

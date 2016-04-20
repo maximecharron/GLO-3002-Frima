@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Assets.Scripts.Services.LootItems
 {
-    public class LootItem
+    public abstract class LootItem
     {
         public LootItemType ItemType { get { return itemType; } }
         protected LootItemType itemType;
@@ -13,10 +13,18 @@ namespace Assets.Scripts.Services.LootItems
         protected LootItemSubType itemSubType;
         public string Name { get { return name; } }
         private string name;
+        public string IconName { get { return iconName; } }
+        private string iconName;
+        public TimeSpan EffectDuration { get { return effectDuration; } }
+        private TimeSpan effectDuration;
 
-        public LootItem(string name)
+        public abstract int PowerValue { get; }
+
+        public LootItem(string name, string iconName, TimeSpan effectDuration)
         {
             this.name = name;
+            this.iconName = iconName;
+            this.effectDuration = effectDuration;
         }
     }
 }

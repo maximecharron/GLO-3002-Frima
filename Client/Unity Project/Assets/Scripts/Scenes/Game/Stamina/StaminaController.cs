@@ -3,6 +3,10 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using Assets.Scripts.Services;
+using Assets.Scripts.Scenes.Game.LootItems;
+using Assets.Scripts.Services.LootItems;
+using System.Collections.Generic;
+using Assets.Scripts.Extensions;
 
 namespace Assets.Scripts.Scenes.Game.Stamina
 {
@@ -17,14 +21,21 @@ namespace Assets.Scripts.Scenes.Game.Stamina
 
         //Configurable script parameters
         public StaminaSliderController StaminaSliderController;
+        public LootItemController LootItemController;
+        public Button proteinShakeButton;
+        public Text remainingProteinShakeCountLabel;
 
         private PlayerPropertyService playerPropertyService;
         private DateTime lastStaminaAutoIncrease = DateTime.Now;
+        private ProteinShake currentProteinShake;
 
         void Start()
         {
             playerPropertyService = FindObjectOfType<PlayerPropertyService>();
             StaminaSliderController.Value = StaminaSliderController.MaxValue;
+            LootItemController.OnLootItemUsed += LootItemUsedEventHandler;
+            LootItemController.OnLootItemEffectExpired += LootItemEffectExpiredEventHandler;
+            UpdateRemainingProteinShakeCountText();
         }
 
         void Update()
@@ -38,12 +49,8 @@ namespace Assets.Scripts.Scenes.Game.Stamina
 
         public void DecreaseStamina()
         {
-            StaminaSliderController.Value -= BASE_STAMINA_DECREASE_ON_HIT / playerPropertyService.StaminaPowerLevel;
-        }
-
-        public void OnStaminaButtonClick()
-        {
-            StaminaSliderController.Value = StaminaSliderController.MaxValue;
+            float proteinShakePowerValue = currentProteinShake != null ? currentProteinShake.StaminaPowerValue : 1;
+            StaminaSliderController.Value -= BASE_STAMINA_DECREASE_ON_HIT / playerPropertyService.StaminaPowerLevel / proteinShakePowerValue;
         }
 
         private void AutoIncreaseStamina()
@@ -54,6 +61,32 @@ namespace Assets.Scripts.Scenes.Game.Stamina
         public bool IsHitMiss()
         {
             return UnityEngine.Random.value < (STAMINA_HIT_MISS_TRESHOLD - StaminaSliderController.Value) / 100;
+        }
+
+        public void OnProteinShakeButtonClick()
+        {
+            LootItemController.PickItem(lootItem => lootItem.ItemSubType == LootItemSubType.PROTEIN_SHAKE, "Protein Shakes");
+        }
+
+        private void LootItemUsedEventHandler(LootItem lootItem)
+        {
+            if (lootItem.ItemSubType == LootItemSubType.PROTEIN_SHAKE)
+            {
+                currentProteinShake = (ProteinShake)lootItem;
+                UpdateRemainingProteinShakeCountText();
+            }
+            proteinShakeButton.interactable = false;
+        }
+
+        private void LootItemEffectExpiredEventHandler(LootItem lootItem)
+        {
+            currentProteinShake = null;
+            proteinShakeButton.interactable = true;
+        }
+
+        private void UpdateRemainingProteinShakeCountText()
+        {
+            remainingProteinShakeCountLabel.text = LootItemController.GetAvailableItems(lootItem => lootItem.ItemSubType == LootItemSubType.PROTEIN_SHAKE).Count.ToString();
         }
     }
 

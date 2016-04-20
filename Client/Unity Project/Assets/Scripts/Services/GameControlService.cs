@@ -26,8 +26,8 @@ namespace Assets.Scripts.Services
 
         public int BaseBossDamage { get { return baseBossDamage; } }
         private int baseBossDamage;
-        public int UltimateAttackDamage { get { return ultimateAttackDamage; } }
-        private int ultimateAttackDamage;
+        public int HypeAttackDamage { get { return hypeAttackDamage; } }
+        private int hypeAttackDamage;
 
         void Start()
         {
@@ -41,7 +41,7 @@ namespace Assets.Scripts.Services
         {
             var gameConfigUpdateParams = ((GameConfigUpdateDTO)commandDTO).command.parameters;
             baseBossDamage = gameConfigUpdateParams.baseDamage;
-            ultimateAttackDamage = gameConfigUpdateParams.ultimateDamage;
+            hypeAttackDamage = gameConfigUpdateParams.ultimateDamage;
         }
 
     }

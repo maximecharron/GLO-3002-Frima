@@ -12,7 +12,7 @@ namespace Assets.Scripts.Scenes.Game.Boss
         private const float KILL_ANIMATION_GRAVITY_SCALE = 3f;
 
         //Configurable script parameters
-        public BossDeathExplosionController BossDeathExplosionController;
+        public BossExplosionController BossDeathExplosionController;
         public GameObject Hud;
         public GameObject SceneBackground;
 

@@ -31,7 +31,6 @@ namespace Assets.Scripts.Scenes.Game
         private int hypePowerLevelUpgrade = 0;
         private int attackPowerLevelUpgrade = 0;
 
-
         void Start()
         {
             audioSource = GetComponent<AudioSource>();

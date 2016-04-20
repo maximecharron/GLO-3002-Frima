@@ -24,11 +24,11 @@ namespace Assets.Scripts.Services.LootItems.Items
         {
             if ((LootItemSubType)lootItemDTO.subType == LootItemSubType.PROTEIN_SHAKE)
             {
-                return new ProteinShake(lootItemDTO.name, lootItemDTO.staminaRegeneration, lootItemDTO.effectDuration);
+                return new ProteinShake(lootItemDTO.name, lootItemDTO.staminaRegeneration, new TimeSpan(0, 0, lootItemDTO.effectDuration));
             }
             else if ((LootItemSubType)lootItemDTO.subType == LootItemSubType.ADRENALINE_SHOT)
             {
-                return new AdrenalineShot(lootItemDTO.name, lootItemDTO.hyperGeneration, lootItemDTO.effectDuration);
+                return new AdrenalineShot(lootItemDTO.name, lootItemDTO.hyperGeneration, new TimeSpan(0, 0, lootItemDTO.effectDuration));
             }
             else
             {

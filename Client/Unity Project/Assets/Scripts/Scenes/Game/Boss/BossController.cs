@@ -18,18 +18,21 @@ namespace Assets.Scripts.Scenes.Game.Boss
         private const int DEAD_STATE_ANIMATION_PRIORITY = 1;
         private const int COMBO_HIT_STATE_PRIORITY = 2;
         private const int COMBO_HIT_STATE_ANIMATION_PRIORITY = 2;
-        private const int HIT_MISS_STATE_PRIORITY = 3;
-        private const int HIT_MISS_STATE_ANIMATION_PRIORITY = 3;
-        private const int HIT_STATE_PRIORITY = 4;
-        private const int HIT_STATE_ANIMATION_PRIORITY = 4;
-        private const int IDLE_STATE_PRIORITY = 5;
-        private const int IDLE_STATE_ANIMATION_PRIORITY = 5;
+        private const int HYPE_ATTACK_STATE_PRIORITY = 3;
+        private const int HYPE_ATTACK_STATE_ANIMATION_PRIORITY = 3;
+        private const int HIT_MISS_STATE_PRIORITY = 4;
+        private const int HIT_MISS_STATE_ANIMATION_PRIORITY = 4;
+        private const int HIT_STATE_PRIORITY = 5;
+        private const int HIT_STATE_ANIMATION_PRIORITY = 5;
+        private const int IDLE_STATE_PRIORITY = 6;
+        private const int IDLE_STATE_ANIMATION_PRIORITY = 7;
 
         //Configurable script parameters
         public int SpritesheetColumnCount = 8;
         public GameSceneController GameSceneController;
         public BossAttackFeedbackController BossAttackFeedbackController;
         public BossDeathAnimationController BossDeathAnimationController;
+        public BossExplosionController BossDeathExplosionController;
         public ComboHitController ComboHitController;
         public StaminaController StaminaController;
         public HypeController HypeController;
@@ -45,6 +48,7 @@ namespace Assets.Scripts.Scenes.Game.Boss
         private CharacterState hitState;
         private CharacterState comboHitState;
         private CharacterState hitMissState;
+        private CharacterState hypeAttackState;
         private CharacterState deadState;
         private SpriteAnimationSequence idleSequence1 = new SpriteAnimationSequence(new List<int> { 0, 1 }, 5, 3);
         private SpriteAnimationSequence idleSequence2 = new SpriteAnimationSequence(new List<int> { 2, 3 }, 5, 3);
@@ -54,6 +58,7 @@ namespace Assets.Scripts.Scenes.Game.Boss
         private SpriteAnimationSequence comboHitSequence1 = new SpriteAnimationSequence(new List<int> { 26, 28, 30, 31 }, 5, 1);
         private SpriteAnimationSequence comboHitSequence2 = new SpriteAnimationSequence(new List<int> { 23, 27, 29, 30, 31 }, 5, 1);
         private SpriteAnimationSequence hitMissSequence = new SpriteAnimationSequence(new List<int> { 16 }, 2, 1);
+        private SpriteAnimationSequence hypeAttackSequence = new SpriteAnimationSequence(new List<int> { 20, 37 }, 2, 3);
         private SpriteAnimationSequence deathSequence = new SpriteAnimationSequence(new List<int> { 20, 37 }, 2, 5);
 
         void Start()
@@ -87,6 +92,9 @@ namespace Assets.Scripts.Scenes.Game.Boss
             comboHitState = new CharacterState("Combo Hit", COMBO_HIT_STATE_PRIORITY, COMBO_HIT_STATE_ANIMATION_PRIORITY, defaultAnimationSettings);
             comboHitState.SpriteAnimationSequences = new List<SpriteAnimationSequence> { comboHitSequence1, comboHitSequence2 };
             comboHitState.AddIncompatibleStates(new CharacterState[] { hitState });
+            hypeAttackState = new CharacterState("Hype Attack State", HYPE_ATTACK_STATE_PRIORITY, HYPE_ATTACK_STATE_ANIMATION_PRIORITY, defaultAnimationSettings);
+            hypeAttackState.SpriteAnimationSequences = new List<SpriteAnimationSequence> { comboHitSequence1, comboHitSequence2 };
+            hypeAttackState.AddIncompatibleStates(new CharacterState[] { hitState });
             deadState = new CharacterState("Dead", DEAD_STATE_PRIORITY, DEAD_STATE_ANIMATION_PRIORITY, defaultAnimationSettings);
             deadState.SpriteAnimationSequences = new List<SpriteAnimationSequence> { deathSequence };
             deadState.AddIncompatibleStates(new CharacterState[] { hitMissState, hitState, comboHitState });
@@ -101,6 +109,8 @@ namespace Assets.Scripts.Scenes.Game.Boss
             hitState.OnAnimationSequenceComplete += HitAnimationSequenceCompleteEventHandler;
             comboHitState.OnActivate += ComboHitStateActivateEventHandler;
             comboHitState.OnAnimationSequenceComplete += ComboHitAnimationSequenceCompleteEventHandler;
+            hypeAttackState.OnActivate += HypeAttackStateActivateEventHandler;
+            hypeAttackState.OnAnimationSequenceComplete += HypeAttackAnimationSequenceCompleteEventHandler;
             hitMissState.OnActivate += HitMissStateActivateEventHandler;
             hitMissState.OnAnimationSequenceComplete += HitMissAnimationSequenceCompleteEventHandler;
             deadState.OnActivate += DeadStateActivateEventHandler;
@@ -110,7 +120,7 @@ namespace Assets.Scripts.Scenes.Game.Boss
 
         private void InitalizeDependencies()
         {
-            HypeController.OnHypeAttack = HypeAttackEventHandler;
+            HypeController.OnHypeAttack += HypeAttackEventHandler;
             ComboHitController.OnHitZoneClicked += HitZoneClickedEventHandler;
             ComboHitController.OnComboHitCompleted += ComboHitCompletedEventHandler;
             gameControlService = FindObjectOfType<GameControlService>();
@@ -139,14 +149,15 @@ namespace Assets.Scripts.Scenes.Game.Boss
 
         public void ComboHitCompletedEventHandler(ComboHitSequence hitSequence)
         {
-            DecreaseBossLife(hitSequence.BonusMultiplier);
+            DecreaseBossLifeDefault(hitSequence.BonusMultiplier);
             bossStateController.RemoveState(hitState);
             bossStateController.AddState(comboHitState);
         }
 
-        private void HypeAttackEventHandler()
+        private void HypeAttackEventHandler(int attackValue)
         {
-            // TODO
+            DecreaseBossLife(attackValue);
+            bossStateController.AddState(hypeAttackState);
         }
 
         private void HitZoneClickedEventHandler(ComboHitZoneController comboHitZoneController)
@@ -156,16 +167,10 @@ namespace Assets.Scripts.Scenes.Game.Boss
 
         private void HitStateActivateEventHandler(CharacterState sender)
         {
-            DecreaseBossLife();
+            DecreaseBossLifeDefault();
             StaminaController.DecreaseStamina();
             HypeController.IncreaseHype();
             playerPropertyService.IncreaseExperiencePoints();
-        }
-
-        private void ComboHitStateActivateEventHandler(CharacterState sender)
-        {
-            this.gameObject.FindAudioSource(KnockOutFallAudioClip).Play();
-            this.gameObject.FindAudioSource(KnockOutVoiceAudioClip).Play();
         }
 
         public bool HitAnimationSequenceCompleteEventHandler(CharacterState sender)
@@ -174,9 +179,26 @@ namespace Assets.Scripts.Scenes.Game.Boss
             return false;
         }
 
+        private void ComboHitStateActivateEventHandler(CharacterState sender)
+        {
+            this.gameObject.FindAudioSource(KnockOutFallAudioClip).Play();
+            this.gameObject.FindAudioSource(KnockOutVoiceAudioClip).Play();
+        }
+
         public bool ComboHitAnimationSequenceCompleteEventHandler(CharacterState sender)
         {
             bossStateController.RemoveState(comboHitState);
+            return false;
+        }
+
+        private void HypeAttackStateActivateEventHandler(CharacterState sender)
+        {
+            BossDeathExplosionController.Explode();
+        }
+
+        public bool HypeAttackAnimationSequenceCompleteEventHandler(CharacterState sender)
+        {
+            bossStateController.RemoveState(hypeAttackState);
             return false;
         }
 
@@ -212,11 +234,15 @@ namespace Assets.Scripts.Scenes.Game.Boss
             bossStateController.AddState(deadState, false);
         }
 
-        public void DecreaseBossLife(int multiplier = 1)
+        public void DecreaseBossLifeDefault(int multiplier = 1)
         {
-            int bossLifeDecreaseValue = gameControlService.BaseBossDamage * playerPropertyService.AttackPowerLevel * multiplier;
-            bossStatusService.CurrentBossLife -= bossLifeDecreaseValue;
-            BossAttackFeedbackController.ShowAttackFeedback(bossLifeDecreaseValue);
+            DecreaseBossLife(gameControlService.BaseBossDamage * playerPropertyService.AttackPowerLevel * multiplier);
+        }
+
+        public void DecreaseBossLife(int decreaseValue)
+        {
+            bossStatusService.CurrentBossLife -= decreaseValue;
+            BossAttackFeedbackController.ShowAttackFeedback(decreaseValue);
         }
     }
 

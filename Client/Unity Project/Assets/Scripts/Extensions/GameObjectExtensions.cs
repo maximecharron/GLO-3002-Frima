@@ -8,7 +8,7 @@ namespace Assets.Scripts.Extensions
 {
     static class GameObjectExtensions
     {
-        public static UnityEngine.Object Clone(this GameObject gameObject)
+        public static GameObject Clone(this GameObject gameObject)
         {
             GameObject gameObjectClone = (GameObject)UnityEngine.Object.Instantiate(gameObject, gameObject.transform.position.Clone(), Quaternion.identity);
             gameObjectClone.transform.parent = gameObject.transform.parent;
@@ -33,6 +33,11 @@ namespace Assets.Scripts.Extensions
                 }
             }
             return null;
+        }
+
+        public static bool IsMouseDownOutside(this GameObject gameObject)
+        {
+            return Input.GetMouseButton(0) && !RectTransformUtility.RectangleContainsScreenPoint(gameObject.GetComponent<RectTransform>(), Input.mousePosition, Camera.main);
         }
     }
 }

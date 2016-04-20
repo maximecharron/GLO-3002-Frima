@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Scenes.Game
 {
-    class AttackBatchingCommandInterceptor : MonoBehaviour, ICommandInterceptor
+    class BossAttackBatchingCommandInterceptor : MonoBehaviour, ICommandInterceptor
     {
         //Configurable script parameters
         public float BatchSendInterval = 0.5f;

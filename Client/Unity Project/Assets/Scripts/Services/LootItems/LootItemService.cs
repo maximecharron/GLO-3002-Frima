@@ -14,7 +14,10 @@ namespace Assets.Scripts.Services.LootItems
         private WebSocketService webSocketService;
         private LoginService loginService;
         private LootItemFactory lootItemFactory;
+        public List<LootItem> LootItems { get { return lootItems; } }
         private List<LootItem> lootItems;
+        public List<LootItem> RecentlyWonLootItems { get { return recentlyWonLootItems; } }
+        private List<LootItem> recentlyWonLootItems;
 
         void Start()
         {
@@ -29,6 +32,7 @@ namespace Assets.Scripts.Services.LootItems
         {
             lootItems.Clear();
             AddLootItems(loginResultDTO.items);
+            recentlyWonLootItems.Clear();
         }
 
         private void LootItemsCallback(CommandDTO commandDTO)
@@ -39,15 +43,19 @@ namespace Assets.Scripts.Services.LootItems
 
         private void AddLootItems(List<LootItemDTO> lootItemsDTO)
         {
+            recentlyWonLootItems.Clear();
             foreach (LootItemDTO lootItemDTO in lootItemsDTO)
             {
-                lootItems.Add(lootItemFactory.Create(lootItemDTO));
+                LootItem lootItem = lootItemFactory.Create(lootItemDTO);
+                lootItems.Add(lootItem);
+                recentlyWonLootItems.Add(lootItem);
             }
         }
 
-        public void UseItem(LootItem lootItem)
+        public void UseLootItem(LootItem lootItem)
         {
             LootItemDTO lootItemDTO = new LootItemDTO((int)lootItem.ItemType, (int)lootItem.ItemSubType, lootItem.Name, 1);
+            lootItems.Remove(lootItem);
         }
     }
 }
