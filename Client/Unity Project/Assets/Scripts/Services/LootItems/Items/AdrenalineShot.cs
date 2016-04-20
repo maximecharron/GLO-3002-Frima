@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace Assets.Scripts.Services.LootItems
 {
@@ -12,8 +13,8 @@ namespace Assets.Scripts.Services.LootItems
 
         public override int PowerValue { get { return hypePowerValue; } }
 
-        public AdrenalineShot(string name, int hypePowerValue, TimeSpan effectDuration) 
-            : base(name, "Textures/AdrenalineShot", effectDuration)
+        public AdrenalineShot(string name, Sprite iconSprite, int hypePowerValue, TimeSpan effectDuration) 
+            : base(name, iconSprite, effectDuration)
         {
             itemSubType = LootItemSubType.ADRENALINE_SHOT;
             this.hypePowerValue = hypePowerValue;

@@ -6,18 +6,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace Assets.Scripts.Services.LootItems
 {
     class LootItemService : MonoSingleton
     {
+        //Configurable script parameters
+        public LootItemFactory LootItemFactory;
+
         private WebSocketService webSocketService;
         private LoginService loginService;
-        private LootItemFactory lootItemFactory;
         public List<LootItem> LootItems { get { return lootItems; } }
-        private List<LootItem> lootItems;
+        private List<LootItem> lootItems = new List<LootItem>();
         public List<LootItem> RecentlyWonLootItems { get { return recentlyWonLootItems; } }
-        private List<LootItem> recentlyWonLootItems;
+        private List<LootItem> recentlyWonLootItems = new List<LootItem>();
 
         void Start()
         {
@@ -25,7 +28,6 @@ namespace Assets.Scripts.Services.LootItems
             loginService.OnLoginSuccess += LoginSuccessEventHandler;
             webSocketService = FindObjectOfType<WebSocketService>();
             webSocketService.RegisterCommand(LootItemsDTO.COMMAND_NAME, LootItemsCallback, typeof(LootItemsDTO));
-            lootItemFactory = new LootItemFactory();
         }
 
         private void LoginSuccessEventHandler(LoginResultDTO loginResultDTO)
@@ -46,7 +48,7 @@ namespace Assets.Scripts.Services.LootItems
             recentlyWonLootItems.Clear();
             foreach (LootItemDTO lootItemDTO in lootItemsDTO)
             {
-                LootItem lootItem = lootItemFactory.Create(lootItemDTO);
+                LootItem lootItem = LootItemFactory.Create(lootItemDTO);
                 lootItems.Add(lootItem);
                 recentlyWonLootItems.Add(lootItem);
             }
@@ -56,6 +58,11 @@ namespace Assets.Scripts.Services.LootItems
         {
             LootItemDTO lootItemDTO = new LootItemDTO((int)lootItem.ItemType, (int)lootItem.ItemSubType, lootItem.Name, 1);
             lootItems.Remove(lootItem);
+        }
+
+        public int GetAvailableItemCount(Predicate<LootItem> match)
+        {
+            return lootItems.FindAll(match).Count;
         }
     }
 }

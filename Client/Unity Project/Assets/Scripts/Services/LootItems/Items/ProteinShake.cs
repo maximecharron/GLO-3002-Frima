@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace Assets.Scripts.Services.LootItems
 {
@@ -12,8 +13,8 @@ namespace Assets.Scripts.Services.LootItems
 
         public override int PowerValue { get { return staminaPowerValue; } }
 
-        public ProteinShake(string name, int staminaPowerValue, TimeSpan effectDuration) 
-            : base(name, "Textures/ProteinShake", effectDuration)
+        public ProteinShake(string name, Sprite iconSprite, int staminaPowerValue, TimeSpan effectDuration) 
+            : base(name, iconSprite, effectDuration)
         {
             itemSubType = LootItemSubType.PROTEIN_SHAKE;
             this.staminaPowerValue = staminaPowerValue;

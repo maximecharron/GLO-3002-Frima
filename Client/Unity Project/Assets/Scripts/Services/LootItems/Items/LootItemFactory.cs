@@ -3,11 +3,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace Assets.Scripts.Services.LootItems.Items
 {
-    public class LootItemFactory
+    public class LootItemFactory : MonoBehaviour
     {
+        //Configurable script parameters
+        public Sprite ProteinShakeSprite;
+        public Sprite AdrenalineShotSprite;
+
         public LootItem Create(LootItemDTO lootItemDTO)
         {
             if ((LootItemType)lootItemDTO.type == LootItemType.CONSUMABLE)
@@ -24,11 +29,11 @@ namespace Assets.Scripts.Services.LootItems.Items
         {
             if ((LootItemSubType)lootItemDTO.subType == LootItemSubType.PROTEIN_SHAKE)
             {
-                return new ProteinShake(lootItemDTO.name, lootItemDTO.staminaRegeneration, new TimeSpan(0, 0, lootItemDTO.effectDuration));
+                return new ProteinShake(lootItemDTO.name, ProteinShakeSprite, lootItemDTO.staminaRegeneration, new TimeSpan(0, 0, lootItemDTO.effectDuration));
             }
             else if ((LootItemSubType)lootItemDTO.subType == LootItemSubType.ADRENALINE_SHOT)
             {
-                return new AdrenalineShot(lootItemDTO.name, lootItemDTO.hyperGeneration, new TimeSpan(0, 0, lootItemDTO.effectDuration));
+                return new AdrenalineShot(lootItemDTO.name, AdrenalineShotSprite, lootItemDTO.hypeGeneration, new TimeSpan(0, 0, lootItemDTO.effectDuration));
             }
             else
             {

@@ -26,12 +26,14 @@ namespace Assets.Scripts.Scenes.Game.Stamina
         public Text remainingProteinShakeCountLabel;
 
         private PlayerPropertyService playerPropertyService;
+        private LootItemService lootItemService;
         private DateTime lastStaminaAutoIncrease = DateTime.Now;
         private ProteinShake currentProteinShake;
 
         void Start()
         {
             playerPropertyService = FindObjectOfType<PlayerPropertyService>();
+            lootItemService = FindObjectOfType<LootItemService>();
             StaminaSliderController.Value = StaminaSliderController.MaxValue;
             LootItemController.OnLootItemUsed += LootItemUsedEventHandler;
             LootItemController.OnLootItemEffectExpired += LootItemEffectExpiredEventHandler;
@@ -86,7 +88,8 @@ namespace Assets.Scripts.Scenes.Game.Stamina
 
         private void UpdateRemainingProteinShakeCountText()
         {
-            remainingProteinShakeCountLabel.text = LootItemController.GetAvailableItems(lootItem => lootItem.ItemSubType == LootItemSubType.PROTEIN_SHAKE).Count.ToString();
+            int proteinShakeCount = lootItemService.GetAvailableItemCount(lootItem => lootItem.ItemSubType == LootItemSubType.PROTEIN_SHAKE);
+            remainingProteinShakeCountLabel.text = String.Format("x{0}", proteinShakeCount);
         }
     }
 

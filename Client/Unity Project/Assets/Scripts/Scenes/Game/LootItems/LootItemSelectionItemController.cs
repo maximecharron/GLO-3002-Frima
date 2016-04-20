@@ -23,9 +23,9 @@ namespace Assets.Scripts.Scenes.Game.LootItems
         public void ShowItem(LootItem lootItem)
         {
             this.lootItem = lootItem;
-            EffectDurationValueText.text = lootItem.EffectDuration.ToString();
+            EffectDurationValueText.text = lootItem.EffectDuration.TotalSeconds.ToString();
             PowerValueText.text = lootItem.PowerValue.ToString();
-            ItemIcon.sprite = (Sprite)Resources.Load(lootItem.IconName);
+            ItemIcon.sprite = lootItem.IconSprite;
             this.gameObject.SetActive(true);
         }
 

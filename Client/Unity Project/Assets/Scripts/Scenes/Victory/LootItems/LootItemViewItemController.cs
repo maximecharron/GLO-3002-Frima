@@ -17,7 +17,7 @@ namespace Assets.Scripts.Scenes.Victory.LootItems
         public void ShowItem(LootItem lootItem)
         {
             ItemNameText.text = lootItem.Name;
-            ItemIcon.sprite = (Sprite)Resources.Load(lootItem.IconName);
+            ItemIcon.sprite = lootItem.IconSprite;
             this.gameObject.SetActive(true);
         }
     }

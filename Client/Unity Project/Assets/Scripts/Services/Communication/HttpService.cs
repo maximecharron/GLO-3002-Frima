@@ -24,6 +24,7 @@ namespace Assets.Scripts.Services.Communication
         {
             WWW request = new WWW(HTTP_SERVER_URI + location);
             yield return request;
+            Debug.Log(String.Format("HTTP GET Result: {0}", request.text));
             if (callback != null)
                 callback(request);
         }
@@ -38,6 +39,7 @@ namespace Assets.Scripts.Services.Communication
         {
             WWW request = new WWW(HTTP_SERVER_URI + location, form);
             yield return request;
+            Debug.Log(String.Format("HTTP POST Result: {0}", request.text));
             if (callback != null)
                 callback(request);
         }

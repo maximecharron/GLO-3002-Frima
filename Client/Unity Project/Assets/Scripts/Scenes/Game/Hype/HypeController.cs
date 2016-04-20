@@ -29,6 +29,7 @@ namespace Assets.Scripts.Scenes.Game.Hype
         public event HypeAttackEventHandler OnHypeAttack = delegate { };
 
         private PlayerPropertyService playerPropertyService;
+        private LootItemService lootItemService;
         private GameControlService gameControlService;
         private AdrenalineShot currentAdrenalineShot;
         private DateTime lastHypeAutoDecrease = DateTime.Now;
@@ -39,6 +40,7 @@ namespace Assets.Scripts.Scenes.Game.Hype
         {
             playerPropertyService = FindObjectOfType<PlayerPropertyService>();
             gameControlService = FindObjectOfType<GameControlService>();
+            lootItemService = FindObjectOfType<LootItemService>();
             ComboHitController.OnComboHitCompleted += ComboHitCompletedEventHandler;
             LootItemController.OnLootItemUsed += LootItemUsedEventHandler;
             LootItemController.OnLootItemEffectExpired += LootItemEffectExpiredEventHandler;
@@ -55,7 +57,7 @@ namespace Assets.Scripts.Scenes.Game.Hype
         {
             if (HypeSliderController.Value == HypeSliderController.MaxValue && !MaxHypeReached)
             {
-                ProcessMaxHypeReached();
+                EnableMaxHype();
             }
             else if ((DateTime.Now - lastHypeAutoDecrease).TotalSeconds > HYPE_AUTO_DECREASE_FREQUENCY_SECONDS)
             {
@@ -70,18 +72,23 @@ namespace Assets.Scripts.Scenes.Game.Hype
             {
                 float adrenalineShotPowerValue = currentAdrenalineShot != null ? currentAdrenalineShot.HypePowerValue : 1;
                 HypeSliderController.Value = Math.Max(0, HypeSliderController.Value - (BASE_HYPE_AUTO_DECREASE_VALUE / playerPropertyService.HypePowerLevel / adrenalineShotPowerValue));
-                MaxHypeReached = false;
-                HypeSliderController.FlashSlider = false;
-                HypeAttackButtonController.Hide();
+                DisableMaxHype();
             }
         }
 
-        private void ProcessMaxHypeReached()
+        private void EnableMaxHype()
         {
             lastMaxHypeReach = DateTime.Now;
             MaxHypeReached = true;
             HypeSliderController.FlashSlider = true;
             HypeAttackButtonController.Show();
+        }
+
+        private void DisableMaxHype()
+        {
+            MaxHypeReached = false;
+            HypeSliderController.FlashSlider = false;
+            HypeAttackButtonController.Hide();
         }
 
         public void IncreaseHype(float multiplier = 1)
@@ -91,7 +98,7 @@ namespace Assets.Scripts.Scenes.Game.Hype
 
         public void OnAdrenalineShotButtonClick()
         {
-            LootItemController.PickItem(lootItem => lootItem.ItemSubType == LootItemSubType.ADRENALINE_SHOT, "Adrenaline Shotes");
+            LootItemController.PickItem(lootItem => lootItem.ItemSubType == LootItemSubType.ADRENALINE_SHOT, "Adrenaline Shots");
         }
 
         private void LootItemUsedEventHandler(LootItem lootItem)
@@ -112,12 +119,15 @@ namespace Assets.Scripts.Scenes.Game.Hype
 
         private void HypeAttackTargetClickedEventHandler()
         {
+            HypeSliderController.Value = 0;
+            DisableMaxHype();
             OnHypeAttack(gameControlService.HypeAttackDamage);
         }
 
         private void UpdateRemainingAdrenalineShotCountText()
         {
-            remainingAdrenalineShotCountLabel.text = LootItemController.GetAvailableItems(lootItem => lootItem.ItemSubType == LootItemSubType.ADRENALINE_SHOT).Count.ToString();
+            int adrenalineShotCount = lootItemService.GetAvailableItemCount(lootItem => lootItem.ItemSubType == LootItemSubType.ADRENALINE_SHOT);
+            remainingAdrenalineShotCountLabel.text = String.Format("x{0}", adrenalineShotCount);
         }
     }
 

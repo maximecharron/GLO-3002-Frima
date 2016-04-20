@@ -14,9 +14,14 @@ namespace Assets.Scripts.Scenes.Game.LootItems
         public Image LootItemIcon;
         public Text RemainingEffectTimeText;
 
+        void Start()
+        {
+            this.gameObject.SetActive(false);
+        }
+
         public void DisplayLootItemInUse(LootItem lootItem)
         {
-            LootItemIcon.sprite = (Sprite)Resources.Load(lootItem.IconName);
+            LootItemIcon.sprite = lootItem.IconSprite;
             UpdateRemainingEffectTime(lootItem.EffectDuration);
             this.gameObject.SetActive(true);
         }

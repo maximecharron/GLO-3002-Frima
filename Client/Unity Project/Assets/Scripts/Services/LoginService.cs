@@ -46,11 +46,12 @@ namespace Assets.Scripts.Services
             if (request.GetStatusCode() == HttpStatusCode.OK || request.GetStatusCode() == 0)
             {
                 LoginResultDTO resultDTO = JsonUtility.FromJson<LoginResultDTO>(request.text);
-                ProcessLoginSuccess(request, resultDTO);
+                if (resultDTO != null)
+                {
+                    ProcessLoginSuccess(request, resultDTO);
+                }
             }
-            else {
-                OnLoginFailed(request);
-            }
+            OnLoginFailed(request);
         }
 
         private void ProcessLoginSuccess(WWW request, LoginResultDTO loginResultDTO)

@@ -22,6 +22,7 @@ namespace Assets.Scripts.Scenes.Game.LootItems
 
         void Start()
         {
+            HideSelectionPanel();
             LootItemTemplate.SetActive(false);
         }
 
@@ -48,6 +49,11 @@ namespace Assets.Scripts.Scenes.Game.LootItems
             this.gameObject.SetActive(true);
         }
 
+        private void HideSelectionPanel()
+        {
+            this.gameObject.SetActive(false);
+        }
+
         private void ClearItems()
         {
             foreach(GameObject lootItemGameObject in lootItemGameObjects)
@@ -58,6 +64,7 @@ namespace Assets.Scripts.Scenes.Game.LootItems
 
         private void LootItemClickEventHandler(LootItem lootItem)
         {
+            HideSelectionPanel();
             OnLootItemSelected(lootItem);
         }
     }

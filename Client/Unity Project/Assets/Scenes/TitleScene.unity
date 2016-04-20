@@ -753,6 +753,8 @@ GameObject:
   - 114: {fileID: 1408880798}
   - 114: {fileID: 1408880793}
   - 114: {fileID: 1408880792}
+  - 114: {fileID: 1408880799}
+  - 114: {fileID: 1408880800}
   - 82: {fileID: 1408880791}
   m_Layer: 0
   m_Name: Game
@@ -935,6 +937,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1747d25e184c57a43a1d27028f7f4c27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1408880799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1408880788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e74792873e29b6b43b22ca2a9213b005, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LootItemFactory: {fileID: 1408880800}
+--- !u!114 &1408880800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1408880788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74bccdc618bc8754196ea98743c7b276, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ProteinShakeSprite: {fileID: 21300000, guid: a440327053e9e3347a63181806156727, type: 3}
+  AdrenalineShotSprite: {fileID: 21300000, guid: 8e1d85aa44241174f870408d3da3a662,
+    type: 3}
 --- !u!1001 &1728738858
 Prefab:
   m_ObjectHideFlags: 0

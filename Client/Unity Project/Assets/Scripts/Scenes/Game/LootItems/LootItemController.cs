@@ -51,11 +51,6 @@ namespace Assets.Scripts.Scenes.Game.LootItems
             }
         }
 
-        public List<LootItem> GetAvailableItems(Predicate<LootItem> match)
-        {
-            return lootItemService.LootItems.FindAll(match); ;
-        }
-
         private void LootItemSelectedEventHandler(LootItem lootItem)
         {
             UseItem(lootItem);

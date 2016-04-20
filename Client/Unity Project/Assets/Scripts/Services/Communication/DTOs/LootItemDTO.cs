@@ -20,7 +20,7 @@ namespace Assets.Scripts.Services.Communication.DTOs
         public int subType = 0;
         public string name = "";
         public int staminaRegeneration = 0;
-        public int hyperGeneration = 0;
+        public int hypeGeneration = 0;
         public int effectDuration = 0;
         public int quantity = 0;
     }
