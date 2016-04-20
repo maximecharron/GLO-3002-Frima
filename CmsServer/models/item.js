@@ -1,6 +1,5 @@
 var mongoose = require('mongoose');
 var modelHelpers = require('./modelHelpers.js');
-var Consumable = require('./../domain/items/consumable.js');
 
 var itemSchema = new mongoose.Schema();
 
