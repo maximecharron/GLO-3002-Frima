@@ -27,7 +27,7 @@ namespace Assets.Scripts.Scenes.Game.Stamina
 
         private PlayerPropertyService playerPropertyService;
         private LootItemService lootItemService;
-        private DateTime lastStaminaAutoIncrease = DateTime.Now;
+        private float lastStaminaAutoIncreaseTimeDelta = 0;
         private ProteinShake currentProteinShake;
 
         void Start()
@@ -42,10 +42,11 @@ namespace Assets.Scripts.Scenes.Game.Stamina
 
         void Update()
         {
-            if (DateTime.Now.Subtract(lastStaminaAutoIncrease).TotalSeconds > STAMINA_RESTORATION_FREQUENCY_SECONDS)
+            lastStaminaAutoIncreaseTimeDelta += Time.deltaTime;
+            if (lastStaminaAutoIncreaseTimeDelta > STAMINA_RESTORATION_FREQUENCY_SECONDS)
             {
                 AutoIncreaseStamina();
-                lastStaminaAutoIncrease = DateTime.Now;
+                lastStaminaAutoIncreaseTimeDelta = 0;
             }
         }
 

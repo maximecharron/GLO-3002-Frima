@@ -15,9 +15,9 @@ namespace Assets.Scripts.Scenes.Game.Hype
         public Slider HypeSlider;
         public Image SliderFill;
 
-        public bool FlashSlider { get; set; }
+        public bool SliderFlashEnabled { get; set; }
 
-        private DateTime lastFlashTime = DateTime.MinValue;
+        private float lastFlashTimeDelta = 0;
 
         public float MaxValue
         {
@@ -38,13 +38,19 @@ namespace Assets.Scripts.Scenes.Game.Hype
 
         void Update()
         {
-            if (FlashSlider)
+            if (SliderFlashEnabled)
             {
-                if (DateTime.Now.Subtract(lastFlashTime).TotalSeconds > FLASH_INTERVAL_SECONDS)
-                {
-                    lastFlashTime = DateTime.Now;
-                    AlternateSliderColor();
-                }
+                FlashSlider();
+            }
+        }
+
+        private void FlashSlider()
+        {
+            lastFlashTimeDelta += Time.deltaTime;
+            if (lastFlashTimeDelta >= FLASH_INTERVAL_SECONDS)
+            {
+                lastFlashTimeDelta = 0;
+                AlternateSliderColor();
             }
         }
 

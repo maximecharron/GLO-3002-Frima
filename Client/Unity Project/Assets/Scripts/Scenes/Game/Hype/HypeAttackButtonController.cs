@@ -16,7 +16,7 @@ namespace Assets.Scripts.Scenes.Game.Hype
         public delegate void HypeAttackButtonClickedEventHandler();
         public event HypeAttackButtonClickedEventHandler OnButtonClicked = delegate { };
 
-        private DateTime lastFlashTime = DateTime.MinValue;
+        private float lastFlashTimeDelta = 0;
 
         void Start()
         {
@@ -45,9 +45,10 @@ namespace Assets.Scripts.Scenes.Game.Hype
 
         private void FlashButton()
         {
-            if (DateTime.Now.Subtract(lastFlashTime).TotalSeconds > FLASH_INTERVAL_SECONDS)
+            lastFlashTimeDelta += Time.deltaTime;
+            if (lastFlashTimeDelta > FLASH_INTERVAL_SECONDS)
             {
-                lastFlashTime = DateTime.Now;
+                lastFlashTimeDelta = 0;
                 AlternateButtonColor();
             }
         }

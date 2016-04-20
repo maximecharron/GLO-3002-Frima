@@ -11,13 +11,14 @@ namespace Assets.Scripts.Animation
     {
         public float FlashInterval = 1f;
 
-        private DateTime lastFlashTime;
+        private float lastFlashTimeDelta;
 
         void Update()
         {
-            if ((DateTime.Now - lastFlashTime).TotalSeconds > FlashInterval)
+            lastFlashTimeDelta += Time.deltaTime;
+            if (lastFlashTimeDelta >= FlashInterval)
             {
-                lastFlashTime = DateTime.Now;
+                lastFlashTimeDelta = 0;
                 if (GetComponent<CanvasGroup>().alpha == 0)
                 {
                     GetComponent<CanvasGroup>().alpha = 1;
@@ -27,6 +28,5 @@ namespace Assets.Scripts.Animation
                 }
             }
         }
-
     }
 }

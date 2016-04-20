@@ -32,8 +32,8 @@ namespace Assets.Scripts.Scenes.Game.Hype
         private LootItemService lootItemService;
         private GameControlService gameControlService;
         private AdrenalineShot currentAdrenalineShot;
-        private DateTime lastHypeAutoDecrease = DateTime.Now;
-        private DateTime lastMaxHypeReach = DateTime.MinValue;
+        private float lastHypeAutoDecreaseTimeDelta = 0;
+        private float lastMaxHypeReachTimeDelta = 0;
         private bool MaxHypeReached = false;
 
         void Start()
@@ -55,20 +55,22 @@ namespace Assets.Scripts.Scenes.Game.Hype
 
         void Update()
         {
+            lastHypeAutoDecreaseTimeDelta += Time.deltaTime;
+            lastMaxHypeReachTimeDelta += Time.deltaTime;
             if (HypeSliderController.Value == HypeSliderController.MaxValue && !MaxHypeReached)
             {
                 EnableMaxHype();
             }
-            else if ((DateTime.Now - lastHypeAutoDecrease).TotalSeconds > HYPE_AUTO_DECREASE_FREQUENCY_SECONDS)
+            else if (lastHypeAutoDecreaseTimeDelta >= HYPE_AUTO_DECREASE_FREQUENCY_SECONDS)
             {
                 AutoDecreaseHype();
-                lastHypeAutoDecrease = DateTime.Now;
+                lastHypeAutoDecreaseTimeDelta = 0;
             }
         }
 
         private void AutoDecreaseHype()
         {
-            if (!MaxHypeReached || (MaxHypeReached && DateTime.Now.Subtract(lastMaxHypeReach).TotalSeconds > HYPE_POWER_AVAILABLE_TIME_SECONDS))
+            if (!MaxHypeReached || (MaxHypeReached && lastMaxHypeReachTimeDelta > HYPE_POWER_AVAILABLE_TIME_SECONDS))
             {
                 float adrenalineShotPowerValue = currentAdrenalineShot != null ? currentAdrenalineShot.HypePowerValue : 1;
                 HypeSliderController.Value = Math.Max(0, HypeSliderController.Value - (BASE_HYPE_AUTO_DECREASE_VALUE / playerPropertyService.HypePowerLevel / adrenalineShotPowerValue));
@@ -78,16 +80,16 @@ namespace Assets.Scripts.Scenes.Game.Hype
 
         private void EnableMaxHype()
         {
-            lastMaxHypeReach = DateTime.Now;
+            lastMaxHypeReachTimeDelta = 0;
             MaxHypeReached = true;
-            HypeSliderController.FlashSlider = true;
+            HypeSliderController.SliderFlashEnabled = true;
             HypeAttackButtonController.Show();
         }
 
         private void DisableMaxHype()
         {
             MaxHypeReached = false;
-            HypeSliderController.FlashSlider = false;
+            HypeSliderController.SliderFlashEnabled = false;
             HypeAttackButtonController.Hide();
         }
 

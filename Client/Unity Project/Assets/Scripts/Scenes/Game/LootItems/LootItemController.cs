@@ -20,13 +20,18 @@ namespace Assets.Scripts.Scenes.Game.LootItems
 
         public LootItem CurrentLootItem { get { return currentLootItem; } }
         private LootItem currentLootItem;
-        private DateTime lootItemUsageStartTime;
+        private float lootItemUsageStartTimeDelta = 0;
         private LootItemService lootItemService;
 
         void Start()
         {
             lootItemService = FindObjectOfType<LootItemService>();
             LootItemSelectionController.OnLootItemSelected += LootItemSelectedEventHandler;
+        }
+
+        void Update()
+        {
+            lootItemUsageStartTimeDelta += Time.deltaTime;
         }
 
         void OnDestroy()
@@ -61,19 +66,19 @@ namespace Assets.Scripts.Scenes.Game.LootItems
             currentLootItem = lootItem;
             lootItemService.UseLootItem(currentLootItem);
             LootItemInUseDisplayController.DisplayLootItemInUse(lootItem);
-            lootItemUsageStartTime = DateTime.Now;
+            lootItemUsageStartTimeDelta = 0;
             InvokeRepeating("LootItemCountDown", 1, 1);
             OnLootItemUsed(lootItem);
         }
 
         public void LootItemCountDown()
         {
-            if (DateTime.Now - lootItemUsageStartTime > currentLootItem.EffectDuration)
+            if (lootItemUsageStartTimeDelta > currentLootItem.EffectDuration.TotalSeconds)
             {
                 ProcessLootItemExpired();
             }
             else {
-                LootItemInUseDisplayController.UpdateRemainingEffectTime(currentLootItem.EffectDuration - (DateTime.Now - lootItemUsageStartTime));
+                LootItemInUseDisplayController.UpdateRemainingEffectTime(currentLootItem.EffectDuration - new TimeSpan(0, 0, (int)lootItemUsageStartTimeDelta));
             }
         }
 

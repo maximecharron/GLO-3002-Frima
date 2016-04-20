@@ -17,11 +17,12 @@ namespace Assets.Scripts.Scenes.Game.Boss
         public GameObject SceneBackground;
 
         private Vector3 moveDirection;
-        private DateTime animationStartTime;
+        private float animationStartTimeDelta;
 
         public void Animate()
         {
-            if ((DateTime.Now - animationStartTime).TotalSeconds > BOSS_FALL_ANIMATION_BEGIN_TIME)
+            animationStartTimeDelta += Time.deltaTime;
+            if (animationStartTimeDelta > BOSS_FALL_ANIMATION_BEGIN_TIME)
             {
                 ApplyGravity();
             }
@@ -33,7 +34,7 @@ namespace Assets.Scripts.Scenes.Game.Boss
             Hud.SetActive(false);
             BossDeathExplosionController.Explode();
             moveDirection = Vector3.zero;
-            animationStartTime = DateTime.Now;
+            animationStartTimeDelta = 0;
         }
 
         private void ApplyGravity()
