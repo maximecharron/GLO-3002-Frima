@@ -10,7 +10,7 @@ namespace Assets.Scripts.Scenes.Game.LootItems
     public class LootItemController : MonoBehaviour
     {
         //Configurable script parameters
-        public LootItemInUseDisplayController LootItemInUseDisplayController;
+        public LootItemCountdownController LootItemCountdownController;
         public LootItemSelectionController LootItemSelectionController;
 
         public delegate void LootItemUsedClickEventHandler(LootItem lootItem);
@@ -20,21 +20,12 @@ namespace Assets.Scripts.Scenes.Game.LootItems
 
         public LootItem CurrentLootItem { get { return currentLootItem; } }
         private LootItem currentLootItem;
-        private float lootItemUsageStartTimeDelta = 0;
         private LootItemService lootItemService;
 
         void Start()
         {
             lootItemService = FindObjectOfType<LootItemService>();
             LootItemSelectionController.OnLootItemSelected += LootItemSelectedEventHandler;
-        }
-
-        void Update()
-        {
-            if (currentLootItem != null)
-            {
-                LootItemCountDown();
-            }
         }
 
         void OnDestroy()
@@ -67,27 +58,15 @@ namespace Assets.Scripts.Scenes.Game.LootItems
         private void UseItem(LootItem lootItem)
         {
             currentLootItem = lootItem;
+            lootItem.OnEffectExpired += LootItemExpiredItemExpiredEventHandler;
             lootItemService.UseLootItem(currentLootItem);
-            LootItemInUseDisplayController.DisplayLootItemInUse(lootItem);
-            lootItemUsageStartTimeDelta = 0;
+            LootItemCountdownController.StartCountdown(lootItem);
             OnLootItemUsed(lootItem);
         }
 
-        public void LootItemCountDown()
+        private void LootItemExpiredItemExpiredEventHandler(LootItem lootItem)
         {
-            lootItemUsageStartTimeDelta += Time.deltaTime;
-            if (lootItemUsageStartTimeDelta > currentLootItem.EffectDuration.TotalSeconds)
-            {
-                ProcessLootItemExpired();
-            }
-            else {
-                LootItemInUseDisplayController.UpdateRemainingEffectTime(currentLootItem.EffectDuration - new TimeSpan(0, 0, (int)lootItemUsageStartTimeDelta));
-            }
-        }
-
-        private void ProcessLootItemExpired()
-        {
-            LootItemInUseDisplayController.HideLootItemInUse();
+            lootItem.OnEffectExpired -= LootItemExpiredItemExpiredEventHandler;
             OnLootItemEffectExpired(currentLootItem);
             currentLootItem = null;
         }

@@ -8355,7 +8355,7 @@ GameObject:
   - 114: {fileID: 1841406795}
   - 114: {fileID: 1841406796}
   m_Layer: 5
-  m_Name: LootItemInUse
+  m_Name: LootItemCountdown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9636,7 +9636,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e68a99be119d2a4596b7906afa31814, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LootItemInUseDisplayController: {fileID: 1841406795}
+  LootItemCountdownController: {fileID: 1841406795}
   LootItemSelectionController: {fileID: 1775939769}
 --- !u!114 &2085029942
 MonoBehaviour:

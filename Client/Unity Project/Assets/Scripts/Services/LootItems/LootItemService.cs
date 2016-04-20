@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Services.Communication;
 using Assets.Scripts.Services.Communication.DTOs;
 using Assets.Scripts.Services.Communication.DTOs.Inbound;
+using Assets.Scripts.Services.Communication.DTOs.Outbound;
 using Assets.Scripts.Services.LootItems.Items;
 using System;
 using System.Collections.Generic;
@@ -57,6 +58,7 @@ namespace Assets.Scripts.Services.LootItems
         public void UseLootItem(LootItem lootItem)
         {
             LootItemDTO lootItemDTO = new LootItemDTO((int)lootItem.ItemType, (int)lootItem.ItemSubType, lootItem.Name, 1);
+            webSocketService.SendCommand(new LootItemUsageDTO(new List<LootItemDTO>() { lootItemDTO }));
             lootItems.Remove(lootItem);
         }
 
