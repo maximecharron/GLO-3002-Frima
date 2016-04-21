@@ -1,16 +1,16 @@
 angular.module('CMS.game', ['ngRoute', 'ngResource', 'environment']).factory('gameResource', ["$resource", 'envService', function($resource, envService){
     return $resource(envService.read('apiUrl')+"/:path",{} ,{
-        getGameBaseStat: {
+        getGameConfig: {
             method:"GET",
             params:{
-                path:"gameBaseStat"
+                path:"gameConfig"
             },
             isArray:true
         },
-        updateGameBaseStat:{
+        updateGameConfig:{
             method:"POST",
             params: {
-                path: "gameBaseStat"
+                path: "gameConfig"
             }
         }
     });

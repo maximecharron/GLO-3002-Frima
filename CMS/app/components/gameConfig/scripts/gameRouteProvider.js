@@ -1,4 +1,4 @@
-angular.module('CMS.boss').config(['$routeProvider', function ($routeProvider) {
+angular.module('CMS.game').config(['$routeProvider', function ($routeProvider) {
 
     $routeProvider.when('/game', {
             templateUrl: "components/gameBaseStat/views/game.html",
