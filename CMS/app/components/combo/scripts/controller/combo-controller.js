@@ -82,7 +82,7 @@ angular.module('CMS.combo').controller("combo-controller", function ($scope, com
     var d = 10;
     var width;
     var height;
-    var colors = ["black", "#ff0000", "#00ff00", "#0000ff", "#ff9900", "#ff00ff"];
+    var colors = "black";
     var colorIndex = 0;
     var ratio;
     var triggerZoneCoordinates = {};
@@ -127,14 +127,14 @@ angular.module('CMS.combo').controller("combo-controller", function ($scope, com
                 triggerZonePosition = {
                     x: translateCoordinatesToPixel($scope.selectedCombo.triggerZone.x),
                     y: -translateCoordinatesToPixel($scope.selectedCombo.triggerZone.y),
-                    w: translateCoordinatesToPixel($scope.selectedCombo.triggerZone.w),
-                    h: translateCoordinatesToPixel($scope.selectedCombo.triggerZone.h)
+                    width: translateCoordinatesToPixel($scope.selectedCombo.triggerZone.width),
+                    height: translateCoordinatesToPixel($scope.selectedCombo.triggerZone.height)
                 };
                 triggerZoneCoordinates = {
                     x: $scope.selectedCombo.triggerZone.x,
                     y: $scope.selectedCombo.triggerZone.y,
-                    w: $scope.selectedCombo.triggerZone.w,
-                    h: $scope.selectedCombo.triggerZone.h
+                    width: $scope.selectedCombo.triggerZone.width,
+                    height: $scope.selectedCombo.triggerZone.height
                 };
                 redraw(true);
             }
@@ -151,8 +151,8 @@ angular.module('CMS.combo').controller("combo-controller", function ($scope, com
         {
             rect.startX = triggerZonePosition.x;
             rect.startY = triggerZonePosition.y;
-            rect.width = triggerZonePosition.w;
-            rect.height = triggerZonePosition.h;
+            rect.width = triggerZonePosition.width;
+            rect.height = triggerZonePosition.height;
             drawTriggerZone();
         }
         colorIndex = 0;
