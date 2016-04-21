@@ -150,8 +150,8 @@ angular.module('CMS.combo').controller("combo-controller", function ($scope, com
         {
             rect.startX = triggerZonePosition.x;
             rect.startY = triggerZonePosition.y;
-            rect.w = triggerZonePosition.w;
-            rect.h = triggerZonePosition.h;
+            rect.width = triggerZonePosition.w;
+            rect.height = triggerZonePosition.h;
             drawTriggerZone();
         }
         colorIndex = 0;
@@ -239,7 +239,7 @@ angular.module('CMS.combo').controller("combo-controller", function ($scope, com
     {
         colorIndex = 0;
         context.strokeStyle = "black";
-        context.strokeRect(rect.startX, rect.startY, rect.w, rect.h);
+        context.strokeRect(rect.startX, rect.startY, rect.width, rect.height);
         recordAndTranslateTriggerZoneCoordinates();
     }
 
@@ -259,8 +259,8 @@ angular.module('CMS.combo').controller("combo-controller", function ($scope, com
             }
             rect.w = (e.pageX - offsetX) - rect.startX;
             rect.h = (e.pageY - offsetY) - rect.startY;
-            triggerZonePosition.w = rect.w;
-            triggerZonePosition.h = rect.h;
+            triggerZonePosition.width = rect.width;
+            triggerZonePosition.height = rect.height;
             triggerZonePosition.x = rect.startX;
             triggerZonePosition.y = rect.startY;
             clearTriggerZone(function ()
@@ -289,8 +289,8 @@ angular.module('CMS.combo').controller("combo-controller", function ($scope, com
         var transformedX, transformedY, transformedHeight, transformedWidth;
         transformedX = x * ratio;
         transformedY = -y * ratio;
-        transformedHeight = rect.h * ratio;
-        transformedWidth = rect.w * ratio;
+        transformedHeight = rect.height * ratio;
+        transformedWidth = rect.width * ratio;
         triggerZoneCoordinates = {x: transformedX, y: transformedY, width: transformedWidth, height: transformedHeight};
     }
 
