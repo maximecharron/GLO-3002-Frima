@@ -81,7 +81,10 @@ GameCommunicationService.prototype.createComboUpdate = function()
         command:
         {
             name: "comboUpdate",
-            parameters: combos
+            parameters:
+            {
+                comboList: combos
+            }
         }
     });
 };

@@ -3,10 +3,7 @@ var ItemModel = require('../models/item').model;
 var jwt = require('jwt-simple');
 
 //Constructor
-function UserRepository()
-{
-
-}
+function UserRepository() { }
 
 //Public method
 UserRepository.prototype.addUserItems = function(token, items)
@@ -112,9 +109,11 @@ UserRepository.prototype.updateUserExperience = function(token, currentXP)
 //Private method
 var getUser = function(token, callback)
 {
+    console.log("getUser");
     var decoded = jwt.decode(token, 'FRIMA_TOKEN_SECRET');
 
     UserModel.findOne({ '_id': decoded.iss }, function (err, user) {
+        console.log("findOne: ", err);
         if (!err)
         {
             if (user)
