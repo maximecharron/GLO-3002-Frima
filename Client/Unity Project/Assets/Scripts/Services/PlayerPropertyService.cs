@@ -53,22 +53,22 @@ namespace Assets.Scripts.Services
 
         private void LoginSuccessCallback(LoginResultDTO resultDTO)
         {
-            experiencePoints = resultDTO.currentXP;
+            experiencePoints = resultDTO.experiencePoints;
             updatedExperiencePoints = experiencePoints;
-            upgradePointsOnLevelComplete = resultDTO.pointNextLevel;
-            requiredExperiencePointsForNextLevel = resultDTO.XPNextLevel;
+            upgradePointsOnLevelComplete = resultDTO.upgradePointsOnLevelComplete;
+            requiredExperiencePointsForNextLevel = resultDTO.requiredExperiencePointsForNextLevel;
             level = resultDTO.level;
-            staminaPowerLevel = resultDTO.stamina;
-            hypePowerLevel = resultDTO.hype;
-            attackPowerlevel = resultDTO.attack;
+            staminaPowerLevel = resultDTO.staminaPowerLevel;
+            hypePowerLevel = resultDTO.hypePowerLevel;
+            attackPowerlevel = resultDTO.attackPowerLevel;
             OnPlayerPropertiesUpdate();
         }
 
         private void PlayerLevelUpCallback(CommandDTO commandDTO)
         {
             var playerLevelUpParams = ((PlayerLevelUpDTO)commandDTO).command.parameters;
-            requiredExperiencePointsForNextLevel = playerLevelUpParams.nextLevelXp;
-            upgradePointsOnLevelComplete = playerLevelUpParams.pointForNextLevel;
+            requiredExperiencePointsForNextLevel = playerLevelUpParams.requiredExperiencePointsForNextLevel;
+            upgradePointsOnLevelComplete = playerLevelUpParams.upgradePointsOnLevelComplete;
             OnPlayerPropertiesUpdate();
         }
 

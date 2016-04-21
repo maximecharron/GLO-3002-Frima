@@ -8,7 +8,7 @@ namespace Assets.Scripts.Services.Communication.DTOs.Inbound
     [Serializable]
     public class ComboHitSequenceUpdateDTO : CommandDTO
     {
-        public const string COMMAND_NAME = "comboUpdate";
+        public const string COMMAND_NAME = "comboHitSequenceUpdate";
         public Command command = new Command();
 
         [Serializable]
@@ -20,7 +20,7 @@ namespace Assets.Scripts.Services.Communication.DTOs.Inbound
             [Serializable]
             public class Parameters
             {
-                public List<ComboHitSequenceDTO> comboList = new List<ComboHitSequenceDTO>();
+                public List<ComboHitSequenceDTO> comboHitSequences = new List<ComboHitSequenceDTO>();
             }
         }
     }

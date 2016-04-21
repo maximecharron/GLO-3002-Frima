@@ -33,13 +33,13 @@ namespace Assets.Scripts.Services.ComboHits
         private void GameConfigUpdateCallback(CommandDTO commandDTO)
         {
             var gameConfigUpdateParams = ((GameConfigUpdateDTO)commandDTO).command.parameters;
-            UpdateHitSequences(gameConfigUpdateParams.comboList);
+            UpdateHitSequences(gameConfigUpdateParams.comboHitSequences);
         }
 
         private void ComboHitSequenceUpdateCallback(CommandDTO commandDTO)
         {
             var comboHitSequenceUpdateParams = ((ComboHitSequenceUpdateDTO)commandDTO).command.parameters;
-            UpdateHitSequences(comboHitSequenceUpdateParams.comboList);
+            UpdateHitSequences(comboHitSequenceUpdateParams.comboHitSequences);
         }
 
         private void UpdateHitSequences(List<ComboHitSequenceDTO> comboHitSequenceDTOs)

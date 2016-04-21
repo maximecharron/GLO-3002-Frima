@@ -11,13 +11,13 @@ namespace Assets.Scripts.Services.Communication.DTOs.Outbound
         public const string COMMAND_NAME = "updateUserLevel";
         public Command command = new Command();
 
-        public PlayerPropertiesUpdateDTO(Int32 currentExperiencePoints, Int32 currentLevel, Int32 staminaPowerLevelUpgrade, Int32 hypePowerLevelUpgrade, Int32 attackPowerLevelUpgrade)
+        public PlayerPropertiesUpdateDTO(Int32 experiencePoints, Int32 currentLevel, Int32 staminaPowerLevelUpgrade, Int32 hypePowerLevelUpgrade, Int32 attackPowerLevelUpgrade)
         {
-            command.parameters.currentXP = currentExperiencePoints;
-            command.parameters.currentLevel = currentLevel;
-            command.parameters.stamina = staminaPowerLevelUpgrade;
-            command.parameters.hype = hypePowerLevelUpgrade;
-            command.parameters.attack = attackPowerLevelUpgrade;
+            command.parameters.experiencePoints = experiencePoints;
+            command.parameters.level = currentLevel;
+            command.parameters.staminaPowerLevelUpgrade = staminaPowerLevelUpgrade;
+            command.parameters.hypePowerLevelUpgrade = hypePowerLevelUpgrade;
+            command.parameters.attackPowerLevelUpgrade = attackPowerLevelUpgrade;
         }
 
         [Serializable]
@@ -29,11 +29,11 @@ namespace Assets.Scripts.Services.Communication.DTOs.Outbound
             [Serializable]
             public class Parameters
             {
-                public int currentXP = 0;
-                public int currentLevel = 0;
-                public int stamina = 0;
-                public int hype = 0;
-                public int attack = 0;
+                public int experiencePoints = 0;
+                public int level = 0;
+                public int staminaPowerLevelUpgrade = 0;
+                public int hypePowerLevelUpgrade = 0;
+                public int attackPowerLevelUpgrade = 0;
             }
         }
     }

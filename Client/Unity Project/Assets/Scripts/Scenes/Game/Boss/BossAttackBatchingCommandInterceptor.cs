@@ -46,7 +46,7 @@ namespace Assets.Scripts.Scenes.Game
         public bool OutboundIntercept(CommandDTO commandDTO)
         {
             BossAttackDTO bossAttackCommandDTO = (BossAttackDTO)commandDTO;
-            postponedAttackValue += bossAttackCommandDTO.command.parameters.number;
+            postponedAttackValue += bossAttackCommandDTO.command.parameters.value;
             return false;
         }
     }

@@ -10,13 +10,13 @@ namespace Assets.Scripts.Services.Communication.DTOs.Inbound
         public string token = "";
         public string username = "";
         public string email = "";
-        public int currentXP = 0;
-        public int pointNextLevel = 0;
-        public int XPNextLevel = 0;
+        public int experiencePoints = 0;
+        public int upgradePointsOnLevelComplete = 0;
+        public int requiredExperiencePointsForNextLevel = 0;
         public int level = 0;
-        public int stamina = 0;
-        public int hype = 0;
-        public int attack = 0;
+        public int staminaPowerLevel = 0;
+        public int hypePowerLevel = 0;
+        public int attackPowerLevel = 0;
         public List<LootItemDTO> items = new List<LootItemDTO>();
     }
 }

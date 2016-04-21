@@ -11,9 +11,9 @@ namespace Assets.Scripts.Services.Communication.DTOs.Outbound
         public const string COMMAND_NAME = "updateUserExperience";
         public Command command = new Command();
 
-        public ExperiencePointsUpdateDTO(Int32 currentExperiencePoints)
+        public ExperiencePointsUpdateDTO(Int32 experiencePoints)
         {
-            command.parameters.currentXP = currentExperiencePoints;
+            command.parameters.experiencePoints = experiencePoints;
         }
 
         [Serializable]
@@ -25,7 +25,7 @@ namespace Assets.Scripts.Services.Communication.DTOs.Outbound
             [Serializable]
             public class Parameters
             {
-                public int currentXP = 0;
+                public int experiencePoints = 0;
             }
         }
     }

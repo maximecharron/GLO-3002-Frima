@@ -11,9 +11,9 @@ namespace Assets.Scripts.Services.Communication.DTOs.Outbound
         public const string COMMAND_NAME = "attack";
         public Command command = new Command();
 
-        public BossAttackDTO(long number)
+        public BossAttackDTO(long value)
         {
-            command.parameters.number = number;
+            command.parameters.value = value;
         }
 
         [Serializable]
@@ -25,7 +25,7 @@ namespace Assets.Scripts.Services.Communication.DTOs.Outbound
             [Serializable]
             public class Parameters
             {
-                public long number = 10;
+                public long value = 10;
             }
         }
     }

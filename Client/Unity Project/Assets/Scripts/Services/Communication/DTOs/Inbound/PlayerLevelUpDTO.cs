@@ -20,8 +20,8 @@ namespace Assets.Scripts.Services.Communication.DTOs.Inbound
             [Serializable]
             public class Parameters
             {
-                public Int32 pointForNextLevel = 0;
-                public Int32 nextLevelXp = 0;
+                public Int32 upgradePointsOnLevelComplete = 0;
+                public Int32 requiredExperiencePointsForNextLevel = 0;
             }
         }
     }

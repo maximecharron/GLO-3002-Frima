@@ -42,9 +42,9 @@ namespace Assets.Scripts.Services
         public void GameConfigUpdateCallback(CommandDTO commandDTO)
         {
             var gameConfigUpdateParams = ((GameConfigUpdateDTO)commandDTO).command.parameters;
-            baseBossDamage = gameConfigUpdateParams.baseDamage;
-            hypeAttackDamage = gameConfigUpdateParams.ultimateDamage;
-            baseExperienceIncreaseOnHit = gameConfigUpdateParams.baseXP;
+            baseBossDamage = gameConfigUpdateParams.baseAttackDamage;
+            hypeAttackDamage = gameConfigUpdateParams.hypeAttackDamage;
+            baseExperienceIncreaseOnHit = gameConfigUpdateParams.baseExperienceIncreaseOnHit;
         }
 
     }
