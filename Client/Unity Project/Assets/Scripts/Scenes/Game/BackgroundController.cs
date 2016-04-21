@@ -1,4 +1,6 @@
 ﻿using Assets.Scripts.Animation.SpriteAnimation;
+using Assets.Scripts.Extensions;
+using Assets.Scripts.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,15 +13,24 @@ namespace Assets.Scripts.Scenes.Game
     class BackgroundController : MonoBehaviour
     {
         //Configurable script parameters
-        public int SpritesheetColumnCount = 1;
+        public int SpritesheetColumnCount = 4;
 
         private SpriteAnimator spriteAnimator;
-        private SpriteAnimationSequence backgroundSequence = new SpriteAnimationSequence(new List<int> { 0, 1, 2, 3 }, 2, -1);
+        private List<SpriteAnimationSequence> animationSequences = new List<SpriteAnimationSequence>() {
+            new SpriteAnimationSequence(new List<int> { 0, 1, 2, 3 }, 2, -1),
+            new SpriteAnimationSequence(new List<int> { 4, 5, 6, 7 }, 2, -1),
+            new SpriteAnimationSequence(new List<int> { 8, 9, 10, 11 }, 2, -1),
+            new SpriteAnimationSequence(new List<int> { 12, 13, 14, 15 }, 2, -1)
+        };
+
+        private PlayerPropertyService playerPropertyService;
 
         void Start()
         {
+            playerPropertyService = FindObjectOfType<PlayerPropertyService>();
+            playerPropertyService.OnLevelUp += LevelUpEventHandler;
             spriteAnimator = new SpriteAnimator(GetComponent<Renderer>().material, SpritesheetColumnCount);
-            spriteAnimator.Sequences.Add(backgroundSequence);
+            SetAnimationSequence();
         }
 
         void Update()
@@ -27,5 +38,22 @@ namespace Assets.Scripts.Scenes.Game
             spriteAnimator.Animate();
         }
 
+        void OnDestroy()
+        {
+            playerPropertyService.OnLevelUp -= LevelUpEventHandler;
+        }
+
+        private void LevelUpEventHandler()
+        {
+            SetAnimationSequence();
+        }
+
+        private void SetAnimationSequence()
+        {
+            SpriteAnimationSequence animationSequence = animationSequences[Math.Min(playerPropertyService.Level, 3)];
+            spriteAnimator.Sequences.Clear();
+            spriteAnimator.Sequences.Add(animationSequence);
+            spriteAnimator.Reset();
+        }
     }
 }

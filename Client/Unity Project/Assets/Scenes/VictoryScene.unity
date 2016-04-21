@@ -140,7 +140,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 6f1b684741609de469e22f4227eb9ee5, type: 3}
+    m_Font: {fileID: 12800000, guid: 388759c7c513e9745a22b7d6564ab042, type: 3}
     m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
@@ -479,10 +479,6 @@ Prefab:
       propertyPath: m_PreserveAspect
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 11481524, guid: 5f959219322a2414b9103d422b1d42ba, type: 2}
-      propertyPath: m_FontData.m_VerticalOverflow
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 22469152, guid: 5f959219322a2414b9103d422b1d42ba, type: 2}
       propertyPath: m_SizeDelta.x
       value: 300
@@ -490,10 +486,6 @@ Prefab:
     - target: {fileID: 22469152, guid: 5f959219322a2414b9103d422b1d42ba, type: 2}
       propertyPath: m_SizeDelta.y
       value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 11481524, guid: 5f959219322a2414b9103d422b1d42ba, type: 2}
-      propertyPath: m_FontData.m_FontSize
-      value: 36
       objectReference: {fileID: 0}
     - target: {fileID: 22469152, guid: 5f959219322a2414b9103d422b1d42ba, type: 2}
       propertyPath: m_AnchorMin.x
@@ -522,6 +514,10 @@ Prefab:
     - target: {fileID: 11429482, guid: 5f959219322a2414b9103d422b1d42ba, type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 11481524, guid: 5f959219322a2414b9103d422b1d42ba, type: 2}
+      propertyPath: m_FontData.m_FontSize
+      value: 50
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5f959219322a2414b9103d422b1d42ba, type: 2}
@@ -700,8 +696,8 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 6f1b684741609de469e22f4227eb9ee5, type: 3}
-    m_FontSize: 32
+    m_Font: {fileID: 12800000, guid: 388759c7c513e9745a22b7d6564ab042, type: 3}
+    m_FontSize: 40
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 3
@@ -774,8 +770,8 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 6f1b684741609de469e22f4227eb9ee5, type: 3}
-    m_FontSize: 35
+    m_Font: {fileID: 12800000, guid: 388759c7c513e9745a22b7d6564ab042, type: 3}
+    m_FontSize: 40
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 3
@@ -999,7 +995,6 @@ GameObject:
   - 222: {fileID: 992937130}
   - 114: {fileID: 992937129}
   - 225: {fileID: 992937132}
-  - 114: {fileID: 992937131}
   - 114: {fileID: 992937133}
   m_Layer: 5
   m_Name: Title
@@ -1044,7 +1039,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 1db3cf67a41d23849911a2d023d0cd88, type: 3}
+  m_Sprite: {fileID: 21300000, guid: bcfd8562aa1014048b8c8486aa896f4c, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -1058,18 +1053,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 992937127}
---- !u!114 &992937131
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 992937127}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad1b57831a50a8f428d2fcf85b4b7a98, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FlashInterval: 0.5
 --- !u!225 &992937132
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -1096,9 +1079,9 @@ MonoBehaviour:
   m_MinWidth: -1
   m_MinHeight: -1
   m_PreferredWidth: -1
-  m_PreferredHeight: 75
+  m_PreferredHeight: 175
   m_FlexibleWidth: -1
-  m_FlexibleHeight: 0
+  m_FlexibleHeight: 1
 --- !u!1 &1039757791
 GameObject:
   m_ObjectHideFlags: 0
@@ -1558,7 +1541,7 @@ MonoBehaviour:
   m_Padding:
     m_Left: 20
     m_Right: 20
-    m_Top: 20
+    m_Top: 0
     m_Bottom: 20
   m_ChildAlignment: 0
   m_Spacing: 0

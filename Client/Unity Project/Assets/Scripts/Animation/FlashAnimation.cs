@@ -9,6 +9,7 @@ namespace Assets.Scripts.Animation
     [RequireComponent(typeof(CanvasGroup))]
     class FlashAnimation : MonoBehaviour
     {
+        //Configurable script parameters
         public float FlashInterval = 1f;
 
         private float lastFlashTimeDelta;
@@ -19,12 +20,13 @@ namespace Assets.Scripts.Animation
             if (lastFlashTimeDelta >= FlashInterval)
             {
                 lastFlashTimeDelta = 0;
-                if (GetComponent<CanvasGroup>().alpha == 0)
+                CanvasGroup canvasGroup = GetComponent<CanvasGroup>();
+                if (canvasGroup.alpha == 0)
                 {
-                    GetComponent<CanvasGroup>().alpha = 1;
+                    canvasGroup.alpha = 1;
                 } else
                 {
-                    GetComponent<CanvasGroup>().alpha = 0;
+                    canvasGroup.alpha = 0;
                 }
             }
         }
