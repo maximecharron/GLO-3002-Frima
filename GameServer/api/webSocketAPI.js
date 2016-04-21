@@ -50,9 +50,9 @@ function newMessage(message, webSocket)
         request = JSON.parse(message);
         if (request.command.name == "attack")
         {
-            if (request.command.parameters.number)
+            if (request.command.parameters.value)
             {
-                self.bossService.makeDamage(request.command.parameters.number, function (boss)
+                self.bossService.makeDamage(request.command.parameters.value, function (boss)
                 {
                     if (boss.getLife() <= 0)
                     {
@@ -88,14 +88,14 @@ function newMessage(message, webSocket)
 
         if(request.command.name == "updateUserLevel")
         {
-            var informationNextLevel = self.userService.getInformationNextLevel(request.command.parameters.currentLevel);
+            var informationNextLevel = self.userService.getInformationNextLevel(request.command.parameters.level);
             self.userService.levelUpUser( webSocketClientId, request.command.parameters, informationNextLevel);
             self.userCommunicationService.sendUserLevelUpInformation(webSocket, informationNextLevel);
         }
 
         if(request.command.name == "updateUserExperience")
         {
-            self.userService.updateUserExperience(webSocketClientId, request.command.parameters.currentXP);
+            self.userService.updateUserExperience(webSocketClientId, request.command.parameters.experiencePoints);
         }
 
     } catch (error)

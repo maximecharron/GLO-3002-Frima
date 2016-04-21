@@ -1,11 +1,11 @@
 var userConfig = {};
-userConfig.currentXP = 0;
-userConfig.pointNextLevel = 2;
-userConfig.XPNextLevel = 100;
+userConfig.experiencePoints = 0;
+userConfig.upgradePointsOnLevelComplete = 2;
+userConfig.requiredExperiencePointsForNextLevel = 100;
 userConfig.level = 0;
-userConfig.attack = 1;
-userConfig.stamina = 1;
-userConfig.hype = 1;
+userConfig.attackPowerLevel = 1;
+userConfig.staminaPowerLevel = 1;
+userConfig.hypePowerLevel = 1;
 
 module.exports = userConfig;
 

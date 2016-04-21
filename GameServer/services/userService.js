@@ -33,10 +33,10 @@ UserService.prototype.levelUpUser = function(webSocketId, parameters, levelUpInf
     this.userRepository.levelUpUser(token, parameters, levelUpInformation);
 };
 
-UserService.prototype.updateUserExperience = function(webSocketId, currentXP)
+UserService.prototype.updateUserExperience = function(webSocketId, experiencePoints)
 {
     var token = this.userWebSockets[webSocketId];
-    this.userRepository.updateUserExperience(token, currentXP);
+    this.userRepository.updateUserExperience(token, experiencePoints);
 };
 
 UserService.prototype.getInformationNextLevel = function(nextLevel)

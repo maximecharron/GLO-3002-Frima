@@ -98,13 +98,13 @@ module.exports = function (passport, app)
                                 newUser.email = email;
                                 newUser.username = request.body.username;
                                 newUser.password = newUser.generateHash(password);
-                                newUser.currentXP = userConfig.currentXP;
-                                newUser.pointNextLevel = userConfig.pointNextLevel;
-                                newUser.XPNextLevel = userConfig.XPNextLevel;
+                                newUser.experiencePoints = userConfig.experiencePoints;
+                                newUser.upgradePointsOnLevelComplete = userConfig.upgradePointsOnLevelComplete;
+                                newUser.requiredExperiencePointsForNextLevel = userConfig.requiredExperiencePointsForNextLevel;
                                 newUser.level = userConfig.level;
-                                newUser.attack = userConfig.attack;
-                                newUser.stamina = userConfig.stamina;
-                                newUser.hype = userConfig.hype;
+                                newUser.hypePowerLevel = userConfig.hypePowerLevel;
+                                newUser.staminaPowerLevel = userConfig.staminaPowerLevel;
+                                newUser.hypePowerLevel = userConfig.hypePowerLevel;
                                 newUser.save(function (error)
                                 {
                                     if (error)

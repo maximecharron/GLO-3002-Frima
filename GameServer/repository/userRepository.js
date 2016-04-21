@@ -75,13 +75,13 @@ UserRepository.prototype.updateUserItems = function(token, items)
 UserRepository.prototype.levelUpUser = function(token, parameters, levelUpInformation)
 {
     getUser(token, function(user){
-        user.currentXP = parameters.currentXP;
-        user.level = parameters.currentLevel;
-        user.XPNextLevel = levelUpInformation.nextLevelXp;
-        user.pointNextLevel = levelUpInformation.pointForNextLevel;
-        user.attack += parseInt(parameters.attack);
-        user.stamina += parseInt(parameters.stamina);
-        user.hype += parseInt(parameters.hype);
+        user.experiencePoints = parameters.experiencePoints;
+        user.level = parameters.level;
+        user.requiredExperiencePointsForNextLevel = levelUpInformation.nextLevelXp;
+        user.upgradePointsOnLevelComplete = levelUpInformation.pointForNextLevel;
+        user.hypePowerLevel += parseInt(parameters.hypePowerLevelUpgrade);
+        user.staminaPowerLevel += parseInt(parameters.staminaPowerLevelUpgrade);
+        user.hypePowerLevel += parseInt(parameters.hypePowerLevelUpgrade);
 
         user.save(function (err)
         {
@@ -93,10 +93,10 @@ UserRepository.prototype.levelUpUser = function(token, parameters, levelUpInform
     });
 };
 
-UserRepository.prototype.updateUserExperience = function(token, currentXP)
+UserRepository.prototype.updateUserExperience = function(token, experiencePoints)
 {
     getUser(token, function(user){
-        user.currentXP = currentXP;
+        user.experiencePoints = experiencePoints;
 
         user.save(function(err){
             if(err){
@@ -109,11 +109,9 @@ UserRepository.prototype.updateUserExperience = function(token, currentXP)
 //Private method
 var getUser = function(token, callback)
 {
-    console.log("getUser");
     var decoded = jwt.decode(token, 'FRIMA_TOKEN_SECRET');
 
     UserModel.findOne({ '_id': decoded.iss }, function (err, user) {
-        console.log("findOne: ", err);
         if (!err)
         {
             if (user)

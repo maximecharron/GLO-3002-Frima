@@ -10,13 +10,13 @@ var userSchema = new mongoose.Schema({
     token : String,
     expiration : Number,
     items : [itemSchema],
-    currentXP: Number,
-    pointNextLevel: Number,
-    XPNextLevel: Number,
+    experiencePoints: Number,
+    upgradePointsOnLevelComplete: Number,
+    requiredExperiencePointsForNextLevel: Number,
     level: Number,
-    attack: Number,
-    stamina: Number,
-    hype: Number
+    attackPowerLevel: Number,
+    staminaPowerLevel: Number,
+    hypePowerLevel: Number
 },{ strict : false });
 
 userSchema.methods.toDTO = function (withToken) {
@@ -27,13 +27,13 @@ userSchema.methods.toDTO = function (withToken) {
         username : obj.username,
         email: obj.email,
         items: obj.items,
-        currentXP: obj.currentXP,
-        pointNextLevel: obj.pointNextLevel,
-        XPNextLevel: obj.XPNextLevel,
+        experiencePoints: obj.experiencePoints,
+        upgradePointsOnLevelComplete: obj.upgradePointsOnLevelComplete,
+        requiredExperiencePointsForNextLevel: obj.requiredExperiencePointsForNextLevel,
         level: obj.level,
-        attack: obj.attack,
-        stamina: obj.stamina,
-        hype: obj.hype
+        attackPowerLevel: obj.hypePowerLevel,
+        staminaPowerLevel: obj.staminaPowerLevel,
+        hypePowerLevel: obj.hypePowerLevel
     };
 
     if(withToken){

@@ -9,8 +9,8 @@ UserCommunicationService.prototype.sendUserLevelUpInformation = function(webSock
         command:{
             name: "userLevelUpInformation",
             parameters:{
-                pointForNextLevel: levelUpInformation.pointForNextLevel,
-                nextLevelXp: levelUpInformation.nextLevelXp
+                upgradePointsOnLevelComplete: levelUpInformation.pointForNextLevel,
+                requiredExperiencePointsForNextLevel: levelUpInformation.nextLevelXp
             }
         }
     });

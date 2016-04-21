@@ -14,7 +14,7 @@ var gameBaseStatStub = {};
 
 //Stubs
 comboModelStub.findCombos = function(callBack) { callBack(combos)};
-gameBaseStatStub.findGameBaseStat = function(callBack) { callBack(gameBaseStat)};
+gameBaseStatStub.findGameConfig = function(callBack) { callBack(gameBaseStat)};
 
 var GameRepository = proxyquire('./../../repository/gameRepository.js', {'./../models/combo.js': comboModelStub, './../models/gameBaseStat.js': gameBaseStatStub});
 
@@ -55,7 +55,7 @@ describe("gameRepository", function ()
         {
             //Arrange
             var gameRepository = new GameRepository();
-            var modelSpy = chai.spy.on(gameBaseStatStub, 'findGameBaseStat');
+            var modelSpy = chai.spy.on(gameBaseStatStub, 'findGameConfig');
 
             //Act
             var result;

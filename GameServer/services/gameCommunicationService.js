@@ -60,14 +60,14 @@ GameCommunicationService.prototype.broadCastComboUpdate = function()
 
 GameCommunicationService.prototype.createGameBaseStatUpdate = function()
 {
-    var gameBaseStat = this.gameService.getGameBaseStat();
+    var gameConfigUpdate = this.gameService.getGameBaseStat();
 
     return  JSON.stringify(
     {
         command:
         {
-            name: "gameBaseStatUpdate",
-            parameters: gameBaseStat
+            name: "gameConfigUpdate",
+            parameters: gameConfigUpdate
         }
     });
 };
@@ -80,10 +80,10 @@ GameCommunicationService.prototype.createComboUpdate = function()
     {
         command:
         {
-            name: "comboUpdate",
+            name: "comboHitSequencesUpdate",
             parameters:
             {
-                comboList: combos
+                comboHitSequences: combos
             }
         }
     });
