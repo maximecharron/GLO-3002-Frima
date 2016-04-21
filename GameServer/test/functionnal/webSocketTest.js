@@ -59,7 +59,7 @@ describe("Functionnal webSocket", function ()
                     name: "attack",
                     parameters:
                     {
-                        number: 10
+                        value: 10
                     }
                 }
             };

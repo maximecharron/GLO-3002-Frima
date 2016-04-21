@@ -30,7 +30,7 @@ GameService.prototype.initializeCombo = function(callBack) {
 };
 
 GameService.prototype.initializeGameBaseStat = function(callBack){
-    this.gameRepository.getGameBaseStat(function(gameBaseStat){
+    this.gameRepository.getGameConfig(function(gameBaseStat){
         self.gameBaseStat = gameBaseStat;
         if(callBack)
         {
@@ -39,7 +39,7 @@ GameService.prototype.initializeGameBaseStat = function(callBack){
     })
 };
 
-GameService.prototype.getGameBaseStat = function(){
+GameService.prototype.getGameConfig = function(){
   return this.gameBaseStat;
 };
 

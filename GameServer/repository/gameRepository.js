@@ -1,5 +1,5 @@
 var ComboModel = require('./../models/combo.js');
-var GameBaseStat = require('./../models/gameConfig.js');
+var GameConfig = require('./../models/gameConfig.js');
 
 //Constructor
 function GameRepository() { }
@@ -11,9 +11,9 @@ GameRepository.prototype.getCombos = function(callBack) {
     });
 };
 
-GameRepository.prototype.getGameBaseStat = function(callBack){
-    GameBaseStat.findGameConfig(function(gameBaseStat){
-        callBack(gameBaseStat);
+GameRepository.prototype.getGameConfig = function(callBack){
+    GameConfig.findGameConfig(function(gameConfig){
+        callBack(gameConfig);
     })
 };
 

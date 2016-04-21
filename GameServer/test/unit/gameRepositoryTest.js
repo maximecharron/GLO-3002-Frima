@@ -8,15 +8,15 @@ var expect = chai.expect;
 var should = chai.should();
 
 var combos = "COMBOS";
-var gameBaseStat = "GAME_BASE_STAT";
+var gameConfig = "GAME_CONFIG_STAT";
 var comboModelStub = {};
-var gameBaseStatStub = {};
+var gameConfigStub = {};
 
 //Stubs
 comboModelStub.findCombos = function(callBack) { callBack(combos)};
-gameBaseStatStub.findGameConfig = function(callBack) { callBack(gameBaseStat)};
+gameConfigStub.findGameConfig = function(callBack) { callBack(gameConfig)};
 
-var GameRepository = proxyquire('./../../repository/gameRepository.js', {'./../models/combo.js': comboModelStub, './../models/gameBaseStat.js': gameBaseStatStub});
+var GameRepository = proxyquire('./../../repository/gameRepository.js', {'./../models/combo.js': comboModelStub, './../models/gameConfig.js': gameConfigStub});
 
 before(function(done){
     done();
@@ -49,23 +49,23 @@ describe("gameRepository", function ()
         });
     });
 
-    describe("getGameBaseStat", function()
+    describe("getGameConfig", function()
     {
-        it("should call GameBaseStatModel and callBack gameBaseStat", function()
+        it("should call GameConfigModel and callBack gameConfig", function()
         {
             //Arrange
             var gameRepository = new GameRepository();
-            var modelSpy = chai.spy.on(gameBaseStatStub, 'findGameConfig');
+            var modelSpy = chai.spy.on(gameConfigStub, 'findGameConfig');
 
             //Act
             var result;
-            gameRepository.getGameBaseStat(function(baseStat){
+            gameRepository.getGameConfig(function(baseStat){
                 result = baseStat;
             });
 
             //Assert
             expect(modelSpy).to.have.been.called.once;
-            expect(gameBaseStat).to.equal(result);
+            expect(gameConfig).to.equal(result);
         });
     });
 });

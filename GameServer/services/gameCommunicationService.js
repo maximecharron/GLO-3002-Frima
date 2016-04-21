@@ -60,7 +60,7 @@ GameCommunicationService.prototype.broadCastComboUpdate = function()
 
 GameCommunicationService.prototype.createGameBaseStatUpdate = function()
 {
-    var gameConfigUpdate = this.gameService.getGameBaseStat();
+    var gameConfigUpdate = this.gameService.getGameConfig();
 
     return  JSON.stringify(
     {
