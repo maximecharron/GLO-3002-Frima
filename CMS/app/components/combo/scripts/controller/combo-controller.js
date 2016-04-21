@@ -1,7 +1,7 @@
 angular.module('CMS.combo').controller("combo-controller", function ($scope, comboResource)
 {
     $scope.combos;
-    $scope.selectedItem;
+    $scope.selectedCombo;
     $scope.remove = false;
     $scope.triggerZone = false;
 
@@ -12,7 +12,7 @@ angular.module('CMS.combo').controller("combo-controller", function ($scope, com
 
     $scope.newCombo = function ()
     {
-        $scope.selectedItem = {
+        $scope.selectedCombo = {
             name: "",
             triggerFrequency: 0,
             bonusMultiplier: 0,
@@ -39,19 +39,19 @@ angular.module('CMS.combo').controller("combo-controller", function ($scope, com
     $scope.comboChanged = function (newSelectedCombo)
     {
         console.log(newSelectedCombo);
-        $scope.selectedItem = JSON.parse(newSelectedCombo);
+        $scope.selectedCombo = JSON.parse(newSelectedCombo);
         init();
 
     };
 
     $scope.updateCombo = function (selectedCombo)
     {
-        $scope.selectedItem = selectedItem;
-        $scope.selectedItem.triggerZone = triggerZoneCoordinates;
-        $scope.selectedItem.hitZones = transformedCoordinates;
-        comboResource.updateCombo($scope.selectedItem, function onSuccess(data)
+        $scope.selectedCombo = selectedCombo;
+        $scope.selectedCombo.triggerZone = triggerZoneCoordinates;
+        $scope.selectedCombo.hitZones = transformedCoordinates;
+        comboResource.updateCombo($scope.selectedCombo, function onSuccess(data)
         {
-            $scope.selectedItem = data;
+            $scope.selectedCombo = data;
             $scope.updateSuccess = true;
         }, function onError(data)
         {
@@ -63,11 +63,11 @@ angular.module('CMS.combo').controller("combo-controller", function ($scope, com
     {
         $scope.combos.forEach(function (combo, index)
         {
-            if (combo.name == $scope.selectedItem.name){
+            if (combo.name == $scope.selectedCombo.name){
                 $scope.combos.splice(index, 1);
             }
         });
-        $scope.selectedItem = null;
+        $scope.selectedCombo = null;
 
         comboResource.deleteCombo(function(){
             $scope.deleteSuccess = true;
@@ -109,11 +109,11 @@ angular.module('CMS.combo').controller("combo-controller", function ($scope, com
         clear(function ()
         {
             $scope.triggerZone = false;
-            if ($scope.selectedItem)
+            if ($scope.selectedCombo)
             {
                 hitZonesPositions = [];
                 transformedCoordinates = [];
-                $scope.selectedItem.hitZones.forEach(function (hitZone)
+                $scope.selectedCombo.hitZones.forEach(function (hitZone)
                 {
                     hitZonesPositions.push({
                         x: translateCoordinatesToPixel(hitZone.x),
@@ -125,16 +125,16 @@ angular.module('CMS.combo').controller("combo-controller", function ($scope, com
                     })
                 });
                 triggerZonePosition = {
-                    x: translateCoordinatesToPixel($scope.selectedItem.triggerZone.x),
-                    y: -translateCoordinatesToPixel($scope.selectedItem.triggerZone.y),
-                    w: translateCoordinatesToPixel($scope.selectedItem.triggerZone.w),
-                    h: translateCoordinatesToPixel($scope.selectedItem.triggerZone.h)
+                    x: translateCoordinatesToPixel($scope.selectedCombo.triggerZone.x),
+                    y: -translateCoordinatesToPixel($scope.selectedCombo.triggerZone.y),
+                    w: translateCoordinatesToPixel($scope.selectedCombo.triggerZone.w),
+                    h: translateCoordinatesToPixel($scope.selectedCombo.triggerZone.h)
                 };
                 triggerZoneCoordinates = {
-                    x: $scope.selectedItem.triggerZone.x,
-                    y: $scope.selectedItem.triggerZone.y,
-                    w: $scope.selectedItem.triggerZone.w,
-                    h: $scope.selectedItem.triggerZone.h
+                    x: $scope.selectedCombo.triggerZone.x,
+                    y: $scope.selectedCombo.triggerZone.y,
+                    w: $scope.selectedCombo.triggerZone.w,
+                    h: $scope.selectedCombo.triggerZone.h
                 };
                 redraw(true);
             }
