@@ -38,7 +38,8 @@ angular.module('CMS.combo').controller("combo-controller", function ($scope, com
 
     $scope.comboChanged = function (newSelectedCombo)
     {
-        $scope.selectedItem = newSelectedCombo;
+        console.log(newSelectedCombo);
+        $scope.selectedItem = JSON.parse(newSelectedCombo);
         init();
 
     };
