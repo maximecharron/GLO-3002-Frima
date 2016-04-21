@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using Assets.Scripts.Utils;
 using System;
 
-namespace Assets.Scripts.Scenes.Game.Combos
+namespace Assets.Scripts.Scenes.Game.ComboHits
 {
     [RequireComponent(typeof(AudioSource))]
     [RequireComponent(typeof(Image))]

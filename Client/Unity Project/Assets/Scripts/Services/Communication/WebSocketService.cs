@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 using Assets.Scripts.Services.Communication.DTOs;
 using Assets.Scripts.Services.Communication.DTOs.Outbound;
 using Assets.Scripts.Extensions;

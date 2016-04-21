@@ -56,14 +56,7 @@ namespace Assets.Scripts.Scenes.Game.Hype
 
         private void AlternateSliderColor()
         {
-            if (SliderFill.color.Equals(flashColor))
-            {
-                SliderFill.color = originalColor;
-            }
-            else
-            {
-                SliderFill.color = flashColor;
-            }
+            SliderFill.color = SliderFill.color.Equals(flashColor) ? originalColor : flashColor;
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Assets.Scripts.Utils.UnityObjectPool;
 using System;
 
-namespace Assets.Scripts.Scenes.Game.Combos
+namespace Assets.Scripts.Services.ComboHits
 {
     public class ComboHitSequence
     {
@@ -14,7 +14,7 @@ namespace Assets.Scripts.Scenes.Game.Combos
         public float MaxFirstHitWaitTime { get; set; }
         public float MaxWaitTimeBetweenHits { get; set; }
         public List<Vector2> HitZones { get; set; }
-        public int BonusMultiplier { get; set; }
+        public float BonusMultiplier { get; set; }
         public float HitZoneDisplayInterval { get; set; }
         public bool EndOfDisplaySequence
         {
@@ -51,7 +51,7 @@ namespace Assets.Scripts.Scenes.Game.Combos
         private int currentlyShownHitZoneIndex = -1;
         private float lastHitZoneDisplayTime = 0;
 
-        public ComboHitSequence(string name, int triggerFrequency, int bonusMultiplier, Rect triggerZone, float maxFirstHitWaitTime = 2f, float maxWaitTimeBetweenHits = 1f, float hitZoneDisplayInterval = 0.5f)
+        public ComboHitSequence(string name, int triggerFrequency, float bonusMultiplier, Rect triggerZone, float maxFirstHitWaitTime = 2f, float maxWaitTimeBetweenHits = 1f, float hitZoneDisplayInterval = 0.5f)
         {
             this.Name = name;
             this.TriggerFrequency = triggerFrequency;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace Assets.Scripts.Scenes.Game.Combos
+namespace Assets.Scripts.Scenes.Game.ComboHits
 {
     class ComboHitFeedbackBubbleController : BubbleController
     {

@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Services.LootItems;
+﻿using Assets.Scripts.Extensions;
+using Assets.Scripts.Services.LootItems;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace Assets.Scripts.Scenes.Game.LootItems
         //Configurable script parameters
         public LootItemCountdownController LootItemCountdownController;
         public LootItemSelectionController LootItemSelectionController;
+        public AudioClip LootItemUsedAudioClip;
 
         public delegate void LootItemUsedClickEventHandler(LootItem lootItem);
         public event LootItemUsedClickEventHandler OnLootItemUsed = delegate { };
@@ -30,7 +32,10 @@ namespace Assets.Scripts.Scenes.Game.LootItems
 
         void OnDestroy()
         {
-            CancelInvoke();
+            LootItemSelectionController.OnLootItemSelected -= LootItemSelectedEventHandler;
+            if (currentLootItem != null) {
+                currentLootItem.OnEffectExpired -= LootItemExpiredItemExpiredEventHandler;
+            }
         }
 
         public void PickItem(Predicate<LootItem> match, string selectionTitle)
@@ -58,9 +63,10 @@ namespace Assets.Scripts.Scenes.Game.LootItems
         private void UseItem(LootItem lootItem)
         {
             currentLootItem = lootItem;
-            lootItem.OnEffectExpired += LootItemExpiredItemExpiredEventHandler;
+            currentLootItem.OnEffectExpired += LootItemExpiredItemExpiredEventHandler;
             lootItemService.UseLootItem(currentLootItem);
             LootItemCountdownController.StartCountdown(lootItem);
+            this.gameObject.FindAudioSource(LootItemUsedAudioClip).Play();
             OnLootItemUsed(lootItem);
         }
 

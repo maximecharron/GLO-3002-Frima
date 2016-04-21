@@ -16,7 +16,7 @@ namespace Assets.Scripts.Scenes
         public void Start()
         {
             GameStatisticsService gameStatisticsService = FindObjectOfType<GameStatisticsService>();
-            VictoryTimeText.text = String.Format("BOSS KILLIED IN {0:0.} MINUTES!", gameStatisticsService.BossLifeSpan.TotalMinutes);
+            VictoryTimeText.text = String.Format("BOSS KILLED IN {0:0.} MINUTES!", gameStatisticsService.BossLifeSpan.TotalMinutes);
         }
 
         public void OnPlayAgainButtonClick()

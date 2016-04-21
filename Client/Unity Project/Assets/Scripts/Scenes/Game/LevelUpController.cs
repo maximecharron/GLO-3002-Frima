@@ -9,7 +9,6 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts.Scenes.Game
 {
-    [RequireComponent(typeof(AudioSource))]
     class LevelUpController : MonoBehaviour
     {
         //Configurable script parameters
@@ -20,20 +19,16 @@ namespace Assets.Scripts.Scenes.Game
         public Text StaminaPowerLevelText;
         public Text HypePowerLevelText;
         public Text AttackPowerLevelText;
-        public AudioClip UpgradePointClickAudioClip;
-        public AudioClip RevertButtonClickAudioClip;
         public Button RevertButton;
         public Button ContinueButton;
 
         private PlayerPropertyService playerPropertyService;
-        private AudioSource audioSource;
         private int staminaPowerLevelUpgrade = 0;
         private int hypePowerLevelUpgrade = 0;
         private int attackPowerLevelUpgrade = 0;
 
         void Start()
         {
-            audioSource = GetComponent<AudioSource>();
             playerPropertyService = FindObjectOfType<PlayerPropertyService>();
             playerPropertyService.OnLevelUp += LevelUpCallback;
             Hide();
@@ -120,7 +115,6 @@ namespace Assets.Scripts.Scenes.Game
 
         private void ProcessUpgrade()
         {
-            audioSource.PlayAudioClip(UpgradePointClickAudioClip);
             UpdateLabels();
             UpdateButtonsState();
         }
@@ -128,7 +122,6 @@ namespace Assets.Scripts.Scenes.Game
         public void OnRevertButtonClick()
         {
             InitState();
-            audioSource.PlayAudioClip(RevertButtonClickAudioClip);
         }
 
         public void OnContinueButtonClick()

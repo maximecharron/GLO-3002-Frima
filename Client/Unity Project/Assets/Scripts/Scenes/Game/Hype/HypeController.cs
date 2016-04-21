@@ -1,12 +1,13 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections;
-using Assets.Scripts.Scenes.Game.Combos;
+using Assets.Scripts.Scenes.Game.ComboHits;
 using Assets.Scripts.Scenes.Game.Stamina;
 using UnityEngine.UI;
 using Assets.Scripts.Services;
 using Assets.Scripts.Scenes.Game.LootItems;
 using Assets.Scripts.Services.LootItems;
+using Assets.Scripts.Services.ComboHits;
 
 namespace Assets.Scripts.Scenes.Game.Hype
 {
@@ -18,7 +19,7 @@ namespace Assets.Scripts.Scenes.Game.Hype
         private const float HYPE_POWER_AVAILABLE_TIME_SECONDS = 1.5f;
 
         //Configurable script parameters
-        public ComboController ComboController;
+        public ComboHitController ComboHitController;
         public LootItemController LootItemController;
         public HypeSliderController HypeSliderController;
         public HypeAttackButtonController HypeAttackButtonController;
@@ -41,7 +42,7 @@ namespace Assets.Scripts.Scenes.Game.Hype
             playerPropertyService = FindObjectOfType<PlayerPropertyService>();
             gameControlService = FindObjectOfType<GameControlService>();
             lootItemService = FindObjectOfType<LootItemService>();
-            ComboController.OnComboHitSequenceCompleted += ComboHitSequenceCompletedEventHandler;
+            ComboHitController.OnComboHitSequenceCompleted += ComboHitSequenceCompletedEventHandler;
             LootItemController.OnLootItemUsed += LootItemUsedEventHandler;
             LootItemController.OnLootItemEffectExpired += LootItemEffectExpiredEventHandler;
             HypeAttackButtonController.OnButtonClicked += HypeAttackTargetClickedEventHandler;

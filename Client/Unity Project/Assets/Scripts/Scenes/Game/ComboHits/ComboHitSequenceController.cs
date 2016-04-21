@@ -4,8 +4,9 @@ using Assets.Scripts.Utils.UnityObjectPool;
 using System.Collections.Generic;
 using Assets.Scripts.Extensions;
 using System;
+using Assets.Scripts.Services.ComboHits;
 
-namespace Assets.Scripts.Scenes.Game.Combos
+namespace Assets.Scripts.Scenes.Game.ComboHits
 {
     public class ComboHitSequenceController
     {
@@ -141,7 +142,7 @@ namespace Assets.Scripts.Scenes.Game.Combos
             }
         }
 
-        private Color GetBonusTextColor(int bonusMultiplier)
+        private Color GetBonusTextColor(float bonusMultiplier)
         {
             if (bonusMultiplier <= GREEN_TEXT_COLOR_MULTIPLIER)
             {

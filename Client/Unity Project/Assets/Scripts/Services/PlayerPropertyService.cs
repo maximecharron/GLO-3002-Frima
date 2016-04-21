@@ -15,6 +15,7 @@ namespace Assets.Scripts.Services
         public event OnLevelUpEventHandler OnLevelUp = delegate { };
 
         private WebSocketService webSocketService;
+        private GameControlService gameControlService;
         private LoginService loginService;
         public int ExperiencePoints { get { return experiencePoints; } }
         private int experiencePoints = 0;
@@ -37,6 +38,7 @@ namespace Assets.Scripts.Services
             loginService = FindObjectOfType<LoginService>();
             loginService.OnLoginSuccess += LoginSuccessCallback;
             webSocketService = FindObjectOfType<WebSocketService>();
+            gameControlService = FindObjectOfType<GameControlService>();
             webSocketService.RegisterCommand(PlayerLevelUpDTO.COMMAND_NAME, PlayerLevelUpCallback, typeof(PlayerLevelUpDTO));
             InvokeRepeating("UploadExperiencePointsToServer", 5, 5);
         }
@@ -72,7 +74,7 @@ namespace Assets.Scripts.Services
 
         public void IncreaseExperiencePoints()
         {
-            experiencePoints += 10;
+            experiencePoints += gameControlService.BaseExperienceIncreaseOnHit;
             if (experiencePoints >= requiredExperiencePointsForNextLevel)
             {
                 level += 1;

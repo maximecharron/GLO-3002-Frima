@@ -5,7 +5,7 @@ using Assets.Scripts.Utils.UnityObjectPool;
 using System;
 using Assets.Scripts.Extensions;
 
-namespace Assets.Scripts.Scenes.Game.Combos
+namespace Assets.Scripts.Services.ComboHits
 {
     public class RandomizedComboHitSequence : ComboHitSequence
     {

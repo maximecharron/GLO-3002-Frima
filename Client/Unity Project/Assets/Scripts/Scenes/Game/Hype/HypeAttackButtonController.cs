@@ -56,14 +56,7 @@ namespace Assets.Scripts.Scenes.Game.Hype
         private void AlternateButtonColor()
         {
             Image image = GetComponent<Image>();
-            if (image.color.Equals(flashColor))
-            {
-                image.color = originalColor;
-            }
-            else
-            {
-                image.color = flashColor;
-            }
+            image.color = image.color.Equals(flashColor) ? originalColor : flashColor;
         }
 
     }
