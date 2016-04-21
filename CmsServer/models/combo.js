@@ -1,6 +1,5 @@
 var mongoose = require('mongoose');
 var modelHelpers = require('./modelHelpers.js');
-var Point = require('./point.js').schema;
 
 var comboSchema = new mongoose.Schema({
     name : String,

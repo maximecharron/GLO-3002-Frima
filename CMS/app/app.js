@@ -11,7 +11,8 @@ var app = angular.module('CMS', [
     "CMS.boss",
     "CMS.combo",
     "CMS.login",
-    "CMS.register"
+    "CMS.register",
+    "CMS.game"
 ]).config(function(envServiceProvider) {
         envServiceProvider.config({
             domains: {
@@ -19,11 +20,11 @@ var app = angular.module('CMS', [
                 production: ['frima-cms-client.herokuapp.com']
             },
             vars: {
+                //development: {
+                //    apiUrl: 'http://localhost:3000',
+                //},
                 development: {
-                    apiUrl: 'http://localhost:3000',
-                },
-                production: {
-                    apiUrl: 'https://frima-cms-server.herokuapp.com',
+                    apiUrl: 'https://frima-cms-server.herokuapp.com'
                 }
             }
         });
