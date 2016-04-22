@@ -18,7 +18,7 @@ function RedisListenerService(bossService, bossCommunicationService, lootService
     redisSub.subscribe("bossDead");
     redisSub.subscribe("itemsUpdate");
     redisSub.subscribe("comboUpdate");
-    redisSub.subscribe("gameBaseStatUpdate");
+    redisSub.subscribe("gameConfigUpdate");
 
     self = this;
 }
