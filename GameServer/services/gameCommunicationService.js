@@ -80,7 +80,7 @@ GameCommunicationService.prototype.createComboUpdate = function()
     {
         command:
         {
-            name: "comboHitSequencesUpdate",
+            name: "comboHitSequenceUpdate",
             parameters:
             {
                 comboHitSequences: combos
