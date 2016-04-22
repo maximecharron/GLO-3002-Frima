@@ -10,7 +10,7 @@ exports.getGameConfig = function(request, response){
 };
 
 exports.updateGameConfig = function(request, response) {
-    var gameBaseStat = {
+    var gameConfig = {
         baseExperienceIncreaseOnHit : request.body.baseExperienceIncreaseOnHit,
         baseAttackDamage : request.body.baseAttackDamage,
         hypeAttackDamage : request.body.hypeAttackDamage

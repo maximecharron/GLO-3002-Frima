@@ -4,10 +4,10 @@ var hostname = require('os').hostname();
 var bossSchema = new mongoose.Schema();
 bossSchema.add({
     bossName : String,
-    maximumBossLife: String,
-    currentBossLife: String,
+    maximumBossLife: Number,
+    currentBossLife: Number,
     serverName: String,
-    status: String
+    status: Number
 });
 
 bossSchema.methods.toDTO = function () {

@@ -4,8 +4,7 @@ angular.module('CMS.game', ['ngRoute', 'ngResource', 'environment']).factory('ga
             method:"GET",
             params:{
                 path:"gameConfig"
-            },
-            isArray:true
+            }
         },
         updateGameConfig:{
             method:"POST",

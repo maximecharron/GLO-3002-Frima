@@ -36,12 +36,9 @@ angular.module('CMS.combo').controller("combo-controller", function ($scope, com
         })
     };
 
-    $scope.comboChanged = function (newSelectedCombo)
+    $scope.comboChanged = function ()
     {
-        console.log(newSelectedCombo);
-        $scope.selectedCombo = JSON.parse(newSelectedCombo);
         init();
-
     };
 
     $scope.updateCombo = function (selectedCombo)
@@ -83,7 +80,6 @@ angular.module('CMS.combo').controller("combo-controller", function ($scope, com
     var width;
     var height;
     var colors = "black";
-    var colorIndex = 0;
     var ratio;
     var triggerZoneCoordinates = {};
     var transformedCoordinates = [];
@@ -155,7 +151,6 @@ angular.module('CMS.combo').controller("combo-controller", function ($scope, com
             rect.height = triggerZonePosition.height;
             drawTriggerZone();
         }
-        colorIndex = 0;
         counter = 1;
         hitZonesPositions.forEach(function (position)
         {
@@ -170,19 +165,14 @@ angular.module('CMS.combo').controller("combo-controller", function ($scope, com
     {
         context.beginPath();
         context.fillStyle = "#ffffff";
-        context.strokeStyle = colors[colorIndex];
+        context.strokeStyle = colors;
         context.arc(x, y, d, 0, Math.PI * 2, true);
         context.lineWidth = 2;
         context.closePath();
         context.fill();
         context.stroke();
         context.font = "14px Arial";
-        if (colorIndex > 6)
-        {
-            colorIndex = 0;
-        }
-        context.fillStyle = colors[colorIndex];
-        colorIndex++;
+        context.fillStyle = colors;
         context.fillText(counter, x - 4, y + 4);
         counter++;
     }
@@ -238,7 +228,6 @@ angular.module('CMS.combo').controller("combo-controller", function ($scope, com
 
     function drawTriggerZone()
     {
-        colorIndex = 0;
         context.strokeStyle = "black";
         context.strokeRect(rect.startX, rect.startY, rect.width, rect.height);
         recordAndTranslateTriggerZoneCoordinates();

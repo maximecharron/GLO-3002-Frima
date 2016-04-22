@@ -11,17 +11,13 @@
 
             <div>
                 <select class="form-control" name="updateSelect" id="updateSelect" ng-model="selectedUpdateType"
-                        ng-change="typeChanged(selectedUpdateType)">
-                    <option ng-repeat="updateType in updateTypes" value="{{updateType}}">{{updateType.commonName}}
-                    </option>
+                        ng-options="updateType as updateType.commonName for updateType in updateTypes" ng-change="typeChanged()">
                 </select>
             </div>
-            <div ng-if="selectedUpdateType">
+            <div ng-show="selectedUpdateType">
                 <h5>Please select a monster</h5>
                 <select class="form-control" name="bossSelect" id="bossSelect" ng-model="selectedBoss"
-                        ng-change="bossChanged(selectedBoss)">
-                    <option ng-repeat="boss in bosses" value="{{boss}}">{{boss.bossName}} - {{boss.serverName}}
-                    </option>
+                        ng-options="boss as boss.bossName for boss in bosses">
                 </select>
             </div>
             <div ng-if="selectedBoss">

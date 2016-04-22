@@ -11,15 +11,28 @@ angular.module('CMS.item').controller("item-controller", function ($scope, itemR
         })
     };
 
+    $scope.newItem = function ()
+    {
+        $scope.selectedItem = {
+            name: "",
+            type: 0,
+            subType: 0,
+            quantity: 0,
+            staminaRegeneration: 0,
+            hypeGeneration: 0,
+            effectDuration: 0
+        };
+    };
+
     $scope.itemChanged = function (selectedItem)
     {
-        $scope.selectedItem = JSON.parse(selectedItem);
+        $scope.selectedItem = selectedItem;
     };
 
     $scope.updateItem = function (selectedItem)
     {
         $scope.selectedItem = selectedItem;
-        itemResource.updateCombo($scope.selectedItem, function onSuccess(data)
+        itemResource.updateItem($scope.selectedItem, function onSuccess(data)
         {
             $scope.selectedItem = data;
             $scope.updateSuccess = true;
@@ -43,4 +56,5 @@ angular.module('CMS.item').controller("item-controller", function ($scope, itemR
             $scope.deleteSuccess = true;
         })
     };
+    $scope.initializeItems();
 });
