@@ -21,8 +21,8 @@ const UPDATED_BOSS = {
     status: "0"
 }
 const BOSS_STRING = '{"bossName": "bossName", "serverName": "serverName", "maximumBossLife": 1000, "currentBossLife": 1000, "status": "0"}';
-const CONSTANT_TYPE = '{"type": "constant"}';
-const CURRENT_TYPE = '{"type": "current"}';
+const CONSTANT_TYPE = {type: "constant"};
+const CURRENT_TYPE = {type: "current"};
 
 describe('Boss controller', function ()
 {
@@ -98,7 +98,8 @@ describe('Boss controller', function ()
         it('should call constantBoss if type is constant', function (done)
         {
             sandbox.spy(bossResource, "getConstantBosses");
-            scope.typeChanged(CONSTANT_TYPE);
+            scope.selectedUpdateType = CONSTANT_TYPE;
+            scope.typeChanged();
             expect(bossResource.getConstantBosses.calledOnce).to.equal(true);
             done();
         });
@@ -106,6 +107,7 @@ describe('Boss controller', function ()
         it('should call currentBoss if type is current', function (done)
         {
             sandbox.spy(bossResource, "getCurrentBosses");
+            scope.selectedUpdateType = CURRENT_TYPE;
             scope.typeChanged(CURRENT_TYPE);
             expect(bossResource.getCurrentBosses.calledOnce).to.equal(true);
             done();
@@ -114,6 +116,7 @@ describe('Boss controller', function ()
         it('should set bosses to currentBosses if current', function (done)
         {
             sandbox.stub(bossResource, "getCurrentBosses").callsArgWith(0, BOSS);
+            scope.selectedUpdateType = CURRENT_TYPE;
             scope.typeChanged(CURRENT_TYPE);
             expect(bossResource.getCurrentBosses.calledOnce).to.equal(true);
             expect(scope.bosses).to.equal(BOSS);
@@ -123,29 +126,10 @@ describe('Boss controller', function ()
         it('should set bosses to constantBosses if constant', function (done)
         {
             sandbox.stub(bossResource, "getConstantBosses").callsArgWith(0, BOSS);
+            scope.selectedUpdateType = CONSTANT_TYPE;
             scope.typeChanged(CONSTANT_TYPE);
             expect(bossResource.getConstantBosses.calledOnce).to.equal(true);
             expect(scope.bosses).to.equal(BOSS);
-            done();
-        });
-    });
-
-    describe('changed method', function ()
-    {
-        it('should set selectedBoss if it is null', function (done)
-        {
-            expect(scope.selectedBoss).to.be.undefined;
-            scope.bossChanged(BOSS_STRING);
-            expect(scope.selectedBoss.bossName).to.equal(BOSS.bossName);
-            done();
-        });
-
-        it('should update selectedBoss if it is not null', function (done)
-        {
-            scope.selectedBoss = {"bossName": "blop"};
-            expect(scope.selectedBoss).to.not.be.undefined;
-            scope.bossChanged(BOSS_STRING);
-            expect(scope.selectedBoss.bossName).to.equal(BOSS.bossName);
             done();
         });
     });
