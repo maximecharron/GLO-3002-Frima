@@ -2,7 +2,7 @@ var expect = require("chai").expect;
 var Consumable = require("../../domain/items/consumable.js");
 
 var consumableDef = { type: 0, subType: 0, name: "consumable", staminaRegeneration: 2,
-    hypeGeneration: 3, effectDuration: 30 };
+    hypeGeneration: 3, effectDuration: 30, quantity: 1 };
 
 var consumable;
 
