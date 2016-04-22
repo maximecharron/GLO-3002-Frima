@@ -9,9 +9,8 @@
             <h5>Please select a combo to update or create a new combo</h5>
             <div class="col-md-8">
                 <select class="form-control" name="comboSelect" id="comboSelect" ng-model="selectedCombo"
-                        ng-change="comboChanged(selectedCombo)">
-                    <option ng-repeat="combo in combos" value="{{combo}}">{{combo.name}}
-                    </option>
+                        ng-options="combo as combo.name for combo in combos"
+                        ng-change="comboChanged()">
                 </select>
             </div>
             <div class="col-md-offset-4">

@@ -18,16 +18,10 @@ angular.module('CMS.boss').controller("boss-controller", function ($scope, bossR
     $scope.bosses;
     $scope.selectedUpdateType;
 
-    $scope.bossChanged = function (newBoss)
-    {
-        $scope.selectedBoss = JSON.parse(newBoss);
-        convertLifeToNumber();
-    };
 
-    $scope.typeChanged = function (newType)
+    $scope.typeChanged = function ()
     {
-        newType = JSON.parse(newType);
-        if (newType.type == "constant")
+        if ($scope.selectedUpdateType.type == "constant")
         {
             bossResource.getConstantBosses(function (result)
             {
