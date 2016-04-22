@@ -22,10 +22,10 @@ var app = angular.module('CMS', [
             production: ['frima-cms-client.herokuapp.com']
         },
         vars: {
-            production: {
+            development: {
                 apiUrl: 'http://localhost:3000',
             },
-            development: {
+            production: {
                 apiUrl: 'https://frima-cms-server.herokuapp.com'
             }
         }
