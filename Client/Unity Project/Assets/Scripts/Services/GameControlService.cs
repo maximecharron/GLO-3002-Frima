@@ -16,7 +16,6 @@ namespace Assets.Scripts.Services
     {
         private HttpService httpService;
         private WebSocketService webSocketService;
-        private LoginService loginService;
 
         public bool GlobalAudioThemeEnabled
         {
@@ -35,7 +34,6 @@ namespace Assets.Scripts.Services
         {
             httpService = FindObjectOfType<HttpService>();
             webSocketService = FindObjectOfType<WebSocketService>();
-            loginService = FindObjectOfType<LoginService>();
             webSocketService.RegisterCommand(GameConfigUpdateDTO.COMMAND_NAME, GameConfigUpdateCallback, typeof(GameConfigUpdateDTO));
         }
 

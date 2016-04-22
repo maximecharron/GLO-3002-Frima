@@ -30,8 +30,7 @@ namespace Assets.Scripts.Scenes.Game.LootItems
         {
             if (this.gameObject.IsMouseDownOutside())
             {
-                this.gameObject.SetActive(false);
-                ClearItems();
+                HideSelectionPanel();
             }
         }
 
@@ -52,6 +51,7 @@ namespace Assets.Scripts.Scenes.Game.LootItems
         private void HideSelectionPanel()
         {
             this.gameObject.SetActive(false);
+            ClearItems();
         }
 
         private void ClearItems()

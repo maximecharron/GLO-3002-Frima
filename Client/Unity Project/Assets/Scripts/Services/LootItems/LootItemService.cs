@@ -49,9 +49,12 @@ namespace Assets.Scripts.Services.LootItems
             recentlyWonLootItems.Clear();
             foreach (LootItemDTO lootItemDTO in lootItemsDTO)
             {
-                LootItem lootItem = LootItemFactory.Create(lootItemDTO);
-                lootItems.Add(lootItem);
-                recentlyWonLootItems.Add(lootItem);
+                for (int i = 0; i < lootItemDTO.quantity; i++)
+                {
+                    LootItem lootItem = LootItemFactory.Create(lootItemDTO);
+                    lootItems.Add(lootItem);
+                    recentlyWonLootItems.Add(lootItem);
+                }
             }
         }
 

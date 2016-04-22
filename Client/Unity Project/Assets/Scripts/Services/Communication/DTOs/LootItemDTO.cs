@@ -22,6 +22,6 @@ namespace Assets.Scripts.Services.Communication.DTOs
         public int staminaRegeneration = 0;
         public int hypeGeneration = 0;
         public int effectDuration = 0;
-        public int quantity = 0;
+        public int quantity = 1;
     }
 }
