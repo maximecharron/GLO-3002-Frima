@@ -49,10 +49,10 @@ exports.updateCombo = function (comboToUpdate, callback)
         combo.name = comboToUpdate.name;
         combo.triggerFrequency = comboToUpdate.triggerFrequency;
         combo.bonusMultiplier = comboToUpdate.bonusMultiplier;
-        combo.triggerZone = JSON.parse(comboToUpdate.triggerZone);
+        combo.triggerZone = comboToUpdate.triggerZone;
         combo.maxFirstHitWaitTime = comboToUpdate.maxFirstHitWaitTime;
         combo.maxWaitTimeBetweenHits = comboToUpdate.maxWaitTimeBetweenHits;
-        combo.hitZones = JSON.parse(comboToUpdate.hitZones);
+        combo.hitZones =comboToUpdate.hitZones;
         combo.save(function (err, combo)
         {
             if (err)

@@ -3,6 +3,7 @@ angular.module('CMS.item').controller("item-controller", function ($scope, itemR
 
     $scope.items;
     $scope.selectedItem;
+    $scope.newItem = false;
 
     $scope.initializeItems = function ()
     {
@@ -22,11 +23,13 @@ angular.module('CMS.item').controller("item-controller", function ($scope, itemR
             hypeGeneration: 0,
             effectDuration: 0
         };
+        $scope.newItem = true;
     };
 
     $scope.itemChanged = function (selectedItem)
     {
         $scope.selectedItem = selectedItem;
+        $scope.newItem = false;
     };
 
     $scope.updateItem = function (selectedItem)

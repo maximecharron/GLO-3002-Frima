@@ -19,7 +19,7 @@
 
             <div ng-show="selectedItem">
                 <div class="col-md-8" ng-if="selectedItem">
-                    <h5>Combo</h5>
+                    <h5>Item</h5>
 
                     <div ng-show="updateSuccess" class="has-success">Item successfully updated!</div>
                     <div ng-show="updateError" class="has-error">Sorry, an error occured while updating the item. Please
@@ -29,8 +29,10 @@
                         <div class="form-group">
                             <label class="control-label" for="itemName">Item Name: </label>
                             <div>
-                                <input class="form-control" id="itemName" placeholder="{{selectedItem.name}}"
+                                <input ng-show="!newItem" class="form-control" id="itemName" placeholder="{{selectedItem.name}}"
                                        ng-model="selectedItem.name" readonly>
+                                <input ng-hide="!newItem" class="form-control" id="itemName" placeholder="{{selectedItem.name}}"
+                                       ng-model="selectedItem.name">
                             </div>
                         </div>
                         <div class="form-group">
