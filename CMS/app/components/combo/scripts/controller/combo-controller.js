@@ -245,8 +245,8 @@ angular.module('CMS.combo').controller("combo-controller", function ($scope, com
 
     function recordAndTranslateTriggerZoneCoordinates() {
         var transformedX, transformedY, transformedHeight, transformedWidth;
-        transformedX = x * ratio;
-        transformedY = -y * ratio;
+        transformedX = rect.startX * ratio;
+        transformedY = -rect.startY * ratio;
         transformedHeight = rect.height * ratio;
         transformedWidth = rect.width * ratio;
         triggerZoneCoordinates = {x: transformedX, y: transformedY, width: transformedWidth, height: transformedHeight};
