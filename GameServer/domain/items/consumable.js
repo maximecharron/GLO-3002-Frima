@@ -8,6 +8,7 @@ function Consumable(type, subType, name, staminaRegeneration, hypeGeneration, ef
     this.staminaRegeneration = staminaRegeneration;
     this.hypeGeneration = hypeGeneration;
     this.effectDuration = effectDuration;
+    this.quantity = 1;
 }
 
 
@@ -21,7 +22,8 @@ Consumable.prototype.toJson = function()
         name: this.name,
         staminaRegeneration: parseInt(this.staminaRegeneration),
         hypeGeneration: parseInt(this.hypeGeneration),
-        effectDuration: parseInt(this.effectDuration)
+        effectDuration: parseInt(this.effectDuration),
+        quantity: this.quantity
     };
     return consumable;
 };
@@ -35,7 +37,8 @@ Consumable.prototype.toString = function()
             name: this.name,
             staminaRegeneration: this.staminaRegeneration,
             hypeGeneration: this.hypeGeneration,
-            effectDuration: this.effectDuration
+            effectDuration: this.effectDuration,
+            quantity: this.quantity
         });
 };
 
