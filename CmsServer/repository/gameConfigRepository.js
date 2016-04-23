@@ -23,7 +23,7 @@ exports.updateGameConfig = function (gameConfigToUpdate, callback)
         gameConfig.hypeAttackDamage = gameConfigToUpdate.hypeAttackDamage;
         gameConfig.baseExperienceIncreaseOnHit = gameConfigToUpdate.baseExperienceIncreaseOnHit;
         gameConfig.maximumLevel  = gameConfigToUpdate.maximumLevel;
-        gameConfig.levelXPTree = gameConfigToUpdate.levelXPTree;
+        gameConfig.experiencePerLevel = gameConfigToUpdate.experiencePerLevel;
         gameConfig.upgradePointsPerLevel = gameConfigToUpdate.upgradePointsPerLevel;
         gameConfig.probabilityLoot  = gameConfigToUpdate.probabilityLoot;
         gameConfig.save(function (err, combo)

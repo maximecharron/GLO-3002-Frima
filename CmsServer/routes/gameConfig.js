@@ -15,7 +15,7 @@ exports.updateGameConfig = function(request, response) {
         baseAttackDamage : request.body.baseAttackDamage,
         hypeAttackDamage : request.body.hypeAttackDamage,
         maximumLevel : request.body.maximumLevel,
-        levelXPTree: request.body.levelXPTree,
+        experiencePerLevel: request.body.experiencePerLevel,
         upgradePointsPerLevel : request.body.upgradePointsPerLevel,
         probabilityLoot : request.body.probabilityLoot
     };
