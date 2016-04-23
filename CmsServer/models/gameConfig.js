@@ -6,7 +6,7 @@ var gameConfigSchema = new mongoose.Schema({
     baseExperienceIncreaseOnHit : Number,
     hypeAttackDamage : Number,
     maximumLevel : Number,
-    levelXPTree: [Number],
+    experiencePerLevel: [Number],
     upgradePointsPerLevel : [Number],
     probabilityLoot : [Number]
 }, {strict: false});
