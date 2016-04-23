@@ -38,14 +38,14 @@ namespace Assets.Scripts.Services
 
         private void RegistrationCallback(WWW request)
         {
-            if (request.GetStatusCode() != HttpStatusCode.OK)
+            if (request.GetStatusCode() == HttpStatusCode.OK || request.GetStatusCode() == 0)
             {
-                OnRegistrationFailed(request);
-            }
-            else {
                 RegistrationResultDTO resultDTO = JsonUtility.FromJson<RegistrationResultDTO>(request.text);
-                OnRegistrationSuccess();
+                if (resultDTO != null) {
+                    OnRegistrationSuccess();
+                }
             }
+            OnRegistrationFailed(request);
         }
     }
 }

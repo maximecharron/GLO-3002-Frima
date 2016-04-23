@@ -33,6 +33,7 @@ namespace Assets.Scripts.Scenes.Registration
             registrationService.OnRegistrationSuccess += RegistrationSuccessCallback;
             registrationService.OnRegistrationFailed += RegistrationFailedCallback;
             ErrorLabel.transform.gameObject.SetActive(false);
+            OnInputFieldValueChanged();
         }
 
         void OnDestroy()
@@ -48,13 +49,23 @@ namespace Assets.Scripts.Scenes.Registration
 
         public void OnRegisterButtonClick()
         {
-            Register();
+            if (FormValidationController.Validate())
+            {
+                Register();
+            }
         }
 
         private void Register()
         {
             RegisterButton.interactable = false;
             registrationService.Register(UsernameInputField.text, PasswordInputField.text, EmailInputField.text);
+        }
+
+        public void OnInputFieldValueChanged()
+        {
+            RegisterButton.interactable = UsernameInputField.text.Length > 0 
+                && PasswordInputField.text.Length > 0 && PasswordConfirmInputField.text.Length > 0 
+                && EmailInputField.text.Length > 0;
         }
 
         private void RegistrationFailedCallback(WWW request)
@@ -64,9 +75,12 @@ namespace Assets.Scripts.Scenes.Registration
             {
                 ErrorLabel.text = "Username or email already exists";
             }
-            else
+            else if (request.error != "")
             {
                 ErrorLabel.text = request.error;
+            } else
+            {
+                ErrorLabel.text = "Failed to connect. Please try again later.";
             }
             ErrorLabel.transform.gameObject.SetActive(true);
         }

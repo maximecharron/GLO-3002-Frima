@@ -98,7 +98,7 @@ MonoBehaviour:
   m_LineType: 0
   m_HideMobileInput: 0
   m_CharacterValidation: 3
-  m_CharacterLimit: 16
+  m_CharacterLimit: 255
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
@@ -166,7 +166,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 388759c7c513e9745a22b7d6564ab042, type: 3}
-    m_FontSize: 40
+    m_FontSize: 38
     m_FontStyle: 2
     m_BestFit: 0
     m_MinSize: 2
@@ -199,7 +199,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 388759c7c513e9745a22b7d6564ab042, type: 3}
-    m_FontSize: 40
+    m_FontSize: 38
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 3

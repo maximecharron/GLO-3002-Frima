@@ -18,7 +18,7 @@ namespace Assets.Scripts.Scenes
         // Configurable script parameters
         public InputField UsernameInputField;
         public InputField PasswordInputField;
-        public Text LoginErrorLabel;
+        public Text ErrorLabel;
         public Button LoginButton;
 
         private LoginService loginService;
@@ -29,7 +29,7 @@ namespace Assets.Scripts.Scenes
             loginService.OnLoginSuccess += LoginSuccessCallback;
             loginService.OnLoginFailed += LoginFailedCallback;
             gameControlService = FindObjectOfType<GameControlService>();
-            LoginErrorLabel.transform.gameObject.SetActive(false);
+            ErrorLabel.transform.gameObject.SetActive(false);
             OnInputFieldValueChanged();
         }
 
@@ -60,13 +60,17 @@ namespace Assets.Scripts.Scenes
             LoginButton.interactable = true;
             if (request.GetStatusCode() == HttpStatusCode.Unauthorized)
             {
-                LoginErrorLabel.text = "Invalid username or password.";
+                ErrorLabel.text = "Invalid username or password";
+            }
+            else if (request.error != "")
+            {
+                ErrorLabel.text = request.error;
             }
             else
             {
-                LoginErrorLabel.text = request.error;
+                ErrorLabel.text = "Failed to connect. Please try again later.";
             }
-            LoginErrorLabel.transform.gameObject.SetActive(true);
+            ErrorLabel.transform.gameObject.SetActive(true);
         }
 
         private void LoginSuccessCallback(LoginResultDTO loginResultDTO)
