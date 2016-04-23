@@ -62,47 +62,66 @@ function newMessage(message, webSocket)
             }
             else
             {
-                console.log("Problem with receiveDamage: ", e, request);
+                console.log("Problem with attack, value can't be null: ", e, request);
             }
         }
 
-        if (request.command.name == "keepAlive")
+        else if (request.command.name == "keepAlive")
         {
             var boss = self.bossService.getCurrentBoss();
             self.bossCommunicationService.keepAlive(boss, webSocket);
         }
 
-        if(request.command.name == "registerClient")
+        else if(request.command.name == "registerClient")
         {
-            var token = request.command.parameters.token;
+            if(request.command.parameters.token){
+                var token = request.command.parameters.token;
 
-            self.userService.addUserWebSocket(webSocketClientId, token);
-            self.gameCommunicationService.sendAllGameInfo(webSocket);
+                self.userService.addUserWebSocket(webSocketClientId, token);
+                self.gameCommunicationService.sendAllGameInfo(webSocket);
+            }
+            else{
+                console.log("Problem with registerClient, token can't be null: ", e, request);
+            }
         }
 
-        if(request.command.name == "useItems")
+        else if(request.command.name == "useItems")
         {
-            var items = request.command.parameters.items;
-            self.userService.updateUserItems(webSocketClientId, items);
+            if(request.command.parameters.items){
+                var items = request.command.parameters.items;
+                self.userService.updateUserItems(webSocketClientId, items);
+            }
+            else{
+                console.log("Problem with useItems, items can't be null: ", e, request);
+            }
         }
 
-        if(request.command.name == "updateUserLevel")
+        else if(request.command.name == "updateUserLevel")
         {
-            var informationNextLevel = self.userService.getInformationNextLevel(request.command.parameters.level);
-            self.userService.levelUpUser( webSocketClientId, request.command.parameters, informationNextLevel);
-            self.userCommunicationService.sendUserLevelUpInformation(webSocket, informationNextLevel);
+            if(request.command.parameters.level){
+                var informationNextLevel = self.userService.getInformationNextLevel(request.command.parameters.level);
+                self.userService.levelUpUser( webSocketClientId, request.command.parameters, informationNextLevel);
+                self.userCommunicationService.sendUserLevelUpInformation(webSocket, informationNextLevel);
+            }
+            else{
+                console.log("Problem with updateUserLevel, level can't be null: ", e, request);
+            }
         }
 
-        if(request.command.name == "updateUserExperience")
+        else if(request.command.name == "updateUserExperience")
         {
-            self.userService.updateUserExperience(webSocketClientId, request.command.parameters.experiencePoints);
+            if(request.command.parameters.experiencePoints){
+                self.userService.updateUserExperience(webSocketClientId, request.command.parameters.experiencePoints);
+            }
+            else{
+                console.log("Problem with updateUserExperience, experiencePoints can't be null: ", e, request);
+            }
         }
 
     } catch (error)
     {
         return console.log("Problem to parse :", error);
     }
-
 
 }
 

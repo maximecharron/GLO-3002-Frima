@@ -41,7 +41,7 @@ UserRepository.prototype.addUserItems = function(token, items)
         {
             if (err)
             {
-               console.log("Error when updateItems: ", err);
+               console.log("Error when addUserItems: ", err);
             }
         });
     });
