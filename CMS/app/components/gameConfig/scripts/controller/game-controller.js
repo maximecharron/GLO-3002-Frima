@@ -42,6 +42,9 @@ angular.module('CMS.game').controller("game-controller", function ($scope, gameR
             }
         }
         if (itemsProbability.length == 0){
+            for (var  i = 0; i< result.probabilityLoot[0]-1; i++){
+                itemsProbability.push({value: 0});
+            }
             itemsProbability.push({value:counter});
         }
        $scope.gameConfig.probabilityLoot = itemsProbability;
