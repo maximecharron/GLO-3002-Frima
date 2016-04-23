@@ -32,9 +32,7 @@ GameService.prototype.initializeCombo = function(callBack) {
 };
 
 GameService.prototype.initializeGameBaseStat = function(callBack){
-    console.log("Inside initializeGameBaseStat gameService");
     this.gameRepository.getGameConfig(function(gameConfig){
-        console.log("Inside getGameConfig gameService: ", gameConfig);
         self.gameConfig = gameConfig;
         if(gameConfig)
         {

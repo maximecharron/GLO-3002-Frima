@@ -52,20 +52,17 @@ redisSub.on('message', function (channel, message)
         }
     }
     else if (channel == "itemsUpdate"){
-        console.log("Inside itemsUpdate redisListener");
         //Ici l'information ne doit pas être envoyé au user car cela concerne seulement le lootService.
         //Celui-ci va ré-initializer ça liste en cache à partir de la BD.
         //Les prochain loot tiendrons compte de la liste initialisé.
         self.lootService.initializeItems();
     }
     else if (channel == "comboUpdate") {
-        console.log("Inside comboUpdate redisListener");
         self.gameService.initializeCombo(function(){
             self.gameCommunicationService.broadCastComboUpdate();
         });
     }
     else if (channel == "gameConfigUpdate"){
-        console.log("Inside gameConfigUpdate redisListener");
         self.gameService.initializeGameBaseStat(function(){
 
             self.gameCommunicationService.broadCastGameConfigUpdate();

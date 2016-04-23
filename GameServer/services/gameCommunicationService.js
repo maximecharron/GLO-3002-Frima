@@ -31,7 +31,6 @@ GameCommunicationService.prototype.sendComboUpdate = function(webSocket)
 GameCommunicationService.prototype.broadCastGameConfigUpdate = function()
 {
     var userGameConfigUpdate = this.createUserGameConfigUpdate();
-    console.log("Inside broadCastGameConfigUpdate gameCommunicationService: ", userGameConfigUpdate);
     this.wss.clients.forEach(function each(client)
     {
         try
