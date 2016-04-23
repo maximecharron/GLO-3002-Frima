@@ -13,7 +13,11 @@ exports.updateGameConfig = function(request, response) {
     var gameConfig = {
         baseExperienceIncreaseOnHit : request.body.baseExperienceIncreaseOnHit,
         baseAttackDamage : request.body.baseAttackDamage,
-        hypeAttackDamage : request.body.hypeAttackDamage
+        hypeAttackDamage : request.body.hypeAttackDamage,
+        maximumLevel : request.body.maximumLevel,
+        experiencePerLevel: request.body.experiencePerLevel,
+        upgradePointsPerLevel : request.body.upgradePointsPerLevel,
+        probabilityLoot : request.body.probabilityLoot
     };
     GameConfigRepository.updateGameConfig(gameConfig, function (updatedGameConfig) {
         var channel = "gameConfigUpdate";
