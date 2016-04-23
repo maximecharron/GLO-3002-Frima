@@ -4,6 +4,8 @@ angular.module('CMS.combo').controller("combo-controller", function ($scope, com
     $scope.selectedCombo;
     $scope.remove = false;
     $scope.triggerZone = false;
+    $scope.newComboCreated = false;
+
 
     $scope.reset = function ()
     {
@@ -12,6 +14,7 @@ angular.module('CMS.combo').controller("combo-controller", function ($scope, com
 
     $scope.newCombo = function ()
     {
+        $scope.newComboCreated = true;
         $scope.selectedCombo = {
             name: "",
             triggerFrequency: 0,
@@ -31,13 +34,15 @@ angular.module('CMS.combo').controller("combo-controller", function ($scope, com
 
     $scope.initializeCombos = function ()
     {
-        comboResource.getCombos(function(result){
+        comboResource.getCombos(function (result)
+        {
             $scope.combos = result;
         })
     };
 
     $scope.comboChanged = function ()
     {
+        $scope.newComboCreated = false;
         init();
     };
 
@@ -46,27 +51,43 @@ angular.module('CMS.combo').controller("combo-controller", function ($scope, com
         $scope.selectedCombo = selectedCombo;
         $scope.selectedCombo.triggerZone = triggerZoneCoordinates;
         $scope.selectedCombo.hitZones = transformedCoordinates;
-        comboResource.updateCombo($scope.selectedCombo, function onSuccess(data)
+        if ($scope.newComboCreated)
         {
-            $scope.selectedCombo = data;
-            $scope.updateSuccess = true;
-        }, function onError(data)
+            comboResource.newCombo($scope.selectedCombo, function onSuccess(data)
+            {
+                $scope.selectedCombo = data;
+                $scope.newComboCreated = false;
+                $scope.updateSuccess = true;
+            }, function onError(data)
+            {
+                $scope.updateError = true;
+            });
+        } else
         {
-            $scope.updateError = true;
-        });
+            comboResource.updateCombo($scope.selectedCombo, function onSuccess(data)
+            {
+                $scope.selectedCombo = data;
+                $scope.updateSuccess = true;
+            }, function onError(data)
+            {
+                $scope.updateError = true;
+            });
+        }
     };
 
     $scope.deleteCombo = function (selectedCombo)
     {
         $scope.combos.forEach(function (combo, index)
         {
-            if (combo.name == $scope.selectedCombo.name){
+            if (combo.name == $scope.selectedCombo.name)
+            {
                 $scope.combos.splice(index, 1);
             }
         });
         $scope.selectedCombo = null;
 
-        comboResource.deleteCombo(function(){
+        comboResource.deleteCombo(function ()
+        {
             $scope.deleteSuccess = true;
         })
     };

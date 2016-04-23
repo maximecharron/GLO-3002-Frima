@@ -19,6 +19,12 @@ angular.module('CMS.combo', ['ngRoute', 'ngResource', 'environment']).factory('c
             params: {
                 path: "combos"
             }
+        },
+        newCombo:{
+            method:"PUT",
+            params: {
+                path: "combos"
+            }
         }
 
     });

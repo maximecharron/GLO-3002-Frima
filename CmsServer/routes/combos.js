@@ -35,3 +35,20 @@ exports.updateCombo = function(request, response) {
         response.status(OK).send(updatedCombo);
     });
 };
+
+exports.newCombo = function(request, response) {
+    var combo = {
+        name : request.body.name,
+        triggerFrequency : request.body.triggerFrequency,
+        bonusMultiplier : request.body.bonusMultiplier,
+        triggerZone : request.body.triggerZone,
+        maxFirstHitWaitTime: request.body.maxFirstHitWaitTime,
+        maxWaitTimeBetweenHits: request.body.maxWaitTimeBetweenHits,
+        hitZones: request.body.hitZones
+    };
+    ComboRepository.newCombo(combo, function (createdCombo) {
+        var channel = "comboUpdate";
+        redis.publish(channel, "newCombo");
+        response.status(OK).send(createdCombo);
+    });
+};

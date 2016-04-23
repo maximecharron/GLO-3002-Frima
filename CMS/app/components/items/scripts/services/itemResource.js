@@ -18,6 +18,12 @@ angular.module('CMS.item', ['ngRoute', 'ngResource', 'environment']).factory('it
             params: {
                 path: "items"
             }
+        },
+        newItem:{
+            method:"PUT",
+            params: {
+                path: "items"
+            }
         }
     });
 }]);

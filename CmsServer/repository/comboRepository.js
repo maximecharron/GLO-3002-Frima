@@ -49,10 +49,10 @@ exports.updateCombo = function (comboToUpdate, callback)
         combo.name = comboToUpdate.name;
         combo.triggerFrequency = comboToUpdate.triggerFrequency;
         combo.bonusMultiplier = comboToUpdate.bonusMultiplier;
-        combo.triggerZone = JSON.parse(comboToUpdate.triggerZone);
+        combo.triggerZone = comboToUpdate.triggerZone;
         combo.maxFirstHitWaitTime = comboToUpdate.maxFirstHitWaitTime;
         combo.maxWaitTimeBetweenHits = comboToUpdate.maxWaitTimeBetweenHits;
-        combo.hitZones = JSON.parse(comboToUpdate.hitZones);
+        combo.hitZones = comboToUpdate.hitZones;
         combo.save(function (err, combo)
         {
             if (err)
@@ -61,5 +61,25 @@ exports.updateCombo = function (comboToUpdate, callback)
             }
             callback(combo);
         });
+    });
+};
+
+exports.newCombo = function (comboToCreate, callback)
+{
+    var combo = new Combo();
+    combo.name = comboToCreate.name;
+    combo.triggerFrequency = comboToCreate.triggerFrequency;
+    combo.bonusMultiplier = comboToCreate.bonusMultiplier;
+    combo.triggerZone = comboToCreate.triggerZone;
+    combo.maxFirstHitWaitTime = comboToCreate.maxFirstHitWaitTime;
+    combo.maxWaitTimeBetweenHits = comboToCreate.maxWaitTimeBetweenHits;
+    combo.hitZones = comboToCreate.hitZones;
+    combo.save(function (err, combo)
+    {
+        if (err)
+        {
+            console.log(err);
+        }
+        callback(combo);
     });
 };

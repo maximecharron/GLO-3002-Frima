@@ -3,16 +3,19 @@ angular.module('CMS.item').controller("item-controller", function ($scope, itemR
 
     $scope.items;
     $scope.selectedItem;
+    $scope.newItemCreated = true;
 
     $scope.initializeItems = function ()
     {
-        itemResource.getItems(function(result){
+        itemResource.getItems(function (result)
+        {
             $scope.items = result;
         })
     };
 
     $scope.newItem = function ()
     {
+        $scope.newItemCreated = true;
         $scope.selectedItem = {
             name: "",
             type: 0,
@@ -26,33 +29,50 @@ angular.module('CMS.item').controller("item-controller", function ($scope, itemR
 
     $scope.itemChanged = function (selectedItem)
     {
+        $scope.newItemCreated = false;
         $scope.selectedItem = selectedItem;
     };
 
     $scope.updateItem = function (selectedItem)
     {
         $scope.selectedItem = selectedItem;
-        itemResource.updateItem($scope.selectedItem, function onSuccess(data)
+        if ($scope.newItemCreated)
         {
-            $scope.selectedItem = data;
-            $scope.updateSuccess = true;
-        }, function onError(data)
+            itemResource.newItem($scope.selectedItem, function onSuccess(data)
+            {
+                $scope.selectedItem = data;
+                $scope.newItemCreated =false;
+                $scope.updateSuccess = true;
+            }, function onError(data)
+            {
+                $scope.updateError = true;
+            });
+        } else
         {
-            $scope.updateError = true;
-        });
+            itemResource.updateItem($scope.selectedItem, function onSuccess(data)
+            {
+                $scope.selectedItem = data;
+                $scope.updateSuccess = true;
+            }, function onError(data)
+            {
+                $scope.updateError = true;
+            });
+        }
     };
 
     $scope.deleteItem = function (selectedItem)
     {
         $scope.items.forEach(function (item, index)
         {
-            if (item.name == $scope.selectedItem.name){
+            if (item.name == $scope.selectedItem.name)
+            {
                 $scope.items.splice(index, 1);
             }
         });
         $scope.selectedItem = null;
 
-        itemResource.deleteItem(function(){
+        itemResource.deleteItem(function ()
+        {
             $scope.deleteSuccess = true;
         })
     };

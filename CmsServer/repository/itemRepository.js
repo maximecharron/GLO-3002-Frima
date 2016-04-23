@@ -53,13 +53,33 @@ exports.updateItem = function (itemToUpdate, callback)
         item.staminaRegeneration = itemToUpdate.staminaRegeneration;
         item.hypeGeneration = itemToUpdate.hypeGeneration;
         item.effectDuration = itemToUpdate.effectDuration;
-        item.save(function (err, combo)
+        item.save(function (err, item)
         {
             if (err)
             {
                 console.log(err);
             }
-            callback(combo);
+            callback(item);
         });
     });
+};
+
+exports.newItem = function (itemToCreate, callback)
+{
+    var item = new Item();
+        item.name = itemToCreate.name;
+        item.type = itemToCreate.type;
+        item.subType = itemToCreate.subType;
+        item.quantity = itemToCreate.quantity;
+        item.staminaRegeneration = itemToCreate.staminaRegeneration;
+        item.hypeGeneration = itemToCreate.hypeGeneration;
+        item.effectDuration = itemToCreate.effectDuration;
+        item.save(function (err, item)
+        {
+            if (err)
+            {
+                console.log(err);
+            }
+            callback(item);
+        });
 };

@@ -43,3 +43,22 @@ exports.updateItem = function (request, response)
         response.status(OK).send(updatedItem);
     });
 };
+
+exports.createItem = function (request, response)
+{
+    var item = {
+        name: request.body.name,
+        type: request.body.type,
+        subType: request.body.subType,
+        quantity: request.body.quantity,
+        staminaRegeneration: request.body.staminaRegeneration,
+        hypeGeneration: request.body.hypeGeneration,
+        effectDuration: request.body.effectDuration
+    };
+    ItemRepository.newItem(item, function (createdItem)
+    {
+        var channel = "itemsUpdate";
+        redis.publish(channel, "newItem");
+        response.status(OK).send(createdItem);
+    });
+};
