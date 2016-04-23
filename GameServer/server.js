@@ -90,13 +90,13 @@ var GameRepository = require('./repository/gameRepository.js');
 var gameRepository = new GameRepository();
 
 var GameService = require('./services/gameService.js');
-var gameService = new GameService(gameRepository);
+var gameService = new GameService(gameRepository, lootService, userService);
 
 var GameCommunicationService = require('./services/gameCommunicationService.js');
 var gameCommunicationService = new GameCommunicationService(webSocketServer, gameService);
 
 var RedisListenerService = require('./services/redisListenerService.js');
-var redisListenerService = new RedisListenerService(bossService, bossCommunicationService, lootService, gameCommunicationService);
+var redisListenerService = new RedisListenerService(bossService, bossCommunicationService, lootService, gameCommunicationService, userService);
 
 var WebSocketAPI = require('./api/webSocketAPI.js');
 var webSocketAPI = new WebSocketAPI(bossService, bossCommunicationService, redisCommunicationService, webSocketServer, userService, userCommunicationService, gameCommunicationService);

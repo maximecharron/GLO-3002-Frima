@@ -1,11 +1,13 @@
 var self;
 
 //Constructor
-function GameService(gameRepository)
+function GameService(gameRepository, lootService, userService)
 {
-    this.gameBaseStat = {};
+    this.gameConfig = {};
     this.combos = {};
     this.gameRepository = gameRepository;
+    this.lootService = lootService;
+    this.userService = userService;
 
     self = this;
 
@@ -30,21 +32,46 @@ GameService.prototype.initializeCombo = function(callBack) {
 };
 
 GameService.prototype.initializeGameBaseStat = function(callBack){
-    this.gameRepository.getGameConfig(function(gameBaseStat){
-        self.gameBaseStat = gameBaseStat;
-        if(callBack)
+    this.gameRepository.getGameConfig(function(gameConfig){
+        self.gameConfig = gameConfig;
+        if(gameConfig)
         {
-            callBack();
+            if(gameConfig.probabilityLoot)
+            {
+                self.lootService.initializeItemsDropRate(gameConfig.probabilityLoot);
+            }
+
+            if(gameConfig.experiencePerLevel && gameConfig.upgradePointsPerLevel && gameConfig.maximumLevel)
+            {
+                self.userService.setExperienceInformation(gameConfig.experiencePerLevel, gameConfig.upgradePointsPerLevel, gameConfig.maximumLevel);
+            }
+
+            if(callBack)
+            {
+                callBack(gameConfig);
+            }
         }
     })
 };
 
 GameService.prototype.getGameConfig = function(){
-  return this.gameBaseStat;
+  return this.gameConfig;
 };
 
 GameService.prototype.getCombos = function(){
     return this.combos;
+};
+
+GameService.prototype.getUserGameConfig = function(){
+    var gameUserConfig = {
+        baseAttackDamage: this.gameConfig.baseAttackDamage,
+        baseExperienceIncreaseOnHit: this.gameConfig.baseExperienceIncreaseOnHit,
+        hypeAttackDamage: this.gameConfig.hypeAttackDamage,
+        maximumLevel: this.gameConfig.maximumLevel
+    };
+
+    return gameUserConfig;
+
 };
 
 module.exports = GameService;

@@ -5,8 +5,9 @@ function UserService(userRepository, userCommunicationService)
     this.userWebSockets = {};
     this.userRepository = userRepository;
     this.userCommunicationService = userCommunicationService;
-    this.levelXPTree = [0, 1000,2000,4000,8000,16000,32000,64000,128000,2560000,512000,1024000,2048000];
-    this.pointByLevel = [0,1,1,1,1,1,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3];
+    this.experiencePerLevel = [];
+    this.upgradePointsPerLevel = [];
+    this.maximumLevel = 0;
 }
 
 //Public method
@@ -41,8 +42,14 @@ UserService.prototype.updateUserExperience = function(webSocketId, experiencePoi
 
 UserService.prototype.getInformationNextLevel = function(nextLevel)
 {
-    var levelPoint = { nextLevelXp: this.levelXPTree[nextLevel], pointForNextLevel: this.pointByLevel[nextLevel] };
+    var levelPoint = { nextLevelXp: this.experiencePerLevel[nextLevel], pointForNextLevel: this.upgradePointsPerLevel[nextLevel] };
     return levelPoint;
+};
+
+UserService.prototype.setExperienceInformation = function(experiencePerLevel, upgradePointsPerLevel, maximumLevel) {
+    this.experiencePerLevel = experiencePerLevel;
+    this.upgradePointsPerLevel = upgradePointsPerLevel;
+    this.maximumLevel = maximumLevel;
 };
 
 

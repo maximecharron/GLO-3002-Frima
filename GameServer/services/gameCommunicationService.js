@@ -15,7 +15,7 @@ GameCommunicationService.prototype.sendAllGameInfo = function(websocket){
 
 GameCommunicationService.prototype.sendGameBaseStatUpdate = function(webSocket)
 {
-    var gameBaseStatUpdate = this.createGameBaseStatUpdate();
+    var gameBaseStatUpdate = this.createUserGameConfigUpdate();
 
     webSocket.send(gameBaseStatUpdate);
 };
@@ -28,17 +28,17 @@ GameCommunicationService.prototype.sendComboUpdate = function(webSocket)
 
 };
 
-GameCommunicationService.prototype.broadCastGameBaseStatUpdate = function()
+GameCommunicationService.prototype.broadCastGameConfigUpdate = function()
 {
-    var gameBaseStatUpdate = this.createGameBaseStatUpdate();
+    var userGameConfigUpdate = this.createUserGameConfigUpdate();
     this.wss.clients.forEach(function each(client)
     {
         try
         {
-            client.send(gameBaseStatUpdate);
+            client.send(userGameConfigUpdate);
         } catch (error)
         {
-            console.log("Problem with broadCastGameBaseStatUpdate :", error);
+            console.log("Problem with broadCastGameConfigUpdate :", error);
         }
     });
 };
@@ -58,9 +58,9 @@ GameCommunicationService.prototype.broadCastComboUpdate = function()
     });
 };
 
-GameCommunicationService.prototype.createGameBaseStatUpdate = function()
+GameCommunicationService.prototype.createUserGameConfigUpdate = function()
 {
-    var gameConfigUpdate = this.gameService.getGameConfig();
+    var gameConfigUpdate = this.gameService.getUserGameConfig();
 
     return  JSON.stringify(
     {

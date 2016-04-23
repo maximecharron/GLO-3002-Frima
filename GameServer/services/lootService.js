@@ -4,7 +4,7 @@ function LootService(itemRepository)
 {
     this.itemRepository = itemRepository;
     this.items = [];
-    this.probabilityLoot = [1,1,1,1,1,1,2,2,2,3];
+    this.probabilityLoot = [];
 
     self = this;
 
@@ -50,6 +50,11 @@ LootService.prototype.initializeItems = function(){
     this.itemRepository.getItems(function(items){
         self.items = items;
     });
+};
+
+LootService.prototype.initializeItemsDropRate = function(probabilityLoot){
+
+    this.probabilityLoot = probabilityLoot;
 };
 
 module.exports = LootService;
