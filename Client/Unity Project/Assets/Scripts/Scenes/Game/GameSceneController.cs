@@ -7,6 +7,7 @@ using Assets.Scripts.Services.Communication.DTOs;
 using Assets.Scripts.Scenes.Game.Boss;
 using Assets.Scripts.Services;
 using Assets.Scripts.Services.BossStatus;
+using Assets.Scripts.Extensions;
 
 namespace Assets.Scripts.Scenes.Game
 {
@@ -17,6 +18,7 @@ namespace Assets.Scripts.Scenes.Game
 
         // Configurable script parameters
         public GameObject Boss;
+        public AudioClip GameStartAudioClip;
         public Canvas GameCanvas;
 
         public bool AudioMuted
@@ -63,6 +65,7 @@ namespace Assets.Scripts.Scenes.Game
 
         public void ResumeGame()
         {
+            this.gameObject.FindAudioSource(GameStartAudioClip).Play();
             GameCanvas.gameObject.SetActive(true);
         }
 
