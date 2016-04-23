@@ -59,7 +59,7 @@ app.get('/gameConfig', authentication.isAuthenticated, gameConfig.getGameConfig)
 app.post('/gameConfig', authentication.isAuthenticated, gameConfig.updateGameConfig);
 app.get('/items', authentication.isAuthenticated, item.getItems);
 app.post('/items', authentication.isAuthenticated, item.updateItem);
-app.put('/items', authentication.isAuthenticated, item.newItem);
+app.put('/items', authentication.isAuthenticated, item.createItem);
 app.delete('/items', authentication.isAuthenticated, item.deleteItem);
 
 var port = process.env.PORT || 3000;
