@@ -37,13 +37,14 @@ namespace Assets.Scripts.Scenes.Game.LootItems
         public void ShowSelectionPanel(List<LootItem> lootItems, string selectionTitle)
         {
             SelectionTitleText.text = selectionTitle;
-            foreach (LootItem lootItem in lootItems)
+            IEnumerable<IGrouping <string, LootItem>> lootItemGroups = lootItems.GroupBy(lootItem => lootItem.Name);
+            foreach (IGrouping<string, LootItem> lootItemGroup in lootItemGroups)
             {
                 GameObject lootItemGameObject = LootItemTemplate.Clone();
                 lootItemGameObjects.Add(lootItemGameObject);
-                LootItemSelectionItemController lootItemSelectionItem = lootItemGameObject.GetComponent<LootItemSelectionItemController>();
-                lootItemSelectionItem.OnLootItemClick += LootItemClickEventHandler;
-                lootItemSelectionItem.ShowItem(lootItem);
+                LootItemSelectionGroupController lootItemSelectionGroupController = lootItemGameObject.GetComponent<LootItemSelectionGroupController>();
+                lootItemSelectionGroupController.OnLootItemGroupSelected += LootItemGroupSelectedEventHandler;
+                lootItemSelectionGroupController.ShowItemGroup(lootItemGroup);
             }
             this.gameObject.SetActive(true);
         }
@@ -62,10 +63,10 @@ namespace Assets.Scripts.Scenes.Game.LootItems
             }
         }
 
-        private void LootItemClickEventHandler(LootItem lootItem)
+        private void LootItemGroupSelectedEventHandler(IGrouping<string, LootItem> lootItemGroup)
         {
             HideSelectionPanel();
-            OnLootItemSelected(lootItem);
+            OnLootItemSelected(lootItemGroup.ElementAt(0));
         }
     }
 }
