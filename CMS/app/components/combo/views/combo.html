@@ -76,7 +76,8 @@
 
                         <div>
                             <input class="form-control" id="maxFirstHitWaitTime"
-                                   placeholder="{{selectedCombo.maxFirstHitWaitTime}}">
+                                   placeholder="{{selectedCombo.maxFirstHitWaitTime}}"
+                                   ng-model="selectedCombo.maxFirstHitWaitTime">
                         </div>
                     </div>
                     <div class="form-group">
@@ -85,7 +86,8 @@
 
                         <div>
                             <input class="form-control" id="maxWaitTimeBetweenHits"
-                                   placeholder="{{selectedCombo.maxWaitTimeBetweenHits}}">
+                                   placeholder="{{selectedCombo.maxWaitTimeBetweenHits}}"
+                                   ng-model="selectedCombo.maxWaitTimeBetweenHits">
                         </div>
                     </div>
                     <button type="button" class="btn btn-default" ng-click="deleteCombo(selectedCombo)">
