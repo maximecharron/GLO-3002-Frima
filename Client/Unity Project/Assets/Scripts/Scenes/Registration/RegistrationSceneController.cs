@@ -21,8 +21,7 @@ namespace Assets.Scripts.Scenes.Registration
         public InputField PasswordInputField;
         public InputField PasswordConfirmInputField;
         public InputField EmailInputField;
-        public Text UsernameErrorLabel;
-        public Text RegistrationErrorLabel;
+        public Text ErrorLabel;
         public RegistrationFormValidationController FormValidationController;
         public Button RegisterButton;
 
@@ -33,7 +32,7 @@ namespace Assets.Scripts.Scenes.Registration
             registrationService = FindObjectOfType<RegistrationService>();
             registrationService.OnRegistrationSuccess += RegistrationSuccessCallback;
             registrationService.OnRegistrationFailed += RegistrationFailedCallback;
-            RegistrationErrorLabel.transform.gameObject.SetActive(false);
+            ErrorLabel.transform.gameObject.SetActive(false);
         }
 
         void OnDestroy()
@@ -63,14 +62,13 @@ namespace Assets.Scripts.Scenes.Registration
             RegisterButton.interactable = true;
             if (request.GetStatusCode() == HttpStatusCode.Unauthorized)
             {
-                UsernameErrorLabel.text = "Username already exists.";
-                UsernameErrorLabel.transform.gameObject.SetActive(true);
+                ErrorLabel.text = "Username or email already exists";
             }
             else
             {
-                RegistrationErrorLabel.text = request.error;
-                RegistrationErrorLabel.transform.gameObject.SetActive(true);
+                ErrorLabel.text = request.error;
             }
+            ErrorLabel.transform.gameObject.SetActive(true);
         }
 
         private void RegistrationSuccessCallback()
