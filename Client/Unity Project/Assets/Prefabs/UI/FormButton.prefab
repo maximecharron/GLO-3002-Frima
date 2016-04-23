@@ -13,6 +13,7 @@ GameObject:
   - 114: {fileID: 11429482}
   - 82: {fileID: 8217740}
   - 114: {fileID: 11449086}
+  - 114: {fileID: 11416320}
   m_Layer: 5
   m_Name: FormButton
   m_TagString: Untagged
@@ -138,6 +139,24 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &11416320
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 154128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1679637790, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: 70
+  m_PreferredWidth: -1
+  m_PreferredHeight: 70
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: 0
 --- !u!114 &11429482
 MonoBehaviour:
   m_ObjectHideFlags: 1
