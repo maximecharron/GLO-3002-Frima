@@ -53,6 +53,7 @@ exports.updateCombo = function (comboToUpdate, callback)
         combo.maxFirstHitWaitTime = comboToUpdate.maxFirstHitWaitTime;
         combo.maxWaitTimeBetweenHits = comboToUpdate.maxWaitTimeBetweenHits;
         combo.hitZones = comboToUpdate.hitZones;
+
         combo.save(function (err, combo)
         {
             if (err)

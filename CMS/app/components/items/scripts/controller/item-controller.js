@@ -5,6 +5,7 @@ angular.module('CMS.item').controller("item-controller", function ($scope, itemR
     $scope.selectedItem;
     $scope.newItemCreated = true;
 
+
     $scope.initializeItems = function ()
     {
         itemResource.getItems(function (result)
