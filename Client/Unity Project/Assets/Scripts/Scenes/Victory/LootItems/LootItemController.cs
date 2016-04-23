@@ -11,24 +11,25 @@ namespace Assets.Scripts.Scenes.Victory.LootItems
     class LootItemController : MonoBehaviour
     {
         //Configurable script parameters
-        public GameObject lootItemTemplate;
+        public GameObject lootItemGroupTemplate;
 
         private LootItemService lootItemsService;
 
         void Start()
         {
             lootItemsService = FindObjectOfType<LootItemService>();
-            lootItemTemplate.SetActive(false);
+            lootItemGroupTemplate.SetActive(false);
             ShowWonLootItems(lootItemsService.RecentlyWonLootItems);
         }
 
         private void ShowWonLootItems(List<LootItem> lootItems)
         {
-            foreach (LootItem lootItem in lootItems)
+            IEnumerable<IGrouping<string, LootItem>> lootItemGroups = lootItems.GroupBy(lootItem => lootItem.Name);
+            foreach (IGrouping<string, LootItem> lootItemGroup in lootItemGroups)
             {
-                GameObject lootItemGameObject = lootItemTemplate.Clone();
-                LootItemViewItemController lootItemViewItemController = lootItemGameObject.GetComponent<LootItemViewItemController>();
-                lootItemViewItemController.ShowItem(lootItem);
+                GameObject lootItemGameObject = lootItemGroupTemplate.Clone();
+                LootItemViewGroupController lootItemViewItemController = lootItemGameObject.GetComponent<LootItemViewGroupController>();
+                lootItemViewItemController.ShowItem(lootItemGroup);
             }
         }
 

@@ -12,7 +12,7 @@ namespace Assets.Scripts.Scenes.Game.LootItems
     public class LootItemSelectionController : MonoBehaviour
     {
         //Configurable script properties
-        public GameObject LootItemTemplate;
+        public GameObject LootItemGroupTemplate;
         public Text SelectionTitleText;
 
         public delegate void LootItemSelectedClickEventHandler(LootItem lootItem);
@@ -23,7 +23,7 @@ namespace Assets.Scripts.Scenes.Game.LootItems
         void Start()
         {
             HideSelectionPanel();
-            LootItemTemplate.SetActive(false);
+            LootItemGroupTemplate.SetActive(false);
         }
 
         void Update()
@@ -40,7 +40,7 @@ namespace Assets.Scripts.Scenes.Game.LootItems
             IEnumerable<IGrouping <string, LootItem>> lootItemGroups = lootItems.GroupBy(lootItem => lootItem.Name);
             foreach (IGrouping<string, LootItem> lootItemGroup in lootItemGroups)
             {
-                GameObject lootItemGameObject = LootItemTemplate.Clone();
+                GameObject lootItemGameObject = LootItemGroupTemplate.Clone();
                 lootItemGameObjects.Add(lootItemGameObject);
                 LootItemSelectionGroupController lootItemSelectionGroupController = lootItemGameObject.GetComponent<LootItemSelectionGroupController>();
                 lootItemSelectionGroupController.OnLootItemGroupSelected += LootItemGroupSelectedEventHandler;

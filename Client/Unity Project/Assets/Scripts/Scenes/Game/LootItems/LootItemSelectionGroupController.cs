@@ -11,8 +11,8 @@ namespace Assets.Scripts.Scenes.Game.LootItems
     class LootItemSelectionGroupController : MonoBehaviour
     {
         //Configurable script parameters
-        public Image ItemIcon;
-        public Text CountText;
+        public Image ItemGroupIcon;
+        public Text GroupCountText;
         public Text PowerValueText;
         public Text EffectDurationValueText;
 
@@ -24,11 +24,11 @@ namespace Assets.Scripts.Scenes.Game.LootItems
         public void ShowItemGroup(IGrouping<string, LootItem> lootItemGroup)
         {
             this.lootItemGroup = lootItemGroup;
-            CountText.text = lootItemGroup.Count().ToString();
+            GroupCountText.text = lootItemGroup.Count().ToString();
             LootItem lootItemSample = lootItemGroup.ElementAt(0);
             EffectDurationValueText.text = lootItemSample.EffectDuration.TotalSeconds.ToString();
             PowerValueText.text = lootItemSample.PowerValue.ToString();
-            ItemIcon.sprite = lootItemSample.IconSprite;
+            ItemGroupIcon.sprite = lootItemSample.IconSprite;
             this.gameObject.SetActive(true);
         }
 
