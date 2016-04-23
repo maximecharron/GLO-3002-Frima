@@ -14,6 +14,7 @@ namespace Assets.Scripts.Animation
         public float FlashInterval = 1f;
         public Color OriginalColor;
         public Color FlashColor;
+        public bool Enabled = true;
 
         private float lastFlashTimeDelta;
 
@@ -24,7 +25,7 @@ namespace Assets.Scripts.Animation
             {
                 lastFlashTimeDelta = 0;
                 Image image = GetComponent<Image>();
-                if (image.color.Equals(OriginalColor))
+                if (Enabled && image.color.Equals(OriginalColor))
                 {
                     image.color = FlashColor;
                 } else
