@@ -27,13 +27,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 133756}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67c9bd1ea0f772d47b5af7bc328eb620, type: 3}
+  m_Script: {fileID: 11500000, guid: f535a63550ffdac48934f533c9cd9842, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FlashInterval: 0.5
-  OriginalColor: {r: 1, g: 1, b: 1, a: 1}
-  FlashColor: {r: 0.68235296, g: 0.8392157, b: 1, a: 1}
+  FlashInterval: 1
   Enabled: 1
+  OriginalColor: {r: 1, g: 1, b: 1, a: 1}
+  FlashColor: {r: 0.7058824, g: 1, b: 1, a: 1}
 --- !u!114 &11495302
 MonoBehaviour:
   m_ObjectHideFlags: 1

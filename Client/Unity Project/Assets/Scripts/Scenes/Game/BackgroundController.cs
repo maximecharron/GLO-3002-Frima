@@ -14,6 +14,7 @@ namespace Assets.Scripts.Scenes.Game
     {
         //Configurable script parameters
         public int SpritesheetColumnCount = 4;
+        public Canvas GameCanvas;
 
         private SpriteAnimator spriteAnimator;
         private List<SpriteAnimationSequence> animationSequences = new List<SpriteAnimationSequence>() {
@@ -31,6 +32,7 @@ namespace Assets.Scripts.Scenes.Game
             playerPropertyService.OnLevelUp += LevelUpEventHandler;
             spriteAnimator = new SpriteAnimator(GetComponent<Renderer>().material, SpritesheetColumnCount);
             SetAnimationSequence();
+            AdjustPositioning();
         }
 
         void Update()
@@ -54,6 +56,12 @@ namespace Assets.Scripts.Scenes.Game
             spriteAnimator.Sequences.Clear();
             spriteAnimator.Sequences.Add(animationSequence);
             spriteAnimator.Reset();
+        }
+
+        private void AdjustPositioning()
+        {
+            Rect canvasRect = GameCanvas.GetComponent<RectTransform>().rect;
+            this.transform.localScale = new Vector3(canvasRect.width, this.transform.localScale.y, 1);
         }
     }
 }

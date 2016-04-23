@@ -11,14 +11,13 @@ using Assets.Scripts.Extensions;
 
 namespace Assets.Scripts.Scenes.Game
 {
-    [RequireComponent(typeof(AudioSource))]
+    [RequireComponent(typeof(AudioSource), typeof(AudioSource), typeof(AudioSource))]
     public class GameSceneController : SceneController
     {
         private const float DEFAULT_AUDIO_VOLUME = 0.8f;
 
-        // Configurable script parameters
-        public GameObject Boss;
-        public AudioClip GameStartAudioClip;
+        // Configurable script parameterss;
+        public int GameStartAudioSourceIndex;
         public Canvas GameCanvas;
 
         public bool AudioMuted
@@ -61,12 +60,14 @@ namespace Assets.Scripts.Scenes.Game
         public void PauseGame()
         {
             GameCanvas.gameObject.SetActive(false);
+            this.gameObject.SetActive(false);
         }
 
         public void ResumeGame()
         {
-            this.gameObject.FindAudioSource(GameStartAudioClip).Play();
             GameCanvas.gameObject.SetActive(true);
+            this.gameObject.SetActive(true);
+            this.gameObject.GetComponents<AudioSource>()[GameStartAudioSourceIndex].Play();
         }
 
     }

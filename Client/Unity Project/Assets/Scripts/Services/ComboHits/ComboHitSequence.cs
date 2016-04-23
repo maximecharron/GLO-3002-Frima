@@ -86,7 +86,7 @@ namespace Assets.Scripts.Services.ComboHits
             return !firstHitWaitTimeElapsed && !nextHitWaitTimeElapsed;
         }
 
-        public Vector2 GetNextHitZoneToDisplay()
+        public Vector2 GetNextHitZoneLocationToDisplay()
         {
             if (!EndOfDisplaySequence) {
                 currentlyShownHitZoneIndex++;

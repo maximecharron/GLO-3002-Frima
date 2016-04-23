@@ -34,11 +34,10 @@ namespace Assets.Scripts.Scenes.Game.Boss
         public BossAttackFeedbackController BossAttackFeedbackController;
         public BossDeathAnimationController BossDeathAnimationController;
         public BossExplosionController BossDeathExplosionController;
-        public ComboHitController ComboHitController;
         public StaminaController StaminaController;
         public HypeController HypeController;
-        public AudioClip KnockOutFallAudioClip;
-        public AudioClip KnockOutVoiceAudioClip;
+        public int KnockOutFallAudioClipIndex;
+        public int KnockOutVoiceAudioClipIndex;
 
         private GameControlService gameControlService;
         private GameStatisticsService gameStatisticsService;
@@ -122,8 +121,6 @@ namespace Assets.Scripts.Scenes.Game.Boss
         private void InitalizeDependencies()
         {
             HypeController.OnHypeAttack += HypeAttackEventHandler;
-            ComboHitController.OnHitZoneClicked += HitZoneClickedEventHandler;
-            ComboHitController.OnComboHitSequenceCompleted += ComboHitSequenceCompletedEventHandler;
             gameControlService = FindObjectOfType<GameControlService>();
             gameStatisticsService = FindObjectOfType<GameStatisticsService>();
             playerPropertyService = FindObjectOfType<PlayerPropertyService>();
@@ -148,9 +145,9 @@ namespace Assets.Scripts.Scenes.Game.Boss
             }
         }
 
-        public void ComboHitSequenceCompletedEventHandler(ComboHitSequence hitSequence)
+        public void ComboHit(float attackMultiplier)
         {
-            DecreaseBossLifeDefault(hitSequence.BonusMultiplier);
+            DecreaseBossLifeDefault(attackMultiplier);
             bossStateController.RemoveState(hitState);
             bossStateController.AddState(comboHitState);
         }
@@ -159,11 +156,6 @@ namespace Assets.Scripts.Scenes.Game.Boss
         {
             DecreaseBossLife(attackValue);
             bossStateController.AddState(hypeAttackState);
-        }
-
-        private void HitZoneClickedEventHandler(ComboHitZoneController comboHitZoneController)
-        {
-            OnMouseDown();
         }
 
         private void HitStateActivateEventHandler(CharacterState sender)
@@ -182,8 +174,8 @@ namespace Assets.Scripts.Scenes.Game.Boss
 
         private void ComboHitStateActivateEventHandler(CharacterState sender)
         {
-            this.gameObject.FindAudioSource(KnockOutFallAudioClip).Play();
-            this.gameObject.FindAudioSource(KnockOutVoiceAudioClip).Play();
+            GetComponents<AudioSource>()[KnockOutFallAudioClipIndex].Play();
+            GetComponents<AudioSource>()[KnockOutVoiceAudioClipIndex].Play();
         }
 
         public bool ComboHitAnimationSequenceCompleteEventHandler(CharacterState sender)

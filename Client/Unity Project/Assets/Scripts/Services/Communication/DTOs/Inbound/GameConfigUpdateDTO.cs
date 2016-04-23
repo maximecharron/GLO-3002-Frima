@@ -23,6 +23,7 @@ namespace Assets.Scripts.Services.Communication.DTOs.Inbound
                 public int baseAttackDamage = 0;
                 public int hypeAttackDamage = 0;
                 public int baseExperienceIncreaseOnHit = 0;
+                public int maximumLevel = 0;
                 public List<ComboHitSequenceDTO> comboHitSequences = new List<ComboHitSequenceDTO>();
             }
         }

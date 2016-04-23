@@ -85,6 +85,7 @@ namespace Assets.Scripts.Scenes.Game.ComboHits
 
         public void Show(Vector2 position, float zPosition)
         {
+
             this.transform.localPosition = position.ToVector3(zPosition);
             startTime = Time.time;
             SetAlpha(0);

@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Extensions;
+﻿using Assets.Scripts.Animation.DualStateAnimation;
+using Assets.Scripts.Extensions;
 using Assets.Scripts.Services.LootItems;
 using System;
 using System.Collections.Generic;
@@ -11,14 +12,10 @@ namespace Assets.Scripts.Scenes.Game.LootItems
 {
     public class LootItemCountdownController : MonoBehaviour
     {
-        private static Color originalColor = new Color(1f, 0f, 0f);
-        private static Color flashColor = new Color(1f, 1f, 1f);
-        private const int FLASH_TRIGGER_TIME = 5;
-        private const float FLASH_INTERVAL_SECONDS = 0.5f;
-
         //Configurable script parameters
         public Image LootItemIcon;
         public Text RemainingEffectTimeText;
+        public int FlashTriggerTime = 5;
 
         private float lastFlashTimeDelta = 0;
         private LootItem currentLootItem;
@@ -33,24 +30,9 @@ namespace Assets.Scripts.Scenes.Game.LootItems
             if (currentLootItem != null)
             {
                 UpdateRemainingEffectTime(currentLootItem.EffectDuration - new TimeSpan(0, 0, (int)currentLootItem.UsageStartTimeDelta));
-                FlashCountdownText();
+                RemainingEffectTimeText.GetComponent<TextColorAnimator>().Enabled = currentLootItem.EffectDuration.TotalSeconds - currentLootItem.UsageStartTimeDelta < FlashTriggerTime;
                 currentLootItem.UsageStartTimeDelta += Time.deltaTime;
             }
-        }
-
-        private void FlashCountdownText()
-        {
-            lastFlashTimeDelta += Time.deltaTime;
-            if (currentLootItem.EffectDuration.TotalSeconds - currentLootItem.UsageStartTimeDelta < FLASH_TRIGGER_TIME && lastFlashTimeDelta > FLASH_INTERVAL_SECONDS)
-            {
-                lastFlashTimeDelta = 0;
-                AlternateTextColor();
-            }
-        }
-
-        private void AlternateTextColor()
-        {
-            RemainingEffectTimeText.color = RemainingEffectTimeText.color.Equals(flashColor) ? originalColor : flashColor;
         }
 
         void OnDestroy()

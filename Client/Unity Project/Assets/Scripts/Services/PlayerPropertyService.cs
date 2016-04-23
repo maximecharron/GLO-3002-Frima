@@ -13,6 +13,8 @@ namespace Assets.Scripts.Services
         public event PlayerPropertiesUpdateUpdateEventHandler OnPlayerPropertiesUpdate = delegate { };
         public delegate void OnLevelUpEventHandler();
         public event OnLevelUpEventHandler OnLevelUp = delegate { };
+        public delegate void OnLevelUpCompletedEventHandler();
+        public event OnLevelUpCompletedEventHandler OnLevelUpCompleted = delegate { };
 
         private WebSocketService webSocketService;
         private GameControlService gameControlService;
@@ -70,14 +72,15 @@ namespace Assets.Scripts.Services
             requiredExperiencePointsForNextLevel = playerLevelUpParams.requiredExperiencePointsForNextLevel;
             upgradePointsOnLevelComplete = playerLevelUpParams.upgradePointsOnLevelComplete;
             OnPlayerPropertiesUpdate();
+            OnLevelUpCompleted();
         }
 
-        public void IncreaseExperiencePoints()
+        public void IncreaseExperiencePoints(float multiplier = 1f)
         {
             experiencePoints += gameControlService.BaseExperienceIncreaseOnHit;
-            if (experiencePoints >= requiredExperiencePointsForNextLevel)
+            if (experiencePoints >= requiredExperiencePointsForNextLevel && level < gameControlService.MaximumLevel)
             {
-                level += 1;
+                level += (int)multiplier;
                 OnLevelUp();
             }
             OnPlayerPropertiesUpdate();

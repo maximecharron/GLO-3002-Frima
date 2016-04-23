@@ -29,6 +29,8 @@ namespace Assets.Scripts.Services
         private int hypeAttackDamage = 1;
         public int BaseExperienceIncreaseOnHit { get { return baseExperienceIncreaseOnHit; } }
         private int baseExperienceIncreaseOnHit = 1;
+        public int MaximumLevel { get { return maximumLevel; } }
+        private int maximumLevel = 1;
 
         void Start()
         {
@@ -43,6 +45,7 @@ namespace Assets.Scripts.Services
             baseBossDamage = gameConfigUpdateParams.baseAttackDamage;
             hypeAttackDamage = gameConfigUpdateParams.hypeAttackDamage;
             baseExperienceIncreaseOnHit = gameConfigUpdateParams.baseExperienceIncreaseOnHit;
+            maximumLevel = gameConfigUpdateParams.maximumLevel;
         }
 
     }

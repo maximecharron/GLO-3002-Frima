@@ -10,11 +10,13 @@ using Assets.Scripts.Services.ComboHits;
 
 namespace Assets.Scripts.Scenes.Game.ComboHits
 {
+    [RequireComponent(typeof(AudioSource))]
     public class ComboHitController : MonoBehaviour
     {
         private const float DELAY_BETWEEN_SEQUENCES = 5f;
 
         //Configurable script parameters
+        public GameObject Boss;
         public GameObject ComboHitZone;
         public int ComboHitZonePoolSize;
         public GameObject ComboBonusBubble;
@@ -25,7 +27,6 @@ namespace Assets.Scripts.Scenes.Game.ComboHits
 
         public delegate void ComboHitCompletedEventHandler(ComboHitSequence comboHitSequence);
         public event ComboHitCompletedEventHandler OnComboHitSequenceCompleted = delegate { };
-        public event ComboHitZoneController.HitZoneClickedEventHandler OnHitZoneClicked = delegate { };
 
         private BossStatusService bossStatusService;
         private ComboHitService comboHitService;
@@ -54,7 +55,7 @@ namespace Assets.Scripts.Scenes.Game.ComboHits
             UnityObjectPool hitZonePool = new UnityObjectPool(ComboHitZone, ComboHitZonePoolSize, IsComboHitZonePoolItemAvailableCallback);
             UnityObjectPool bonusBubblePool = new UnityObjectPool(ComboBonusBubble, ComboBonusBubblePoolSize, IsComboBonusBubblePoolItemAvailableCallback);
             UnityObjectPool hitFeedbackBubblePool = new UnityObjectPool(HitFeedbackBubble, HitFeedbackBubblePoolSize, IsHitFeedbackBubblePoolItemAvailableCallback);
-            hitSequenceController = new ComboHitSequenceController(hitZonePool, bonusBubblePool, hitFeedbackBubblePool, ComboHitZone.transform.localPosition.z);
+            hitSequenceController = new ComboHitSequenceController(hitZonePool, bonusBubblePool, hitFeedbackBubblePool, Boss, ComboHitZone.transform.localPosition.z);
             hitSequenceController.OnHitZoneClicked += HitZoneClickedEventHandler;
             hitSequenceController.OnSequenceAchieved += SequenceAchievedCallbackEventHandler;
             hitSequenceController.OnSequenceTerminated += SequenceTerminatedEventHandler;
@@ -104,14 +105,15 @@ namespace Assets.Scripts.Scenes.Game.ComboHits
         {
             if (!hitSequenceController.HitSequence.EndOfSequence)
             {
-                OnHitZoneClicked(hitZoneController);
+                Boss.GetComponent<BossController>().OnMouseDown();
             }
         }
 
         private void SequenceAchievedCallbackEventHandler(ComboHitSequence hitSequence)
         {
-            this.gameObject.FindAudioSource(SequenceAchievedAudioClip).Play();
+            GetComponent<AudioSource>().PlayAudioClip(SequenceAchievedAudioClip);
             OnComboHitSequenceCompleted(hitSequence);
+            Boss.GetComponent<BossController>().ComboHit(hitSequence.BonusMultiplier);
         }
 
         private void SequenceTerminatedEventHandler(ComboHitSequence hitSequence)

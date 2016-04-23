@@ -1,4 +1,6 @@
-﻿using Assets.Scripts.Services;
+﻿using Assets.Scripts.Scenes.Game.ComboHits;
+using Assets.Scripts.Services;
+using Assets.Scripts.Services.ComboHits;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +14,7 @@ namespace Assets.Scripts.Scenes.Game
     class PlayerPropertiesController : MonoBehaviour
     {
         //Configurable script parameters
+        public ComboHitController ComboHitController;
         public Text levelLabel;
         public Text experienceLabel;
         
@@ -21,6 +24,7 @@ namespace Assets.Scripts.Scenes.Game
         {
             playerPropertyService = FindObjectOfType<PlayerPropertyService>();
             playerPropertyService.OnPlayerPropertiesUpdate += PlayerPropertiesUpdateEventHandler;
+            ComboHitController.OnComboHitSequenceCompleted += ComboHitSequenceCompletedEventHandler;
             UpdateExperiencePointsLabel();
             UpdateLevelLabel();
         }
@@ -44,6 +48,11 @@ namespace Assets.Scripts.Scenes.Game
         private void UpdateExperiencePointsLabel()
         {
             experienceLabel.text = String.Format("{0}/{1}", playerPropertyService.ExperiencePoints, playerPropertyService.RequiredExperiencePointsForNextLevel);
+        }
+
+        private void ComboHitSequenceCompletedEventHandler(ComboHitSequence comboHitSequence)
+        {
+            playerPropertyService.IncreaseExperiencePoints(comboHitSequence.BonusMultiplier);
         }
     }
 }

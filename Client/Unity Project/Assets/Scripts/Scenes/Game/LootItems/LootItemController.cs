@@ -8,6 +8,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Scenes.Game.LootItems
 {
+    [RequireComponent(typeof(AudioSource))]
     public class LootItemController : MonoBehaviour
     {
         //Configurable script parameters
@@ -66,7 +67,7 @@ namespace Assets.Scripts.Scenes.Game.LootItems
             currentLootItem.OnEffectExpired += LootItemExpiredItemExpiredEventHandler;
             lootItemService.UseLootItem(currentLootItem);
             LootItemCountdownController.StartCountdown(lootItem);
-            this.gameObject.FindAudioSource(LootItemUsedAudioClip).Play();
+            GetComponent<AudioSource>().PlayAudioClip(LootItemUsedAudioClip);
             OnLootItemUsed(lootItem);
         }
 

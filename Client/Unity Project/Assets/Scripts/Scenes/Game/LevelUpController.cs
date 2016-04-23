@@ -9,11 +9,11 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts.Scenes.Game
 {
+    [RequireComponent(typeof(CanvasGroup))]
     class LevelUpController : MonoBehaviour
     {
         //Configurable script parameters
         public GameSceneController GameSceneController;
-        public Canvas LevelUpCanvas;
         public Text CurrentExperienceText;
         public Text UpgradeExplanationText;
         public Text StaminaPowerLevelText;
@@ -31,24 +31,26 @@ namespace Assets.Scripts.Scenes.Game
         {
             playerPropertyService = FindObjectOfType<PlayerPropertyService>();
             playerPropertyService.OnLevelUp += LevelUpCallback;
+            playerPropertyService.OnLevelUpCompleted += LevelUpCompletedEventHandler;
             Hide();
         }
 
         void OnDestroy()
         {
             playerPropertyService.OnLevelUp -= LevelUpCallback;
+            playerPropertyService.OnLevelUpCompleted -= LevelUpCompletedEventHandler;
         }
 
         private void ShowPanel()
         {
             GameSceneController.PauseGame();
-            LevelUpCanvas.gameObject.SetActive(true);
+            this.gameObject.SetActive(true);
         }
 
         private void Hide()
         {
             GameSceneController.ResumeGame();
-            LevelUpCanvas.gameObject.SetActive(false);
+            this.gameObject.SetActive(false);
         }
 
         void LevelUpCallback()
@@ -127,6 +129,12 @@ namespace Assets.Scripts.Scenes.Game
         public void OnContinueButtonClick()
         {
             playerPropertyService.Upgrade(staminaPowerLevelUpgrade, hypePowerLevelUpgrade, attackPowerLevelUpgrade);
+            GetComponent<CanvasGroup>().interactable = false;
+        }
+
+        public void LevelUpCompletedEventHandler()
+        {
+            GetComponent<CanvasGroup>().interactable = true;
             Hide();
         }
     }

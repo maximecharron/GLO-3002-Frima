@@ -13,7 +13,7 @@ namespace Assets.Scripts.Scenes.Game.Boss
 
         //Configurable script parameters
         public BossExplosionController BossDeathExplosionController;
-        public GameObject Hud;
+        public GameObject UI;
         public GameObject SceneBackground;
 
         private Vector3 moveDirection;
@@ -31,7 +31,7 @@ namespace Assets.Scripts.Scenes.Game.Boss
         public void BeginDeathAnimation()
         {
             SceneBackground.SetActive(false);
-            Hud.SetActive(false);
+            UI.SetActive(false);
             BossDeathExplosionController.Explode();
             moveDirection = Vector3.zero;
             animationStartTimeDelta = 0;
