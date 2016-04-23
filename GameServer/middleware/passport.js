@@ -93,6 +93,11 @@ module.exports = function (passport, app)
                         {
                             User.findOne({'username': request.body.username}, function (err, user)
                             {
+                                if (user)
+                                {
+                                    var errorMessage = "The user with username " + request.body.username + " already exists and could not be created.";
+                                    return done(null, false, {message: errorMessage});
+                                }
                                 var newUser = new User();
 
                                 newUser.email = email;
@@ -109,8 +114,7 @@ module.exports = function (passport, app)
                                 {
                                     if (error)
                                     {
-                                        console.log(error);
-                                        return done("An error occured. It may be that the username or email is already used.");
+                                        return done(null, false);
                                     }
                                     return done(null, newUser.toDTO(true));
                                 });
