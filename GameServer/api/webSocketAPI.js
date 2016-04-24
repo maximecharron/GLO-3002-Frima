@@ -50,6 +50,10 @@ function newMessage(message, webSocket)
         request = JSON.parse(message);
         if (request.command.name == "attack")
         {
+            //Log for debug
+            console.log("Attack: ", request);
+            //Log fore debug
+
             if (request.command.parameters.value)
             {
                 self.bossService.makeDamage(request.command.parameters.value, function (boss)
@@ -68,12 +72,20 @@ function newMessage(message, webSocket)
 
         else if (request.command.name == "keepAlive")
         {
+            //Log for debug
+            console.log("KeepAlive: ", request);
+            //Log for debug
+
             var boss = self.bossService.getCurrentBoss();
             self.bossCommunicationService.keepAlive(boss, webSocket);
         }
 
         else if(request.command.name == "registerClient")
         {
+            //Log for debug
+            console.log("registerClient: ", request);
+            //Log for debug
+
             if(request.command.parameters.token){
                 var token = request.command.parameters.token;
 
@@ -87,6 +99,10 @@ function newMessage(message, webSocket)
 
         else if(request.command.name == "useItems")
         {
+            //Log for debug
+            console.log("useItems: ", request);
+            //Log for debug
+
             if(request.command.parameters.items){
                 var items = request.command.parameters.items;
                 self.userService.updateUserItems(webSocketClientId, items);
@@ -98,6 +114,10 @@ function newMessage(message, webSocket)
 
         else if(request.command.name == "updateUserLevel")
         {
+            //Log for debug
+            console.log("updateUserLevel: ", request);
+            //Log for debug
+
             if(request.command.parameters.level){
                 var informationNextLevel = self.userService.getInformationNextLevel(request.command.parameters.level);
                 self.userService.levelUpUser( webSocketClientId, request.command.parameters, informationNextLevel);
@@ -110,6 +130,11 @@ function newMessage(message, webSocket)
 
         else if(request.command.name == "updateUserExperience")
         {
+
+            //Log for debug
+            console.log("updateUserExperience: ", request);
+            //Log for debug
+
             if(request.command.parameters.experiencePoints){
                 self.userService.updateUserExperience(webSocketClientId, request.command.parameters.experiencePoints);
             }

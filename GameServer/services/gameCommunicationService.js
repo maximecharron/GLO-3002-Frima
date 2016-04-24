@@ -51,6 +51,11 @@ GameCommunicationService.prototype.broadCastComboUpdate = function()
     {
         try
         {
+
+            //Log for debug
+            console.log("comboUpdate: ", comboUpdate);
+            //Log for debug
+
             client.send(comboUpdate);
         } catch (error)
         {
