@@ -35,14 +35,14 @@ angular.module('CMS.game').controller("game-controller", function ($scope, gameR
         var counter = 1;
         for (var i = 1; i<100; i++){
             if (result.probabilityLoot[i-1] != result.probabilityLoot[i]){
-                itemsProbability.push({value:counter+1});
-                counter = 0;
+                itemsProbability.push({value:counter});
+                counter = 1;
             } else {
                 counter++;
             }
 
             if (i == 99){
-                itemsProbability.push({value:counter+1});
+                itemsProbability.push({value:counter});
             }
         }
         if (itemsProbability.length == 0){
