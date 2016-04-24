@@ -18,6 +18,7 @@ namespace Assets.Scripts.Scenes.Game
 
         // Configurable script parameterss;
         public int GameStartAudioSourceIndex;
+        public GameObject[] PausableGameObjects;
         public Canvas GameCanvas;
 
         public bool AudioMuted
@@ -59,14 +60,20 @@ namespace Assets.Scripts.Scenes.Game
 
         public void PauseGame()
         {
+            foreach (GameObject pausableGameObject in PausableGameObjects)
+            {
+                pausableGameObject.SetActive(false);
+            }
             GameCanvas.gameObject.SetActive(false);
-            this.gameObject.SetActive(false);
         }
 
         public void ResumeGame()
         {
+            foreach (GameObject pausableGameObject in PausableGameObjects)
+            {
+                pausableGameObject.SetActive(true);
+            }
             GameCanvas.gameObject.SetActive(true);
-            this.gameObject.SetActive(true);
             this.gameObject.GetComponents<AudioSource>()[GameStartAudioSourceIndex].Play();
         }
 

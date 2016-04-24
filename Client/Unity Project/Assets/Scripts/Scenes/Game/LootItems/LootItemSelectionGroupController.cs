@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Services.LootItems;
+﻿using Assets.Scripts.Extensions;
+using Assets.Scripts.Services.LootItems;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,8 +25,8 @@ namespace Assets.Scripts.Scenes.Game.LootItems
         public void ShowItemGroup(IGrouping<string, LootItem> lootItemGroup)
         {
             this.lootItemGroup = lootItemGroup;
-            GroupCountText.text = lootItemGroup.Count().ToString();
-            LootItem lootItemSample = lootItemGroup.ElementAt(0);
+            GroupCountText.text = String.Format("{0}X", lootItemGroup.Count().ToString());
+            LootItem lootItemSample = lootItemGroup.FirstElement();
             EffectDurationValueText.text = lootItemSample.EffectDuration.TotalSeconds.ToString();
             PowerValueText.text = lootItemSample.PowerValue.ToString();
             ItemGroupIcon.sprite = lootItemSample.IconSprite;

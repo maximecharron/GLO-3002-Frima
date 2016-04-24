@@ -39,5 +39,11 @@ namespace Assets.Scripts.Extensions
         {
             return Input.GetMouseButton(0) && !RectTransformUtility.RectangleContainsScreenPoint(gameObject.GetComponent<RectTransform>(), Input.mousePosition, Camera.main);
         }
+
+        public static Vector3 Translate(this GameObject gameObject, Vector3 point, GameObject targetGameObject)
+        {
+            Vector2 worldPoint = gameObject.transform.TransformPoint(point);
+            return targetGameObject.transform.InverseTransformPoint(worldPoint);
+        }
     }
 }

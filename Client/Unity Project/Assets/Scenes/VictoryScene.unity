@@ -173,7 +173,7 @@ MonoBehaviour:
   m_IgnoreLayout: 0
   m_MinWidth: -1
   m_MinHeight: -1
-  m_PreferredWidth: 300
+  m_PreferredWidth: 200
   m_PreferredHeight: -1
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
@@ -411,6 +411,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11468194, guid: 216c7204b351e3a4b8b598949a505e7e, type: 2}
+      propertyPath: Interval
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 216c7204b351e3a4b8b598949a505e7e, type: 2}
   m_IsPrefabParent: 0
@@ -528,7 +532,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22469152, guid: 5f959219322a2414b9103d422b1d42ba, type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 300.1712
+      value: 204.48502
       objectReference: {fileID: 0}
     - target: {fileID: 11406480, guid: 5f959219322a2414b9103d422b1d42ba, type: 2}
       propertyPath: m_PreserveAspect
@@ -945,7 +949,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22469152, guid: 5f959219322a2414b9103d422b1d42ba, type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 560.1712
+      value: 464.48502
       objectReference: {fileID: 0}
     - target: {fileID: 22469152, guid: 5f959219322a2414b9103d422b1d42ba, type: 2}
       propertyPath: m_AnchoredPosition.y
@@ -1106,7 +1110,7 @@ MonoBehaviour:
   m_MinWidth: -1
   m_MinHeight: -1
   m_PreferredWidth: -1
-  m_PreferredHeight: 175
+  m_PreferredHeight: 125
   m_FlexibleWidth: -1
   m_FlexibleHeight: 0
 --- !u!1 &1039757791

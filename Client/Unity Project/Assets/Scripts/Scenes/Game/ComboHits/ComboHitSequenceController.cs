@@ -37,14 +37,16 @@ namespace Assets.Scripts.Scenes.Game.ComboHits
         private UnityObjectPool bonusBubblePool;
         private UnityObjectPool hitFeedbackBubblePool;
         private GameObject boss;
+        private Canvas canvas;
         private float baseHitZoneZPosition;
 
-        public ComboHitSequenceController(UnityObjectPool hitZonePool, UnityObjectPool bonusBubblePool, UnityObjectPool hitFeedbackBubblePool, GameObject boss, float baseHitZoneZPosition)
+        public ComboHitSequenceController(UnityObjectPool hitZonePool, UnityObjectPool bonusBubblePool, UnityObjectPool hitFeedbackBubblePool, GameObject boss, Canvas canvas, float baseHitZoneZPosition)
         {
             this.hitZonePool = hitZonePool;
             this.bonusBubblePool = bonusBubblePool;
             this.hitFeedbackBubblePool = hitFeedbackBubblePool;
             this.boss = boss;
+            this.canvas = canvas;
             this.baseHitZoneZPosition = baseHitZoneZPosition;
         }
 
@@ -89,18 +91,12 @@ namespace Assets.Scripts.Scenes.Game.ComboHits
         {
             try
             {
-                Vector2 nextHitZoneLocationToDisplay = hitSequence.GetNextHitZoneLocationToDisplay();
-
-                Vector2 worldPoint = boss.transform.TransformPoint(nextHitZoneLocationToDisplay);
-
                 GameObject comboHitZone = (GameObject)hitZonePool.GetNext();
-
-                comboHitZone.transform.InverseTransformPoint(worldPoint);
-
+                Vector2 localPosition = boss.Translate(hitSequence.GetNextHitZoneLocationToDisplay(), canvas.gameObject);
                 ComboHitZoneController comboHitZoneController = comboHitZone.GetComponent<ComboHitZoneController>();
                 comboHitZoneController.OnHitZoneClicked -= HitZoneClickedEventHandler;
                 comboHitZoneController.OnHitZoneClicked += HitZoneClickedEventHandler;
-                comboHitZoneController.Show(nextHitZoneLocationToDisplay, baseHitZoneZPosition * hitSequence.HitZones.Count - hitSequence.NextHitZoneIndex);
+                comboHitZoneController.Show(localPosition, baseHitZoneZPosition * hitSequence.HitZones.Count - hitSequence.NextHitZoneIndex);
                 hitZones.Add(comboHitZoneController);
             }
             catch (PoolExhaustedException)

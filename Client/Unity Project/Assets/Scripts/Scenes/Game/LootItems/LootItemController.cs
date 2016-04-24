@@ -46,11 +46,7 @@ namespace Assets.Scripts.Scenes.Game.LootItems
                 return;
             }
             List<LootItem> lootItems = lootItemService.LootItems.FindAll(match);
-            if (lootItems.Count == 1)
-            {
-                UseItem(lootItems[0]);
-            }
-            else if (lootItems.Count > 1)
+            if (lootItems.Count >= 1)
             {
                 LootItemSelectionController.ShowSelectionPanel(lootItems, selectionTitle);
             }

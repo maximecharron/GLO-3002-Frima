@@ -9,7 +9,7 @@ namespace Assets.Scripts.Scenes.Game.Boss
     public class BossDeathAnimationController : MonoBehaviour
     {
         private const float BOSS_FALL_ANIMATION_BEGIN_TIME = 3f;
-        private const float KILL_ANIMATION_GRAVITY_SCALE = 3f;
+        private const float KILL_ANIMATION_GRAVITY_SCALE = 0.05f;
 
         //Configurable script parameters
         public BossExplosionController BossDeathExplosionController;
@@ -39,7 +39,7 @@ namespace Assets.Scripts.Scenes.Game.Boss
 
         private void ApplyGravity()
         {
-            float gravityDelta = Physics2D.gravity.y * Time.deltaTime;
+            float gravityDelta = Physics2D.gravity.y * Time.deltaTime * KILL_ANIMATION_GRAVITY_SCALE;
             moveDirection.y = moveDirection.y + gravityDelta;
             this.transform.localPosition += moveDirection;
         }

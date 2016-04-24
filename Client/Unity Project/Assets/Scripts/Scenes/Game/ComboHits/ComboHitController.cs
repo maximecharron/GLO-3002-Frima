@@ -16,6 +16,7 @@ namespace Assets.Scripts.Scenes.Game.ComboHits
         private const float DELAY_BETWEEN_SEQUENCES = 5f;
 
         //Configurable script parameters
+        public Canvas Canvas;
         public GameObject Boss;
         public GameObject ComboHitZone;
         public int ComboHitZonePoolSize;
@@ -23,7 +24,7 @@ namespace Assets.Scripts.Scenes.Game.ComboHits
         public int ComboBonusBubblePoolSize;
         public GameObject HitFeedbackBubble;
         public int HitFeedbackBubblePoolSize;
-        public AudioClip SequenceAchievedAudioClip;
+        public int SequenceAchievedAudioClipIndex;
 
         public delegate void ComboHitCompletedEventHandler(ComboHitSequence comboHitSequence);
         public event ComboHitCompletedEventHandler OnComboHitSequenceCompleted = delegate { };
@@ -55,7 +56,7 @@ namespace Assets.Scripts.Scenes.Game.ComboHits
             UnityObjectPool hitZonePool = new UnityObjectPool(ComboHitZone, ComboHitZonePoolSize, IsComboHitZonePoolItemAvailableCallback);
             UnityObjectPool bonusBubblePool = new UnityObjectPool(ComboBonusBubble, ComboBonusBubblePoolSize, IsComboBonusBubblePoolItemAvailableCallback);
             UnityObjectPool hitFeedbackBubblePool = new UnityObjectPool(HitFeedbackBubble, HitFeedbackBubblePoolSize, IsHitFeedbackBubblePoolItemAvailableCallback);
-            hitSequenceController = new ComboHitSequenceController(hitZonePool, bonusBubblePool, hitFeedbackBubblePool, Boss, ComboHitZone.transform.localPosition.z);
+            hitSequenceController = new ComboHitSequenceController(hitZonePool, bonusBubblePool, hitFeedbackBubblePool, Boss, Canvas, ComboHitZone.transform.localPosition.z);
             hitSequenceController.OnHitZoneClicked += HitZoneClickedEventHandler;
             hitSequenceController.OnSequenceAchieved += SequenceAchievedCallbackEventHandler;
             hitSequenceController.OnSequenceTerminated += SequenceTerminatedEventHandler;
@@ -91,7 +92,7 @@ namespace Assets.Scripts.Scenes.Game.ComboHits
         {
             if (enabled && !hitSequenceController.IsActive && Time.time - lastSequenceTime >= DELAY_BETWEEN_SEQUENCES)
             {
-                Vector2 mousePosition = this.gameObject.GetMousePosition();
+                Vector2 mousePosition = Boss.transform.InverseTransformPoint(Camera.main.GetMousePosition());
                 List<ComboHitSequence> eligibleComboHitSeqences = comboHitService.GetEligibleComboHitSequences(mousePosition);
                 if (eligibleComboHitSeqences.Count > 0)
                 {
@@ -111,7 +112,7 @@ namespace Assets.Scripts.Scenes.Game.ComboHits
 
         private void SequenceAchievedCallbackEventHandler(ComboHitSequence hitSequence)
         {
-            GetComponent<AudioSource>().PlayAudioClip(SequenceAchievedAudioClip);
+            GetComponents<AudioSource>()[SequenceAchievedAudioClipIndex].Play();
             OnComboHitSequenceCompleted(hitSequence);
             Boss.GetComponent<BossController>().ComboHit(hitSequence.BonusMultiplier);
         }

@@ -9,6 +9,7 @@ using Assets.Scripts.Services;
 using Assets.Scripts.Services.BossStatus;
 using Assets.Scripts.Scenes.Game.ComboHits;
 using Assets.Scripts.Services.ComboHits;
+using UnityEngine.EventSystems;
 
 namespace Assets.Scripts.Scenes.Game.Boss
 {
@@ -135,6 +136,10 @@ namespace Assets.Scripts.Scenes.Game.Boss
 
         public void OnMouseDown()
         {
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                return;
+            }
             if (StaminaController.IsHitMiss())
             {
                 bossStateController.AddState(hitMissState, true);

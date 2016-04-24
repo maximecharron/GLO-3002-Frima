@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Animation.SpriteAnimation;
 using Assets.Scripts.Extensions;
 using Assets.Scripts.Services;
+using Assets.Scripts.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +30,7 @@ namespace Assets.Scripts.Scenes.Game
         void Start()
         {
             playerPropertyService = FindObjectOfType<PlayerPropertyService>();
-            playerPropertyService.OnLevelUp += LevelUpEventHandler;
+            playerPropertyService.OnLevelUpCompleted += LevelUpCompletedEventHandler;
             spriteAnimator = new SpriteAnimator(GetComponent<Renderer>().material, SpritesheetColumnCount);
             SetAnimationSequence();
             AdjustPositioning();
@@ -42,10 +43,10 @@ namespace Assets.Scripts.Scenes.Game
 
         void OnDestroy()
         {
-            playerPropertyService.OnLevelUp -= LevelUpEventHandler;
+            playerPropertyService.OnLevelUpCompleted -= LevelUpCompletedEventHandler;
         }
 
-        private void LevelUpEventHandler()
+        private void LevelUpCompletedEventHandler()
         {
             SetAnimationSequence();
         }
@@ -60,7 +61,7 @@ namespace Assets.Scripts.Scenes.Game
 
         private void AdjustPositioning()
         {
-            Rect canvasRect = GameCanvas.GetComponent<RectTransform>().rect;
+            Rect canvasRect = GameCanvas.GetComponent<RectTransform>().GetWorldRect();
             this.transform.localScale = new Vector3(canvasRect.width, this.transform.localScale.y, 1);
         }
     }

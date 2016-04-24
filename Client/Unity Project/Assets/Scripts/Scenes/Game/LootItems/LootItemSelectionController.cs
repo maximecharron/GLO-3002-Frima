@@ -37,16 +37,22 @@ namespace Assets.Scripts.Scenes.Game.LootItems
         public void ShowSelectionPanel(List<LootItem> lootItems, string selectionTitle)
         {
             SelectionTitleText.text = selectionTitle;
-            IEnumerable<IGrouping <string, LootItem>> lootItemGroups = lootItems.GroupBy(lootItem => lootItem.Name);
+            IEnumerable<IGrouping <string, LootItem>> lootItemGroups = lootItems.GroupBy(lootItem => lootItem.Name)
+                .OrderBy(lootItemGroup => lootItemGroup.FirstElement().PowerValue);
             foreach (IGrouping<string, LootItem> lootItemGroup in lootItemGroups)
             {
-                GameObject lootItemGameObject = LootItemGroupTemplate.Clone();
-                lootItemGameObjects.Add(lootItemGameObject);
-                LootItemSelectionGroupController lootItemSelectionGroupController = lootItemGameObject.GetComponent<LootItemSelectionGroupController>();
-                lootItemSelectionGroupController.OnLootItemGroupSelected += LootItemGroupSelectedEventHandler;
-                lootItemSelectionGroupController.ShowItemGroup(lootItemGroup);
+                ShowItemGroup(lootItemGroup);
             }
             this.gameObject.SetActive(true);
+        }
+
+        private void ShowItemGroup(IGrouping<string, LootItem> lootItemGroup)
+        {
+            GameObject lootItemGameObject = LootItemGroupTemplate.Clone();
+            lootItemGameObjects.Add(lootItemGameObject);
+            LootItemSelectionGroupController lootItemSelectionGroupController = lootItemGameObject.GetComponent<LootItemSelectionGroupController>();
+            lootItemSelectionGroupController.OnLootItemGroupSelected += LootItemGroupSelectedEventHandler;
+            lootItemSelectionGroupController.ShowItemGroup(lootItemGroup);
         }
 
         private void HideSelectionPanel()
@@ -66,7 +72,7 @@ namespace Assets.Scripts.Scenes.Game.LootItems
         private void LootItemGroupSelectedEventHandler(IGrouping<string, LootItem> lootItemGroup)
         {
             HideSelectionPanel();
-            OnLootItemSelected(lootItemGroup.ElementAt(0));
+            OnLootItemSelected(lootItemGroup.FirstElement());
         }
     }
 }
