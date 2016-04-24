@@ -34,7 +34,7 @@ angular.module('CMS.game').controller("game-controller", function ($scope, gameR
         var itemsProbability = [];
         var counter = 1;
         for (var i = 1; i<100; i++){
-            if (result.probabilityLoot[i-1] != result.probabilityLoot[i]){
+            if (result.probabilityLoot[i-1] != result.probabilityLoot[i] || i == 99){
                 itemsProbability.push({value:counter});
                 counter = 0;
             } else {
