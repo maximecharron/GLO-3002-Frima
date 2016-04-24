@@ -70,12 +70,12 @@ angular.module('CMS.item').controller("item-controller", function ($scope, itemR
                 $scope.items.splice(index, 1);
             }
         });
-        $scope.selectedItem = null;
 
-        itemResource.deleteItem(function ()
+        itemResource.deleteItem($scope.selectedItem, function ()
         {
             $scope.deleteSuccess = true;
         })
+        $scope.selectedItem = null;
     };
     $scope.initializeItems();
 });

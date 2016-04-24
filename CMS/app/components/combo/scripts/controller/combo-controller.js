@@ -80,12 +80,13 @@ angular.module('CMS.combo').controller("combo-controller", function ($scope, com
                 $scope.combos.splice(index, 1);
             }
         });
-        $scope.selectedCombo = null;
 
-        comboResource.deleteCombo(function ()
+        comboResource.deleteCombo($scope.selectedCombo, function ()
         {
             $scope.deleteSuccess = true;
-        })
+        });
+
+        $scope.selectedCombo = null;
     };
 
 
