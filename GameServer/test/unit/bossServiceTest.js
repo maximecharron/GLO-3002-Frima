@@ -14,16 +14,19 @@ var sinon = require("sinon");
 var BossService = require('./../../services/bossService.js');
 var BossCommunicationService = require('./../../services/bossCommunicationService.js');
 var BossRepository = require('./../../repository/bossRepository.js');
+var RedisCommunicationService = require('./../../services/redisCommunicationService.js');
+
 var Boss = require("../../domain/boss.js");
 var hostname = require('os').hostname();
-var bossDef = { serverName:hostname, bossName: "Tyson", currentBossLife: "100", maximumBossLife: "100", status: "0" };
+var bossDef = { serverName:hostname, bossName: "Tyson", currentBossLife: 100, maximumBossLife: 100, status: 0 };
 
 var bossCommunicationServiceStub;
 var bossRepositoryStub;
+var redisCommunicationServiceStub;
 
 before(function(done){
     done();
-})
+});
 
 describe("bossService", function ()
 {
@@ -31,8 +34,9 @@ describe("bossService", function ()
     {
         bossCommunicationServiceStub = sinon.createStubInstance(BossCommunicationService);
         bossRepositoryStub = sinon.createStubInstance(BossRepository);
+        redisCommunicationServiceStub = sinon.createStubInstance(RedisCommunicationService);
         done();
-    })
+    });
     describe("initializeBoss", function()
     {
         it("should call bossRepository getBoss and saveBoth", function()
@@ -56,26 +60,26 @@ describe("bossService", function ()
     {
         it("should call reduce bossLife", function()
         {
-            ////Arrange
-            //var bossExpected = new Boss(bossDef.serverName, bossDef.bossName, bossDef.currentBossLife, bossDef.maximumBossLife, bossDef.status);
-            //bossRepositoryStub.getBoss.callsArgWith(0, bossExpected);
-            //var bossService = new BossService(bossCommunicationServiceStub, bossRepositoryStub);
-            //var damageToReceive = 10;
-            //
-            //var expectLife = 90;
-            //var resultLife = 0;
-            //
-            //var callback = function(theBoss)
-            //{
-            //    resultLife = theBoss.getLife();
-            //};
-            //
-            ////Act
-            //bossService.initializeBoss();
-            //bossService.makeDamage(damageToReceive, callback);
-            //
-            ////Assert
-            //expect(expectLife).to.equal(resultLife);
+            //Arrange
+            var bossExpected = new Boss(bossDef.serverName, bossDef.bossName, bossDef.currentBossLife, bossDef.maximumBossLife, bossDef.status);
+            bossRepositoryStub.getBoss.callsArgWith(0, bossExpected);
+            var bossService = new BossService(bossCommunicationServiceStub, bossRepositoryStub, redisCommunicationServiceStub);
+            var damageToReceive = 10;
+
+            var expectLife = 90;
+            var resultLife = 0;
+
+            var callback = function(theBoss)
+            {
+                resultLife = theBoss.getLife();
+            };
+
+            //Act
+            bossService.initializeBoss();
+            bossService.makeDamage(damageToReceive, callback);
+
+            //Assert
+            expect(expectLife).to.equal(resultLife);
         });
     });
 
@@ -86,14 +90,22 @@ describe("bossService", function ()
             ////Arrange
             //var bossExpected = new Boss(bossDef.serverName, bossDef.bossName, bossDef.currentBossLife, bossDef.maximumBossLife, bossDef.status);
             //bossRepositoryStub.getBoss.callsArgWith(0, bossExpected);
-            //var bossService = new BossService(bossCommunicationServiceStub, bossRepositoryStub);
+            //var bossService = new BossService(bossCommunicationServiceStub, bossRepositoryStub, redisCommunicationServiceStub);
             //var damageToReceive = 10;
+            //
+            //var callback = function(theBoss)
+            //{
+            //
+            //};
             //
             ////Act
             //bossService.initializeBoss();
-            //bossService.makeDamage(damageToReceive, function(theBoss){});
+            //bossService.makeDamage(damageToReceive, function(callback){});
             //bossService.reviveBoss();
             //var resultBoss = bossService.getCurrentBoss();
+            //
+            //console.log('resultBoss: ', resultBoss);
+            //console.log('bossExpected: ', bossExpected);
             //
             ////Assert
             //expect(bossExpected.toString()).to.equal(resultBoss.toString());
