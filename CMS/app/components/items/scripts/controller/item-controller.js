@@ -3,7 +3,7 @@ angular.module('CMS.item').controller("item-controller", function ($scope, itemR
 
     $scope.items;
     $scope.selectedItem;
-    $scope.newItemCreated = true;
+    $scope.newItemCreated = false;
 
 
     $scope.initializeItems = function ()
