@@ -13,14 +13,16 @@ exports.getItems = function (request, response)
 
 exports.deleteItem = function (request, response)
 {
-    ItemRepository.removeItem(request.body.name, function (success)
+    ItemRepository.removeItem(request.params.id, function (error, success)
     {
         if (success)
         {
             response.status(OK).send();
-        } else
+        } else if(!error)
         {
             response.status(404).send();
+        } else {
+            response.status(500).send();
         }
     });
 };

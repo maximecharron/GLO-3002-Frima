@@ -54,13 +54,13 @@ app.post('/update',authentication.isAuthenticated, boss.updateBoss);
 app.get('/combos', authentication.isAuthenticated, combo.getCombos);
 app.post('/combos', authentication.isAuthenticated, combo.updateCombo);
 app.put('/combos', authentication.isAuthenticated, combo.newCombo);
-app.delete('/combos', authentication.isAuthenticated, combo.deleteCombo);
+app.delete('/combos/:id', authentication.isAuthenticated, combo.deleteCombo);
 app.get('/gameConfig', authentication.isAuthenticated, gameConfig.getGameConfig);
 app.post('/gameConfig', authentication.isAuthenticated, gameConfig.updateGameConfig);
 app.get('/items', authentication.isAuthenticated, item.getItems);
 app.post('/items', authentication.isAuthenticated, item.updateItem);
-app.put('/items', authentication.isAuthenticated, item.createItem);
-app.delete('/items', authentication.isAuthenticated, item.deleteItem);
+app.put('/items/', authentication.isAuthenticated, item.createItem);
+app.delete('/items/:id', authentication.isAuthenticated, item.deleteItem);
 
 var port = process.env.PORT || 3000;
 console.log("Server listening on port "+port);

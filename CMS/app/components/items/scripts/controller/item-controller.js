@@ -71,7 +71,9 @@ angular.module('CMS.item').controller("item-controller", function ($scope, itemR
             }
         });
 
-        itemResource.deleteItem($scope.selectedItem, function ()
+        itemResource.deleteItem({
+            "id": $scope.selectedItem.id
+        }, function ()
         {
             $scope.deleteSuccess = true;
         })

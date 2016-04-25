@@ -1,5 +1,5 @@
 angular.module('CMS.item', ['ngRoute', 'ngResource', 'environment']).factory('itemResource', ["$resource", 'envService', function($resource, envService){
-    return $resource(envService.read('apiUrl')+"/:path",{} ,{
+    return $resource(envService.read('apiUrl')+"/:path/:id",{} ,{
         getItems: {
             method:"GET",
             params:{
@@ -10,8 +10,9 @@ angular.module('CMS.item', ['ngRoute', 'ngResource', 'environment']).factory('it
         deleteItem: {
             method:"DELETE",
             params:{
-                path:"items"
-            },
+                path:"items",
+                id:"@id"
+            }
         },
         updateItem:{
             method:"POST",

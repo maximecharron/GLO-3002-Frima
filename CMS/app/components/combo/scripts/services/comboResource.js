@@ -1,5 +1,5 @@
 angular.module('CMS.combo', ['ngRoute', 'ngResource', 'environment']).factory('comboResource', ["$resource", 'envService', function($resource, envService){
-    return $resource(envService.read('apiUrl')+"/:path",{} ,{
+    return $resource(envService.read('apiUrl')+"/:path/:id",{} ,{
         getCombos: {
             method:"GET",
             params:{
@@ -10,9 +10,9 @@ angular.module('CMS.combo', ['ngRoute', 'ngResource', 'environment']).factory('c
         deleteCombo: {
             method:"DELETE",
             params:{
-                path:"combos"
+                path:"combos",
+                id: '@id'
             },
-            isArray:true
         },
         updateCombo:{
             method:"POST",

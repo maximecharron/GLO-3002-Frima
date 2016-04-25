@@ -9,12 +9,18 @@ exports.getCombos = function(request, response){
     });
 };
 
-exports.deleteCombo= function(request, response){
-    ComboRepository.removeCombo(request.body.name, function(success){
-        if (success){
+exports.deleteCombo = function (request, response)
+{
+    ComboRepository.removeCombo(request.params.id, function (error, success)
+    {
+        if (success)
+        {
             response.status(OK).send();
-        } else {
+        } else if(!error)
+        {
             response.status(404).send();
+        } else {
+            response.status(500).send();
         }
     });
 };

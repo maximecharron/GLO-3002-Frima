@@ -81,7 +81,9 @@ angular.module('CMS.combo').controller("combo-controller", function ($scope, com
             }
         });
 
-        comboResource.deleteCombo($scope.selectedCombo, function ()
+        comboResource.deleteCombo({
+            "id": $scope.selectedCombo.id
+        }, function ()
         {
             $scope.deleteSuccess = true;
         });

@@ -30,16 +30,26 @@ exports.findCombo = function (name, callback)
 
 exports.removeCombo = function (name, callback)
 {
-    Combo.remove({"name": name}, function (err)
-    {
-        if (!err)
+    Combo.findById(id, function (err, combo)
         {
-            callback();
-        } else
-        {
-            callback();
+            if (!err)
+            {
+                if (combo)
+                {
+                    combo.remove();
+                    callback(null, true);
+                }
+                else
+                {
+                    callback(null, false);
+                }
+            }
+            else
+            {
+                callback(false);
+            }
         }
-    });
+    );
 };
 
 exports.updateCombo = function (comboToUpdate, callback)
