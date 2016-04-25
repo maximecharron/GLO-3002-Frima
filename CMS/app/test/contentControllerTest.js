@@ -3,8 +3,8 @@ var ngModule = helpers.module;
 var inject = helpers.inject;
 var sinon = helpers.sinon;
 var expect = require('chai').expect;
-require('../components/content/scripts/services/contentResource');
-require('../components/content/scripts/controller/content-controller');
+require('../components/boss/scripts/services/bossResource');
+require('../components/boss/scripts/controller/boss-controller');
 
 const BOSS = {
     bossName: "bossName",
@@ -21,19 +21,19 @@ const UPDATED_BOSS = {
     status: "0"
 }
 const BOSS_STRING = '{"bossName": "bossName", "serverName": "serverName", "maximumBossLife": 1000, "currentBossLife": 1000, "status": "0"}';
-const CONSTANT_TYPE = '{"type": "constant"}';
-const CURRENT_TYPE = '{"type": "current"}';
+const CONSTANT_TYPE = {type: "constant"};
+const CURRENT_TYPE = {type: "current"};
 
-describe('Content controller', function ()
+describe('Boss controller', function ()
 {
     var scope;
     var controller;
-    var contentResource;
+    var bossResource;
     var sandbox;
     beforeEach(function ()
     {
-        ngModule('CMS.content');
-        angular.module('CMS.content').config(function (envServiceProvider)
+        ngModule('CMS.boss');
+        angular.module('CMS.boss').config(function (envServiceProvider)
         {
             envServiceProvider.config({
                 domains: {
@@ -54,8 +54,8 @@ describe('Content controller', function ()
     {
         scope = $rootScope.$new();
         sandbox = sinon.sandbox.create();
-        contentResource = $injector.get('contentResource');
-        controller = $controller('content-controller', {$scope: scope, contentResource: contentResource});
+        bossResource = $injector.get('bossResource');
+        controller = $controller('boss-controller', {$scope: scope, bossResource: bossResource});
     }));
 
     afterEach(function ()
@@ -97,55 +97,39 @@ describe('Content controller', function ()
     {
         it('should call constantBoss if type is constant', function (done)
         {
-            sandbox.spy(contentResource, "getConstantBosses");
-            scope.typeChanged(CONSTANT_TYPE);
-            expect(contentResource.getConstantBosses.calledOnce).to.equal(true);
+            sandbox.spy(bossResource, "getConstantBosses");
+            scope.selectedUpdateType = CONSTANT_TYPE;
+            scope.typeChanged();
+            expect(bossResource.getConstantBosses.calledOnce).to.equal(true);
             done();
         });
 
         it('should call currentBoss if type is current', function (done)
         {
-            sandbox.spy(contentResource, "getCurrentBosses");
+            sandbox.spy(bossResource, "getCurrentBosses");
+            scope.selectedUpdateType = CURRENT_TYPE;
             scope.typeChanged(CURRENT_TYPE);
-            expect(contentResource.getCurrentBosses.calledOnce).to.equal(true);
+            expect(bossResource.getCurrentBosses.calledOnce).to.equal(true);
             done();
         });
 
         it('should set bosses to currentBosses if current', function (done)
         {
-            sandbox.stub(contentResource, "getCurrentBosses").callsArgWith(0, BOSS);
+            sandbox.stub(bossResource, "getCurrentBosses").callsArgWith(0, BOSS);
+            scope.selectedUpdateType = CURRENT_TYPE;
             scope.typeChanged(CURRENT_TYPE);
-            expect(contentResource.getCurrentBosses.calledOnce).to.equal(true);
+            expect(bossResource.getCurrentBosses.calledOnce).to.equal(true);
             expect(scope.bosses).to.equal(BOSS);
             done();
         });
 
         it('should set bosses to constantBosses if constant', function (done)
         {
-            sandbox.stub(contentResource, "getConstantBosses").callsArgWith(0, BOSS);
+            sandbox.stub(bossResource, "getConstantBosses").callsArgWith(0, BOSS);
+            scope.selectedUpdateType = CONSTANT_TYPE;
             scope.typeChanged(CONSTANT_TYPE);
-            expect(contentResource.getConstantBosses.calledOnce).to.equal(true);
+            expect(bossResource.getConstantBosses.calledOnce).to.equal(true);
             expect(scope.bosses).to.equal(BOSS);
-            done();
-        });
-    });
-
-    describe('changed method', function ()
-    {
-        it('should set selectedBoss if it is null', function (done)
-        {
-            expect(scope.selectedBoss).to.be.undefined;
-            scope.bossChanged(BOSS_STRING);
-            expect(scope.selectedBoss.bossName).to.equal(BOSS.bossName);
-            done();
-        });
-
-        it('should update selectedBoss if it is not null', function (done)
-        {
-            scope.selectedBoss = {"bossName": "blop"};
-            expect(scope.selectedBoss).to.not.be.undefined;
-            scope.bossChanged(BOSS_STRING);
-            expect(scope.selectedBoss.bossName).to.equal(BOSS.bossName);
             done();
         });
     });
@@ -154,7 +138,7 @@ describe('Content controller', function ()
     {
         it('should put updateSuccess and updateError to false when starting update', function (done)
         {
-            sandbox.stub(contentResource, "updateBoss", function (boss, callbackSuccess, callbackError)
+            sandbox.stub(bossResource, "updateBoss", function (boss, callbackSuccess, callbackError)
             {
                 /*Empty stub on purpose*/
             });
@@ -165,20 +149,20 @@ describe('Content controller', function ()
             expect(scope.updateSuccess).to.equal(false);
             done();
         });
-        it('should call updateBoss on contentResource', function (done)
+        it('should call updateBoss on bossResource', function (done)
         {
-            sandbox.spy(contentResource, "updateBoss");
+            sandbox.spy(bossResource, "updateBoss");
             scope.updateBoss(UPDATED_BOSS);
-            expect(contentResource.updateBoss.calledOnce).to.equal(true);
+            expect(bossResource.updateBoss.calledOnce).to.equal(true);
             done();
         });
 
         it('should update selectedBoss and updateSuccess if successful', function (done)
         {
             scope.selectedBoss = BOSS;
-            sandbox.stub(contentResource, "updateBoss").callsArgWith(1, UPDATED_BOSS);
+            sandbox.stub(bossResource, "updateBoss").callsArgWith(1, UPDATED_BOSS);
             scope.updateBoss(UPDATED_BOSS);
-            expect(contentResource.updateBoss.calledOnce).to.equal(true);
+            expect(bossResource.updateBoss.calledOnce).to.equal(true);
             expect(scope.selectedBoss.bossName).to.equal(UPDATED_BOSS.bossName);
             expect(scope.updateSuccess).to.equal(true);
             expect(scope.updateError).to.equal(false);
@@ -188,9 +172,9 @@ describe('Content controller', function ()
         it('should  not update selectedBoss and update updateError if not successful', function (done)
         {
             scope.selectedBoss = BOSS;
-            sandbox.stub(contentResource, "updateBoss").callsArgWith(2, UPDATED_BOSS);
+            sandbox.stub(bossResource, "updateBoss").callsArgWith(2, UPDATED_BOSS);
             scope.updateBoss(UPDATED_BOSS);
-            expect(contentResource.updateBoss.calledOnce).to.equal(true);
+            expect(bossResource.updateBoss.calledOnce).to.equal(true);
             expect(scope.selectedBoss.bossName).to.equal(BOSS.bossName);
             expect(scope.updateError).to.equal(true);
             expect(scope.updateSuccess).to.equal(false);

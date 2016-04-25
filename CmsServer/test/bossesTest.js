@@ -14,6 +14,10 @@ redisClientStub.hmset = function (key, values)
 {
     /* Empty method stub */
 };
+redisClientStub.set = function (key, values)
+{
+    /* Empty method stub */
+};
 redisStub.createClient = function(url){
     return redisClientStub;
 };

@@ -1,0 +1,102 @@
+<div class="page-header">
+</div>
+<div>
+    <div class="row">
+        </br>
+    </div>
+    <div class="row">
+        <div class="col-md-offset-4">
+            <h5>Please select a combo to update or create a new combo</h5>
+            <div class="col-md-8">
+                <select class="form-control" name="comboSelect" id="comboSelect" ng-model="selectedCombo"
+                        ng-options="combo as combo.name for combo in combos"
+                        ng-change="comboChanged()">
+                </select>
+            </div>
+            <div class="col-md-offset-4">
+            <button class="btn btn-default pull-right" ng-click="newCombo()">New Combo</button>
+            </div>
+        </div>
+
+        <div ng-show="selectedCombo">
+            <div class="col-md-4">
+                <canvas id="game" width="256" height="256"></canvas>
+                <div>
+                    <toggle-switch
+                            ng-model="remove"
+                            knob-label="Remove"
+                            on-label="On"
+                            off-label="Off">
+                    </toggle-switch>
+                    <toggle-switch
+                            ng-model="triggerZone"
+                            knob-label="Trigger"
+                            on-label="On"
+                            off-label="Off">
+                    </toggle-switch>
+                </div>
+            </div>
+            <div class="col-md-8" ng-if="selectedCombo">
+                <h5>Combo</h5>
+
+                <div ng-show="updateSuccess" class="has-success">Combo successfully updated!</div>
+                <div ng-show="updateError" class="has-error">Sorry, an error occured while updating the combo. Please
+                    try again.
+                </div>
+                <form role="form" class="form-horizontal" ng-submit="updateCombo(selectedCombo)">
+                    <div class="form-group">
+                        <label class="control-label" for="bossName">Combo Name: </label>
+
+                        <div>
+                            <input class="form-control" id="bossName" placeholder="{{selectedCombo.name}}"
+                                   ng-model="selectedCombo.name" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="triggerFrequency">Trigger Frequency:</label>
+
+                        <div>
+                            <input class="form-control" id="triggerFrequency" type="number"
+                                   placeholder="{{selectedCombo.triggerFrequency}}" min="0" max="2147483647"
+                                   ng-model="selectedCombo.triggerFrequency">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="bonusMultiplier">Bonus Multiplier:</label>
+
+                        <div>
+                            <input class="form-control" id="bonusMultiplier" type="number"
+                                   placeholder="{{selectedCombo.bonusMultiplier}}" min="0" max="2147483647"
+                                   ng-model="selectedCombo.bonusMultiplier">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="maxFirstHitWaitTime">First hit maximum wait
+                            time:</label>
+
+                        <div>
+                            <input class="form-control" id="maxFirstHitWaitTime"
+                                   placeholder="{{selectedCombo.maxFirstHitWaitTime}}"
+                                   ng-model="selectedCombo.maxFirstHitWaitTime">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="maxWaitTimeBetweenHits">Maximum wait time between
+                            hits:</label>
+
+                        <div>
+                            <input class="form-control" id="maxWaitTimeBetweenHits"
+                                   placeholder="{{selectedCombo.maxWaitTimeBetweenHits}}"
+                                   ng-model="selectedCombo.maxWaitTimeBetweenHits">
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-default" ng-click="deleteCombo(selectedCombo)">
+                        Delete Combo
+                    </button>
+                    <button type="submit" class="btn btn-default pull-right" ng-disabled="form.$invalid">Update Combo
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

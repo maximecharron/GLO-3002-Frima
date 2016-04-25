@@ -5,6 +5,9 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var flash = require('connect-flash');
 var boss = require('./routes/bosses.js');
+var combo = require('./routes/combos.js');
+var item = require('./routes/item.js');
+var gameConfig = require('./routes/gameConfig.js');
 
 var cors = require('cors');
 var passport = require('passport');
@@ -48,6 +51,17 @@ app.get('/status', status.getStatus);
 app.get('/bossesConstant', authentication.isAuthenticated,boss.getConstantBossList);
 app.get('/bosses',authentication.isAuthenticated, boss.getBossList);
 app.post('/update',authentication.isAuthenticated, boss.updateBoss);
+app.get('/combos', authentication.isAuthenticated, combo.getCombos);
+app.post('/combos', authentication.isAuthenticated, combo.updateCombo);
+app.put('/combos', authentication.isAuthenticated, combo.newCombo);
+app.delete('/combos/:id', authentication.isAuthenticated, combo.deleteCombo);
+app.get('/gameConfig', authentication.isAuthenticated, gameConfig.getGameConfig);
+app.post('/gameConfig', authentication.isAuthenticated, gameConfig.updateGameConfig);
+app.get('/items', authentication.isAuthenticated, item.getItems);
+app.post('/items', authentication.isAuthenticated, item.updateItem);
+app.put('/items/', authentication.isAuthenticated, item.createItem);
+app.delete('/items/:id', authentication.isAuthenticated, item.deleteItem);
 
 var port = process.env.PORT || 3000;
+console.log("Server listening on port "+port);
 app.listen(port);

@@ -6,11 +6,14 @@
         <div class="collapse nav navbar-collapse" id="navbar-collapse-1" ng-controller="user-menu-controller">
             <div ng-if="user && user != {}">
                 <ul class="nav navbar-nav">
-                    <li><a href="#/content">Bosses</a></li>
+                    <li><a href="#/boss">Bosses</a></li>
                     <li ng-show="user.isSuperAdmin"><a href="#/register">Admin</a></li>
+                    <li><a href="#/combo">Combos</a></li>
+                    <li><a href="#/game">Game Config</a></li>
+                    <li><a href="#/item">Items</a></li>
                 </ul>
 
-                <div class="navbar-text pull-right" ng-if="userIsLogged">
+                <div class="navbar-text pull-right" ng-show="userIsLogged">
                     <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="true">{{user.name}}<span class="caret"></span></a>
                     <ul class="dropdown-menu pull-right">
