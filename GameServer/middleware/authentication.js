@@ -1,6 +1,7 @@
 var url = require('url');
 var UserModel = require('../models/user').model;
 var jwt = require('jwt-simple');
+
 const UNAUTHORIZED = 401;
 
 exports.isAuthenticated = function (request, response, nextFunction) {

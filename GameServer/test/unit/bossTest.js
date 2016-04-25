@@ -4,7 +4,7 @@ require("./../../constants/bossConstants.js");
 var hostname = require('os').hostname();
 
 var bossDef = { serverName:hostname, bossName: "Tyson", currentBossLife: "100", maximumBossLife: "100", status: "0" };
-var bossExpected = { bossName: "Tyson", currentBossLife: "100", maximumBossLife: "100", status: "0" };
+var bossExpected = { bossName: "Tyson", currentBossLife: "100", maximumBossLife: "100", status: "0", creationDate: new Date().setSeconds(0,0) };
 var boss;
 
 describe("Boss", function ()
@@ -12,7 +12,7 @@ describe("Boss", function ()
 
     beforeEach(function ()
     {
-        boss = new Boss(bossDef.serverName, bossDef.bossName, bossDef.currentBossLife, bossDef.maximumBossLife, bossDef.status);
+        boss = new Boss(bossDef.serverName, bossDef.bossName, bossDef.currentBossLife, bossDef.maximumBossLife, bossDef.status, new Date().setSeconds(0,0));
         boss.revive();
     });
 
@@ -104,22 +104,45 @@ describe("Boss", function ()
         });
     });
 
-    describe("revive", function()
+    describe("getLife", function()
     {
-        it("should return boss with currentBossLife == maximumBossLife and status alive", function()
+        it("should return currentBossLife", function()
         {
             //Arrange
-            var expectedBossLife = boss.getMaximumLife();
-            var expectedStatus = STATUS.ALIVE;
+
             //Act
-            boss.receiveDamage(100);
-            boss.revive();
             var resultLife = boss.getLife();
+
+            //Assert
+            expect(bossExpected.currentBossLife).to.equal(resultLife);
+        });
+    });
+
+    describe("getMaximumLife", function()
+    {
+        it("should return maximumBossLife", function()
+        {
+            //Arrange
+
+            //Act
+            var resultLife = boss.getMaximumLife();
+
+            //Assert
+            expect(bossExpected.maximumBossLife).to.equal(resultLife);
+        });
+    });
+
+    describe("getStatus", function()
+    {
+        it("should return status", function()
+        {
+            //Arrange
+
+            //Act
             var resultStatus = boss.getStatus();
 
             //Assert
-            expect(expectedBossLife).to.equal(resultLife);
-            expect(expectedStatus).to.equal(resultStatus);
+            expect(bossExpected.status).to.equal(resultStatus);
         });
     });
 
@@ -155,4 +178,66 @@ describe("Boss", function ()
         });
     });
 
+    describe("revive", function()
+    {
+        it("should return boss with currentBossLife == maximumBossLife and status alive", function()
+        {
+            //Arrange
+            var expectedBossLife = boss.getMaximumLife();
+            var expectedStatus = STATUS.ALIVE;
+            //Act
+            boss.receiveDamage(100);
+            boss.revive();
+            var resultLife = boss.getLife();
+            var resultStatus = boss.getStatus();
+
+            //Assert
+            expect(expectedBossLife).to.equal(resultLife);
+            expect(expectedStatus).to.equal(resultStatus);
+        });
+    });
+
+    describe("setCreatedDate", function()
+    {
+        it("should set the createdDate to current date", function()
+        {
+            //Arrange
+            var expectedDate = Date();
+
+            //Act
+            boss.setCreationDate(expectedDate);
+            var creationDate = boss.getCreationDate();
+
+            //Assert
+            expect(expectedDate).to.equal(creationDate);
+        });
+    });
+
+    describe("getCreatedDate", function()
+    {
+        it("should return createdDate ", function()
+        {
+            //Arrange
+
+            //Act
+            var result = boss.getCreationDate();
+
+            //Assert
+            expect(bossExpected.creationDate).to.equal(result);
+        });
+    });
+
+    describe("getName", function()
+    {
+        it("should return name ", function()
+        {
+            //Arrange
+
+            //Act
+            var result = boss.getName();
+
+            //Assert
+            expect(bossExpected.bossName).to.equal(result);
+        });
+    });
 });

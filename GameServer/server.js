@@ -56,8 +56,23 @@ console.log("http server listening on %d", port);
 require("./constants/bossConstants.js");
 var webSocketServer = new WebSocketServer({server: server});
 
+var ItemRepository = require('./repository/itemRepository.js');
+var itemRepository = new ItemRepository();
+
+var LootService = require('./services/lootService.js');
+var lootService = new LootService(itemRepository);
+
+var UserRepository = require('./repository/userRepository.js');
+var userRepository = new UserRepository();
+
+var UserService = require('./services/userService.js');
+var userService = new UserService(userRepository);
+
+var UserCommunicationService = require('./services/userCommunicationService.js');
+var userCommunicationService = new UserCommunicationService();
+
 var BossCommunicationService = require('./services/bossCommunicationService.js');
-var bossCommunicationService = new BossCommunicationService(webSocketServer);
+var bossCommunicationService = new BossCommunicationService(webSocketServer, lootService, userService);
 
 var RedisCommunicationService = require('./services/redisCommunicationService.js');
 var redisCommunicationService = new RedisCommunicationService();
@@ -66,16 +81,25 @@ var BossRepository = require('./repository/bossRepository.js');
 var bossRepository = new BossRepository(redisCommunicationService);
 
 var BossService = require('./services/bossService.js');
-var bossService = new BossService(bossCommunicationService, bossRepository);
-
-var RedisListenerService = require('./services/redisListenerService.js');
-var redisListenerService = new RedisListenerService(bossService, bossCommunicationService);
+var bossService = new BossService(bossCommunicationService, bossRepository, redisCommunicationService);
 
 var UpdateService = require('./services/updateService.js');
-var updateService = new UpdateService(bossRepository, bossCommunicationService, bossService);
+var updateService = new UpdateService(bossRepository, bossCommunicationService, bossService, redisCommunicationService);
+
+var GameRepository = require('./repository/gameRepository.js');
+var gameRepository = new GameRepository();
+
+var GameService = require('./services/gameService.js');
+var gameService = new GameService(gameRepository, lootService, userService);
+
+var GameCommunicationService = require('./services/gameCommunicationService.js');
+var gameCommunicationService = new GameCommunicationService(webSocketServer, gameService);
+
+var RedisListenerService = require('./services/redisListenerService.js');
+var redisListenerService = new RedisListenerService(bossService, bossCommunicationService, lootService, gameService, gameCommunicationService, userService);
 
 var WebSocketAPI = require('./api/webSocketAPI.js');
-var webSocketAPI = new WebSocketAPI(bossService, bossCommunicationService, redisCommunicationService, webSocketServer);
+var webSocketAPI = new WebSocketAPI(bossService, bossCommunicationService, redisCommunicationService, webSocketServer, userService, userCommunicationService, gameCommunicationService);
 
 console.log("websocket server created");
 webSocketAPI.initializeBoss();

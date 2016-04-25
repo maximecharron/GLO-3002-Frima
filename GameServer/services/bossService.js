@@ -1,9 +1,10 @@
 //Constructor
-function BossService(bossCommunicationService, bossRepository)
+function BossService(bossCommunicationService, bossRepository, redisCommunicationService)
 {
     this.boss = {};
     this.bossCommunicationService = bossCommunicationService;
     this.bossRepository = bossRepository;
+    this.redisCommunicationService = redisCommunicationService;
 }
 
 //Public method
@@ -19,6 +20,7 @@ BossService.prototype.initializeBoss = function()
 
 BossService.prototype.makeDamage = function(amount, callback)
 {
+    this.redisCommunicationService.decreaseCurrentLife(amount);
     this.boss.receiveDamage(amount);
     callback(this.boss);
 };
@@ -38,6 +40,11 @@ BossService.prototype.updateBoss = function(currentLife, maximumLife)
 {
     this.boss.setCurrentLife(currentLife);
     this.boss.setMaximumLife(maximumLife);
+};
+
+BossService.prototype.updateCurrentLife = function(currentLife)
+{
+    this.boss.setCurrentLife(currentLife);
 };
 
 BossService.prototype.saveBossDataBase = function()

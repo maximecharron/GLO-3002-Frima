@@ -1,10 +1,15 @@
 var ws = require('ws');
 
+var self;
 //Constructor
-function BossCommunicationService(webSocketServer)
+function BossCommunicationService(webSocketServer, lootService, userService)
 {
     this.lastLifeBroadcasted = 0;
+    this.lootService = lootService;
     this.wss = webSocketServer;
+    this.userService = userService;
+
+    self = this;
 }
 
 //Public method
@@ -27,8 +32,27 @@ BossCommunicationService.prototype.broadcastBossDead = function(theBoss)
     {
         try
         {
+            var items = self.lootService.getLoot();
+            var lootItems = self.lootService.createItemsCommand(items);
+
+            var clientId = client._ultron.id;
+
+            try
+            {
+                self.userService.addUserItems(clientId, items);
+            }
+            catch (error)
+            {
+                console.log("Impossible to add item to the user: ", error);
+            }
+
+            //Log for debug
+            console.log("bossUpdate: ", bossUpdate);
+            console.log("lootItems: ", lootItems);
+            //Log for debug
+
             client.send(bossUpdate);
-            client.close();
+            client.send(lootItems);
         } catch (error)
         {
             console.log(error);
