@@ -1,5 +1,5 @@
-var UserModel = require('../models/user').model;
-var ItemModel = require('../models/item').model;
+var UserModel = require('../models/user.js').model;
+var ItemModel = require('../models/item.js').model;
 var jwt = require('jwt-simple');
 
 //Constructor
@@ -79,7 +79,7 @@ UserRepository.prototype.levelUpUser = function(token, parameters, levelUpInform
         user.level = parameters.level;
         user.requiredExperiencePointsForNextLevel = levelUpInformation.nextLevelXp;
         user.upgradePointsOnLevelComplete = levelUpInformation.pointForNextLevel;
-        user.hypePowerLevel += parseInt(parameters.hypePowerLevelUpgrade);
+        user.attackPowerLevel += parseInt(parameters.attackPowerLevelUpgrade);
         user.staminaPowerLevel += parseInt(parameters.staminaPowerLevelUpgrade);
         user.hypePowerLevel += parseInt(parameters.hypePowerLevelUpgrade);
 
@@ -110,7 +110,6 @@ UserRepository.prototype.updateUserExperience = function(token, experiencePoints
 var getUser = function(token, callback)
 {
     var decoded = jwt.decode(token, 'FRIMA_TOKEN_SECRET');
-
     UserModel.findOne({ '_id': decoded.iss }, function (err, user) {
         if (!err)
         {

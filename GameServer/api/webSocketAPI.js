@@ -98,13 +98,14 @@ function newMessage(message, webSocket)
 
         else if(request.command.name == "updateUserLevel")
         {
-            if(request.command.parameters.level){
+            if(request.command.parameters.level && request.command.parameters.attackPowerLevelUpgrade && request.command.parameters.staminaPowerLevelUpgrade &&
+                request.command.parameters.hypePowerLevelUpgrade && request.command.parameters.experiencePoints){
                 var informationNextLevel = self.userService.getInformationNextLevel(request.command.parameters.level);
                 self.userService.levelUpUser( webSocketClientId, request.command.parameters, informationNextLevel);
                 self.userCommunicationService.sendUserLevelUpInformation(webSocket, informationNextLevel);
             }
             else{
-                console.log("Problem with updateUserLevel, level can't be null: ", e, request);
+                console.log("Problem with updateUserLevel, parameters can't be null: ", e, request);
             }
         }
 
