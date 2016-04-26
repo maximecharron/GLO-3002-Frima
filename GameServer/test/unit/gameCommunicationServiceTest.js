@@ -23,7 +23,7 @@ before(function(done){
     webSocketServerStub = sinon.createStubInstance(WebSocketServer);
 
     client = {
-        _ultron: {id: 1}, send: function (bossUpdate) {
+        _ultron: {id: 1}, send: function (element) {
         }, close: function () {
         }
     };
