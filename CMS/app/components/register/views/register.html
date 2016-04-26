@@ -4,7 +4,10 @@
     <div class="row">
         </br>
     </div>
-    <div class="row">
+    <div class="ajax-loading" ng-show="isLoading">
+        <img src="img/triangle.svg">
+    </div>
+    <div class="row" ng-show="!isLoading">
         <div class="col-md-6 col-md-offset-3 panel-body" ng-hide="success">
             <h2>Create new administrator</h2>
             <div ng-show="success" class="has-success">User successfully created</div>
@@ -50,11 +53,13 @@
                 </div>
                 <div class="form-group">
                     <label for="superAdmin">Super admin?
-                    <input class="form-control" type="checkbox" id="superAdmin" name="superAdmin" ng-model="superAdmin"/></label>
+                        <input class="form-control" type="checkbox" id="superAdmin" name="superAdmin"
+                               ng-model="superAdmin"/></label>
                 </div>
 
                 <div class="form-actions">
-                    <button type="submit" ng-disabled="form.$invalid || form.confirmEmail.$error.match || form.confirmPassword.$error.match"
+                    <button type="submit"
+                            ng-disabled="form.$invalid || form.confirmEmail.$error.match || form.confirmPassword.$error.match"
                             class="btn btn-primary">Register
                     </button>
                     <a href="#/login" class="btn btn-link">Cancel</a>

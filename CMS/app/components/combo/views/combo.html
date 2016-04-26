@@ -4,7 +4,10 @@
     <div class="row">
         </br>
     </div>
-    <div class="row">
+    <div class ="ajax-loading" ng-show="isUpdating || isLoading">
+        <img src="img/triangle.svg">
+    </div>
+    <div class="row" ng-show="!isUpdating && !isLoading">
         <div class="col-md-offset-4">
             <h5>Please select a combo to update or create a new combo</h5>
             <div class="col-md-8">

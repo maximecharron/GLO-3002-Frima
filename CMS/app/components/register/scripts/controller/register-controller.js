@@ -4,8 +4,10 @@ angular.module('CMS.register').controller("register-controller", function ($scop
     $scope.email ="";
     $scope.password ="";
     $scope.name="";
+    $scope.isLoading = false;
 
     $scope.register = function () {
+        $scope.isLoading = true;
         var user = {
             "email": $scope.email,
             "password": $scope.password,
@@ -18,7 +20,9 @@ angular.module('CMS.register').controller("register-controller", function ($scop
             $scope.email="";
             $scope.password="";
             $scope.name = "";
+            $scope.isLoading = false;
         }, function onError(){
+            $scope.isLoading = false;
             $scope.error = true;
         });
     }
