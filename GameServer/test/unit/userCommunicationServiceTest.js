@@ -11,7 +11,7 @@ var expect = chai.expect;
 var should = chai.should();
 var sinon = require("sinon");
 
-var UserCommunicationService = require('./../../services/UserCommunicationService.js');
+var UserCommunicationService = require('./../../services/userCommunicationService.js');
 
 var client;
 
