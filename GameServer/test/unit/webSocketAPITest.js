@@ -9,7 +9,7 @@ var sinon = require("sinon");
 var WebSocketAPI = require("../../api/webSocketAPI.js");
 var BossService = require("../../services/bossService.js");
 
-describe("Boss", function ()
+describe("webSocketAPI", function ()
 {
     describe("initializeBoss", function()
     {

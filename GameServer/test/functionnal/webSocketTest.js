@@ -91,65 +91,52 @@ describe("Functionnal webSocket", function ()
         });
     });
 
-    // Ce test doit être réativé lorsque nous allons avoir de vrai token !!!!
-    //describe('makeDamage to kill boss', function()
-    //{
-    //    it('should receive message bossStatusUpdate with status dead', function(done)
-    //    {
-    //        this.timeout(5000);
-    //        //Arrange
-    //        var jsonAttack =
-    //        {
-    //            token: "token",
-    //            command:
-    //            {
-    //                name: "attack",
-    //                parameters:
-    //                {
-    //                    number: 1000000
-    //                }
-    //            }
-    //        };
-    //
-    //        var registerClient =
-    //        {
-    //            command:
-    //            {
-    //                name: "registerClient",
-    //                parameters:
-    //                {
-    //                    token: "aToken"
-    //                }
-    //            }
-    //        }
-    //
-    //        //Act
-    //        webSocketClient.onopen = function()
-    //        {
-    //            webSocketClient.send(JSON.stringify(registerClient));
-    //            webSocketClient.send(JSON.stringify(jsonAttack));
-    //        };
-    //
-    //        var json;
-    //
-    //        webSocketClient.on("message", function(message)
-    //        {
-    //            var messageParsed = JSON.parse(message);
-    //            if(messageParsed.command.name == "bossStatusUpdate"){
-    //                json = messageParsed;
-    //            }
-    //        });
-    //
-    //        //Assert
-    //        var expectedStatus = 1;
-    //        setTimeout(function()
-    //        {
-    //            assert.equal(expectedStatus, json.command.parameters.status);
-    //            done();
-    //        }, 1000);
-    //
-    //    });
-    //});
+
+    describe('makeDamage to kill boss', function()
+    {
+        it('should receive message bossStatusUpdate with status dead', function(done)
+        {
+            //Arrange
+            this.timeout(5000);
+
+            var jsonAttack =
+            {
+                command:
+                {
+                    name: "attack",
+                    parameters:
+                    {
+                        value: 100000
+                    }
+                }
+            };
+
+            //Act
+            webSocketClient.onopen = function()
+            {
+                webSocketClient.send(JSON.stringify(jsonAttack));
+            };
+
+            var json;
+
+            webSocketClient.on("message", function(message)
+            {
+                var messageParsed = JSON.parse(message);
+                if(messageParsed.command.name == "bossStatusUpdate" && messageParsed.command.parameters.status == 1){
+                    json = messageParsed;
+                }
+            });
+
+            //Assert
+            var expectedStatus = 1;
+            setTimeout(function()
+            {
+                assert.equal(expectedStatus, json.command.parameters.status);
+                done();
+            }, 1000);
+
+        });
+    });
 
     describe('keepAlive', function()
     {
