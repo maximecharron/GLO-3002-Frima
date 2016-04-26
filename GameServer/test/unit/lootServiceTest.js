@@ -43,7 +43,7 @@ describe("LootService", function ()
             expect(lootService.items.length).to.equal(items.length);
         });
     });
-    
+
     describe("getLoot", function()
     {
         it("should return a random element", function()
