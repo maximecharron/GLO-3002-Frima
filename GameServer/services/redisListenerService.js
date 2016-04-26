@@ -39,10 +39,6 @@ redisSub.on('message', function (channel, message)
         var boss = self.bossService.getCurrentBoss();
         self.bossCommunicationService.broadcastBossDead(boss);
         self.bossService.reviveBoss();
-        //Log for debug
-        console.log("bossDead: ");
-        console.log("boss: ", boss);
-        //Log for debug
     }
     else if (channel == self.serverNameSubscribeCMS)
     {
@@ -50,44 +46,24 @@ redisSub.on('message', function (channel, message)
         {
             var bossMessage = JSON.parse(message);
             self.bossService.updateBoss(bossMessage.currentBossLife, bossMessage.maximumBossLife);
-
-            //Log for debug
-            console.log("bossUpdate: ");
-            console.log("bossMessage: ", bossMessage);
-            //Log for debug
         } catch (error)
         {
             console.log(error);
         }
     }
     else if (channel == "itemsUpdate"){
-        //Ici l'information ne doit pas être envoyé au user car cela concerne seulement le lootService.
-        //Celui-ci va ré-initializer ça liste en cache à partir de la BD.
-        //Les prochain loot tiendrons compte de la liste initialisé.
         self.lootService.initializeItems();
-
-        //Log for debug
-        console.log("itemsUpdate: ");
-        //Log for debug
     }
     else if (channel == "comboUpdate") {
         self.gameService.initializeCombo(function(){
             self.gameCommunicationService.broadCastComboUpdate();
         });
-
-        //Log for debug
-        console.log("comboUpdate: ");
-        //Log for debug
     }
     else if (channel == "gameConfigUpdate"){
         self.gameService.initializeGameBaseStat(function(){
 
             self.gameCommunicationService.broadCastGameConfigUpdate();
         });
-
-        //Log for debug
-        console.log("gameConfigUpdate: ");
-        //Log for debug
     }
 });
 

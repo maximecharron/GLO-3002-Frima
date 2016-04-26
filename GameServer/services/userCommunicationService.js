@@ -15,10 +15,6 @@ UserCommunicationService.prototype.sendUserLevelUpInformation = function(webSock
         }
     });
 
-    //Log for debug
-    console.log("userLevelUpUpdate: ", userLevelUpUpdate);
-    //Log for debug
-
     webSocket.send(userLevelUpUpdate);
 };
 

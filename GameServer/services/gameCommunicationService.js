@@ -35,7 +35,6 @@ GameCommunicationService.prototype.broadCastGameConfigUpdate = function()
     {
         try
         {
-            console.log("Inside send gameCommunicationService: ", userGameConfigUpdate);
             client.send(userGameConfigUpdate);
         } catch (error)
         {
@@ -51,11 +50,6 @@ GameCommunicationService.prototype.broadCastComboUpdate = function()
     {
         try
         {
-
-            //Log for debug
-            console.log("comboUpdate: ", comboUpdate);
-            //Log for debug
-
             client.send(comboUpdate);
         } catch (error)
         {

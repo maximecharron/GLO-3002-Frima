@@ -46,11 +46,6 @@ BossCommunicationService.prototype.broadcastBossDead = function(theBoss)
                 console.log("Impossible to add item to the user: ", error);
             }
 
-            //Log for debug
-            console.log("bossUpdate: ", bossUpdate);
-            console.log("lootItems: ", lootItems);
-            //Log for debug
-
             client.send(bossUpdate);
             client.send(lootItems);
         } catch (error)
