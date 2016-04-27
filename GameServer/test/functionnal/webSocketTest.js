@@ -52,7 +52,7 @@ describe("Functionnal webSocket", function ()
                     assert.equal(expectedCommand, json.command.name);
                     onConnectCurrentBossLife = json.command.parameters.currentBossLife;
                     done();
-                }, 2000);
+                }, 3000);
             });
         });
     });
@@ -102,7 +102,7 @@ describe("Functionnal webSocket", function ()
             {
                 assert.equal(expectedLowerThan, lowerThan);
                 done();
-            }, 2000);
+            }, 3000);
 
         });
     });
