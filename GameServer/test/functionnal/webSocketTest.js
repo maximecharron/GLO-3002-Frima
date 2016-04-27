@@ -71,7 +71,7 @@ describe("Functionnal webSocket", function ()
                     name: "attack",
                     parameters:
                     {
-                        value: 10
+                        value: 100
                     }
                 }
             };
@@ -343,7 +343,7 @@ describe("Functionnal webSocket", function ()
             {
                 assert.equal(expectedCommand, json.command.name);
                 done();
-            }, 1000);
+            }, 2000);
 
         });
     });
@@ -396,7 +396,7 @@ describe("Functionnal webSocket", function ()
             {
                 assert.equal(expectedCommand, json.command.name);
                 done();
-            }, 1000);
+            }, 2000);
 
         });
 
@@ -427,7 +427,7 @@ describe("Functionnal webSocket", function ()
             {
                 assert.equal(expectedCommand, json.command.name);
                 done();
-            }, 1000);
+            }, 2000);
 
         });
     });
@@ -533,7 +533,7 @@ describe("Functionnal webSocket", function ()
                 assert.equal(MAXIMUM_LEVEL, json.command.parameters.maximumLevel);
 
                 done();
-            }, 1000);
+            }, 2000);
 
         });
 
@@ -567,7 +567,7 @@ describe("Functionnal webSocket", function ()
                 assert.equal(MAX_WAIT_TIME_BETWEEN_HITS, json.command.parameters.comboHitSequences[0].maxWaitTimeBetweenHits);
 
                 done();
-            }, 1000);
+            }, 2000);
 
         });
 
@@ -682,7 +682,7 @@ describe("Functionnal webSocket", function ()
                     }
                 });
 
-            }, 3000);
+            }, 2000);
 
         });
 
@@ -797,7 +797,7 @@ describe("Functionnal webSocket", function ()
                 assert.equal(expectedCommand, json.command.name);
 
                 done();
-            }, 1000);
+            }, 2000);
 
         });
 
@@ -833,7 +833,7 @@ describe("Functionnal webSocket", function ()
                     }
                 });
 
-            }, 3000);
+            }, 2000);
 
         });
 
@@ -934,7 +934,7 @@ describe("Functionnal webSocket", function ()
                     }
                 });
 
-            }, 3000);
+            }, 2000);
 
         });
 
