@@ -40,7 +40,7 @@ describe("Functionnal webSocket", function ()
                 webSocketClient.on("message", function(message)
                 {
                     var messageParsed = JSON.parse(message);
-                    if(messageParsed.command != null && messageParsed.command.name == expectedCommand ){
+                    if(messageParsed != null && messageParsed.command != null && messageParsed.command.name == expectedCommand ){
                         json = messageParsed;
                     }
                 });
@@ -91,7 +91,7 @@ describe("Functionnal webSocket", function ()
             webSocketClient.on("message", function(message)
             {
                 var messageParsed = JSON.parse(message);
-                if(messageParsed.command != null && messageParsed.command.name == expectedCommand && messageParsed.command.parameters.currentBossLife < onConnectCurrentBossLife ){
+                if(messageParsed != null && messageParsed.command != null && messageParsed.command.name == expectedCommand && messageParsed.command.parameters.currentBossLife < onConnectCurrentBossLife ){
                     json = messageParsed;
                     lowerThan = true;
                 }
@@ -228,7 +228,7 @@ describe("Functionnal webSocket", function ()
             webSocketClient.on("message", function(message)
             {
                 var messageParsed = JSON.parse(message);
-                if(messageParsed.command != null && messageParsed.command.name == "bossStatusUpdate" && messageParsed.command.parameters.status == 1){
+                if(messageParsed != null && messageParsed.command != null && messageParsed.command.name == "bossStatusUpdate" && messageParsed.command.parameters.status == 1){
                     json = messageParsed;
                 }
             });
@@ -260,7 +260,7 @@ describe("Functionnal webSocket", function ()
             webSocketClient.on("message", function(message)
             {
                 var messageParsed = JSON.parse(message);
-                if(messageParsed.command != null && messageParsed.command.name == "bossStatusUpdate" && messageParsed.command.parameters.status == expectedStatus){
+                if(messageParsed != null && messageParsed.command != null && messageParsed.command.name == "bossStatusUpdate" && messageParsed.command.parameters.status == expectedStatus){
                     json = messageParsed;
                 }
             });
@@ -292,7 +292,7 @@ describe("Functionnal webSocket", function ()
             webSocketClient.on("message", function(message)
             {
                 var messageParsed = JSON.parse(message);
-                if(messageParsed.command != null && messageParsed.command.name == expectedCommand ){
+                if(messageParsed != null && messageParsed.command != null && messageParsed.command.name == expectedCommand ){
                     json = messageParsed;
                 }
             });
@@ -303,6 +303,41 @@ describe("Functionnal webSocket", function ()
             {
                 assert.equal(expectedCommand, json.command.name);
                 done();
+            }, 2000);
+
+        });
+
+        it('should add item in user', function(done)
+        {
+            //Arrange
+            this.timeout(5000);
+
+            //Act
+            webSocketClient.onopen = function()
+            {
+                webSocketClient.send(JSON.stringify(registerClient));
+                webSocketClient.send(JSON.stringify(jsonAttack));
+            };
+
+            //Assert
+
+            setTimeout(function(){
+
+                var decoded = jwt.decode(user.token, 'FRIMA_TOKEN_SECRET');
+                User.findOne({ '_id': decoded.iss }, function (err, updatedUser)
+                {
+                    if (!err)
+                    {
+                        if (updatedUser)
+                        {
+
+                            //Assert
+                            assert.equal(1, updatedUser.items.length);
+                            done();
+                        }
+                    }
+                });
+
             }, 2000);
 
         });
@@ -335,7 +370,7 @@ describe("Functionnal webSocket", function ()
             webSocketClient.on("message", function(message)
             {
                 var messageParsed = JSON.parse(message);
-                if(messageParsed.command != null && messageParsed.command.name == expectedCommand ){
+                if(messageParsed != null && messageParsed.command != null && messageParsed.command.name == expectedCommand ){
                     json = messageParsed;
                 }
             });
@@ -388,7 +423,7 @@ describe("Functionnal webSocket", function ()
             webSocketClient.on("message", function(message)
             {
                 var messageParsed = JSON.parse(message);
-                if(messageParsed.command != null && messageParsed.command.name == expectedCommand){
+                if(messageParsed != null && messageParsed.command != null && messageParsed.command.name == expectedCommand){
                     json = messageParsed;
                 }
             });
@@ -419,7 +454,7 @@ describe("Functionnal webSocket", function ()
             webSocketClient.on("message", function(message)
             {
                 var messageParsed = JSON.parse(message);
-                if(messageParsed.command != null && messageParsed.command.name == expectedCommand){
+                if(messageParsed != null && messageParsed.command != null && messageParsed.command.name == expectedCommand){
                     json = messageParsed;
                 }
             });
@@ -521,7 +556,7 @@ describe("Functionnal webSocket", function ()
 
             webSocketClient.on("message", function(message) {
                 var messageParsed = JSON.parse(message);
-                if(messageParsed.command != null && messageParsed.command.name == expectedCommand){
+                if(messageParsed != null && messageParsed.command != null && messageParsed.command.name == expectedCommand){
                     json = messageParsed;
                 }
             });
@@ -555,7 +590,7 @@ describe("Functionnal webSocket", function ()
 
             webSocketClient.on("message", function(message) {
                 var messageParsed = JSON.parse(message);
-                if(messageParsed.command != null && messageParsed.command.name == expectedCommand){
+                if(messageParsed != null && messageParsed.command != null && messageParsed.command.name == expectedCommand){
                     json = messageParsed;
                 }
             });
@@ -789,7 +824,7 @@ describe("Functionnal webSocket", function ()
 
             webSocketClient.on("message", function(message) {
                 var messageParsed = JSON.parse(message);
-                if(messageParsed.command != null && messageParsed.command.name == expectedCommand){
+                if(messageParsed != null && messageParsed.command != null && messageParsed.command.name == expectedCommand){
                     json = messageParsed;
                 }
             });
