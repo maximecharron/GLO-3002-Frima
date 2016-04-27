@@ -98,8 +98,8 @@ function newMessage(message, webSocket)
 
         else if(request.command.name == "updateUserLevel")
         {
-            if(request.command.parameters.level && request.command.parameters.attackPowerLevelUpgrade && request.command.parameters.staminaPowerLevelUpgrade &&
-                request.command.parameters.hypePowerLevelUpgrade && request.command.parameters.experiencePoints){
+            if(request.command.parameters.level != null && request.command.parameters.attackPowerLevelUpgrade != null && request.command.parameters.staminaPowerLevelUpgrade != null &&
+                request.command.parameters.hypePowerLevelUpgrade != null && request.command.parameters.experiencePoints != null){
                 var informationNextLevel = self.userService.getInformationNextLevel(request.command.parameters.level);
                 self.userService.levelUpUser( webSocketClientId, request.command.parameters, informationNextLevel);
                 self.userCommunicationService.sendUserLevelUpInformation(webSocket, informationNextLevel);
