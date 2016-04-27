@@ -40,7 +40,7 @@ describe("Functionnal webSocket", function ()
                 webSocketClient.on("message", function(message)
                 {
                     var messageParsed = JSON.parse(message);
-                    if(messageParsed.command.name == expectedCommand ){
+                    if(messageParsed.command != null && messageParsed.command.name == expectedCommand ){
                         json = messageParsed;
                     }
                 });
@@ -52,7 +52,7 @@ describe("Functionnal webSocket", function ()
                     assert.equal(expectedCommand, json.command.name);
                     onConnectCurrentBossLife = json.command.parameters.currentBossLife;
                     done();
-                }, 3000);
+                }, 2000);
             });
         });
     });
@@ -91,7 +91,7 @@ describe("Functionnal webSocket", function ()
             webSocketClient.on("message", function(message)
             {
                 var messageParsed = JSON.parse(message);
-                if(messageParsed.command.name == expectedCommand && messageParsed.command.parameters.currentBossLife < onConnectCurrentBossLife ){
+                if(messageParsed.command != null && messageParsed.command.name == expectedCommand && messageParsed.command.parameters.currentBossLife < onConnectCurrentBossLife ){
                     json = messageParsed;
                     lowerThan = true;
                 }
@@ -102,7 +102,7 @@ describe("Functionnal webSocket", function ()
             {
                 assert.equal(expectedLowerThan, lowerThan);
                 done();
-            }, 3000);
+            }, 2000);
 
         });
     });
@@ -228,7 +228,7 @@ describe("Functionnal webSocket", function ()
             webSocketClient.on("message", function(message)
             {
                 var messageParsed = JSON.parse(message);
-                if(messageParsed.command.name == "bossStatusUpdate" && messageParsed.command.parameters.status == 1){
+                if(messageParsed.command != null && messageParsed.command.name == "bossStatusUpdate" && messageParsed.command.parameters.status == 1){
                     json = messageParsed;
                 }
             });
@@ -260,7 +260,7 @@ describe("Functionnal webSocket", function ()
             webSocketClient.on("message", function(message)
             {
                 var messageParsed = JSON.parse(message);
-                if(messageParsed.command.name == "bossStatusUpdate" && messageParsed.command.parameters.status == expectedStatus){
+                if(messageParsed.command != null && messageParsed.command.name == "bossStatusUpdate" && messageParsed.command.parameters.status == expectedStatus){
                     json = messageParsed;
                 }
             });
@@ -292,7 +292,7 @@ describe("Functionnal webSocket", function ()
             webSocketClient.on("message", function(message)
             {
                 var messageParsed = JSON.parse(message);
-                if(messageParsed.command.name == expectedCommand ){
+                if(messageParsed.command != null && messageParsed.command.name == expectedCommand ){
                     json = messageParsed;
                 }
             });
@@ -331,14 +331,16 @@ describe("Functionnal webSocket", function ()
             };
 
             var json;
-
+            var expectedCommand = "bossStatusUpdate";
             webSocketClient.on("message", function(message)
             {
-                json = JSON.parse(message);
+                var messageParsed = JSON.parse(message);
+                if(messageParsed.command != null && messageParsed.command.name == expectedCommand ){
+                    json = messageParsed;
+                }
             });
 
             //Assert
-            var expectedCommand = "bossStatusUpdate";
             setTimeout(function()
             {
                 assert.equal(expectedCommand, json.command.name);
@@ -386,7 +388,7 @@ describe("Functionnal webSocket", function ()
             webSocketClient.on("message", function(message)
             {
                 var messageParsed = JSON.parse(message);
-                if(messageParsed.command.name == expectedCommand){
+                if(messageParsed.command != null && messageParsed.command.name == expectedCommand){
                     json = messageParsed;
                 }
             });
@@ -417,7 +419,7 @@ describe("Functionnal webSocket", function ()
             webSocketClient.on("message", function(message)
             {
                 var messageParsed = JSON.parse(message);
-                if(messageParsed.command.name == expectedCommand){
+                if(messageParsed.command != null && messageParsed.command.name == expectedCommand){
                     json = messageParsed;
                 }
             });
@@ -519,7 +521,7 @@ describe("Functionnal webSocket", function ()
 
             webSocketClient.on("message", function(message) {
                 var messageParsed = JSON.parse(message);
-                if(messageParsed.command.name == expectedCommand){
+                if(messageParsed.command != null && messageParsed.command.name == expectedCommand){
                     json = messageParsed;
                 }
             });
@@ -553,7 +555,7 @@ describe("Functionnal webSocket", function ()
 
             webSocketClient.on("message", function(message) {
                 var messageParsed = JSON.parse(message);
-                if(messageParsed.command.name == expectedCommand){
+                if(messageParsed.command != null && messageParsed.command.name == expectedCommand){
                     json = messageParsed;
                 }
             });
@@ -787,7 +789,7 @@ describe("Functionnal webSocket", function ()
 
             webSocketClient.on("message", function(message) {
                 var messageParsed = JSON.parse(message);
-                if(messageParsed.command.name == expectedCommand){
+                if(messageParsed.command != null && messageParsed.command.name == expectedCommand){
                     json = messageParsed;
                 }
             });
