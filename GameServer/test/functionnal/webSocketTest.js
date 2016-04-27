@@ -9,11 +9,6 @@ var WebSocket = require('ws');
 var webSocketClient;
 var onConnectCurrentBossLife;
 
-before(function(done){
-    done();
-});
-
-
 describe("Functionnal webSocket", function ()
 {
     beforeEach(function ()
