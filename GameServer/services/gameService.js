@@ -63,15 +63,21 @@ GameService.prototype.getCombos = function(){
 };
 
 GameService.prototype.getUserGameConfig = function(){
-    var gameUserConfig = {
-        baseAttackDamage: this.gameConfig.baseAttackDamage,
-        baseExperienceIncreaseOnHit: this.gameConfig.baseExperienceIncreaseOnHit,
-        hypeAttackDamage: this.gameConfig.hypeAttackDamage,
-        maximumLevel: this.gameConfig.maximumLevel
-    };
+    var gameUserConfig = {};
 
-    return gameUserConfig;
+    try{
+        gameUserConfig = {
+            baseAttackDamage: this.gameConfig.baseAttackDamage,
+            baseExperienceIncreaseOnHit: this.gameConfig.baseExperienceIncreaseOnHit,
+            hypeAttackDamage: this.gameConfig.hypeAttackDamage,
+            maximumLevel: this.gameConfig.maximumLevel
+        };
 
+        return gameUserConfig;
+    }catch(err){
+        console.log("baseAttackDamage, baseExperienceIncreaseOnHit, hypeAttackDamage, maximumLevel for gameConfig can't be null: ", gameUserConfig);
+        console.log("Error: ", err);
+    }
 };
 
 module.exports = GameService;
