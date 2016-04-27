@@ -91,7 +91,6 @@ describe("Functionnal webSocket", function ()
         });
     });
 
-
     describe('makeDamage to kill boss', function()
     {
         it('should receive message bossStatusUpdate with status dead', function(done)
@@ -176,4 +175,134 @@ describe("Functionnal webSocket", function ()
 
         });
     });
+
+    describe('registerClient', function()
+    {
+
+        var registerClient;
+
+        beforeEach(function (done)
+        {
+
+            registerClient =
+            {
+                "command" : {
+                    "name" : "registerClient",
+                    "parameters" : {
+                        "token" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI1NzIwMGE0MzM2ZDkyYTAzMDA1Mjk5ODIiLCJleHAiOjE0NjE4MDg0NjUxOTN9.zA8SLIZ0o3VMmNSaxl78TbpHUTseBKSEPKcEfDJHDDE"
+                    }
+                }
+            };
+
+            done();
+        });
+
+        it('should receive gameConfig', function(done)
+        {
+            //Arrange
+            this.timeout(5000);
+
+            //Act
+            webSocketClient.onopen = function()
+            {
+                webSocketClient.send(JSON.stringify(registerClient));
+            };
+
+            var json;
+            var expectedCommand = "gameConfigUpdate";
+
+            webSocketClient.on("message", function(message)
+            {
+                var messageParsed = JSON.parse(message);
+                if(messageParsed.command.name == expectedCommand){
+                    json = messageParsed;
+                }
+            });
+
+            //Assert
+            setTimeout(function()
+            {
+                assert.equal(expectedCommand, json.command.name);
+                done();
+            }, 1000);
+
+        });
+
+        it('should receive comboUpdate', function(done)
+        {
+            //Arrange
+            this.timeout(5000);
+
+            //Act
+            webSocketClient.onopen = function()
+            {
+                webSocketClient.send(JSON.stringify(registerClient));
+            };
+
+            var json;
+            var expectedCommand = "comboHitSequenceUpdate";
+
+            webSocketClient.on("message", function(message)
+            {
+                var messageParsed = JSON.parse(message);
+                if(messageParsed.command.name == expectedCommand){
+                    json = messageParsed;
+                }
+            });
+
+            //Assert
+            setTimeout(function()
+            {
+                assert.equal(expectedCommand, json.command.name);
+                done();
+            }, 1000);
+
+        });
+    });
+
+    describe('useItems', function()
+    {
+
+        var registerClient;
+
+        beforeEach(function (done)
+        {
+
+
+            done();
+        });
+
+        //it('should receive gameConfig', function(done)
+        //{
+        //    //Arrange
+        //    this.timeout(5000);
+        //
+        //    //Act
+        //    webSocketClient.onopen = function()
+        //    {
+        //        webSocketClient.send(JSON.stringify(registerClient));
+        //    };
+        //
+        //    var json;
+        //    var expectedCommand = "gameConfigUpdate";
+        //
+        //    webSocketClient.on("message", function(message)
+        //    {
+        //        var messageParsed = JSON.parse(message);
+        //        if(messageParsed.command.name == expectedCommand){
+        //            json = messageParsed;
+        //        }
+        //    });
+        //
+        //    //Assert
+        //    setTimeout(function()
+        //    {
+        //        assert.equal(expectedCommand, json.command.name);
+        //        done();
+        //    }, 1000);
+        //
+        //});
+
+    });
+
 });
