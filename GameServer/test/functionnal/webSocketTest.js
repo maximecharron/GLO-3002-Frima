@@ -189,7 +189,7 @@ describe("Functionnal webSocket", function ()
                 "command" : {
                     "name" : "registerClient",
                     "parameters" : {
-                        "token" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI1NzIwMGE0MzM2ZDkyYTAzMDA1Mjk5ODIiLCJleHAiOjE0NjE4MDg0NjUxOTN9.zA8SLIZ0o3VMmNSaxl78TbpHUTseBKSEPKcEfDJHDDE"
+                        "token" : "aToken"
                     }
                 }
             };
