@@ -2,9 +2,12 @@ require('../../server.js');
 var redis = require('redis').createClient(process.env.REDIS_URL);
 var GameConfig = require('./../../models/gameConfig.js').model;
 var Combo = require('./../../models/combo.js').model;
+var User = require('./../../models/user.js').model;
 var expect = require("chai").expect;
 var assert = require('chai').assert;
 var WebSocket = require('ws');
+var jwt = require('jwt-simple');
+var moment = require('moment');
 
 var webSocketClient;
 var onConnectCurrentBossLife;
@@ -400,47 +403,120 @@ describe("Functionnal webSocket", function ()
 
     describe('useItems', function()
     {
-
+        var tokenSecret = process.env.TOKEN_SECRET || 'FRIMA_TOKEN_SECRET';
         var registerClient;
+        var useItems;
+        var user;
 
         beforeEach(function (done)
         {
+            useItems = {
+                "command":
+                {
+                    "name": "useItems",
+                    "parameters":
+                    {
+                        "items":[{"type": 0, "subType": 1, "name": "Simple Adrenaline Shot", "quantity": 1}]
+                    }
+                }
+            };
+
+            user = new User();
+            user.id = 123456789;
+            user.username = "Test";
+            user.email = "test@test.ca";
+            user.items = [{
+                    "type": 0,
+                    "subType": 1,
+                    "name": "Simple Adrenaline Shot",
+                    "quantity": 2,
+                    "staminaRegeneration": 0,
+                    "hypeGeneration": 2,
+                    "effectDuration": 30
+            }];
+            user.experiencePoints = 100;
+            user.upgradePointsOnLevelComplete = 2;
+            user.requiredExperiencePointsForNextLevel = 100;
+            user.level = 1;
+            user.attackPowerLevel = 1;
+            user.staminaPowerLevel = 1;
+            user.hypePowerLevel = 1;
 
 
-            done();
+            var expires = moment().add(1, 'days').valueOf();
+            user.token = jwt.encode(
+                {
+                    iss: user.id,
+                    exp: expires
+                },
+                tokenSecret
+            );
+
+            registerClient =
+            {
+                "command" : {
+                    "name" : "registerClient",
+                    "parameters" : {
+                        "token" : user.token
+                    }
+                }
+            };
+
+            user.save(function(err){
+                if(err){
+                    console.log("Error to save user in functionnal test: ", err);
+                }
+                done();
+            });
+
         });
 
-        //it('should receive gameConfig', function(done)
-        //{
-        //    //Arrange
-        //    this.timeout(5000);
-        //
-        //    //Act
-        //    webSocketClient.onopen = function()
-        //    {
-        //        webSocketClient.send(JSON.stringify(registerClient));
-        //    };
-        //
-        //    var json;
-        //    var expectedCommand = "gameConfigUpdate";
-        //
-        //    webSocketClient.on("message", function(message)
-        //    {
-        //        var messageParsed = JSON.parse(message);
-        //        if(messageParsed.command.name == expectedCommand){
-        //            json = messageParsed;
-        //        }
-        //    });
-        //
-        //    //Assert
-        //    setTimeout(function()
-        //    {
-        //        assert.equal(expectedCommand, json.command.name);
-        //        done();
-        //    }, 1000);
-        //
-        //});
+        afterEach(function(done){
+            User.remove({ }, function (err) {
+                if (err){
+                    console.log("Problem to Remove user!: ", err);
+                }
+
+               done();
+            });
+        });
+
+        it('should reduce quantity of the item to 1', function(done)
+        {
+            //Arrange
+            this.timeout(5000);
+
+            //Act
+            webSocketClient.onopen = function()
+            {
+                webSocketClient.send(JSON.stringify(registerClient));
+                webSocketClient.send(JSON.stringify(useItems));
+            };
+
+            setTimeout(function(){
+
+                var decoded = jwt.decode(user.token, 'FRIMA_TOKEN_SECRET');
+                User.findOne({ '_id': decoded.iss }, function (err, updatedUser)
+                {
+                    if (!err)
+                    {
+                        if (updatedUser)
+                        {
+
+                            //Assert
+                            assert.equal(1, updatedUser.items[0].quantity);
+                            done();
+                        }
+                    }
+                });
+
+            }, 3000);
+
+        });
 
     });
+
+
+
 
 });
