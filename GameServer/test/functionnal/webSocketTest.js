@@ -238,7 +238,7 @@ describe("Functionnal webSocket", function ()
             {
                 assert.equal(expectedStatus, resultStatus);
                 done();
-            }, 2000);
+            }, 3000);
 
         });
 
