@@ -29,31 +29,30 @@ describe("Functionnal webSocket", function ()
     {
         it('should receive message bossStatusUpdate from server', function(done)
         {
-            this.timeout(5000);
+            this.timeout(6000);
+
+            //Arrange
+            var resultCommandName;
+            var expectedCommand = "bossStatusUpdate";
+
+            //Act
             webSocketClient.on("message", function(message)
             {
-                //Arrange
-                var json;
-                var expectedCommand = "bossStatusUpdate";
-
-                //Act
-                webSocketClient.on("message", function(message)
-                {
-                    var messageParsed = JSON.parse(message);
-                    if(messageParsed != null && messageParsed.command != null && messageParsed.command.name == expectedCommand ){
-                        json = messageParsed;
-                    }
-                });
-
-                //Assert
-
-                setTimeout(function()
-                {
-                    assert.equal(expectedCommand, json.command.name);
-                    onConnectCurrentBossLife = json.command.parameters.currentBossLife;
-                    done();
-                }, 2000);
+                var messageParsed = JSON.parse(message);
+                if(messageParsed != null && messageParsed.command != null && messageParsed.command.name == expectedCommand ){
+                    resultCommandName = messageParsed.command.name;
+                    onConnectCurrentBossLife = messageParsed.command.parameters.currentBossLife;
+                }
             });
+
+            //Assert
+
+            setTimeout(function()
+            {
+                assert.equal(expectedCommand, resultCommandName);
+
+                done();
+            }, 2000);
         });
     });
 
@@ -223,13 +222,13 @@ describe("Functionnal webSocket", function ()
                 webSocketClient.send(JSON.stringify(jsonAttack));
             };
 
-            var json;
+            var resultStatus;
 
             webSocketClient.on("message", function(message)
             {
                 var messageParsed = JSON.parse(message);
                 if(messageParsed != null && messageParsed.command != null && messageParsed.command.name == "bossStatusUpdate" && messageParsed.command.parameters.status == 1){
-                    json = messageParsed;
+                    resultStatus = messageParsed.command.parameters.status;
                 }
             });
 
@@ -237,7 +236,7 @@ describe("Functionnal webSocket", function ()
             var expectedStatus = 1;
             setTimeout(function()
             {
-                assert.equal(expectedStatus, json.command.parameters.status);
+                assert.equal(expectedStatus, resultStatus);
                 done();
             }, 2000);
 
@@ -255,13 +254,13 @@ describe("Functionnal webSocket", function ()
                 webSocketClient.send(JSON.stringify(jsonAttack));
             };
 
-            var json;
+            var resultStatus;
             var expectedStatus = 0;
             webSocketClient.on("message", function(message)
             {
                 var messageParsed = JSON.parse(message);
                 if(messageParsed != null && messageParsed.command != null && messageParsed.command.name == "bossStatusUpdate" && messageParsed.command.parameters.status == expectedStatus){
-                    json = messageParsed;
+                    resultStatus = messageParsed.command.parameters.status;
                 }
             });
 
@@ -269,7 +268,7 @@ describe("Functionnal webSocket", function ()
 
             setTimeout(function()
             {
-                assert.equal(expectedStatus, json.command.parameters.status);
+                assert.equal(expectedStatus, resultStatus);
                 done();
             }, 2000);
 
@@ -287,13 +286,13 @@ describe("Functionnal webSocket", function ()
                 webSocketClient.send(JSON.stringify(jsonAttack));
             };
 
-            var json;
+            var resultName;
             var expectedCommand = "lootItems";
             webSocketClient.on("message", function(message)
             {
                 var messageParsed = JSON.parse(message);
                 if(messageParsed != null && messageParsed.command != null && messageParsed.command.name == expectedCommand ){
-                    json = messageParsed;
+                    resultName = messageParsed.command.name;
                 }
             });
 
@@ -301,7 +300,7 @@ describe("Functionnal webSocket", function ()
 
             setTimeout(function()
             {
-                assert.equal(expectedCommand, json.command.name);
+                assert.equal(expectedCommand, resultName);
                 done();
             }, 2000);
 
@@ -365,20 +364,20 @@ describe("Functionnal webSocket", function ()
                 webSocketClient.send(JSON.stringify(jsonKeepAlive));
             };
 
-            var json;
+            var resultName;
             var expectedCommand = "bossStatusUpdate";
             webSocketClient.on("message", function(message)
             {
                 var messageParsed = JSON.parse(message);
                 if(messageParsed != null && messageParsed.command != null && messageParsed.command.name == expectedCommand ){
-                    json = messageParsed;
+                    resultName = messageParsed.command.name;
                 }
             });
 
             //Assert
             setTimeout(function()
             {
-                assert.equal(expectedCommand, json.command.name);
+                assert.equal(expectedCommand, resultName);
                 done();
             }, 2000);
 
@@ -417,21 +416,21 @@ describe("Functionnal webSocket", function ()
                 webSocketClient.send(JSON.stringify(registerClient));
             };
 
-            var json;
+            var resultName;
             var expectedCommand = "gameConfigUpdate";
 
             webSocketClient.on("message", function(message)
             {
                 var messageParsed = JSON.parse(message);
                 if(messageParsed != null && messageParsed.command != null && messageParsed.command.name == expectedCommand){
-                    json = messageParsed;
+                    resultName = messageParsed.command.name;
                 }
             });
 
             //Assert
             setTimeout(function()
             {
-                assert.equal(expectedCommand, json.command.name);
+                assert.equal(expectedCommand, resultName);
                 done();
             }, 2000);
 
@@ -448,21 +447,21 @@ describe("Functionnal webSocket", function ()
                 webSocketClient.send(JSON.stringify(registerClient));
             };
 
-            var json;
+            var resultName;
             var expectedCommand = "comboHitSequenceUpdate";
 
             webSocketClient.on("message", function(message)
             {
                 var messageParsed = JSON.parse(message);
                 if(messageParsed != null && messageParsed.command != null && messageParsed.command.name == expectedCommand){
-                    json = messageParsed;
+                    resultName = messageParsed.command.name;
                 }
             });
 
             //Assert
             setTimeout(function()
             {
-                assert.equal(expectedCommand, json.command.name);
+                assert.equal(expectedCommand, resultName);
                 done();
             }, 2000);
 
@@ -563,11 +562,16 @@ describe("Functionnal webSocket", function ()
 
             //Assert
             setTimeout(function() {
-                assert.equal(expectedCommand, json.command.name);
-                assert.equal(BASE_ATTACK_DAMAGE, json.command.parameters.baseAttackDamage);
-                assert.equal(HYPE_ATTACK_DAMAGE, json.command.parameters.hypeAttackDamage);
-                assert.equal(BASE_EXPERIENCE_INCREASE_ON_HIT, json.command.parameters.baseExperienceIncreaseOnHit);
-                assert.equal(MAXIMUM_LEVEL, json.command.parameters.maximumLevel);
+                if(json)
+                {
+                    assert.equal(expectedCommand, json.command.name);
+                    assert.equal(BASE_ATTACK_DAMAGE, json.command.parameters.baseAttackDamage);
+                    assert.equal(HYPE_ATTACK_DAMAGE, json.command.parameters.hypeAttackDamage);
+                    assert.equal(BASE_EXPERIENCE_INCREASE_ON_HIT, json.command.parameters.baseExperienceIncreaseOnHit);
+                    assert.equal(MAXIMUM_LEVEL, json.command.parameters.maximumLevel);
+                } else{
+                    assert.fail();
+                }
 
                 done();
             }, 2000);
@@ -596,12 +600,18 @@ describe("Functionnal webSocket", function ()
             });
             //Assert
             setTimeout(function() {
-                assert.equal(expectedCommand, json.command.name);
-                assert.equal(COMBO_NAME, json.command.parameters.comboHitSequences[0].name);
-                assert.equal(TRIGGER_FREQUENCY, json.command.parameters.comboHitSequences[0].triggerFrequency);
-                assert.equal(BONUS_MULTIPLIER, json.command.parameters.comboHitSequences[0].bonusMultiplier);
-                assert.equal(MAX_FIRST_HIT_WAIT_TIME, json.command.parameters.comboHitSequences[0].maxFirstHitWaitTime);
-                assert.equal(MAX_WAIT_TIME_BETWEEN_HITS, json.command.parameters.comboHitSequences[0].maxWaitTimeBetweenHits);
+                if(json)
+                {
+                    assert.equal(expectedCommand, json.command.name);
+                    assert.equal(COMBO_NAME, json.command.parameters.comboHitSequences[0].name);
+                    assert.equal(TRIGGER_FREQUENCY, json.command.parameters.comboHitSequences[0].triggerFrequency);
+                    assert.equal(BONUS_MULTIPLIER, json.command.parameters.comboHitSequences[0].bonusMultiplier);
+                    assert.equal(MAX_FIRST_HIT_WAIT_TIME, json.command.parameters.comboHitSequences[0].maxFirstHitWaitTime);
+                    assert.equal(MAX_WAIT_TIME_BETWEEN_HITS, json.command.parameters.comboHitSequences[0].maxWaitTimeBetweenHits);
+                }
+                else{
+                    assert.fail();
+                }
 
                 done();
             }, 2000);
@@ -820,18 +830,18 @@ describe("Functionnal webSocket", function ()
             };
 
             var expectedCommand = "userLevelUpInformation";
-            var json;
+            var resultName;
 
             webSocketClient.on("message", function(message) {
                 var messageParsed = JSON.parse(message);
                 if(messageParsed != null && messageParsed.command != null && messageParsed.command.name == expectedCommand){
-                    json = messageParsed;
+                    resultName = messageParsed.command.name;
                 }
             });
 
             //Assert
             setTimeout(function() {
-                assert.equal(expectedCommand, json.command.name);
+                assert.equal(expectedCommand, resultName);
 
                 done();
             }, 2000);
