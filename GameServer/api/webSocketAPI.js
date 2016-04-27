@@ -62,7 +62,7 @@ function newMessage(message, webSocket)
             }
             else
             {
-                console.log("Problem with attack, value can't be null: ", e, request);
+                console.log("Problem with attack, value can't be null: ", request);
             }
         }
 
@@ -81,7 +81,7 @@ function newMessage(message, webSocket)
                 self.gameCommunicationService.sendAllGameInfo(webSocket);
             }
             else{
-                console.log("Problem with registerClient, token can't be null: ", e, request);
+                console.log("Problem with registerClient, token can't be null: ", request);
             }
         }
 
@@ -92,7 +92,7 @@ function newMessage(message, webSocket)
                 self.userService.updateUserItems(webSocketClientId, items);
             }
             else{
-                console.log("Problem with useItems, items can't be null: ", e, request);
+                console.log("Problem with useItems, items can't be null: ", request);
             }
         }
 
@@ -105,7 +105,7 @@ function newMessage(message, webSocket)
                 self.userCommunicationService.sendUserLevelUpInformation(webSocket, informationNextLevel);
             }
             else{
-                console.log("Problem with updateUserLevel, parameters can't be null: ", e, request);
+                console.log("Problem with updateUserLevel, parameters can't be null: ", request);
             }
         }
 
@@ -115,13 +115,14 @@ function newMessage(message, webSocket)
                 self.userService.updateUserExperience(webSocketClientId, request.command.parameters.experiencePoints);
             }
             else{
-                console.log("Problem with updateUserExperience, experiencePoints can't be null: ", e, request);
+                console.log("Problem with updateUserExperience, experiencePoints can't be null: ", request);
             }
         }
 
     } catch (error)
     {
-        return console.log("Problem to parse :", error);
+        console.log("Problem to parse :", message);
+        console.log("Error :", error);
     }
 
 }
