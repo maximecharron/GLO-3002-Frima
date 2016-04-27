@@ -121,6 +121,9 @@ var getUser = function(token, callback)
                 callback(user);
             }
         }
+        else{
+            console.log("Error when search for user in database: ", err);
+        }
     });
 };
 

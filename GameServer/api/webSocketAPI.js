@@ -20,9 +20,9 @@ WebSocketAPI.prototype.newConnection = function (webSocket)
     try
     {
         webSocket.send(self.bossCommunicationService.createBossStatusUpdate(boss));
-    } catch (e)
+    } catch (err)
     {
-        console.log(e);
+        console.log("Problem to send bossStatusUpdate on webSocket connect: ", err);
     }
     webSocket.on("message", function (message)
     {
@@ -100,6 +100,7 @@ function newMessage(message, webSocket)
         {
             if(request.command.parameters.level != null && request.command.parameters.attackPowerLevelUpgrade != null && request.command.parameters.staminaPowerLevelUpgrade != null &&
                 request.command.parameters.hypePowerLevelUpgrade != null && request.command.parameters.experiencePoints != null){
+
                 var informationNextLevel = self.userService.getInformationNextLevel(request.command.parameters.level);
                 self.userService.levelUpUser( webSocketClientId, request.command.parameters, informationNextLevel);
                 self.userCommunicationService.sendUserLevelUpInformation(webSocket, informationNextLevel);
@@ -132,9 +133,9 @@ function close(webSocket)
     try
     {
         webSocket.close();
-    } catch (e)
+    } catch (err)
     {
-        console.log(e);
+        console.log("Problem to close webSocket: ", err);
     }
 
 }

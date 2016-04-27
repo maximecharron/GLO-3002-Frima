@@ -38,7 +38,7 @@ GameCommunicationService.prototype.broadCastGameConfigUpdate = function()
             client.send(userGameConfigUpdate);
         } catch (error)
         {
-            console.log("Problem with broadCastGameConfigUpdate :", error);
+            console.log("Problem with GameCommunicationService broadCastGameConfigUpdate :", error);
         }
     });
 };
@@ -53,7 +53,7 @@ GameCommunicationService.prototype.broadCastComboUpdate = function()
             client.send(comboUpdate);
         } catch (error)
         {
-            console.log("Problem with broadCastComboUpdate :", error);
+            console.log("Problem with GameCommunicationService broadCastComboUpdate :", error);
         }
     });
 };

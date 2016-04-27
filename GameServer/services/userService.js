@@ -54,5 +54,4 @@ UserService.prototype.setExperienceInformation = function(experiencePerLevel, up
 
 
 //Private method
-
 module.exports = UserService;

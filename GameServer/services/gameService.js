@@ -36,20 +36,17 @@ GameService.prototype.initializeGameBaseStat = function(callBack){
         self.gameConfig = gameConfig;
         if(gameConfig)
         {
-            if(gameConfig.probabilityLoot)
-            {
+            if(gameConfig.probabilityLoot) {
                 self.lootService.initializeItemsDropRate(gameConfig.probabilityLoot);
             }
-
-            if(gameConfig.experiencePerLevel && gameConfig.upgradePointsPerLevel && gameConfig.maximumLevel)
-            {
+            if(gameConfig.experiencePerLevel != null && gameConfig.upgradePointsPerLevel != null && gameConfig.maximumLevel != null) {
                 self.userService.setExperienceInformation(gameConfig.experiencePerLevel, gameConfig.upgradePointsPerLevel, gameConfig.maximumLevel);
             }
-
-            if(callBack)
-            {
+            if(callBack) {
                 callBack(gameConfig);
             }
+        }else{
+            console.log("Problem with gameService initializeGameBaseStat: ", gameConfig);
         }
     })
 };
