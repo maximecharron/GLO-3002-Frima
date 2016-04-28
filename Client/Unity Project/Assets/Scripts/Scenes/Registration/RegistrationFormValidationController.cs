@@ -1,7 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using Assets.Scripts.Utils;
+using UnityEngine;
 using UnityEngine.UI;
-using Assets.Scripts.Utils;
 
 namespace Assets.Scripts.Scenes.Registration
 {
@@ -13,10 +12,7 @@ namespace Assets.Scripts.Scenes.Registration
         public InputField PasswordInputField;
         public InputField PasswordConfirmInputField;
         public InputField EmailInputField;
-        public Text UsernameErrorLabel;
-        public Text PasswordErrorLabel;
-        public Text PasswordConfirmErrorLabel;
-        public Text EmailErrorLabel;
+        public Text ErrorLabel;
 
         void Start()
         {
@@ -26,39 +22,47 @@ namespace Assets.Scripts.Scenes.Registration
         public bool Validate()
         {
             ResetErrorLabels();
-            if (UsernameInputField.text.Length <= 3)
+            if (!ValidateUsername() || !ValidatePassword() || !ValidateEmail())
             {
-                UsernameErrorLabel.text = "Username too short";
-                UsernameErrorLabel.transform.gameObject.SetActive(true);
-                return false;
-            }
-            else if (PasswordInputField.text.Length <= 3)
-            {
-                PasswordErrorLabel.text = "Password too short";
-                PasswordErrorLabel.transform.gameObject.SetActive(true);
-                return false;
-            }
-            else if (PasswordInputField.text != PasswordConfirmInputField.text)
-            {
-                PasswordConfirmErrorLabel.text = "Password does not match";
-                PasswordConfirmErrorLabel.transform.gameObject.SetActive(true);
-                return false;
-            }
-            else if (!EmailValidationUtils.IsEmailValid(EmailInputField.text))
-            {
-                EmailErrorLabel.text = "Invalid email";
-                EmailErrorLabel.transform.gameObject.SetActive(true);
+                ErrorLabel.gameObject.SetActive(true);
                 return false;
             }
             return true;
         }
 
+        private bool ValidateUsername()
+        {
+            if (UsernameInputField.text.Length <= 3)
+            {
+                ErrorLabel.text = "Username too short";
+                return false;
+            }
+            return true;
+        }
+
+        private bool ValidatePassword()
+        {
+            if (PasswordInputField.text.Length <= 3)
+            {
+                ErrorLabel.text = "Password too short";
+                return false;
+            }
+            else if (PasswordInputField.text != PasswordConfirmInputField.text)
+            {
+                ErrorLabel.text = "Password does not match";
+                return false;
+            }
+            return true;
+        }
+
+        private bool ValidateEmail()
+        {
+            return EmailValidationUtils.IsEmailValid(EmailInputField.text);
+        }
+
         private void ResetErrorLabels()
         {
-            UsernameErrorLabel.transform.gameObject.SetActive(false);
-            PasswordErrorLabel.transform.gameObject.SetActive(false);
-            PasswordConfirmErrorLabel.transform.gameObject.SetActive(false);
-            EmailErrorLabel.transform.gameObject.SetActive(false);
+            ErrorLabel.transform.gameObject.SetActive(false);
         }
 
     }

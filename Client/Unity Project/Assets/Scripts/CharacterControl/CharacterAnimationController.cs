@@ -1,10 +1,6 @@
-﻿using UnityEngine;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Assets.Scripts.SpriteAnimation;
+﻿using Assets.Scripts.Animation.SpriteAnimation;
 using Assets.Scripts.Extensions;
+using System.Collections.Generic;
 
 namespace Assets.Scripts.CharacterControl
 {
@@ -60,17 +56,14 @@ namespace Assets.Scripts.CharacterControl
             }
 
             spriteAnimator.Settings = state.SpriteAnimationSettings;
-            spriteAnimator.OnAnimationSequenceEnd = OnAnimationSequenceEnd;
+            spriteAnimator.OnAnimationSequenceComplete -= AnimationSequenceCompleteEventHandler;
+            spriteAnimator.OnAnimationSequenceComplete += AnimationSequenceCompleteEventHandler;
             spriteAnimator.Animate();
         }
 
-        private bool OnAnimationSequenceEnd()
+        private bool AnimationSequenceCompleteEventHandler()
         {
-            if (currentStateAnimation.OnAnimationSequenceEnd != null)
-            {
-                return currentStateAnimation.OnAnimationSequenceEnd(currentStateAnimation);
-            }
-            return true;
+            return currentStateAnimation.AnimationComplete();
         }
     }
 }

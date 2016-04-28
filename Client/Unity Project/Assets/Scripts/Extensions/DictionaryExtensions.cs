@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Assets.Scripts.Extensions
 {
@@ -17,6 +15,23 @@ namespace Assets.Scripts.Extensions
             {
                 dictionary.Add(key, value);
             }
+        }
+
+        public static void TryAdd<T1, T2>(this Dictionary<T1, T2> dictionary, T1 key, T2 value)
+        {
+            if (!dictionary.ContainsKey(key))
+            {
+                dictionary.Add(key, value);
+            }
+        }
+
+        public static T2 GetValueOrDefault<T1, T2>(this Dictionary<T1, T2> dictionary, T1 key, T2 defaultValue)
+        {
+            if (!dictionary.ContainsKey(key))
+            {
+                return defaultValue;
+            }
+            return dictionary[key];
         }
 
         public static string ToFormattatedString<T1, T2>(this Dictionary<T1, T2> dictionary)

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Assets.Scripts.Extensions
 {
@@ -27,6 +25,11 @@ namespace Assets.Scripts.Extensions
                 }
             }
             return minItem;
+        }
+
+        public static T RandomItem<T>(this List<T> list)
+        {
+            return list[UnityEngine.Random.Range(0, list.Count)];
         }
     }
 }

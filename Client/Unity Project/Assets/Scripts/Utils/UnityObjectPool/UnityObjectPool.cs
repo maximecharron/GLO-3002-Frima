@@ -1,25 +1,23 @@
 ﻿using Assets.Scripts.Extensions;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace Assets.Scripts.Utils.UnityObjectPool
 {
-    class UnityObjectPool
+    public class UnityObjectPool
     {
-        public Action<UnityEngine.Object> OnObjectPoolInstantiate { get; set; }
-        public Func<UnityEngine.Object, bool> OnCheckIsAvailable { get; set; }
+        public delegate void PoolItemInstantiateEventHandler(UnityEngine.Object obj);
+        public event PoolItemInstantiateEventHandler OnPoolItemInstantiate = delegate { };
 
         private UnityEngine.Object referenceObject;
         private List<UnityEngine.Object> poolObjects = new List<UnityEngine.Object>();
-        private int poolSize;
+        private Func<UnityEngine.Object, bool> itemAvailabilityPredicate;
 
-        public UnityObjectPool(UnityEngine.Object referenceObject, int poolSize)
+        public UnityObjectPool(UnityEngine.Object referenceObject, int poolSize, Func<UnityEngine.Object, bool> itemAvailabilityPredicate)
         {
             this.referenceObject = referenceObject;
-            this.poolSize = poolSize;
+            this.itemAvailabilityPredicate = itemAvailabilityPredicate;
 
             for (int i = 0; i < poolSize; i++)
             {
@@ -27,40 +25,41 @@ namespace Assets.Scripts.Utils.UnityObjectPool
             }
         }
 
-        public UnityObjectPool(List<UnityEngine.Object> poolObjects)
-        {
-            this.poolObjects = poolObjects;
-        }
-
-        public UnityObjectPool(GameObject gameObject, Type objectType, int poolSize)
+        public UnityObjectPool(GameObject gameObject, Type objectType, int poolSize, Func<UnityEngine.Object, bool> itemAvailabilityPredicate)
         {
             for (int i = 0; i < poolSize; i++)
             {
                 this.poolObjects.Add(gameObject.AddComponent(objectType));
             }
+            this.itemAvailabilityPredicate = itemAvailabilityPredicate;
         }
 
         private UnityEngine.Object InstantiatePoolObjects()
         {
-            UnityEngine.Object newPoolObject = referenceObject.Clone();
-            if (OnObjectPoolInstantiate != null)
+            UnityEngine.Object newObject = referenceObject.Clone();
+            if (OnPoolItemInstantiate != null)
             {
-                OnObjectPoolInstantiate(newPoolObject);
+                OnPoolItemInstantiate(newObject);
             }
-            return newPoolObject;
+            return newObject;
         }
 
         public UnityEngine.Object GetNext()
         {
-            foreach (UnityEngine.Object gameObject in poolObjects)
+            foreach (UnityEngine.Object unityObject in poolObjects)
             {
-                if (OnCheckIsAvailable(gameObject))
+                if (IsItemAvailable(unityObject))
                 {
-                    return gameObject;
+                    return unityObject;
                 }
             }
 
             throw new PoolExhaustedException();
+        }
+
+        private bool IsItemAvailable(UnityEngine.Object unityObject)
+        {
+            return itemAvailabilityPredicate(unityObject);
         }
 
     }

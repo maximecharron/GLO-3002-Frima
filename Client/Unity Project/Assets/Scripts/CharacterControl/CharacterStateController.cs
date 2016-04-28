@@ -1,9 +1,6 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Extensions;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Assets.Scripts.Extensions;
-using Assets.Scripts.SpriteAnimation;
 
 namespace Assets.Scripts.CharacterControl
 {
@@ -77,7 +74,7 @@ namespace Assets.Scripts.CharacterControl
 
         public void Update()
         {
-            ExecuteActions();
+            UpdateStates();
             animationController.Animate(states);
         }
 
@@ -90,17 +87,17 @@ namespace Assets.Scripts.CharacterControl
             }
         }
 
-        private void ExecuteActions()
+        private void UpdateStates()
         {
-            foreach (CharacterState state in states)
+            for (int i = 0; i < states.Count; i++)
             {
-                if (state.IsActivable(states)) {
-                    state.Activate();
-                    state.DoAction();
+                if (states[i].IsActivable(states)) {
+                    states[i].Activate();
+                    states[i].Update();
                 }
                 else
                 {
-                    state.Deactivate();
+                    states[i].Deactivate();
                 }
             }
         }

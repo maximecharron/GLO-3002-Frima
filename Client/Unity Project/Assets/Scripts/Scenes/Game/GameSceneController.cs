@@ -1,68 +1,72 @@
-﻿using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-using Assets.Scripts.Communication;
-using Assets.Scripts.Communication.CommandDTOs;
+﻿using Assets.Scripts.Services;
+using UnityEngine;
 
 namespace Assets.Scripts.Scenes.Game
 {
-
+    [RequireComponent(typeof(AudioSource), typeof(AudioSource), typeof(AudioSource))]
     public class GameSceneController : SceneController
     {
-        public const float BOSS_RELATIVE_HEIGHT = 0.75f;
-        public const float BOSS_POSITION_FROM_BOTTOM = 110;
+        private const float DEFAULT_AUDIO_VOLUME = 0.8f;
 
-        // Configurable script parameters
-        public WebSocketService WebSocketService;
-        public BossController BossController;
-        public GameObject Boss;
-        public GameObject LoadingSceneOverlay;
-        public Canvas Canvas;
+        // Configurable script parameterss;
+        public int GameStartAudioSourceIndex;
+        public GameObject[] PausableGameObjects;
+        public Canvas GameCanvas;
+
+        public bool AudioMuted
+        {
+            get {
+                return GetComponent<AudioSource>().volume == 0f;
+            }
+            set
+            {
+                GetComponent<AudioSource>().volume = value ? 0f : DEFAULT_AUDIO_VOLUME;
+            }
+        }
+
+        private GameControlService gameControlService;
 
         void Start() {
-            GameController gameController = FindObjectOfType<GameController>();
-            WebSocketService.SessionToken = gameController.SessionToken;
-            BossController.OnBossDead += OnBossDead;
-            BossController.gameObject.SetActive(false);
-            AdjustBossPositioning();
-            InitCommunication();
-        }
-
-        private void AdjustBossPositioning()
-        {
-            float verticalScale = Canvas.GetComponent<RectTransform>().rect.height * BOSS_RELATIVE_HEIGHT;
-            Boss.transform.localScale = new Vector3(verticalScale, verticalScale, 1);
-            float canvasHeight = Canvas.GetComponent<RectTransform>().rect.height;
-            Boss.transform.localPosition = new Vector3(Boss.transform.localPosition.x, BOSS_POSITION_FROM_BOTTOM - (canvasHeight - verticalScale) / 2, Boss.transform.localPosition.z);
-        }
-
-        private void InitCommunication()
-        {
-            WebSocketService.OnInitializationComplete = OnCommunicationInitializationComplete;
-            WebSocketService.RegisterCommand(BossStatusUpdateCommandDTO.COMMAND_NAME, BossController.BossStatusUpdateCallback, typeof(BossStatusUpdateCommandDTO));
-            WebSocketService.Init();
+            gameControlService = FindObjectOfType<GameControlService>();
+            gameControlService.GlobalAudioThemeEnabled = false;
+            AudioMuted = false;
         }
 
         void OnDestroy()
         {
-            WebSocketService.UnregisterCommand(BossStatusUpdateCommandDTO.COMMAND_NAME);
+            if (gameControlService != null)
+            {
+                gameControlService.GlobalAudioThemeEnabled = true;
+            }
         }
 
-        private void OnCommunicationInitializationComplete()
+        public void OnExitButtonClick()
         {
-            BossController.gameObject.SetActive(true);
-            LoadingSceneOverlay.gameObject.SetActive(false);
+            LoadScene(Scenes.Scene.MENU_SCENE);
         }
 
-        public void OnExitButtonPointerClick()
+        public void ShowVictoryScene()
         {
-            SceneManager.LoadScene(MENU_SCENE_NAME);
+            LoadScene(Scenes.Scene.VICTORY_SCENE);
         }
 
-        private void OnBossDead()
+        public void PauseGame()
         {
-            SceneManager.LoadScene(VICTORY_SCENE_NAME);
+            foreach (GameObject pausableGameObject in PausableGameObjects)
+            {
+                pausableGameObject.SetActive(false);
+            }
+            GameCanvas.gameObject.SetActive(false);
+        }
+
+        public void ResumeGame()
+        {
+            foreach (GameObject pausableGameObject in PausableGameObjects)
+            {
+                pausableGameObject.SetActive(true);
+            }
+            GameCanvas.gameObject.SetActive(true);
+            this.gameObject.GetComponents<AudioSource>()[GameStartAudioSourceIndex].Play();
         }
 
     }

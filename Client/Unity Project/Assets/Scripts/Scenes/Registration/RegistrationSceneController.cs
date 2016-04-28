@@ -1,100 +1,87 @@
-﻿using UnityEngine;
-using UnityEngine.EventSystems;
-using System.Collections;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-using Assets.Scripts.Communication;
+﻿using Assets.Scripts.Extensions;
+using Assets.Scripts.Services;
 using System.Net;
-using Assets.Scripts.Communication.DTOs;
-using Assets.Scripts.Utils;
-using System;
-using Assets.Scripts.Extensions;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Scenes.Registration
 {
     public class RegistrationSceneController : SceneController
     {
-        private const string REGISTRATION_URL = "/signup";
-
+        
         // Configurable script parameters
         public InputField UsernameInputField;
         public InputField PasswordInputField;
         public InputField PasswordConfirmInputField;
         public InputField EmailInputField;
-        public Text UsernameErrorLabel;
-        public Text RegistrationErrorLabel;
+        public Text ErrorLabel;
         public RegistrationFormValidationController FormValidationController;
         public Button RegisterButton;
 
-        private GameController GameController;
-        private HttpService HttpService;
+        private RegistrationService registrationService;
 
         void Start()
         {
-            GameController = (GameController)FindObjectOfType(typeof(GameController));
-            HttpService = (HttpService)FindObjectOfType(typeof(HttpService));
-
-            RegistrationErrorLabel.transform.gameObject.SetActive(false);
+            registrationService = FindObjectOfType<RegistrationService>();
+            registrationService.OnRegistrationSuccess += RegistrationSuccessCallback;
+            registrationService.OnRegistrationFailed += RegistrationFailedCallback;
+            ErrorLabel.transform.gameObject.SetActive(false);
+            OnInputFieldValueChanged();
         }
 
-        void Update() {
-
-        }
-
-        public void OnExitButtonPointerClick()
+        void OnDestroy()
         {
-            SceneManager.LoadScene(TITLE_SCENE_NAME);
+            registrationService.OnRegistrationSuccess -= RegistrationSuccessCallback;
+            registrationService.OnRegistrationFailed -= RegistrationFailedCallback;
         }
 
-        public void OnRegisterButtonPointerClick()
+        public void OnExitButtonClick()
         {
-            Register();
+            LoadScene(Scenes.Scene.TITLE_SCENE);
+        }
+
+        public void OnRegisterButtonClick()
+        {
+            if (FormValidationController.Validate())
+            {
+                Register();
+            }
         }
 
         private void Register()
         {
-            if (FormValidationController.Validate())
-            {
-                WWWForm form = new WWWForm();
-                form.AddField("username", UsernameInputField.text);
-                form.AddField("password", PasswordInputField.text);
-                form.AddField("email", EmailInputField.text);
-
-                HttpService.HttpPost(REGISTRATION_URL, form, RegisterCallback);
-                RegisterButton.interactable = false;
-            }
+            RegisterButton.interactable = false;
+            registrationService.Register(UsernameInputField.text, PasswordInputField.text, EmailInputField.text);
         }
 
-        private void RegisterCallback(WWW request)
+        public void OnInputFieldValueChanged()
+        {
+            RegisterButton.interactable = UsernameInputField.text.Length > 0 
+                && PasswordInputField.text.Length > 0 && PasswordConfirmInputField.text.Length > 0 
+                && EmailInputField.text.Length > 0;
+        }
+
+        private void RegistrationFailedCallback(WWW request)
         {
             RegisterButton.interactable = true;
-            if (request.GetStatusCode() != HttpStatusCode.OK)
-            {
-                ProcessFailedRegistration(request);
-                return;
-            }
-            ProcessSuccessfulRegistration(request);
-        }
-
-        private void ProcessFailedRegistration(WWW request)
-        {
             if (request.GetStatusCode() == HttpStatusCode.Unauthorized)
             {
-                UsernameErrorLabel.text = "Username already exists.";
-                UsernameErrorLabel.transform.gameObject.SetActive(true);
+                ErrorLabel.text = "Username or email already exists";
             }
-            else
+            else if (request.error != "")
             {
-                RegistrationErrorLabel.text = request.error;
-                RegistrationErrorLabel.transform.gameObject.SetActive(true);
+                ErrorLabel.text = request.error;
+            } else
+            {
+                ErrorLabel.text = "Failed to connect. Please try again later.";
             }
+            ErrorLabel.transform.gameObject.SetActive(true);
         }
 
-        private void ProcessSuccessfulRegistration(WWW request)
+        private void RegistrationSuccessCallback()
         {
-            RegistrationResultDTO resultDTO = JsonUtility.FromJson<RegistrationResultDTO>(request.text);
-            GameController.SetUserSession(resultDTO.token, resultDTO.username);
-            SceneManager.LoadScene(MENU_SCENE_NAME);
+            RegisterButton.interactable = true;
+            LoadScene(Scenes.Scene.LOGIN_SCENE);
         }
     }
 }
