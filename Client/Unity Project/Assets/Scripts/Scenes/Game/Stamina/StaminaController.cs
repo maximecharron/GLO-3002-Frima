@@ -1,20 +1,16 @@
-﻿using System;
-using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
+﻿using Assets.Scripts.Scenes.Game.LootItems;
 using Assets.Scripts.Services;
-using Assets.Scripts.Scenes.Game.LootItems;
 using Assets.Scripts.Services.LootItems;
-using System.Collections.Generic;
-using Assets.Scripts.Extensions;
+using System;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Scenes.Game.Stamina
 {
-
-
     public class StaminaController : MonoBehaviour
     {
         private const float BASE_STAMINA_DECREASE_ON_HIT = 5f;
+        private const float STAMINA_POWER_BASE = 1.1f;
         private const float STAMINA_RESTORE_VALUE = 0.5f;
         private const float STAMINA_RESTORATION_FREQUENCY_SECONDS = 0.05f;
         private const int STAMINA_HIT_MISS_TRESHOLD = 80;
@@ -53,7 +49,7 @@ namespace Assets.Scripts.Scenes.Game.Stamina
         public void DecreaseStamina()
         {
             float proteinShakePowerValue = currentProteinShake != null ? currentProteinShake.StaminaPowerValue : 1;
-            StaminaSliderController.Value -= BASE_STAMINA_DECREASE_ON_HIT / playerPropertyService.StaminaPowerLevel / proteinShakePowerValue;
+            StaminaSliderController.Value -= BASE_STAMINA_DECREASE_ON_HIT / Mathf.Pow(STAMINA_POWER_BASE, playerPropertyService.StaminaPowerLevel + proteinShakePowerValue);
         }
 
         private void AutoIncreaseStamina()

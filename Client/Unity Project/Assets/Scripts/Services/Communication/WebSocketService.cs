@@ -1,9 +1,9 @@
-﻿using UnityEngine;
-using System;
-using System.Collections.Generic;
+﻿using Assets.Scripts.Extensions;
 using Assets.Scripts.Services.Communication.DTOs;
 using Assets.Scripts.Services.Communication.DTOs.Outbound;
-using Assets.Scripts.Extensions;
+using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace Assets.Scripts.Services.Communication
 {
@@ -11,6 +11,7 @@ namespace Assets.Scripts.Services.Communication
     public class WebSocketService : MonoSingleton
     {
         private const string WEB_SOCKET_SERVER_URI = "wss://frima-server-1.herokuapp.com";
+        private const float KEEP_ALIVE_INTERVAL = 30f;
 
         public string SessionToken { get; set; }
 
@@ -47,7 +48,7 @@ namespace Assets.Scripts.Services.Communication
             Debug.Log("WebSocket Connect");
             StartCoroutine(webSocket.Connect());
             webSocket.RecvString();
-            InvokeRepeating("KeepConnectionAlive", 1f, 30f);
+            InvokeRepeating("KeepConnectionAlive", KEEP_ALIVE_INTERVAL, KEEP_ALIVE_INTERVAL);
         }
 
         private void ReceiveCommands()

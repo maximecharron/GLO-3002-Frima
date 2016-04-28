@@ -1,12 +1,8 @@
-﻿using Assets.Scripts.Services.Communication;
+﻿using Assets.Scripts.Extensions;
+using Assets.Scripts.Services.Communication;
 using Assets.Scripts.Services.Communication.DTOs.Inbound;
 using Assets.Scripts.Services.Communication.DTOs.Outbound;
-using Assets.Scripts.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
 using UnityEngine;
 
 namespace Assets.Scripts.Services

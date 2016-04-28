@@ -1,9 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using Assets.Scripts.Utils.UnityObjectPool;
-using System;
-using Assets.Scripts.Extensions;
+﻿using Assets.Scripts.Extensions;
+using UnityEngine;
 
 namespace Assets.Scripts.Services.ComboHits
 {

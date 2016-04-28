@@ -1,8 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
-using System;
-using Assets.Scripts.Services;
 
 namespace Assets.Scripts.Scenes.Game.Boss
 {

@@ -1,10 +1,5 @@
-﻿using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
-
-namespace Assets.Scripts.Scenes
+﻿namespace Assets.Scripts.Scenes
 {
-
     public class TitleSceneController : SceneController {
 
         public void OnLoginButtonClick()

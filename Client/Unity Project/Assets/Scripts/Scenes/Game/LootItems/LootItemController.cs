@@ -2,8 +2,6 @@
 using Assets.Scripts.Services.LootItems;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace Assets.Scripts.Scenes.Game.LootItems

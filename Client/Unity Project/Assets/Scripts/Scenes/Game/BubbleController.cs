@@ -1,9 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
-using Assets.Scripts.Extensions;
-using UnityEngine.UI;
+﻿using Assets.Scripts.Extensions;
 using Assets.Scripts.Utils;
-using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Scenes.Game
 {

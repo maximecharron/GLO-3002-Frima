@@ -1,20 +1,13 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using Assets.Scripts.Extensions;
+using Assets.Scripts.Services.ComboHits;
 using Assets.Scripts.Utils.UnityObjectPool;
 using System.Collections.Generic;
-using Assets.Scripts.Extensions;
-using System;
-using Assets.Scripts.Services.ComboHits;
+using UnityEngine;
 
 namespace Assets.Scripts.Scenes.Game.ComboHits
 {
     public class ComboHitSequenceController
     {
-        private const int GREEN_TEXT_COLOR_MULTIPLIER = 2;
-        private const int BLUE_TEXT_COLOR_MULTIPLIER = 3;
-        private const int RED_TEXT_COLOR_MULTIPLIER = 5;
-        private const int ORANGE_TEXT_COLOR_MULTIPLIER = 10;
-
         public event ComboHitZoneController.HitZoneClickedEventHandler OnHitZoneClicked = delegate { };
         public delegate void SequenceAchievedEventHandler(ComboHitSequence comboHitSequence);
         public event SequenceAchievedEventHandler OnSequenceAchieved = delegate { };
@@ -148,19 +141,19 @@ namespace Assets.Scripts.Scenes.Game.ComboHits
 
         private Color GetBonusTextColor(float bonusMultiplier)
         {
-            if (bonusMultiplier <= GREEN_TEXT_COLOR_MULTIPLIER)
+            if (bonusMultiplier <= 2)
             {
                 return new Color(0, 148f / 255f, 0);
             }
-            else if (bonusMultiplier <= BLUE_TEXT_COLOR_MULTIPLIER)
+            else if (bonusMultiplier <= 3)
             {
                 return new Color(11f / 255f, 0, 148f / 255f);
             }
-            else if (bonusMultiplier <= RED_TEXT_COLOR_MULTIPLIER)
+            else if (bonusMultiplier <= 4)
             {
                 return new Color(1, 0, 0);
             }
-            else if (bonusMultiplier <= ORANGE_TEXT_COLOR_MULTIPLIER)
+            else if (bonusMultiplier <= 10)
             {
                 return new Color(1, 111f / 255f, 0);
             }

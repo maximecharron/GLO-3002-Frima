@@ -1,13 +1,5 @@
-﻿using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-using Assets.Scripts.Services.Communication;
-using Assets.Scripts.Services.Communication.DTOs;
-using Assets.Scripts.Scenes.Game.Boss;
-using Assets.Scripts.Services;
-using Assets.Scripts.Services.BossStatus;
-using Assets.Scripts.Extensions;
+﻿using Assets.Scripts.Services;
+using UnityEngine;
 
 namespace Assets.Scripts.Scenes.Game
 {

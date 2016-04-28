@@ -1,15 +1,8 @@
-﻿using UnityEngine;
-using UnityEngine.EventSystems;
-using System.Collections;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-using Assets.Scripts.Services.Communication;
-using System.Net;
-using Assets.Scripts.Services.Communication.DTOs.Outbound;
-using Assets.Scripts.Utils;
-using System;
-using Assets.Scripts.Extensions;
+﻿using Assets.Scripts.Extensions;
 using Assets.Scripts.Services;
+using System.Net;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Scenes.Registration
 {

@@ -1,11 +1,8 @@
 ﻿using Assets.Scripts.Animation.SpriteAnimation;
 using Assets.Scripts.Extensions;
 using Assets.Scripts.Services;
-using Assets.Scripts.Utils;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace Assets.Scripts.Scenes.Game

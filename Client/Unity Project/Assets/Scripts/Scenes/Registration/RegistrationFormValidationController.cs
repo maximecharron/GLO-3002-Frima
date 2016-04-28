@@ -1,7 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using Assets.Scripts.Utils;
+using UnityEngine;
 using UnityEngine.UI;
-using Assets.Scripts.Utils;
 
 namespace Assets.Scripts.Scenes.Registration
 {

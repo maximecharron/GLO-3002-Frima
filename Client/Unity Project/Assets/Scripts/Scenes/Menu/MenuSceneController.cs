@@ -1,8 +1,5 @@
-﻿using Assets.Scripts.Services.Communication;
-using Assets.Scripts.Services;
+﻿using Assets.Scripts.Services;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.Scenes

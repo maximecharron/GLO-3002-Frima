@@ -1,12 +1,7 @@
-﻿using Assets.Scripts.CharacterControl;
-using Assets.Scripts.Extensions;
+﻿using Assets.Scripts.Extensions;
 using Assets.Scripts.Utils.UnityObjectPool;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Assets.Scripts.Scenes.Game.Boss
 {
@@ -78,7 +73,7 @@ namespace Assets.Scripts.Scenes.Game.Boss
             }
             catch (PoolExhaustedException)
             {
-                Debug.Log("Empty pool");
+                // Intentionally blank
             }
         }
 

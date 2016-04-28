@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-using Assets.Scripts.Services.Communication;
+﻿using Assets.Scripts.Services.Communication;
 using Assets.Scripts.Services.Communication.DTOs;
 using Assets.Scripts.Services.Communication.DTOs.Inbound;
 using Assets.Scripts.Services.Communication.DTOs.Outbound;

@@ -1,13 +1,11 @@
-﻿using System;
-using UnityEngine;
-using System.Collections;
-using Assets.Scripts.Scenes.Game.ComboHits;
-using Assets.Scripts.Scenes.Game.Stamina;
-using UnityEngine.UI;
-using Assets.Scripts.Services;
+﻿using Assets.Scripts.Scenes.Game.ComboHits;
 using Assets.Scripts.Scenes.Game.LootItems;
-using Assets.Scripts.Services.LootItems;
+using Assets.Scripts.Services;
 using Assets.Scripts.Services.ComboHits;
+using Assets.Scripts.Services.LootItems;
+using System;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Scenes.Game.Hype
 {

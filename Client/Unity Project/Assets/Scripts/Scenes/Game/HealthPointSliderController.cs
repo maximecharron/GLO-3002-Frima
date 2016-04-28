@@ -1,7 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using Assets.Scripts.Services.BossStatus;
+using UnityEngine;
 using UnityEngine.UI;
-using Assets.Scripts.Services.BossStatus;
 
 namespace Assets.Scripts.Scenes.Game
 {

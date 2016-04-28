@@ -1,11 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-using Assets.Scripts.Scenes.Game;
+﻿using Assets.Scripts.Services;
 using System;
-using Assets.Scripts.Services;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Scenes
 {

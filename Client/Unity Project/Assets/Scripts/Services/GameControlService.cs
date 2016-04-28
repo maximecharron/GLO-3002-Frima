@@ -1,10 +1,7 @@
-﻿using UnityEngine;
-using Assets.Scripts.Services.Communication;
-using Assets.Scripts.Extensions;
-using UnityEngine.SceneManagement;
+﻿using Assets.Scripts.Services.Communication;
 using Assets.Scripts.Services.Communication.DTOs;
 using Assets.Scripts.Services.Communication.DTOs.Inbound;
-using Assets.Scripts.Services.Communication.DTOs.Outbound;
+using UnityEngine;
 
 namespace Assets.Scripts.Services
 {

@@ -1,23 +1,20 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.Scenes.Game.Stamina
 {
-
-
     public class StaminaSliderController : MonoBehaviour
     {
 
-        private const float MEDIUM_STAMINA_TRESHOLD = 1f / 3f;
-        private const float HIGH_STAMINA_TRESHOLD = 2f / 3f;
-        private static Color LOW_STAMINA_SLIDER_COLOR = new Color(216f / 255f, 0, 0);
-        private static Color MEDIUM_STAMINA_SLIDER_COLOR = new Color(1, 195f / 255f, 0);
-        private static Color HIGH_STAMINA_SLIDER_COLOR = new Color(0, 212f / 255f, 0);
 
         //Configurable script parameters
         public Slider StaminaSlider;
         public Image SliderFill;
+        public Color LowStaminaColor;
+        public Color MediumStaminaColor;
+        public float MediumStaminaTreshold = 1f / 3f;
+        public Color HighStaminaColor;
+        public float HighStaminaTreshold = 2f / 3f;
 
         public float MaxValue
         {
@@ -37,17 +34,17 @@ namespace Assets.Scripts.Scenes.Game.Stamina
 
         private Color GetHealthSliderColor(float value)
         {
-            if (value < MEDIUM_STAMINA_TRESHOLD)
+            if (value < MediumStaminaTreshold)
             {
-                return LOW_STAMINA_SLIDER_COLOR;
+                return LowStaminaColor;
             }
-            else if (value < HIGH_STAMINA_TRESHOLD)
+            else if (value < HighStaminaTreshold)
             {
-                return MEDIUM_STAMINA_SLIDER_COLOR;
+                return MediumStaminaColor;
             }
             else
             {
-                return HIGH_STAMINA_SLIDER_COLOR;
+                return HighStaminaColor;
             }
         }
     }

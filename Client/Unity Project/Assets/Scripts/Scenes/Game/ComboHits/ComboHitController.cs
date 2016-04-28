@@ -1,12 +1,10 @@
-﻿using UnityEngine;
-using System.Collections;
-using Assets.Scripts.Utils.UnityObjectPool;
-using System.Collections.Generic;
-using Assets.Scripts.Extensions;
-using System;
+﻿using Assets.Scripts.Extensions;
 using Assets.Scripts.Scenes.Game.Boss;
 using Assets.Scripts.Services.BossStatus;
 using Assets.Scripts.Services.ComboHits;
+using Assets.Scripts.Utils.UnityObjectPool;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace Assets.Scripts.Scenes.Game.ComboHits
 {

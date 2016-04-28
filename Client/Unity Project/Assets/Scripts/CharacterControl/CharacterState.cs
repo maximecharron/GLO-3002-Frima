@@ -1,10 +1,5 @@
-﻿using UnityEngine;
-using System;
-using System.Collections;
+﻿using Assets.Scripts.Animation.SpriteAnimation;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Assets.Scripts.Animation.SpriteAnimation;
 
 namespace Assets.Scripts.CharacterControl
 {

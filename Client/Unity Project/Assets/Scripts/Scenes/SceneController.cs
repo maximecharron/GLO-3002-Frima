@@ -1,11 +1,8 @@
-﻿using Assets.Scripts.Services.Communication;
-using Assets.Scripts.Services;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Scenes
 {
-
     public class SceneController : MonoBehaviour
     {
 

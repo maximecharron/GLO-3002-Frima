@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Assets.Scripts.Services.Communication.DTOs;
+﻿using Assets.Scripts.Services.Communication.DTOs;
+using System;
 
 namespace Assets.Scripts.Services.Communication
 {

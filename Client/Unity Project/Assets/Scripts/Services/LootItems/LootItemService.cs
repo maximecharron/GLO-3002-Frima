@@ -5,9 +5,6 @@ using Assets.Scripts.Services.Communication.DTOs.Outbound;
 using Assets.Scripts.Services.LootItems.Items;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
 
 namespace Assets.Scripts.Services.LootItems
 {

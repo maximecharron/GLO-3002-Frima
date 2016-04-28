@@ -1,13 +1,8 @@
-﻿using Assets.Scripts.Services.Communication;
-using Assets.Scripts.Services.Communication.DTOs.Inbound;
-using Assets.Scripts.Services.Communication.DTOs.Outbound;
-using Assets.Scripts.Extensions;
+﻿using Assets.Scripts.Extensions;
 using Assets.Scripts.Services;
-using System;
+using Assets.Scripts.Services.Communication.DTOs.Inbound;
 using System.Net;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.Scenes

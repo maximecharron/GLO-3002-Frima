@@ -1,8 +1,6 @@
-﻿using System;
+﻿using Assets.Scripts.Animation.DualStateAnimation;
 using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
-using Assets.Scripts.Animation.DualStateAnimation;
 
 namespace Assets.Scripts.Scenes.Game.Hype
 {
@@ -11,8 +9,8 @@ namespace Assets.Scripts.Scenes.Game.Hype
         //Configurable script parameters
         public Slider HypeSlider;
         public Image SliderFill;
-        public Color originalColor;
-        public Color flashColor;
+        public Color OriginalColor;
+        public Color FlashColor;
 
         public bool SliderFlashEnabled {
             get { return GetComponent<DualStateAnimator>().Enabled; }
@@ -41,7 +39,7 @@ namespace Assets.Scripts.Scenes.Game.Hype
 
         private void AlternateSliderColor()
         {
-            SliderFill.color = SliderFill.color.Equals(flashColor) ? originalColor : flashColor;
+            SliderFill.color = SliderFill.color.Equals(FlashColor) ? OriginalColor : FlashColor;
         }
     }
 }

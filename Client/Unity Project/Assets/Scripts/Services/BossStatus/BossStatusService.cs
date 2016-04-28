@@ -2,13 +2,8 @@
 using Assets.Scripts.Services.Communication.DTOs;
 using Assets.Scripts.Services.Communication.DTOs.Inbound;
 using Assets.Scripts.Services.Communication.DTOs.Outbound;
-using Assets.Scripts.Scenes.Game.Boss;
 using Assets.Scripts.Utils;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
 
 namespace Assets.Scripts.Services.BossStatus
 {
