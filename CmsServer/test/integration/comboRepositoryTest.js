@@ -104,6 +104,7 @@ describe('Combo repository ', function ()
 
     after(function(){
         Combo.remove({});
+        mongoose.disconnect();
     });
 });
 

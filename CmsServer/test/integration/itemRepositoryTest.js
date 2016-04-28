@@ -105,6 +105,7 @@ describe('Item repository ', function ()
 
     after(function(){
         Item.remove({});
+        mongoose.disconnect();
     });
 });
 

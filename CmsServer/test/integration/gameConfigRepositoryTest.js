@@ -47,6 +47,7 @@ describe('GameConfig repository ', function ()
     });
     after(function(){
         GameConfig.remove({});
+        mongoose.disconnect();
     });
 });
 

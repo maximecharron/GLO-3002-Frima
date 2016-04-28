@@ -110,6 +110,7 @@ describe('Boss repository ', function ()
     });
     after(function(){
         Boss.remove({});
+        mongoose.disconnect();
     });
 });
 
