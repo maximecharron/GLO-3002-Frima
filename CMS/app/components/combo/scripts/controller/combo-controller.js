@@ -4,6 +4,8 @@ angular.module('CMS.combo').controller("combo-controller", function ($scope, com
     $scope.remove = false;
     $scope.triggerZone = false;
     $scope.newComboCreated = false;
+    $scope.isUpdating = false;
+    $scope.isLoading = true;
 
 
     $scope.reset = function () {
@@ -34,6 +36,7 @@ angular.module('CMS.combo').controller("combo-controller", function ($scope, com
         comboResource.getCombos(function (result)
         {
             $scope.combos = result;
+            $scope.isLoading = false;
         })
     };
 
@@ -44,6 +47,7 @@ angular.module('CMS.combo').controller("combo-controller", function ($scope, com
     };
 
     $scope.updateCombo = function (selectedCombo) {
+        $scope.isUpdating = true;
         $scope.selectedCombo = selectedCombo;
         $scope.selectedCombo.triggerZone = triggerZoneCoordinates;
         $scope.selectedCombo.hitZones = transformedCoordinates;
@@ -54,8 +58,10 @@ angular.module('CMS.combo').controller("combo-controller", function ($scope, com
                 $scope.selectedCombo = data;
                 $scope.newComboCreated = false;
                 $scope.updateSuccess = true;
+                $scope.isUpdating = false;
             }, function onError(data)
             {
+                $scope.isUpdating = false;
                 $scope.updateError = true;
             });
         } else
@@ -64,8 +70,10 @@ angular.module('CMS.combo').controller("combo-controller", function ($scope, com
             {
                 $scope.selectedCombo = data;
                 $scope.updateSuccess = true;
+                $scope.isUpdating = false;
             }, function onError(data)
             {
+                $scope.isUpdating = false;
                 $scope.updateError = true;
             });
         }

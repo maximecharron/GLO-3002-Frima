@@ -1,26 +1,25 @@
-angular.module('CMS.game').controller("game-controller", function ($scope, gameResource)
-{
+angular.module('CMS.game').controller("game-controller", function ($scope, gameResource) {
 
     $scope.updateSuccess = false;
     $scope.updateError = false;
     $scope.gameConfig;
     $scope.counterAdd = 0;
     $scope.numberOfItems = 0;
+    $scope.isUpdating = false;
+    $scope.isLoading = true;
 
-
-    $scope.init = function ()
-    {
-        gameResource.getGameConfig(function (result)
-            {
-                extractLevelsAndItems(result);
-                extractProbability(result);
-            });
+    $scope.init = function () {
+        gameResource.getGameConfig(function (result) {
+            extractLevelsAndItems(result);
+            extractProbability(result);
+            $scope.isLoading = false;
+        });
     };
 
-    function extractLevelsAndItems(result){
+    function extractLevelsAndItems(result) {
         $scope.gameConfig = result;
         var levels = [];
-        for (var i = 0; i < result.experiencePerLevel.length; i++){
+        for (var i = 0; i < result.experiencePerLevel.length; i++) {
             levels.push({
                 XP: result.experiencePerLevel[i],
                 level: i,
@@ -30,49 +29,49 @@ angular.module('CMS.game').controller("game-controller", function ($scope, gameR
         $scope.gameConfig.levels = levels;
     }
 
-    function extractProbability(result){
+    function extractProbability(result) {
         var itemsProbability = [];
         var counter = 1;
-        for (var i = 1; i<100; i++){
-            if (result.probabilityLoot[i-1] != result.probabilityLoot[i]){
-                itemsProbability.push({value:counter});
+        for (var i = 1; i < 100; i++) {
+            if (result.probabilityLoot[i - 1] != result.probabilityLoot[i]) {
+                itemsProbability.push({value: counter});
                 counter = 1;
             } else {
                 counter++;
             }
 
-            if (i == 99){
-                itemsProbability.push({value:counter});
+            if (i == 99) {
+                itemsProbability.push({value: counter});
             }
         }
-        if (itemsProbability.length == 0){
-            for (var  i = 0; i< result.probabilityLoot[0]-1; i++){
+        if (itemsProbability.length == 0) {
+            for (var i = 0; i < result.probabilityLoot[0] - 1; i++) {
                 itemsProbability.push({value: 0});
             }
-            itemsProbability.push({value:counter});
+            itemsProbability.push({value: counter});
         }
-       $scope.gameConfig.probabilityLoot = itemsProbability;
+        $scope.gameConfig.probabilityLoot = itemsProbability;
     }
 
-    function createLootArray(lootStats){
+    function createLootArray(lootStats) {
         var lootArray = [];
-        for (var i = 0; i<lootStats.length; i++){
-            for (var j = 0; j<lootStats[i].value; j++){
-                lootArray.push(i+1);
+        for (var i = 0; i < lootStats.length; i++) {
+            for (var j = 0; j < lootStats[i].value; j++) {
+                lootArray.push(i + 1);
             }
         }
         return lootArray;
     }
 
-    $scope.addItem = function(){
+    $scope.addItem = function () {
         $scope.gameConfig.probabilityLoot.push({value: 0});
     };
 
-    $scope.removeItem = function(){
-            $scope.gameConfig.probabilityLoot.pop();
+    $scope.removeItem = function () {
+        $scope.gameConfig.probabilityLoot.pop();
     };
 
-    $scope.addLevel = function(){
+    $scope.addLevel = function () {
         $scope.gameConfig.levels.push({
             XP: 0,
             level: $scope.gameConfig.levels.length,
@@ -81,26 +80,26 @@ angular.module('CMS.game').controller("game-controller", function ($scope, gameR
         $scope.counterAdd++;
     };
 
-    $scope.removeLevel = function(){
-      if ($scope.counterAdd > 0 ){
-          $scope.counterAdd--;
-          $scope.gameConfig.levels.pop();
-      }
+    $scope.removeLevel = function () {
+        if ($scope.counterAdd > 0) {
+            $scope.counterAdd--;
+            $scope.gameConfig.levels.pop();
+        }
     };
 
-    $scope.updateGameConfig = function (gameConfig)
-    {
+    $scope.updateGameConfig = function (gameConfig) {
+        $scope.isUpdating = true;
         $scope.updateError = false;
         $scope.updateSuccess = false;
         var experiencePerLevel = [];
         var upgradePointsPerLevel = [];
 
-        for (var i = 0; i < gameConfig.levels.length; i++){
+        for (var i = 0; i < gameConfig.levels.length; i++) {
             experiencePerLevel.push(gameConfig.levels[i].XP);
             upgradePointsPerLevel.push(gameConfig.levels[i].upgradePoints)
         }
 
-        var game= {
+        var game = {
             baseExperienceIncreaseOnHit: gameConfig.baseExperienceIncreaseOnHit,
             baseAttackDamage: gameConfig.baseAttackDamage,
             hypeAttackDamage: gameConfig.hypeAttackDamage,
@@ -109,27 +108,29 @@ angular.module('CMS.game').controller("game-controller", function ($scope, gameR
             upgradePointsPerLevel: upgradePointsPerLevel,
             probabilityLoot: createLootArray(gameConfig.probabilityLoot)
         };
-        gameResource.updateGameConfig(game, function onSuccess(data)
-        {
+        gameResource.updateGameConfig(game, function onSuccess(data) {
             $scope.gameConfig = data;
             $scope.updateSuccess = true;
             extractLevelsAndItems(data);
             extractProbability(data);
             $scope.counterAdd = 0;
-        }, function onError(data)
-        {
+            $scope.isUpdating = false;
+        }, function onError(data) {
+            $scope.isUpdating = false;
             $scope.updateError = true;
         });
     };
 
-    $scope.validateItems = function(){
+    $scope.validateItems = function () {
         var sum = 0;
-        for (var i = 0; i < $scope.gameConfig.probabilityLoot.length; i++){
-            console.log("Sum is: "+sum+" and scope is "+ $scope.gameConfig.probabilityLoot[i].value);
-            sum+=$scope.gameConfig.probabilityLoot[i].value;
+        if ($scope.gameConfig) {
+            for (var i = 0; i < $scope.gameConfig.probabilityLoot.length; i++) {
+                console.log("Sum is: " + sum + " and scope is " + $scope.gameConfig.probabilityLoot[i].value);
+                sum += $scope.gameConfig.probabilityLoot[i].value;
+            }
         }
         return sum != 100;
-    }
+    };
 
     $scope.init();
 });

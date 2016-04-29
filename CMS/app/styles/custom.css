@@ -7,3 +7,8 @@
 .has-error{
     color: #d4081a;
 }
+#ajax-loading{
+    -ms-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+}

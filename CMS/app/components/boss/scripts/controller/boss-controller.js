@@ -4,6 +4,8 @@ angular.module('CMS.boss').controller("boss-controller", function ($scope, bossR
     $scope.invalidCurrentLife = false;
     $scope.updateSuccess = false;
     $scope.updateError = false;
+    $scope.isBossesLoading = false;
+    $scope.isUpdating = false;
     $scope.updateTypes = [
         {
             type: "constant",
@@ -21,17 +23,20 @@ angular.module('CMS.boss').controller("boss-controller", function ($scope, bossR
 
     $scope.typeChanged = function ()
     {
+        $scope.isBossesLoading = true;
         if ($scope.selectedUpdateType.type == "constant")
         {
             bossResource.getConstantBosses(function (result)
             {
                 $scope.bosses = result;
+                $scope.isBossesLoading = false;
             });
         } else
         {
             bossResource.getCurrentBosses(function (result)
             {
                 $scope.bosses = result;
+                $scope.isBossesLoading = false;
             });
         }
     };
@@ -54,6 +59,7 @@ angular.module('CMS.boss').controller("boss-controller", function ($scope, bossR
     {
         $scope.updateError = false;
         $scope.updateSuccess = false;
+        $scope.isUpdating = true;
         var boss = {
             serverName: selectedBoss.serverName,
             bossName: selectedBoss.bossName,
@@ -66,8 +72,10 @@ angular.module('CMS.boss').controller("boss-controller", function ($scope, bossR
             $scope.selectedBoss = data;
             convertLifeToNumber();
             $scope.updateSuccess = true;
+            $scope.isUpdating = false;
         }, function onError(data)
         {
+            $scope.isUpdating = false;
             $scope.updateError = true;
         });
     };

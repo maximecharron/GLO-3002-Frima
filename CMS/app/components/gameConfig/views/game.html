@@ -1,23 +1,31 @@
 <div class="page-header">
-    </div>
+</div>
 <div>
     <div class="row">
         </br>
     </div>
-    <div class="row">
+    <div class="ajax-loading" ng-show="isUpdating || isLoading">
+        <img src="img/triangle.svg">
+    </div>
+    <div class="row" ng-show="!isUpdating && !isLoading">
         <div class="col-md-offset-3 col-md-9">
 
             <div>
                 <h5>Game Config</h5>
 
                 <div ng-show="updateSuccess" class="has-success">GameConfig successfully updated!</div>
-                <div ng-show="updateError"class="has-error">Sorry, an error occured while updating the game config. Please try again.</div>
+                <div ng-show="updateError" class="has-error">Sorry, an error occured while updating the game config.
+                    Please try again.
+                </div>
                 <form role="form" class="form-horizontal" ng-submit="updateGameConfig(gameConfig)">
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="baseExperienceIncreaseOnHit">Base XP per click: </label>
+                        <label class="control-label col-sm-2" for="baseExperienceIncreaseOnHit">Base XP per
+                            click: </label>
 
                         <div class="col-sm-10">
-                            <input class="form-control" id="baseExperienceIncreaseOnHit" placeholder="{{gameConfig.baseExperienceIncreaseOnHit}}" ng-model="gameConfig.baseExperienceIncreaseOnHit">
+                            <input class="form-control" id="baseExperienceIncreaseOnHit"
+                                   placeholder="{{gameConfig.baseExperienceIncreaseOnHit}}"
+                                   ng-model="gameConfig.baseExperienceIncreaseOnHit">
                         </div>
                     </div>
                     <div class="form-group">
@@ -25,7 +33,8 @@
 
                         <div class="col-sm-10">
                             <input class="form-control" id="baseAttackDamage" type="number"
-                                   placeholder="{{gameConfig.baseAttackDamage}}" min="0" max="2147483647" ng-model="gameConfig.baseAttackDamage">
+                                   placeholder="{{gameConfig.baseAttackDamage}}" min="0" max="2147483647"
+                                   ng-model="gameConfig.baseAttackDamage">
                         </div>
                     </div>
                     <div class="form-group">
@@ -33,7 +42,8 @@
 
                         <div class="col-sm-10">
                             <input class="form-control" id="hypeAttackDamage" type="number"
-                                   placeholder="{{gameConfig.hypeAttackDamage}}" min="0" max="2147483647" ng-model="gameConfig.hypeAttackDamage">
+                                   placeholder="{{gameConfig.hypeAttackDamage}}" min="0" max="2147483647"
+                                   ng-model="gameConfig.hypeAttackDamage">
                         </div>
                     </div>
                     <div class="form-group">
@@ -41,23 +51,28 @@
                             <label class="control-label col-sm-2" for="level">Level :</label>
                             <div class="col-sm-2">
                                 <input class="form-control" id="level" type="number"
-                                       placeholder="{{config.level}}" min="0" max="2147483647" ng-model="config.level" readonly>
+                                       placeholder="{{config.level}}" min="0" max="2147483647" ng-model="config.level"
+                                       readonly>
                             </div>
                             <label class="control-label col-sm-2" for="level">XP :</label>
                             <div class="col-sm-2">
-                                <input  class="form-control" id="xp" type="number"
+                                <input class="form-control" id="xp" type="number"
                                        placeholder="{{config.XP}}" min="0" max="2147483647" ng-model="config.XP">
                             </div>
                             <label class="control-label col-sm-2" for="level">Points :</label>
                             <div class="col-sm-2">
                                 <input class="form-control" id="points" type="number"
-                                       placeholder="{{config.upgradePoints}}" min="0" max="2147483647" ng-model="config.upgradePoints">
+                                       placeholder="{{config.upgradePoints}}" min="0" max="2147483647"
+                                       ng-model="config.upgradePoints">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-12">
-                        <button type="button" class="btn btn-default pull-right" ng-click="addLevel()">Add new level</button>
-                        <button type="button" class="btn btn-default pull-right" ng-click="removeLevel()" ng-disabled="counterAdd <= 0">Remove level</button>
+                        <button type="button" class="btn btn-default pull-right" ng-click="addLevel()">Add new level
+                        </button>
+                        <button type="button" class="btn btn-default pull-right" ng-click="removeLevel()"
+                                ng-disabled="counterAdd <= 0">Remove level
+                        </button>
                     </div>
                     <div class="col-md-12">
                         </br>
@@ -79,10 +94,14 @@
                     </div>
                     <div class="col-md-12">
                         <button type="button" class="btn btn-default pull-right" ng-click="addItem()">Add items</button>
-                        <button type="button" class="btn btn-default pull-right" ng-click="removeItem()" ng-disabled="gameConfig.probabilityLoot.length <= 0">Remove items</button>
+                        <button type="button" class="btn btn-default pull-right" ng-click="removeItem()"
+                                ng-disabled="gameConfig.probabilityLoot.length <= 0">Remove items
+                        </button>
                     </div>
                     <div class="col-md-12">
-                        <button type="submit" class="btn btn-default pull-right" ng-disabled="form.$invalid || validateItems()">Update Game Config</button>
+                        <button type="submit" class="btn btn-default pull-right"
+                                ng-disabled="form.$invalid || validateItems()">Update Game Config
+                        </button>
                     </div>
                 </form>
             </div>

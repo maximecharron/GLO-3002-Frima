@@ -14,7 +14,10 @@
                         ng-options="updateType as updateType.commonName for updateType in updateTypes" ng-change="typeChanged()">
                 </select>
             </div>
-            <div ng-show="selectedUpdateType">
+            <div class ="ajax-loading" ng-show="isUpdating || isBossesLoading">
+                <img src="img/triangle.svg">
+            </div>
+            <div ng-show="selectedUpdateType &&!isUpdating && !isBossesLoading">
                 <h5>Please select a monster</h5>
                 <select class="form-control" name="bossSelect" id="bossSelect" ng-model="selectedBoss"
                         ng-options="boss as boss.bossName for boss in bosses">
