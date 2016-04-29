@@ -2,14 +2,13 @@ var Item = require('./../../models/item.js').model;
 var itemRepository = require('./../../repository/itemRepository.js');
 var mongoose = require('mongoose');
 var mongoUri = 'mongodb://localhost/testFrimaGameServer';
-mongoose.connect(mongoUri);
 var assert = require('chai').assert;
 
 var item = new Item({
-    type : 1,
-    subType : 1,
-    name : "Test",
-    quantity : 1,
+    type: 1,
+    subType: 1,
+    name: "Test",
+    quantity: 1,
     staminaRegeneration: 1,
     hypeGeneration: 1,
     effectDuration: 1
@@ -17,10 +16,10 @@ var item = new Item({
 });
 
 var secondItem = new Item({
-    type : 1,
-    subType : 1,
-    name : "Test2",
-    quantity : 1,
+    type: 1,
+    subType: 1,
+    name: "Test2",
+    quantity: 1,
     staminaRegeneration: 1,
     hypeGeneration: 1,
     effectDuration: 1
@@ -28,10 +27,10 @@ var secondItem = new Item({
 });
 
 var newItem = new Item({
-    type : 1,
-    subType : 1,
-    name : "newItem",
-    quantity : 1,
+    type: 1,
+    subType: 1,
+    name: "newItem",
+    quantity: 1,
     staminaRegeneration: 1,
     hypeGeneration: 1,
     effectDuration: 1
@@ -42,11 +41,19 @@ describe('Item repository ', function ()
 {
     before(function (done)
     {
-        item.save(function (err)
+        mongoose.connect(mongoUri, function ()
         {
-            secondItem.save(function(err){
-                done();
+            Item.remove({}, function ()
+            {
+                item.save(function (err)
+                {
+                    secondItem.save(function (err)
+                    {
+                        done();
+                    });
+                });
             });
+
         });
     });
 
@@ -61,7 +68,7 @@ describe('Item repository ', function ()
 
     it('finds Single item', function (done)
     {
-        itemRepository.findBoss(secondItem.name, function (item)
+        itemRepository.findItem(secondItem.name, function (item)
         {
             assert.equal(secondItem.name, item.name);
             done();
@@ -84,7 +91,8 @@ describe('Item repository ', function ()
         var itemToCreate = newItem;
         itemRepository.newItem(itemToCreate, function (updatedItem)
         {
-            itemRepository.findAllItems(function(items){
+            itemRepository.findAllItems(function (items)
+            {
                 assert.equal(items.length, 3);
                 done();
             });
@@ -95,7 +103,8 @@ describe('Item repository ', function ()
     {
         itemRepository.findItem(newItem.name, function (item)
         {
-            itemRepository.removeItem(item.id, function(error, success){
+            itemRepository.removeItem(item._id, function (error, success)
+            {
                 assert.isNull(error);
                 assert.isTrue(success);
                 done();
@@ -103,7 +112,8 @@ describe('Item repository ', function ()
         });
     });
 
-    after(function(){
+    after(function ()
+    {
         Item.remove({});
         mongoose.disconnect();
     });

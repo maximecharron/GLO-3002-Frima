@@ -2,7 +2,6 @@ var Boss = require('./../../models/boss.js').model;
 var bossRepository = require('./../../repository/bossRepository.js');
 var mongoose = require('mongoose');
 var mongoUri = 'mongodb://localhost/testFrimaGameServer';
-mongoose.connect(mongoUri);
 var assert = require('chai').assert;
 
 var currentBoss = new Boss({
@@ -25,11 +24,17 @@ describe('Boss repository ', function ()
 {
     before(function (done)
     {
-        currentBoss.save(function (err)
+        mongoose.connect(mongoUri, function ()
         {
-            constantBoss.save(function (err)
+            Boss.remove({}, function ()
             {
-                done();
+                currentBoss.save(function (err)
+                {
+                    constantBoss.save(function (err)
+                    {
+                        done();
+                    });
+                });
             });
         });
     });
@@ -72,7 +77,8 @@ describe('Boss repository ', function ()
             done();
         });
     });
-    describe('falls back gracefully', function(){
+    describe('falls back gracefully', function ()
+    {
         before(function (done)
         {
             Boss.findOneAndRemove({serverName: 'abcConstant'}, {}, function ()
@@ -108,7 +114,8 @@ describe('Boss repository ', function ()
             });
         });
     });
-    after(function(){
+    after(function ()
+    {
         Boss.remove({});
         mongoose.disconnect();
     });

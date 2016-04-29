@@ -2,7 +2,6 @@ var Combo = require('./../../models/combo.js').model;
 var comboRepository = require('./../../repository/comboRepository.js');
 var mongoose = require('mongoose');
 var mongoUri = 'mongodb://localhost/testFrimaGameServer';
-mongoose.connect(mongoUri);
 var assert = require('chai').assert;
 
 var combo = new Combo({
@@ -41,10 +40,17 @@ describe('Combo repository ', function ()
 {
     before(function (done)
     {
-        combo.save(function (err)
+        mongoose.connect(mongoUri, function ()
         {
-            secondCombo.save(function(err){
-                done();
+            Combo.remove({}, function ()
+            {
+                combo.save(function (err)
+                {
+                    secondCombo.save(function (err)
+                    {
+                        done();
+                    });
+                });
             });
         });
     });
@@ -81,9 +87,10 @@ describe('Combo repository ', function ()
     it('creates new combo', function (done)
     {
         var comboToCreate = newCombo;
-        comboRepository.newItem(comboToCreate, function (updatedCombo)
+        comboRepository.newCombo(comboToCreate, function (newCombo)
         {
-            comboRepository.findAllCombos(function(combos){
+            comboRepository.findAllCombos(function (combos)
+            {
                 assert.equal(combos.length, 3);
                 done();
             });
@@ -94,7 +101,8 @@ describe('Combo repository ', function ()
     {
         comboRepository.findCombo(newCombo.name, function (combo)
         {
-            comboRepository.removeCombo(combo.id, function(error, success){
+            comboRepository.removeCombo(combo._id, function (error, success)
+            {
                 assert.isNull(error);
                 assert.isTrue(success);
                 done();
@@ -102,7 +110,8 @@ describe('Combo repository ', function ()
         });
     });
 
-    after(function(){
+    after(function ()
+    {
         Combo.remove({});
         mongoose.disconnect();
     });

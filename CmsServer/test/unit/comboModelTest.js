@@ -34,7 +34,6 @@ describe('Combo Schema can', function () {
 
         });
         var jsonCombo = combo.toJSON();
-        console.log(jsonCombo)
         assert.isDefined(jsonCombo.id);
         assert.isObject(jsonCombo.id);
         assert.equal(jsonCombo.name, combo.name);
