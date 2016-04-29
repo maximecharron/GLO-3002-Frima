@@ -35,11 +35,10 @@ GameCommunicationService.prototype.broadCastGameConfigUpdate = function()
     {
         try
         {
-            console.log("Inside send gameCommunicationService: ", userGameConfigUpdate);
             client.send(userGameConfigUpdate);
         } catch (error)
         {
-            console.log("Problem with broadCastGameConfigUpdate :", error);
+            console.log("Problem with GameCommunicationService broadCastGameConfigUpdate :", error);
         }
     });
 };
@@ -51,15 +50,10 @@ GameCommunicationService.prototype.broadCastComboUpdate = function()
     {
         try
         {
-
-            //Log for debug
-            console.log("comboUpdate: ", comboUpdate);
-            //Log for debug
-
             client.send(comboUpdate);
         } catch (error)
         {
-            console.log("Problem with broadCastComboUpdate :", error);
+            console.log("Problem with GameCommunicationService broadCastComboUpdate :", error);
         }
     });
 };

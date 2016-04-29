@@ -1,10 +1,10 @@
 var expect = require("chai").expect;
 var Boss = require("../../domain/boss.js");
-require("./../../constants/bossConstants.js");
+var STATUS = require("./../../constants/bossConstants.js");
 var hostname = require('os').hostname();
 
-var bossDef = { serverName:hostname, bossName: "Tyson", currentBossLife: "100", maximumBossLife: "100", status: "0" };
-var bossExpected = { bossName: "Tyson", currentBossLife: "100", maximumBossLife: "100", status: "0", creationDate: new Date().setSeconds(0,0) };
+var bossDef = { serverName:hostname, bossName: "Tyson", currentBossLife: 100, maximumBossLife: 100, status: STATUS.ALIVE };
+var bossExpected = { bossName: "Tyson", currentBossLife: 100, maximumBossLife: 100, status: STATUS.ALIVE, creationDate: new Date().setSeconds(0,0) };
 var boss;
 
 describe("Boss", function ()

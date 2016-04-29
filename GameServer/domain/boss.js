@@ -1,3 +1,5 @@
+var STATUS = require('./../constants/bossConstants.js');
+
 //Constructor
 function Boss(hostname, bossName, currentBossLife, maximumBossLife, status, creationDate)
 {

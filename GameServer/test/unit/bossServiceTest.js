@@ -37,6 +37,7 @@ describe("bossService", function ()
         redisCommunicationServiceStub = sinon.createStubInstance(RedisCommunicationService);
         done();
     });
+
     describe("initializeBoss", function()
     {
         it("should call bossRepository getBoss and saveBoth", function()
@@ -47,6 +48,7 @@ describe("bossService", function ()
             var bossService = new BossService(bossCommunicationServiceStub, bossRepositoryStub);
             var getSpy = chai.spy.on(bossRepositoryStub, 'getBoss');
             var saveSpy = chai.spy.on(bossRepositoryStub, 'saveBoth');
+
             //Act
             bossService.initializeBoss();
 
@@ -81,34 +83,44 @@ describe("bossService", function ()
             //Assert
             expect(expectLife).to.equal(resultLife);
         });
+
+        it("should call redisListenerService.decreaseCurrentLife", function()
+        {
+            //Arrange
+            var bossExpected = new Boss(bossDef.serverName, bossDef.bossName, bossDef.currentBossLife, bossDef.maximumBossLife, bossDef.status);
+            bossRepositoryStub.getBoss.callsArgWith(0, bossExpected);
+            var bossService = new BossService(bossCommunicationServiceStub, bossRepositoryStub, redisCommunicationServiceStub);
+            var damageToReceive = 10;
+
+            var redisSpy = chai.spy.on(redisCommunicationServiceStub, 'decreaseCurrentLife');
+
+            //Act
+            bossService.initializeBoss();
+            bossService.makeDamage(damageToReceive);
+
+            //Assert
+            expect(redisSpy).to.have.been.called.with(damageToReceive);
+        });
     });
 
     describe("reviveBoss", function()
     {
         it("should reviveBoss with sameLife after damage", function()
         {
-            ////Arrange
-            //var bossExpected = new Boss(bossDef.serverName, bossDef.bossName, bossDef.currentBossLife, bossDef.maximumBossLife, bossDef.status);
-            //bossRepositoryStub.getBoss.callsArgWith(0, bossExpected);
-            //var bossService = new BossService(bossCommunicationServiceStub, bossRepositoryStub, redisCommunicationServiceStub);
-            //var damageToReceive = 10;
-            //
-            //var callback = function(theBoss)
-            //{
-            //
-            //};
-            //
-            ////Act
-            //bossService.initializeBoss();
-            //bossService.makeDamage(damageToReceive, function(callback){});
-            //bossService.reviveBoss();
-            //var resultBoss = bossService.getCurrentBoss();
-            //
-            //console.log('resultBoss: ', resultBoss);
-            //console.log('bossExpected: ', bossExpected);
-            //
-            ////Assert
-            //expect(bossExpected.toString()).to.equal(resultBoss.toString());
+            //Arrange
+            var bossExpected = new Boss(bossDef.serverName, bossDef.bossName, bossDef.currentBossLife, bossDef.maximumBossLife, 0, 0);
+            bossRepositoryStub.getBoss.callsArgWith(0, bossExpected);
+            var bossService = new BossService(bossCommunicationServiceStub, bossRepositoryStub, redisCommunicationServiceStub);
+            var damageToReceive = 10;
+
+            //Act
+            bossService.initializeBoss();
+            bossService.makeDamage(damageToReceive);
+            bossService.reviveBoss();
+            var resultBoss = bossService.getCurrentBoss();
+
+            //Assert
+            expect(bossExpected.toString()).to.equal(resultBoss.toString());
 
         });
     });

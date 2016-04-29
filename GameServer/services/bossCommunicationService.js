@@ -46,16 +46,11 @@ BossCommunicationService.prototype.broadcastBossDead = function(theBoss)
                 console.log("Impossible to add item to the user: ", error);
             }
 
-            //Log for debug
-            console.log("bossUpdate: ", bossUpdate);
-            console.log("lootItems: ", lootItems);
-            //Log for debug
-
             client.send(bossUpdate);
             client.send(lootItems);
         } catch (error)
         {
-            console.log(error);
+            console.log("Problem with bossCommunicationService broadCastBossDead: ",error);
         }
     });
 };
@@ -75,7 +70,7 @@ BossCommunicationService.prototype.broadcastBossInformation = function(boss)
                     client.send(bossUpdate);
                 } catch (error)
                 {
-                    console.log("Problem with broadcastBossInformation :", error);
+                    console.log("Problem with bossCommunicationService broadcastBossInformation :", error);
                 }
             });
         }
@@ -91,7 +86,7 @@ BossCommunicationService.prototype.keepAlive = function(boss, webSocket)
         webSocket.send(response);
     } catch (error)
     {
-        console.log("Problem with keepAlive :", error);
+        console.log("Problem with bossCommunicationService keepAlive :", error);
     }
 };
 

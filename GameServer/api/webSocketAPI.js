@@ -20,9 +20,9 @@ WebSocketAPI.prototype.newConnection = function (webSocket)
     try
     {
         webSocket.send(self.bossCommunicationService.createBossStatusUpdate(boss));
-    } catch (e)
+    } catch (err)
     {
-        console.log(e);
+        console.log("Problem to send bossStatusUpdate on webSocket connect: ", err);
     }
     webSocket.on("message", function (message)
     {
@@ -50,10 +50,6 @@ function newMessage(message, webSocket)
         request = JSON.parse(message);
         if (request.command.name == "attack")
         {
-            //Log for debug
-            console.log("Attack: ", request);
-            //Log fore debug
-
             if (request.command.parameters.value)
             {
                 self.bossService.makeDamage(request.command.parameters.value, function (boss)
@@ -66,26 +62,18 @@ function newMessage(message, webSocket)
             }
             else
             {
-                console.log("Problem with attack, value can't be null: ", e, request);
+                console.log("Problem with attack, value can't be null: ", request);
             }
         }
 
         else if (request.command.name == "keepAlive")
         {
-            //Log for debug
-            console.log("KeepAlive: ", request);
-            //Log for debug
-
             var boss = self.bossService.getCurrentBoss();
             self.bossCommunicationService.keepAlive(boss, webSocket);
         }
 
         else if(request.command.name == "registerClient")
         {
-            //Log for debug
-            console.log("registerClient: ", request);
-            //Log for debug
-
             if(request.command.parameters.token){
                 var token = request.command.parameters.token;
 
@@ -93,59 +81,49 @@ function newMessage(message, webSocket)
                 self.gameCommunicationService.sendAllGameInfo(webSocket);
             }
             else{
-                console.log("Problem with registerClient, token can't be null: ", e, request);
+                console.log("Problem with registerClient, token can't be null: ", request);
             }
         }
 
         else if(request.command.name == "useItems")
         {
-            //Log for debug
-            console.log("useItems: ", request);
-            //Log for debug
-
             if(request.command.parameters.items){
                 var items = request.command.parameters.items;
                 self.userService.updateUserItems(webSocketClientId, items);
             }
             else{
-                console.log("Problem with useItems, items can't be null: ", e, request);
+                console.log("Problem with useItems, items can't be null: ", request);
             }
         }
 
         else if(request.command.name == "updateUserLevel")
         {
-            //Log for debug
-            console.log("updateUserLevel: ", request);
-            //Log for debug
+            if(request.command.parameters.level != null && request.command.parameters.attackPowerLevelUpgrade != null && request.command.parameters.staminaPowerLevelUpgrade != null &&
+                request.command.parameters.hypePowerLevelUpgrade != null && request.command.parameters.experiencePoints != null){
 
-            if(request.command.parameters.level){
                 var informationNextLevel = self.userService.getInformationNextLevel(request.command.parameters.level);
                 self.userService.levelUpUser( webSocketClientId, request.command.parameters, informationNextLevel);
                 self.userCommunicationService.sendUserLevelUpInformation(webSocket, informationNextLevel);
             }
             else{
-                console.log("Problem with updateUserLevel, level can't be null: ", e, request);
+                console.log("Problem with updateUserLevel, parameters can't be null: ", request);
             }
         }
 
         else if(request.command.name == "updateUserExperience")
         {
-
-            //Log for debug
-            console.log("updateUserExperience: ", request);
-            //Log for debug
-
             if(request.command.parameters.experiencePoints){
                 self.userService.updateUserExperience(webSocketClientId, request.command.parameters.experiencePoints);
             }
             else{
-                console.log("Problem with updateUserExperience, experiencePoints can't be null: ", e, request);
+                console.log("Problem with updateUserExperience, experiencePoints can't be null: ", request);
             }
         }
 
     } catch (error)
     {
-        return console.log("Problem to parse :", error);
+        console.log("Problem to parse :", message);
+        console.log("Error :", error);
     }
 
 }
@@ -155,9 +133,9 @@ function close(webSocket)
     try
     {
         webSocket.close();
-    } catch (e)
+    } catch (err)
     {
-        console.log(e);
+        console.log("Problem to close webSocket: ", err);
     }
 
 }

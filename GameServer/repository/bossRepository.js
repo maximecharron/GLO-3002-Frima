@@ -19,6 +19,10 @@ BossRepository.prototype.getBoss = function(callBack, constant)
         serverName += "Constant";
     }
 
+    //Méthode permettant de créer une redondance pour s'assurer qu'il y est toujours un boss.
+    //On regarde dans redis, mongo si le boss est présent.
+    //Sinon on regarde dans redis, mongo pour une constante de boss.
+    //Finalement, on va chercher la config qui elle est hardcodé dans un fichier de config.
     this.redisCommunicationService.findBoss(serverName, function(error, object)
     {
         if(object)

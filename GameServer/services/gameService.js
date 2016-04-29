@@ -36,20 +36,17 @@ GameService.prototype.initializeGameBaseStat = function(callBack){
         self.gameConfig = gameConfig;
         if(gameConfig)
         {
-            if(gameConfig.probabilityLoot)
-            {
+            if(gameConfig.probabilityLoot) {
                 self.lootService.initializeItemsDropRate(gameConfig.probabilityLoot);
             }
-
-            if(gameConfig.experiencePerLevel && gameConfig.upgradePointsPerLevel && gameConfig.maximumLevel)
-            {
+            if(gameConfig.experiencePerLevel != null && gameConfig.upgradePointsPerLevel != null && gameConfig.maximumLevel != null) {
                 self.userService.setExperienceInformation(gameConfig.experiencePerLevel, gameConfig.upgradePointsPerLevel, gameConfig.maximumLevel);
             }
-
-            if(callBack)
-            {
+            if(callBack) {
                 callBack(gameConfig);
             }
+        }else{
+            console.log("Problem with gameService initializeGameBaseStat: ", gameConfig);
         }
     })
 };
@@ -63,15 +60,21 @@ GameService.prototype.getCombos = function(){
 };
 
 GameService.prototype.getUserGameConfig = function(){
-    var gameUserConfig = {
-        baseAttackDamage: this.gameConfig.baseAttackDamage,
-        baseExperienceIncreaseOnHit: this.gameConfig.baseExperienceIncreaseOnHit,
-        hypeAttackDamage: this.gameConfig.hypeAttackDamage,
-        maximumLevel: this.gameConfig.maximumLevel
-    };
+    var gameUserConfig = {};
 
-    return gameUserConfig;
+    try{
+        gameUserConfig = {
+            baseAttackDamage: this.gameConfig.baseAttackDamage,
+            baseExperienceIncreaseOnHit: this.gameConfig.baseExperienceIncreaseOnHit,
+            hypeAttackDamage: this.gameConfig.hypeAttackDamage,
+            maximumLevel: this.gameConfig.maximumLevel
+        };
 
+        return gameUserConfig;
+    }catch(err){
+        console.log("baseAttackDamage, baseExperienceIncreaseOnHit, hypeAttackDamage, maximumLevel for gameConfig can't be null: ", gameUserConfig);
+        console.log("Error: ", err);
+    }
 };
 
 module.exports = GameService;

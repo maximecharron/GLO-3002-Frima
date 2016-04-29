@@ -18,17 +18,30 @@ var webSocketServerStub;
 var lootServiceStub;
 var userServiceStub;
 
+var client;
+var items;
+
 before(function(done){
     webSocketServerStub = sinon.createStubInstance(WebSocketServer);
     lootServiceStub = {createItemsCommand:function(){}, getLoot:function(){}};
     userServiceStub = {addUserItems:function(a,b){}};
+    client = {
+        _ultron: {id: 1}, send: function (bossUpdate) {
+        }, close: function () {
+        }
+    };
+
+    items = "ITEM";
+
     done();
-})
+});
 
 describe("bossCommunicationService", function () {
+
     beforeEach(function (done) {
         done();
-    })
+    });
+
     describe("createBossStatusUpdate", function () {
         it("should return bossStatusUpdateString", function () {
             //Arrange
@@ -49,6 +62,65 @@ describe("bossCommunicationService", function () {
     });
 
     describe("broadcastBossDead", function () {
+
+        it("should call lootService.getLoot()", function () {
+            //Arrange
+            var bossStub = {
+                toJson: function () {
+                }
+            };
+
+            webSocketServerStub.clients = [client];
+
+            var bossCommunicationService = new BossCommunicationService(webSocketServerStub, lootServiceStub, userServiceStub);
+            var lootSpy = chai.spy.on(lootServiceStub, 'getLoot');
+
+            //Act
+            bossCommunicationService.broadcastBossDead(bossStub);
+
+            //Assert
+            expect(lootSpy).to.have.been.called.exactly(1);
+        });
+
+        it("should call lootService.createItemsCommand()", function () {
+            //Arrange
+            var bossStub = {
+                toJson: function () {
+                }
+            };
+
+            webSocketServerStub.clients = [client];
+
+            var bossCommunicationService = new BossCommunicationService(webSocketServerStub, lootServiceStub, userServiceStub);
+            var lootSpy = chai.spy.on(lootServiceStub, 'createItemsCommand');
+
+            //Act
+            bossCommunicationService.broadcastBossDead(bossStub);
+
+            //Assert
+            expect(lootSpy).to.have.been.called.exactly(1);
+        });
+
+        it("should call userService.addUserItems()", function () {
+            //Arrange
+            var bossStub = {
+                toJson: function () {
+                }
+            };
+
+            webSocketServerStub.clients = [client];
+            lootServiceStub.getLoot = function(){ return items };
+
+            var bossCommunicationService = new BossCommunicationService(webSocketServerStub, lootServiceStub, userServiceStub);
+            var userSpy = chai.spy.on(userServiceStub, 'addUserItems');
+
+            //Act
+            bossCommunicationService.broadcastBossDead(bossStub);
+
+            //Assert
+            expect(userSpy).to.have.been.called.with(client._ultron.id, items);
+        });
+
         it("should call send on clients", function () {
             //Arrange
             var bossStub = {
@@ -71,9 +143,7 @@ describe("bossCommunicationService", function () {
             //Assert
             expect(sendSpy).to.have.been.called.exactly(2);
         });
-    });
 
-    describe("broadcastBossDead", function () {
         it("with error should log", function () {
             //Arrange
             var bossStub = {

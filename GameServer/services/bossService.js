@@ -22,7 +22,11 @@ BossService.prototype.makeDamage = function(amount, callback)
 {
     this.redisCommunicationService.decreaseCurrentLife(amount);
     this.boss.receiveDamage(amount);
-    callback(this.boss);
+
+    if(callback)
+    {
+        callback(this.boss);
+    }
 };
 
 BossService.prototype.reviveBoss = function()

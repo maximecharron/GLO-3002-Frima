@@ -107,7 +107,7 @@ module.exports = function (passport, app)
                                 newUser.upgradePointsOnLevelComplete = userConfig.upgradePointsOnLevelComplete;
                                 newUser.requiredExperiencePointsForNextLevel = userConfig.requiredExperiencePointsForNextLevel;
                                 newUser.level = userConfig.level;
-                                newUser.hypePowerLevel = userConfig.hypePowerLevel;
+                                newUser.attackPowerLevel = userConfig.attackPowerLevel;
                                 newUser.staminaPowerLevel = userConfig.staminaPowerLevel;
                                 newUser.hypePowerLevel = userConfig.hypePowerLevel;
                                 newUser.save(function (error)

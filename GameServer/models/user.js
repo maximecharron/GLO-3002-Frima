@@ -31,7 +31,7 @@ userSchema.methods.toDTO = function (withToken) {
         upgradePointsOnLevelComplete: obj.upgradePointsOnLevelComplete,
         requiredExperiencePointsForNextLevel: obj.requiredExperiencePointsForNextLevel,
         level: obj.level,
-        attackPowerLevel: obj.hypePowerLevel,
+        attackPowerLevel: obj.attackPowerLevel,
         staminaPowerLevel: obj.staminaPowerLevel,
         hypePowerLevel: obj.hypePowerLevel
     };
