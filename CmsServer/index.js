@@ -21,7 +21,7 @@ mongoose.connect(mongoUri);
 var authentication = require('./middleware/authentication');
 var app = express();
 var corsOptions = {
-    origin: ['http://localhost:8080', 'http://localhost:4000', 'http://frima-cms-client.herokuapp.com'],
+    origin: ['http://localhost:8080', 'http://localhost:4000', 'http://frima-cms-client.herokuapp.com', 'https://frima-cms-client.herokuapp.com'],
     methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'UPDATE'],
     credentials: true
 };
