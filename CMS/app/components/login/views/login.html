@@ -6,7 +6,7 @@
     </div>
     <div class="row">
         <div class="col-md-6 col-md-offset-3 panel-body">
-            <div>
+            <div ng-hide="isLoading">
                 <h2>Login</h2>
                 <div ng-show="loginError">
                     <p> Authentication failed. Please try again.</p>
@@ -26,9 +26,9 @@
                         <button type="submit" class="btn btn-primary" ng-click="login()">Login</button>
                     </div>
                 </form>
-                <div class="ajax-loading" ng-show="isLoading">
-                    <img src="img/triangle.svg">
-                </div>
+            </div>
+            <div class="ajax-loading" ng-show="isLoading">
+                <img src="img/triangle.svg">
             </div>
         </div>
     </div>
