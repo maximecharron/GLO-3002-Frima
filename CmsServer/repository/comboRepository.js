@@ -28,7 +28,7 @@ exports.findCombo = function (name, callback)
     });
 };
 
-exports.removeCombo = function (name, callback)
+exports.removeCombo = function (id, callback)
 {
     Combo.findById(id, function (err, combo)
         {

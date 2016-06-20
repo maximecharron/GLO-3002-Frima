@@ -3,14 +3,9 @@ var request = require('request');
 var User = require('../models/user').model;
 var moment = require('moment');
 var jwt = require('jwt-simple');
-var tokenSecret = 'UBEAT_TOKEN_SECRET' || process.env.TOKEN_SECRET;
+var tokenSecret = 'FRIMA_TOKEN_SECRET' || process.env.TOKEN_SECRET;
 
 var authentication = require('../middleware/authentication');
-
-exports.showLoginPage = function (req, res) {
-    res.render('login.ejs', {message: req.flash('loginMessage')});
-    req.session.destroy();
-};
 
 exports.passportLogin = passport.authenticate('local-login', {
     successRedirect: '/token',
@@ -55,11 +50,5 @@ function createJWT(user) {
         tokenSecret
     );
     return user.token;
-};
-
-exports.facebook = passport.authenticate('facebook-login', {
-    successRedirect: '/token',
-    failureRedirect: '/facebook',
-    failureFlash: true
-})
+}
 

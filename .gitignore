@@ -1,6 +1,6 @@
-# Created by https://www.gitignore.io/api/node,webstorm
-
-### Node ###
+Client/Assets/README.txt
+Client/Unity Project/Library/CurrentLayout.dwlt
+*.dwlt
 # Logs
 logs
 *.log
@@ -104,6 +104,8 @@ lib-cov
 
 # Coverage directory used by tools like istanbul
 coverage
+coverage_unit
+coverage_functionnal
 
 # Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
 .grunt
@@ -124,3 +126,4 @@ node_modules
 .node_repl_history
 
 bower_components/
+Client/

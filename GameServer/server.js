@@ -1,10 +1,11 @@
+require('newrelic');
 var express = require('express');
 var app = express();
 var http = require('http');
 var ws = require('ws');
 var cors = require('cors');
 var WebSocketServer = require("ws").Server;
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 4000;
 var server = http.createServer(app);
 var status = require('./routes/status.js');
 var login = require('./routes/login');
@@ -14,23 +15,16 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var flash = require('connect-flash');
-
-
-
 var mongoose = require('mongoose');
 var mongoUri = process.env.MONGOLAB_URI || 'mongodb://localhost/frimaGameServer';
-console.log(mongoUri)
 mongoose.connect(mongoUri);
-
-var tokenSecret = 'FRIMA_TOKEN_SECRET' || process.env.TOKEN_SECRET;
-
-var webSocketHandler = require('./handlers/webSocketHandler.js');
+var tokenSecret = process.env.TOKEN_SECRET || 'FRIMA_TOKEN_SECRET';
 var allowOrigin = ["https://frima-client-1.herokuapp.com", "http://frima-client-1.herokuapp.com", "localhost:8080"];
 var corsOptions = {
     origin: allowOrigin,
     methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'UPDATE'],
     credentials: true
-}
+};
 
 app.set('jwtTokenSecret', tokenSecret);
 
@@ -52,15 +46,63 @@ app.get('/status', status.getStatus);
 app.post('/login', passport.authenticate('local-login'), login.getToken);
 app.post('/signup', passport.authenticate('local-signup'), login.getToken);
 app.get('/logout', login.logout);
-//app.post('/facebook', passport.authenticate('facebook-login'), login.getToken);
 
 server.listen(port);
 
 console.log("http server listening on %d", port);
 
+//Initialize main components
+
+require("./constants/bossConstants.js");
 var webSocketServer = new WebSocketServer({server: server});
-webSocketHandler.setWebSocketServer(webSocketServer); // Set le webSocketServer dans le socketHandler
+
+var ItemRepository = require('./repository/itemRepository.js');
+var itemRepository = new ItemRepository();
+
+var LootService = require('./services/lootService.js');
+var lootService = new LootService(itemRepository);
+
+var UserRepository = require('./repository/userRepository.js');
+var userRepository = new UserRepository();
+
+var UserService = require('./services/userService.js');
+var userService = new UserService(userRepository);
+
+var UserCommunicationService = require('./services/userCommunicationService.js');
+var userCommunicationService = new UserCommunicationService();
+
+var BossCommunicationService = require('./services/bossCommunicationService.js');
+var bossCommunicationService = new BossCommunicationService(webSocketServer, lootService, userService);
+
+var RedisCommunicationService = require('./services/redisCommunicationService.js');
+var redisCommunicationService = new RedisCommunicationService();
+
+var BossRepository = require('./repository/bossRepository.js');
+var bossRepository = new BossRepository(redisCommunicationService);
+
+var BossService = require('./services/bossService.js');
+var bossService = new BossService(bossCommunicationService, bossRepository, redisCommunicationService);
+
+var UpdateService = require('./services/updateService.js');
+var updateService = new UpdateService(bossRepository, bossCommunicationService, bossService, redisCommunicationService);
+
+var GameRepository = require('./repository/gameRepository.js');
+var gameRepository = new GameRepository();
+
+var GameService = require('./services/gameService.js');
+var gameService = new GameService(gameRepository, lootService, userService);
+
+var GameCommunicationService = require('./services/gameCommunicationService.js');
+var gameCommunicationService = new GameCommunicationService(webSocketServer, gameService);
+
+var RedisListenerService = require('./services/redisListenerService.js');
+var redisListenerService = new RedisListenerService(bossService, bossCommunicationService, lootService, gameService, gameCommunicationService, userService);
+
+var WebSocketAPI = require('./api/webSocketAPI.js');
+var webSocketAPI = new WebSocketAPI(bossService, bossCommunicationService, redisCommunicationService, webSocketServer, userService, userCommunicationService, gameCommunicationService);
 
 console.log("websocket server created");
-webSocketHandler.initializeBoss();
-webSocketServer.on("connection", webSocketHandler.newConnection);
+webSocketAPI.initializeBoss();
+webSocketServer.on("connection", webSocketAPI.newConnection);
+
+module.exports = app;
