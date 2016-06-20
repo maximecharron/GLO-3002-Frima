@@ -61,6 +61,7 @@ angular.module('CMS.combo').controller("combo-controller", function ($scope, com
                 $scope.isUpdating = false;
             }, function onError(data)
             {
+                $scope.newComboCreated = false;
                 $scope.isUpdating = false;
                 $scope.updateError = true;
             });
