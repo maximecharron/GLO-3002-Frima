@@ -1,7 +1,7 @@
 # GLO-3002
 Frima Project
 
-<img src="https://travis-ci.com/maximecharron/GLO-3002-Frima.svg?token=sMqpFU1Ht4p25BHaUUto&branch=master">
+[![Build Status](https://travis-ci.org/maximecharron/GLO-3002-Frima.svg?branch=master)](https://travis-ci.org/maximecharron/GLO-3002-Frima)
 
 The Frima project is composed of 4 components:
     - GameServer
