@@ -51,8 +51,10 @@
                         <label class="control-label" for="bossName">Combo Name: </label>
 
                         <div>
-                            <input class="form-control" id="bossName" placeholder="{{selectedCombo.name}}"
+                            <input ng-hide="newComboCreated" class="form-control" id="bossName" placeholder="{{selectedCombo.name}}"
                                    ng-model="selectedCombo.name" readonly>
+                            <input ng-show="newComboCreated" class="form-control" id="bossName" placeholder="{{selectedCombo.name}}"
+                                   ng-model="selectedCombo.name">
                         </div>
                     </div>
                     <div class="form-group">
